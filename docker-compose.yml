@@ -1,0 +1,23 @@
+# Standalone deployment for the AER landing site.
+#   docker compose up -d --build
+# The site is then reachable only at http://127.0.0.1:8080 — the port is bound
+# to loopback, so it is not exposed on any external interface. Put a reverse
+# proxy in front of this if you need TLS / public access.
+services:
+  aer-landing:
+    build: .
+    image: aer-landing:latest
+    container_name: aer-landing
+    restart: unless-stopped
+    # host:container — bound to localhost only.
+    ports:
+      - "127.0.0.1:8080:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

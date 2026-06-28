@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Build & smoke-test image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+
+      - name: Build image
+        run: docker build -t aer-landing:ci .
+
+      - name: Run container
+        run: |
+          docker run -d --name aer-landing \
+            -p 127.0.0.1:8080:8080 aer-landing:ci
+
+      - name: Smoke test
+        run: |
+          for i in $(seq 1 15); do
+            if curl -fsS -o /dev/null http://127.0.0.1:8080/aer.app.html; then
+              echo "site is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "site did not come up in time"
+          docker logs aer-landing
+          exit 1
+
+      - name: Tear down
+        if: always()
+        run: docker rm -f aer-landing || true

@@ -1,0 +1,6 @@
+# OS / editor cruft
+.DS_Store
+*.swp
+
+# Local editor thumbnail artifact (not part of the site)
+.thumbnail

@@ -1,0 +1,15 @@
+# Keep the image to just the static site.
+.git
+.github
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+README.md
+# NOTE: nginx.conf is intentionally NOT ignored — the Dockerfile COPYs it.
+
+# Dev / editor artifacts — not part of the served site.
+.thumbnail
+uploads/
+screenshots/
+**/.DS_Store
