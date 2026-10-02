@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Omniocular — Team AER</title>
+<meta name="description" content="Omniocular is a BLE-controlled, authorized-use Wi-Fi assessment device on a Raspberry Pi Zero 2 W, driven by an authenticated Flutter app. Software is complete; hardware qualification is pending.">
+<meta property="og:title" content="Omniocular — a pocket Wi-Fi auditor you talk to over Bluetooth">
+<meta property="og:description" content="A Raspberry Pi Zero 2 W you drive from an authenticated phone app, with every transmit kept behind an authorization you flip on. Authorized use only.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Team AER">
+<meta name="theme-color" content="#EFEDE6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%23FF6A00'/%3E%3Ccircle%20cx='35'%20cy='65'%20r='8'%20fill='%2315171A'/%3E%3Cpath%20d='M46%2058%20a20%2020%200%200%201%209%2017'%20stroke='%2315171A'%20stroke-width='7'%20fill='none'%20stroke-linecap='round'/%3E%3Cpath%20d='M55%2047%20a34%2034%200%200%201%2013%2028'%20stroke='%2315171A'%20stroke-width='7'%20fill='none'%20stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/omniocular/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="pagenav">
+  <div class="wrap">
+    <a class="pagenav__brand" href="/omniocular/">
+      <span class="pagenav__mark" aria-hidden="true">
+        <svg viewBox="0 0 100 100" width="26" height="26" focusable="false" aria-hidden="true">
+          <rect width="100" height="100" rx="22" fill="#FF6A00"></rect>
+          <circle cx="35" cy="65" r="8" fill="#15171A"></circle>
+          <path d="M46 58 a20 20 0 0 1 9 17" stroke="#15171A" stroke-width="7" fill="none" stroke-linecap="round"></path>
+          <path d="M55 47 a34 34 0 0 1 13 28" stroke="#15171A" stroke-width="7" fill="none" stroke-linecap="round"></path>
+        </svg>
+      </span>
+      <span>Omniocular</span>
+    </a>
+    <nav id="omni-menu" class="pagenav__menu" hidden aria-label="Page sections">
+      <a href="#hardware">Hardware</a>
+      <a href="#control">Control</a>
+      <a href="#survey">Survey</a>
+      <a href="#status">Status</a>
+    </nav>
+    <div class="pagenav__actions">
+      <a class="pagenav__cta" href="mailto:hello@aer.app?subject=Omniocular">Ask for access</a>
+      <button class="pagenav__toggle" data-nav-toggle aria-controls="omni-menu" aria-expanded="false" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title">A pocket Wi&#8209;Fi auditor you talk to over Bluetooth.</h1>
+        <p class="hero__lede">Drive a Raspberry Pi Zero&nbsp;2&nbsp;W from an authenticated phone app. It surveys 2.4&nbsp;GHz, and every transmit stays behind an authorization you flip on.</p>
+
+        <div class="gate" data-gate>
+          <button class="gate__switch" type="button" role="switch" aria-checked="false" aria-describedby="gate-note" data-gate-switch>
+            <span class="gate__track" aria-hidden="true"><span class="gate__thumb"></span></span>
+            <span class="gate__text">
+              <span class="gate__name">Authorized-use gate</span>
+              <span class="gate__sub">I am authorized to assess this network</span>
+            </span>
+          </button>
+          <p class="gate__state" id="gate-note" data-gate-state>Transmit is locked. Flip the gate to arm the app, the way the in-app authorized-use acknowledgement does.</p>
+        </div>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Omniocular">Ask for access</a>
+          <a class="btn btn--ghost" href="#control">See how control works</a>
+        </div>
+        <p class="hero__access">Private repository. Hardware, not a hosted service.</p>
+      </div>
+
+      <div class="hero__stage">
+        <div class="stage__device">
+          <svg class="board" viewBox="6 42 230 190" role="img" aria-label="A Raspberry Pi Zero 2 W board: the 40-pin header, the system-on-chip, the micro-USB and power ports, and the onboard printed antenna picked out in orange.">
+            <!-- board -->
+            <rect x="16" y="54" width="214" height="150" rx="12" fill="#E3E0D6" stroke="#2B2F33" stroke-width="3"></rect>
+            <!-- 40-pin GPIO header -->
+            <rect x="40" y="48" width="150" height="16" rx="3" fill="#2B2F33"></rect>
+            <g fill="#EFEDE6">
+              <rect x="46" y="51" width="4" height="4"></rect><rect x="56" y="51" width="4" height="4"></rect>
+              <rect x="66" y="51" width="4" height="4"></rect><rect x="76" y="51" width="4" height="4"></rect>
+              <rect x="86" y="51" width="4" height="4"></rect><rect x="96" y="51" width="4" height="4"></rect>
+              <rect x="106" y="51" width="4" height="4"></rect><rect x="116" y="51" width="4" height="4"></rect>
+              <rect x="126" y="51" width="4" height="4"></rect><rect x="136" y="51" width="4" height="4"></rect>
+              <rect x="146" y="51" width="4" height="4"></rect><rect x="156" y="51" width="4" height="4"></rect>
+              <rect x="166" y="51" width="4" height="4"></rect><rect x="176" y="51" width="4" height="4"></rect>
+            </g>
+            <!-- SoC -->
+            <rect x="96" y="110" width="58" height="58" rx="4" fill="#2B2F33"></rect>
+            <text x="125" y="144" text-anchor="middle" fill="#EFEDE6" font-family="'Barlow Condensed',sans-serif" font-size="13" font-weight="700">RP3A0</text>
+            <!-- ports on the bottom edge -->
+            <rect x="34" y="198" width="26" height="12" rx="2" fill="#2B2F33"></rect>
+            <rect x="74" y="198" width="26" height="12" rx="2" fill="#2B2F33"></rect>
+            <text x="47" y="224" text-anchor="middle" fill="#2B2F33" font-family="'Barlow Condensed',sans-serif" font-size="10" font-weight="600">PWR</text>
+            <text x="87" y="224" text-anchor="middle" fill="#2B2F33" font-family="'Barlow Condensed',sans-serif" font-size="10" font-weight="600">USB</text>
+            <!-- microSD on the left edge -->
+            <rect x="10" y="150" width="8" height="30" rx="2" fill="#2B2F33"></rect>
+            <!-- orange case accent: bracket on the near corner -->
+            <path d="M200 60 h22 a4 4 0 0 1 4 4 v22" fill="none" stroke="#FF6A00" stroke-width="5" stroke-linecap="round"></path>
+            <!-- printed antenna meander (onboard, orange) -->
+            <path class="board__antenna" d="M178 120 h14 v10 h-14 v10 h14 v10 h-14" fill="none" stroke="#FF6A00" stroke-width="4" stroke-linecap="square"></path>
+            <circle cx="196" cy="120" r="4" fill="#FF6A00"></circle>
+            <text x="123" y="192" text-anchor="middle" fill="#2B2F33" font-family="'Barlow Condensed',sans-serif" font-size="14" font-weight="700" letter-spacing="0.04em">PI ZERO 2 W</text>
+          </svg>
+
+          <svg class="link-arc link-arc--h" viewBox="0 40 90 170" aria-hidden="true">
+            <g fill="none" stroke="#0082FC" stroke-linecap="round">
+              <path d="M10 125 q30 -42 54 -62" stroke-width="4" opacity="0.3"></path>
+              <path d="M10 125 q40 0 66 0" stroke-width="4" opacity="0.85"></path>
+              <path d="M10 125 q30 42 54 62" stroke-width="4" opacity="0.3"></path>
+            </g>
+            <path d="M70 118 l10 7 l-10 7" fill="none" stroke="#0082FC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"></path>
+            <circle cx="10" cy="125" r="6" fill="#0082FC"></circle>
+            <text x="46" y="54" text-anchor="middle" fill="#0082FC" font-family="'Barlow Condensed',sans-serif" font-size="15" font-weight="700" letter-spacing="0.04em">BLE</text>
+          </svg>
+          <svg class="link-arc link-arc--v" viewBox="0 0 170 92" aria-hidden="true">
+            <g fill="none" stroke="#0082FC" stroke-linecap="round">
+              <path d="M85 10 q-42 30 -62 54" stroke-width="4" opacity="0.3"></path>
+              <path d="M85 10 q0 40 0 66" stroke-width="4" opacity="0.85"></path>
+              <path d="M85 10 q42 30 62 54" stroke-width="4" opacity="0.3"></path>
+            </g>
+            <path d="M78 70 l7 10 l7 -10" fill="none" stroke="#0082FC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"></path>
+            <circle cx="85" cy="10" r="6" fill="#0082FC"></circle>
+            <text x="104" y="52" text-anchor="start" fill="#0082FC" font-family="'Barlow Condensed',sans-serif" font-size="15" font-weight="700" letter-spacing="0.04em">BLE</text>
+          </svg>
+        </div>
+
+        <div class="phone" data-phone role="img" aria-label="The Omniocular phone app: connected over Bluetooth, surveying nearby access points in an RF-isolated lab, with an Expert transmit panel that stays locked until the authorized-use gate is on.">
+          <div class="phone__notch" aria-hidden="true"></div>
+          <div class="phone__screen" aria-hidden="true">
+            <div class="appbar">
+              <span class="appbar__title">Omniocular</span>
+              <span class="appbar__link"><span class="dot"></span>Connected</span>
+            </div>
+            <div class="appscroll">
+              <div class="ppanel">
+                <div class="ppanel__head">Survey</div>
+                <label class="ack">
+                  <span class="ack__box" data-ack-box></span>
+                  <span class="ack__text">I am authorized to perform wireless assessment on this network</span>
+                </label>
+                <div class="pbtns">
+                  <span class="pbtn pbtn--go">Start survey</span>
+                  <span class="pbtn">Start capture</span>
+                </div>
+                <p class="plab">RF-isolated lab survey (sample)</p>
+                <ul class="aplist" data-aplist>
+                  <li class="ap"><span class="ap__ssid">aer-lab-ap</span><span class="ap__bssid">0A:1B:2C:3D:4E:5F</span><span class="ap__rssi">−41</span><span class="ap__ch">6</span></li>
+                  <li class="ap"><span class="ap__ssid">omni-test-2g</span><span class="ap__bssid">12:34:56:78:9A:BC</span><span class="ap__rssi">−58</span><span class="ap__ch">1</span></li>
+                  <li class="ap"><span class="ap__ssid">rf-cage-iot</span><span class="ap__bssid">AA:BB:CC:00:11:22</span><span class="ap__rssi">−66</span><span class="ap__ch">11</span></li>
+                  <li class="ap"><span class="ap__ssid">bench-client</span><span class="ap__bssid">DE:12:34:56:78:90</span><span class="ap__rssi">−72</span><span class="ap__ch">6</span></li>
+                </ul>
+              </div>
+
+              <div class="ppanel ppanel--expert" data-expert>
+                <div class="ppanel__head">Expert transmit <span class="lockpill" data-lockpill>locked</span></div>
+                <div class="field">
+                  <span class="field__label">Authorized target BSSID</span>
+                  <span class="field__val">0A:1B:2C:3D:4E:5F</span>
+                </div>
+                <div class="field">
+                  <span class="field__label">Authorized 2.4 GHz channel (1–13)</span>
+                  <span class="field__val">6</span>
+                </div>
+                <span class="pbtn pbtn--window">Request 30-second authorization window</span>
+                <span class="pbtn pbtn--hold" data-hold>
+                  <span class="pbtn__fill" data-hold-fill></span>
+                  <span class="pbtn__text" data-hold-text>Hold to start authorized transmit</span>
+                </span>
+              </div>
+
+              <div class="tabbar">
+                <span class="tab">
+                  <svg class="tab__i" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="4.5" y="4.5" width="7" height="7" rx="1"></rect><path d="M6.5 2.5v2M9.5 2.5v2M6.5 11.5v2M9.5 11.5v2M2.5 6.5h2M2.5 9.5h2M11.5 6.5h2M11.5 9.5h2"></path></svg>
+                  Device
+                </span>
+                <span class="tab tab--on">
+                  <svg class="tab__i" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="8" cy="8" r="5.2"></circle><circle cx="8" cy="8" r="1.6" fill="currentColor" stroke="none"></circle></svg>
+                  Survey
+                </span>
+                <span class="tab">
+                  <svg class="tab__i" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 2.5h3M7 2.5v4L3.7 12a1 1 0 0 0 .9 1.5h6.8a1 1 0 0 0 .9-1.5L9 6.5v-4"></path></svg>
+                  Expert
+                </span>
+                <span class="tab">
+                  <svg class="tab__i" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5a1 1 0 0 1 1-1h2.3l1.2 1.3h4.5a1 1 0 0 1 1 1v4.2a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1z"></path></svg>
+                  Artifacts
+                </span>
+                <span class="tab">
+                  <svg class="tab__i" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="8" cy="8" r="2"></circle><path d="M8 2v2M8 12v2M2 8h2M12 8h2M4 4l1.4 1.4M10.6 10.6 12 12M12 4l-1.4 1.4M5.4 10.6 4 12"></path></svg>
+                  Settings
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hardware" class="band">
+    <div class="wrap">
+      <h2 class="h2">Built for the Pi Zero 2 W</h2>
+      <p class="band__lede">The primary target is the Raspberry Pi Zero&nbsp;2&nbsp;W: no screen, no external adapter, powered off a bank. The original Zero&nbsp;W is a secondary, not-yet-qualified target.</p>
+      <div class="feat">
+        <article class="card">
+          <h3 class="card__h">Onboard 2.4 GHz radio</h3>
+          <p>The build uses Kali’s packaged Nexmon <code>brcmfmac</code> driver for onboard monitor mode and injection (both still pending qualification on the board). No USB Wi-Fi dongle in the primary design.</p>
+        </article>
+        <article class="card">
+          <h3 class="card__h">Power-conscious</h3>
+          <p>Power overlays and an inline meter target run from a 5&nbsp;V bank; the USB data port stays free for maintenance and PCAP export.</p>
+        </article>
+        <article class="card">
+          <h3 class="card__h">Bluetooth LE only</h3>
+          <p>Wi-Fi and Bluetooth share the onboard combo radio, so BLE notifications stay sparse and a coexistence quiet mode yields the air during capture.</p>
+        </article>
+        <article class="card">
+          <h3 class="card__h">Per-device images</h3>
+          <p>Each card is flashed from a checksum-pinned Kali base image, with a unique local password and a per-device controller secret printed as a provisioning QR.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="control" class="band band--dark">
+    <div class="wrap">
+      <h2 class="h2">Authenticated control, split by privilege</h2>
+      <p class="band__lede band__lede--dark">The phone never reaches the radio directly. An unprivileged Bluetooth gateway relays typed commands to a root worker whose capabilities are bounded to the RF job.</p>
+
+      <div class="archwrap">
+        <div class="archfig">
+        <div class="arch" tabindex="0" role="region" aria-label="Control path diagram (scrolls sideways on small screens)">
+        <svg class="archsvg" viewBox="0 0 680 150" role="img" aria-label="Control path: the Flutter app sends authenticated CBOR over Bluetooth to the unprivileged gateway, which passes typed CBOR over a Unix socket to the root RF worker, which drives the aircrack tools and the Nexmon radio.">
+          <defs>
+            <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#EFEDE6"></path>
+            </marker>
+          </defs>
+          <g font-family="'Barlow',sans-serif">
+            <rect x="8" y="46" width="118" height="58" rx="8" fill="none" stroke="#0082FC" stroke-width="2"></rect>
+            <text x="67" y="72" text-anchor="middle" fill="#EFEDE6" font-size="15" font-weight="600">Flutter app</text>
+            <text x="67" y="90" text-anchor="middle" fill="#9AA0A6" font-size="12">phone</text>
+
+            <line x1="126" y1="75" x2="212" y2="75" stroke="#EFEDE6" stroke-width="2" marker-end="url(#arw)" marker-start="url(#arw)"></line>
+            <text x="169" y="66" text-anchor="middle" fill="#0082FC" font-size="11" font-weight="600">CBOR over BLE</text>
+
+            <rect x="214" y="46" width="134" height="58" rx="8" fill="#20242a" stroke="#3a4048" stroke-width="2"></rect>
+            <text x="281" y="72" text-anchor="middle" fill="#EFEDE6" font-size="15" font-weight="600">omniocular-gatt</text>
+            <text x="281" y="90" text-anchor="middle" fill="#9AA0A6" font-size="12">unprivileged</text>
+
+            <line x1="348" y1="75" x2="430" y2="75" stroke="#EFEDE6" stroke-width="2" marker-end="url(#arw)" marker-start="url(#arw)"></line>
+            <text x="389" y="66" text-anchor="middle" fill="#9AA0A6" font-size="11" font-weight="600">Unix socket</text>
+
+            <rect x="432" y="46" width="134" height="58" rx="8" fill="#20242a" stroke="#FF6A00" stroke-width="2"></rect>
+            <text x="499" y="72" text-anchor="middle" fill="#EFEDE6" font-size="15" font-weight="600">omniocular-rf</text>
+            <text x="499" y="90" text-anchor="middle" fill="#FF6A00" font-size="12">root, bounded caps</text>
+
+            <line x1="566" y1="75" x2="620" y2="75" stroke="#EFEDE6" stroke-width="2" marker-end="url(#arw)"></line>
+            <rect x="588" y="18" width="84" height="40" rx="6" fill="none" stroke="#3a4048" stroke-width="2"></rect>
+            <text x="630" y="42" text-anchor="middle" fill="#EFEDE6" font-size="13">aircrack</text>
+            <rect x="588" y="92" width="84" height="40" rx="6" fill="none" stroke="#3a4048" stroke-width="2"></rect>
+            <text x="630" y="116" text-anchor="middle" fill="#EFEDE6" font-size="13">Nexmon radio</text>
+            <line x1="624" y1="75" x2="624" y2="58" stroke="#3a4048" stroke-width="2"></line>
+            <line x1="624" y1="75" x2="624" y2="92" stroke="#3a4048" stroke-width="2"></line>
+          </g>
+        </svg>
+        </div>
+        <p class="arch__hint">Scroll the diagram sideways to follow the whole path.</p>
+        </div>
+        <div class="archnote">
+          <h3 class="archnote__h">Armed, not armed by default</h3>
+          <p>Transmit is the sharp edge, so it carries the most structure. The app exposes typed, bounded command builders for ten <code>aireplay-ng</code> modes, each tied to an authorized target and channel. A transmitting request needs the signed authorized-use declaration, a fresh 30-second window, and a deliberate long-press to confirm. Only one RF job runs at a time, and the gateway and worker both refuse overlap; the gate in the hero mirrors that first step.</p>
+        </div>
+      </div>
+
+      <div class="feat feat--dark">
+        <article class="card card--dark">
+          <h3 class="card__h">Canonical CBOR v1</h3>
+          <p>Every request is canonical CBOR with HMAC-SHA256 and replay protection. Python and Dart ship interop vectors so both ends agree byte-for-byte.</p>
+        </article>
+        <article class="card card--dark">
+          <h3 class="card__h">Bonded-peer admission</h3>
+          <p>The first authenticated caller claims owner; a second controller joins only through a single-use, request-sealed invitation the owner creates.</p>
+        </article>
+        <article class="card card--dark">
+          <h3 class="card__h">No shell strings</h3>
+          <p>The worker accepts a fixed operation name and typed payload, validates every field, builds an argument vector, and execs programs directly.</p>
+        </article>
+      </div>
+      <p class="spec"><code>request = { op, args, seq, hmac_sha256(controller_secret) }</code></p>
+    </div>
+  </section>
+
+  <section id="survey" class="band">
+    <div class="wrap">
+      <h2 class="h2">Survey and capture</h2>
+      <p class="band__lede">A dispatcher polls the newest capture CSV every two seconds and publishes a compact access-point list over BLE, so the phone fills in without streaming raw frames off the card.</p>
+      <div class="surveydemo">
+        <div class="surveydemo__panel" role="img" aria-label="A sample access-point survey from an RF-isolated lab: four access points with BSSID, signal and channel, and a channel-hop schedule of 1, 6 and 11 with a two-second dwell.">
+          <div class="surveydemo__head">
+            <span>RF-isolated lab survey</span>
+            <span class="surveydemo__tag">sample</span>
+          </div>
+          <ul class="aplist" aria-hidden="true">
+            <li class="ap"><span class="ap__ssid">aer-lab-ap</span><span class="ap__bssid">0A:1B:2C:3D:4E:5F</span><span class="ap__rssi">−41</span><span class="ap__ch">6</span></li>
+            <li class="ap"><span class="ap__ssid">omni-test-2g</span><span class="ap__bssid">12:34:56:78:9A:BC</span><span class="ap__rssi">−58</span><span class="ap__ch">1</span></li>
+            <li class="ap"><span class="ap__ssid">rf-cage-iot</span><span class="ap__bssid">AA:BB:CC:00:11:22</span><span class="ap__rssi">−66</span><span class="ap__ch">11</span></li>
+            <li class="ap"><span class="ap__ssid">bench-client</span><span class="ap__bssid">DE:12:34:56:78:90</span><span class="ap__rssi">−72</span><span class="ap__ch">6</span></li>
+          </ul>
+          <div class="hop" aria-hidden="true">
+            <span class="hop__label">Channel-hop schedule</span>
+            <span class="hop__val">1, 6, 11, dwell 2 s</span>
+          </div>
+        </div>
+        <div class="surveydemo__note">
+          <p>Survey and capture jobs publish <code>survey.snapshot</code> access-point lists: BSSID, ESSID, signal and channel for every access point seen so far. Nothing else crosses the Bluetooth link until you ask for an artifact.</p>
+          <dl class="specs">
+            <div><dt>Snapshot poll</dt><dd>Newest capture CSV, every 2&nbsp;s</dd></div>
+            <div><dt>Channel hop</dt><dd>Bounded 2.4&nbsp;GHz schedules, channels in order, dwell 100–2000&nbsp;ms each</dd></div>
+            <div><dt>Artifacts</dt><dd>Atomic <code>.hc22000</code> conversion; PMKID and EAPOL candidates validated before transfer</dd></div>
+            <div><dt>Coexistence</dt><dd>A quiet mode keeps BLE traffic sparse while the radio captures</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--steps">
+    <div class="wrap">
+      <h2 class="h2">How it works</h2>
+      <ol class="steps" role="list">
+        <li class="step">
+          <span class="step__n" aria-hidden="true">1</span>
+          <h3 class="step__h">Flash a per-device image</h3>
+          <p>Build and flash the per-device card from the pinned base image. Scan the printed QR into the app to bond.</p>
+        </li>
+        <li class="step">
+          <span class="step__n" aria-hidden="true">2</span>
+          <h3 class="step__h">Authenticate over BLE</h3>
+          <p>The app authenticates to the unprivileged gateway, which relays bounded commands to the root RF worker.</p>
+        </li>
+        <li class="step">
+          <span class="step__n" aria-hidden="true">3</span>
+          <h3 class="step__h">Run an authorized survey or capture</h3>
+          <p>Acknowledge authorized use, start the job, and watch events stream back over Bluetooth.</p>
+        </li>
+        <li class="step">
+          <span class="step__n" aria-hidden="true">4</span>
+          <h3 class="step__h">Transfer validated artifacts</h3>
+          <p>Validated <code>.hc22000</code> artifacts transfer to the phone, or over USB for larger exports.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band band--ethics">
+    <div class="wrap ethics">
+      <div class="ethics__main">
+        <h2 class="h2">Authorized use is part of the product</h2>
+        <p>Omniocular is for wireless networks and RF-isolated labs you own or are covered to test by explicit written authorization. The app requires a signed authorized-use declaration before any capture or transmit job, and the gate you flipped above is the start of that.</p>
+        <p class="muted">These controls reduce accidental operation. They do not replace legal authorization, RF isolation, a written test scope, or operator judgment.</p>
+      </div>
+      <div class="ethics__docs">
+      <p class="doclist__label">Documented in the repository</p>
+      <ul class="doclist" role="list">
+        <li><span class="doclist__h">Authorized use</span><span>Scope, declaration, and lab setup.</span></li>
+        <li><span class="doclist__h">Security</span><span>Threat model, secret handling, and reporting.</span></li>
+        <li><span class="doclist__h">Architecture</span><span>Gateway and root-worker split, in full.</span></li>
+      </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="status" class="band band--status">
+    <div class="wrap status">
+      <h2 class="h2">Status: software complete, hardware not yet qualified</h2>
+      <p class="band__lede">Being plain about it: the v0.2 software is complete and tested on the development host. The radio has not been proven on a physical board.</p>
+      <div class="statusgrid">
+        <div class="statrow statrow--done">
+          <span class="statrow__state">Done</span>
+          <span class="statrow__txt">CBOR v1 protocol, HMAC authentication and replay protection, with Python↔Dart interop vectors.</span>
+        </div>
+        <div class="statrow statrow--done">
+          <span class="statrow__state">Done</span>
+          <span class="statrow__txt">BLE gateway and root RF worker, bonded-peer admission, typed command builders, and containerised dry-run tests.</span>
+        </div>
+        <div class="statrow statrow--pending">
+          <span class="statrow__state">Pending</span>
+          <span class="statrow__txt">Monitor mode, injection, and BLE coexistence still require qualification on the target Pi; they can’t be verified on the macOS development host.</span>
+        </div>
+        <div class="statrow statrow--pending">
+          <span class="statrow__state">Pending</span>
+          <span class="statrow__txt">The original Zero&nbsp;W Nexmon driver path is a checksum-pinned candidate, not yet qualified on a physical board. Android builds are unsigned.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="access" class="band band--access">
+    <div class="wrap access">
+      <h2 class="h2">Access</h2>
+      <p class="band__lede">Omniocular is a private, MIT-licensed Team AER repository. There’s no live demo, because it’s hardware, and no public link while it’s pre-qualification.</p>
+      <div class="access__cta">
+        <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Omniocular">Ask for access</a>
+        <span class="access__meta">Private repository, authorized use only.</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Omniocular</h2>
+      <p>A BLE-controlled, authorized-use Wi-Fi assessment device on a Raspberry Pi Zero 2 W. Private repository, MIT-licensed.</p>
+      <ul role="list">
+        <li><a href="mailto:hello@aer.app?subject=Omniocular">Ask for access</a></li>
+        <li><a href="#status">Project status</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/pensieve/">Pensieve</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/hedwig/">Hedwig</a></li>
+        <li><a href="/avifors/">Avifors</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Omniocular is MIT licensed. Authorized use only.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/omniocular/page.js" defer></script>
+</body>
+</html>

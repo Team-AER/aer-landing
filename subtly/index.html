@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subtly — Team AER</title>
+<meta name="description" content="Subtly is a desktop app that writes subtitles for your video and audio with Whisper, running on your own GPU through Metal or Vulkan. MIT licensed, for macOS, Windows and Linux.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0F1A">
+<meta property="og:title" content="Subtly: subtitles made on your GPU">
+<meta property="og:description" content="A desktop app that runs Whisper on your own computer through Metal or Vulkan and writes an .srt next to your video.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Team AER apps">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%2338BDF8'/%3E%3Cstop%20offset='1'%20stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath%20fill='url%28%23g%29'%20d='M33%206A25%2025%200%201%201%2020.5%2052.65L8%2059l3.35-15.5A25%2025%200%200%201%2033%206z'/%3E%3Cg%20stroke='%23fff'%20stroke-linecap='round'%20fill='none'%3E%3Cpath%20stroke-width='4.5'%20d='M41.5%2021.6C39.7%2018.9%2036.6%2017.4%2033%2017.4c-4.6%200-8%202.6-8%206.3%200%208.9%2017.6%205.6%2017.6%2014.6%200%204.1-3.7%207-8.7%207-4%200-7.5-1.8-9.3-4.8'/%3E%3Cpath%20stroke-width='2.5'%20stroke-opacity='.5'%20d='M15%2028v6M19%2025v12M47%2025v12M51%2028v6'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/subtly/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mark-fill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <symbol id="mark" viewBox="0 0 64 64">
+      <path fill="url(#mark-fill)" d="M33 6A25 25 0 1 1 20.5 52.65L8 59l3.35-15.5A25 25 0 0 1 33 6z"/>
+      <g stroke="#fff" stroke-linecap="round" fill="none">
+        <path stroke-width="4.5" d="M41.5 21.6C39.7 18.9 36.6 17.4 33 17.4c-4.6 0-8 2.6-8 6.3 0 8.9 17.6 5.6 17.6 14.6 0 4.1-3.7 7-8.7 7-4 0-7.5-1.8-9.3-4.8"/>
+        <path stroke-width="2.5" stroke-opacity=".5" d="M15 28v6M19 25v12M47 25v12M51 28v6"/>
+      </g>
+    </symbol>
+    <symbol id="scene-harbour" viewBox="0 0 956 400">
+      <rect width="956" height="400" fill="#121A2B"/>
+      <rect width="956" height="118" fill="#0F1626"/>
+      <circle cx="712" cy="124" r="40" fill="#26314B"/>
+      <path d="M0 212c70-18 140-24 220-10s150 26 210 30v8H0z" fill="#0F1627"/>
+      <g fill="#0C1221">
+        <rect x="440" y="222" width="24" height="18"/><rect x="464" y="210" width="20" height="30"/><rect x="484" y="218" width="28" height="22"/><rect x="512" y="192" width="16" height="48"/><rect x="528" y="206" width="18" height="34"/><rect x="546" y="214" width="32" height="26"/><rect x="578" y="182" width="22" height="58"/><rect x="600" y="170" width="14" height="70"/><rect x="614" y="200" width="30" height="40"/><rect x="644" y="212" width="26" height="28"/><rect x="670" y="204" width="18" height="36"/><rect x="688" y="218" width="32" height="22"/><rect x="720" y="178" width="16" height="62"/><rect x="736" y="210" width="24" height="30"/><rect x="760" y="196" width="28" height="44"/><rect x="788" y="216" width="14" height="24"/><rect x="802" y="188" width="30" height="52"/><rect x="832" y="206" width="22" height="34"/><rect x="854" y="220" width="26" height="20"/><rect x="880" y="198" width="30" height="42"/><rect x="910" y="212" width="22" height="28"/><rect x="932" y="204" width="24" height="36"/>
+      </g>
+      <g fill="#FB923C" fill-opacity=".75">
+        <rect x="517" y="200" width="3" height="4"/><rect x="583" y="190" width="3" height="4"/><rect x="590" y="204" width="3" height="4"/><rect x="604" y="180" width="3" height="4"/><rect x="622" y="210" width="3" height="4"/><rect x="726" y="188" width="3" height="4"/><rect x="767" y="206" width="3" height="4"/><rect x="810" y="198" width="3" height="4"/><rect x="818" y="214" width="3" height="4"/><rect x="888" y="208" width="3" height="4"/><rect x="940" y="214" width="3" height="4"/>
+      </g>
+      <g fill="#F3F4F6" fill-opacity=".28">
+        <rect x="470" y="218" width="3" height="4"/><rect x="534" y="214" width="3" height="4"/><rect x="652" y="220" width="3" height="4"/><rect x="742" y="218" width="3" height="4"/><rect x="838" y="214" width="3" height="4"/><rect x="896" y="222" width="3" height="4"/>
+      </g>
+      <rect y="240" width="956" height="160" fill="#0A101C"/>
+      <g fill="#FB923C" fill-opacity=".22">
+        <rect x="512" y="250" width="14" height="2"/><rect x="580" y="258" width="22" height="2"/><rect x="598" y="268" width="12" height="2"/><rect x="720" y="252" width="18" height="2"/><rect x="806" y="262" width="20" height="2"/><rect x="884" y="254" width="14" height="2"/>
+      </g>
+      <g fill="#26314B">
+        <rect x="690" y="250" width="44" height="3"/><rect x="696" y="262" width="32" height="3"/><rect x="702" y="274" width="20" height="3"/><rect x="707" y="286" width="10" height="2"/>
+      </g>
+      <path d="M548 280h128l-12 13H562z" fill="#05080E"/>
+      <rect x="578" y="266" width="62" height="14" fill="#05080E"/>
+      <g fill="#FB923C"><rect x="586" y="271" width="4" height="3"/><rect x="598" y="271" width="4" height="3"/><rect x="610" y="271" width="4" height="3"/><rect x="622" y="271" width="4" height="3"/></g>
+      <g fill="#05080E">
+        <circle cx="250" cy="236" r="17"/>
+        <path d="M220 320c0-34 10-58 30-60 22 2 32 28 34 60z"/>
+        <circle cx="330" cy="246" r="16"/>
+        <path d="M304 320c2-28 10-52 28-54 20 2 30 26 32 54z"/>
+        <rect y="316" width="956" height="8"/>
+        <rect y="350" width="956" height="4"/>
+        <rect x="40" y="316" width="7" height="84"/><rect x="168" y="316" width="7" height="84"/><rect x="296" y="316" width="7" height="84"/><rect x="424" y="316" width="7" height="84"/><rect x="552" y="316" width="7" height="84"/><rect x="680" y="316" width="7" height="84"/><rect x="808" y="316" width="7" height="84"/><rect x="936" y="316" width="7" height="84"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__brand" href="/subtly/"><svg class="nav__mark" aria-hidden="true" focusable="false"><use href="#mark"/></svg><span>Subtly</span></a>
+    <button class="nav__toggle" type="button" data-nav-toggle aria-controls="subtly-menu" aria-expanded="false" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+    <nav id="subtly-menu" class="nav__menu" hidden aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#gpu">GPU</a>
+      <a href="#install">Install</a>
+      <a href="#status">Status</a>
+    </nav>
+    <a class="btn btn--primary btn--small nav__cta" href="https://github.com/Team-AER/Subtly/releases/latest">Download</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__grid">
+      <h1 id="hero-title" class="hero__title">Subtitles for your videos, made on your GPU.</h1>
+
+      <div class="hero__copy">
+        <p class="hero__sub">Subtly runs Whisper on your own computer through Metal or Vulkan and writes an .srt beside the file. Nothing leaves the machine.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href="https://github.com/Team-AER/Subtly/releases/latest">Download from GitHub</a>
+          <a class="btn btn--quiet" href="https://github.com/Team-AER/Subtly">Get the code</a>
+        </div>
+        <p class="hero__meta">Version 2.0 for Apple Silicon Macs, Windows 10 and 11, and Linux. Free and MIT licensed.</p>
+      </div>
+
+      <figure class="hero__stage">
+        <div class="frame">
+          <div class="frame__picture frame__picture--scene">
+            <svg class="frame__art" viewBox="0 0 956 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#scene-harbour"/></svg>
+            <p class="cue" aria-hidden="true"><span data-cue-text>To say it properly, this time.</span></p>
+          </div>
+        </div>
+        <div class="wave" data-wave>
+          <svg class="wave__svg" viewBox="0 0 920 64" aria-hidden="true" focusable="false">
+            <rect class="b" x="2" y="26.4" width="6" height="3.3" rx="2"/>
+            <rect class="b" x="12" y="26.7" width="6" height="2.6" rx="2"/>
+            <rect class="b" x="22" y="25.7" width="6" height="4.6" rx="2"/>
+            <rect class="b" x="32" y="26.9" width="6" height="2.3" rx="2"/>
+            <rect class="b" x="42" y="25.9" width="6" height="4.1" rx="2"/>
+            <rect class="b" x="52" y="26.2" width="6" height="3.5" rx="2"/>
+            <rect class="b sp" x="62" y="25.0" width="6" height="6" rx="2"/>
+            <rect class="b sp" x="72" y="18.9" width="6" height="18.1" rx="2"/>
+            <rect class="b sp" x="82" y="23.6" width="6" height="8.8" rx="2"/>
+            <rect class="b sp" x="92" y="14.6" width="6" height="26.9" rx="2"/>
+            <rect class="b sp" x="102" y="21.9" width="6" height="12.3" rx="2"/>
+            <rect class="b sp" x="112" y="20.1" width="6" height="15.8" rx="2"/>
+            <rect class="b sp" x="122" y="16.8" width="6" height="22.5" rx="2"/>
+            <rect class="b sp" x="132" y="10.0" width="6" height="36.0" rx="2"/>
+            <rect class="b sp" x="142" y="20.2" width="6" height="15.6" rx="2"/>
+            <rect class="b sp" x="152" y="19.1" width="6" height="17.8" rx="2"/>
+            <rect class="b sp" x="162" y="12.4" width="6" height="31.2" rx="2"/>
+            <rect class="b sp" x="172" y="10.6" width="6" height="34.7" rx="2"/>
+            <rect class="b sp" x="182" y="12.6" width="6" height="30.9" rx="2"/>
+            <rect class="b sp" x="192" y="18.4" width="6" height="19.2" rx="2"/>
+            <rect class="b sp" x="202" y="6.4" width="6" height="43.3" rx="2"/>
+            <rect class="b sp" x="212" y="24.2" width="6" height="7.5" rx="2"/>
+            <rect class="b sp" x="222" y="17.4" width="6" height="21.1" rx="2"/>
+            <rect class="b" x="232" y="26.4" width="6" height="3.2" rx="2"/>
+            <rect class="b" x="242" y="26.7" width="6" height="2.6" rx="2"/>
+            <rect class="b" x="252" y="26.8" width="6" height="2.5" rx="2"/>
+            <rect class="b" x="262" y="26.4" width="6" height="3.2" rx="2"/>
+            <rect class="b sp" x="272" y="19.6" width="6" height="16.8" rx="2"/>
+            <rect class="b sp" x="282" y="24.4" width="6" height="7.1" rx="2"/>
+            <rect class="b sp" x="292" y="13.6" width="6" height="28.8" rx="2"/>
+            <rect class="b sp" x="302" y="17.3" width="6" height="21.4" rx="2"/>
+            <rect class="b sp" x="312" y="15.2" width="6" height="25.6" rx="2"/>
+            <rect class="b sp" x="322" y="17.1" width="6" height="21.8" rx="2"/>
+            <rect class="b sp" x="332" y="20.2" width="6" height="15.5" rx="2"/>
+            <rect class="b sp" x="342" y="22.0" width="6" height="12.0" rx="2"/>
+            <rect class="b sp" x="352" y="18.4" width="6" height="19.2" rx="2"/>
+            <rect class="b sp" x="362" y="13.4" width="6" height="29.2" rx="2"/>
+            <rect class="b sp" x="372" y="15.7" width="6" height="24.7" rx="2"/>
+            <rect class="b sp" x="382" y="17.6" width="6" height="20.9" rx="2"/>
+            <rect class="b sp" x="392" y="14.2" width="6" height="27.5" rx="2"/>
+            <rect class="b sp" x="402" y="17.7" width="6" height="20.6" rx="2"/>
+            <rect class="b sp" x="412" y="22.9" width="6" height="10.3" rx="2"/>
+            <rect class="b" x="422" y="25.4" width="6" height="5.2" rx="2"/>
+            <rect class="b" x="432" y="25.6" width="6" height="4.8" rx="2"/>
+            <rect class="b" x="442" y="26.5" width="6" height="3.0" rx="2"/>
+            <rect class="b" x="452" y="25.9" width="6" height="4.3" rx="2"/>
+            <rect class="b" x="462" y="25.9" width="6" height="4.1" rx="2"/>
+            <rect class="b" x="472" y="25.2" width="6" height="5.5" rx="2"/>
+            <rect class="b sp" x="482" y="22.0" width="6" height="12.0" rx="2"/>
+            <rect class="b sp" x="492" y="20.0" width="6" height="16.0" rx="2"/>
+            <rect class="b sp" x="502" y="14.9" width="6" height="26.2" rx="2"/>
+            <rect class="b sp" x="512" y="19.1" width="6" height="17.8" rx="2"/>
+            <rect class="b sp" x="522" y="20.4" width="6" height="15.1" rx="2"/>
+            <rect class="b sp" x="532" y="8.9" width="6" height="38.2" rx="2"/>
+            <rect class="b sp" x="542" y="22.1" width="6" height="11.7" rx="2"/>
+            <rect class="b sp" x="552" y="13.3" width="6" height="29.3" rx="2"/>
+            <rect class="b sp" x="562" y="22.9" width="6" height="10.2" rx="2"/>
+            <rect class="b sp" x="572" y="15.2" width="6" height="25.5" rx="2"/>
+            <rect class="b sp" x="582" y="20.6" width="6" height="14.8" rx="2"/>
+            <rect class="b" x="592" y="25.9" width="6" height="4.3" rx="2"/>
+            <rect class="b" x="602" y="25.2" width="6" height="5.5" rx="2"/>
+            <rect class="b" x="612" y="26.4" width="6" height="3.3" rx="2"/>
+            <rect class="b" x="622" y="25.6" width="6" height="4.8" rx="2"/>
+            <rect class="b" x="632" y="25.8" width="6" height="4.4" rx="2"/>
+            <rect class="b" x="642" y="25.9" width="6" height="4.3" rx="2"/>
+            <rect class="b sp" x="652" y="21.1" width="6" height="13.7" rx="2"/>
+            <rect class="b sp" x="662" y="16.4" width="6" height="23.1" rx="2"/>
+            <rect class="b sp" x="672" y="7.1" width="6" height="41.7" rx="2"/>
+            <rect class="b sp" x="682" y="17.9" width="6" height="20.2" rx="2"/>
+            <rect class="b sp" x="692" y="10.6" width="6" height="34.8" rx="2"/>
+            <rect class="b sp" x="702" y="23.1" width="6" height="9.9" rx="2"/>
+            <rect class="b sp" x="712" y="9.8" width="6" height="36.4" rx="2"/>
+            <rect class="b sp" x="722" y="18.4" width="6" height="19.2" rx="2"/>
+            <rect class="b sp" x="732" y="5.1" width="6" height="45.7" rx="2"/>
+            <rect class="b sp" x="742" y="15.6" width="6" height="24.9" rx="2"/>
+            <rect class="b sp" x="752" y="16.6" width="6" height="22.8" rx="2"/>
+            <rect class="b sp" x="762" y="18.9" width="6" height="18.1" rx="2"/>
+            <rect class="b sp" x="772" y="10.9" width="6" height="34.2" rx="2"/>
+            <rect class="b sp" x="782" y="22.4" width="6" height="11.1" rx="2"/>
+            <rect class="b sp" x="792" y="14.6" width="6" height="26.9" rx="2"/>
+            <rect class="b sp" x="802" y="20.1" width="6" height="15.7" rx="2"/>
+            <rect class="b sp" x="812" y="20.1" width="6" height="15.9" rx="2"/>
+            <rect class="b sp" x="822" y="21.9" width="6" height="12.2" rx="2"/>
+            <rect class="b sp" x="832" y="17.4" width="6" height="21.3" rx="2"/>
+            <rect class="b sp" x="842" y="24.6" width="6" height="6.9" rx="2"/>
+            <rect class="b" x="852" y="26.5" width="6" height="3.0" rx="2"/>
+            <rect class="b" x="862" y="26.2" width="6" height="3.6" rx="2"/>
+            <rect class="b" x="872" y="25.2" width="6" height="5.5" rx="2"/>
+            <rect class="b" x="882" y="26.9" width="6" height="2.3" rx="2"/>
+            <rect class="b" x="892" y="26.1" width="6" height="3.8" rx="2"/>
+            <rect class="b" x="902" y="25.9" width="6" height="4.2" rx="2"/>
+            <rect class="b" x="912" y="25.2" width="6" height="5.5" rx="2"/>
+            <rect class="c" x="64.0" y="58" width="168.0" height="3" rx="1.5"/>
+            <rect class="c" x="272.0" y="58" width="152.0" height="3" rx="1.5"/>
+            <rect class="c" x="480.0" y="58" width="112.0" height="3" rx="1.5"/>
+            <rect class="c" x="648.0" y="58" width="200.0" height="3" rx="1.5"/>
+            <line class="wave__head" data-head x1="920" x2="920" y1="0" y2="64"/>
+          </svg>
+          <div class="wave__row">
+            <span class="wave__tc" aria-hidden="true" data-tc>00:00:11,500</span>
+            <span class="wave__file">harbour-at-dusk.mkv</span>
+            <button class="wave__ctl" type="button" data-wave-ctl>Replay</button>
+          </div>
+        </div>
+        <figcaption class="sr-only">A letterboxed film still of two people at a harbour railing at dusk. Four subtitle cues appear one after another, in time with the audio waveform under the frame.</figcaption>
+      </figure>
+
+      <div class="app hero__app is-done" data-app role="img" aria-label="Subtly’s Workspace screen after a run: harbour-at-dusk.mkv is picked, SRT export is on, the model is large-v2 on an Apple M2 Pro using Metal, the Generate subtitles button is back and the status bar reads Wrote: /Users/you/Movies/harbour-at-dusk.srt.">
+        <div class="app__titlebar"><i></i><i></i><i></i><span>Subtly</span></div>
+        <div class="app__body">
+          <div class="app__side">
+            <p class="app__brand">Subtly</p>
+            <p class="app__tag">Whisper subtitle studio</p>
+            <ul class="app__nav" role="list">
+              <li class="is-on"><b>Workspace</b><span>Generate subtitles</span></li>
+              <li><b>Models</b><span>Manage models</span></li>
+              <li><b>Advanced</b><span>Pipeline settings</span></li>
+              <li><b>Activity</b><span>Activity log</span></li>
+            </ul>
+          </div>
+          <div class="app__main">
+            <div class="app__top">
+              <b>Workspace</b>
+              <span class="app__status"><i class="app__dot"></i><span>Runtime ready</span><span class="app__gpu">Metal</span></span>
+            </div>
+            <div class="app__stack">
+              <div class="app__card">
+                <b class="app__h">Input</b>
+                <span class="app__hint">Pick a media file or a folder to batch-transcribe.</span>
+                <span class="app__btns"><span class="app__btn">Pick file</span><span class="app__btn">Pick folder</span></span>
+                <span class="app__inset">/Users/you/Movies/harbour-at-dusk.mkv</span>
+              </div>
+              <div class="app__card">
+                <b class="app__h">Export formats</b>
+                <span class="app__hint">Whisper writes every selected format in one pass.</span>
+                <span class="app__btns app__fmts"><span class="app__btn">✓ SRT</span><span>VTT</span><span>Text</span><span>JSON</span><span>CSV</span></span>
+              </div>
+              <div class="app__chips">
+                <span>Model: large-v2</span><span>VAD: installed</span><span>Device: Apple M2 Pro (<em class="app__gpu">Metal</em>)</span><span data-detected>Detected: English (en)</span>
+              </div>
+              <div class="app__slot">
+                <div class="app__card" data-progress-card>
+                  <b class="app__h">Generating subtitles</b>
+                  <span class="app__hint app__path">/Users/you/Movies/harbour-at-dusk.mkv</span>
+                  <span class="app__track"><i data-progress></i></span>
+                  <span class="app__pfoot"><span class="app__pct" data-pct>100%</span><span class="app__phase" data-phase>Transcribing</span><span class="app__ghost">View activity</span><span class="app__btn">Cancel</span></span>
+                </div>
+                <div class="app__action" data-idle><span class="app__btn app__btn--primary">Generate subtitles</span></div>
+              </div>
+            </div>
+            <div class="app__statusbar"><span class="app__log" data-log>Wrote: /Users/you/Movies/harbour-at-dusk.srt</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="scene" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="frame">
+        <div class="frame__picture">
+          <h2 id="how-title" class="cue cue--title"><span>Pick a file, get an .srt</span></h2>
+          <div class="frame__visual">
+            <div class="track" aria-hidden="true">
+              <div class="track__node">
+                <span class="track__icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M8 4h11l6 6v18H8z"/><path d="M19 4v6h6"/><path d="M14 15v8l6-4z" fill="currentColor"/></svg></span>
+                <span class="track__label"><b>1</b> Pick</span>
+              </div>
+              <div class="track__node">
+                <span class="track__icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 14v4M10 10v12M15 6v20M20 11v10M25 14v4"/></svg></span>
+                <span class="track__label"><b>2</b> Decode</span>
+              </div>
+              <div class="track__node track__node--gpu">
+                <span class="track__icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="14" height="14" rx="2"/><rect x="13" y="13" width="6" height="6" fill="currentColor" stroke="none"/><path d="M13 5v4M19 5v4M13 23v4M19 23v4M5 13h4M5 19h4M23 13h4M23 19h4"/></svg></span>
+                <span class="track__label"><b>3</b> Whisper</span>
+              </div>
+              <div class="track__node track__node--cue">
+                <span class="track__icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 14h18M10 20h12"/></svg></span>
+                <span class="track__label"><b>4</b> Cues</span>
+              </div>
+              <div class="track__node">
+                <span class="track__icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M8 4h11l6 6v18H8z"/><path d="M19 4v6h6"/><path d="M12 16h9M12 20h9M12 24h5"/></svg></span>
+                <span class="track__label"><b>5</b> .srt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene__body">
+        <p class="scene__lede">One window and one button. Everything between your video and its subtitles happens inside Subtly, in this order.</p>
+        <ol class="steps" role="list">
+          <li class="steps__item">
+            <span class="steps__n" aria-hidden="true">1</span>
+            <h3>Pick a file or a folder</h3>
+            <p>Video in .mp4, .mkv or .mov; audio in .wav, .mp3, .m4a, .flac or .ogg. A folder is searched all the way down.</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__n" aria-hidden="true">2</span>
+            <h3>Decode and clean the audio</h3>
+            <p>Subtly decodes in-process, folds surround to mono with the centre channel (where dialogue sits) weighted highest, evens loudness to about −16 LUFS and resamples to 16 kHz.</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__n" aria-hidden="true">3</span>
+            <h3>Transcribe on the GPU</h3>
+            <p>whisper.cpp runs your chosen model, Large V2 by default, while Silero VAD keeps it to the stretches where someone is talking.</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__n" aria-hidden="true">4</span>
+            <h3>Tidy the cues</h3>
+            <p>Words are repacked into cues of up to 84 characters and 6 seconds, split at natural pauses. Repeated lines are merged, then your find-and-replace rules run.</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__n" aria-hidden="true">5</span>
+            <h3>Write the subtitles</h3>
+            <p><span class="nb">harbour-at-dusk.srt</span> lands beside <span class="nb">harbour-at-dusk.mkv</span>, or in the folder you chose, with VTT, text, JSON or CSV alongside if you ticked them.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="read" class="scene" aria-labelledby="read-title">
+    <div class="wrap">
+      <div class="frame">
+        <div class="frame__picture">
+          <h2 id="read-title" class="cue cue--title"><span>Subtitles sized for reading</span></h2>
+          <div class="frame__visual">
+            <div class="reseg">
+              <div class="reseg__col">
+                <p class="reseg__label">What Whisper returns</p>
+                <div class="srt srt--long">
+                  <span class="srt__n">7</span>
+                  <span class="srt__tc">00:00:12,040 --&gt; 00:00:19,880</span>
+                  <span class="srt__text">If we miss it, we walk back along the coast road, and that takes the better part of two hours in the dark.</span>
+                  <span class="srt__note">107 characters, 7.8 seconds</span>
+                </div>
+              </div>
+              <div class="reseg__col">
+                <p class="reseg__label">What Subtly writes</p>
+                <div class="srt">
+                  <span class="srt__n">7</span>
+                  <span class="srt__tc">00:00:12,040 --&gt; 00:00:15,420</span>
+                  <span class="srt__text">If we miss it, we walk back along the coast road,</span>
+                </div>
+                <div class="srt">
+                  <span class="srt__n">8</span>
+                  <span class="srt__tc">00:00:16,180 --&gt; 00:00:19,880</span>
+                  <span class="srt__text">and that takes the better part of two hours in the dark.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene__body">
+        <p class="scene__lede">Whisper hears well but cuts its lines badly. Subtly fixes the cuts before anything is written, and gives you a few tools for the words it still gets wrong.</p>
+        <dl class="feats">
+          <div class="feats__item">
+            <dt>Whole folders at once</dt>
+            <dd>
+              <p>Pick a folder and every supported file in it, subfolders included, gets subtitles. On the next run, files whose subtitles are newer than the video are skipped.</p>
+              <span class="log" aria-label="Activity log excerpt"><span>SKIP (up-to-date): /media/s01/ep01.mkv</span><span>Processing /media/s01/ep02.mkv</span><span>Wrote: /media/s01/ep02.srt</span></span>
+            </dd>
+          </div>
+          <div class="feats__item">
+            <dt>Find and replace</dt>
+            <dd>
+              <p>Rules for the mistakes that keep coming back, with case and whole-word options, applied to every format.</p>
+              <span class="rule" aria-label="Example rule: find Eryka palm, replace with Areca palm, whole word on"><span class="rule__field">Eryka palm</span><span class="rule__field">Areca palm</span><span class="rule__opts"><span class="rule__box"></span>Case <span class="rule__box is-on"></span>Whole word</span></span>
+            </dd>
+          </div>
+          <div class="feats__item">
+            <dt>Cues you can read in time</dt>
+            <dd><p>Up to 84 characters, about two 42-character lines, and never more than 6 seconds on screen. Short cues stay up for at least 0.8 seconds where there is room.</p></dd>
+          </div>
+          <div class="feats__item">
+            <dt>Five formats from one pass</dt>
+            <dd><p>SRT, WebVTT, plain text, JSON and CSV, all written from the same transcription.</p></dd>
+          </div>
+          <div class="feats__item">
+            <dt>Your names, spelled right</dt>
+            <dd><p>Paste names, brands and jargon into Custom vocabulary and Whisper leans toward those spellings.</p></dd>
+          </div>
+          <div class="feats__item">
+            <dt>The language it heard</dt>
+            <dd><p>Language detection is on by default and a chip shows what Whisper picked. Translation to English stays off unless you turn it on.</p></dd>
+          </div>
+          <div class="feats__item">
+            <dt>Speech, not silence</dt>
+            <dd><p>Silero VAD, which ships with the app, marks where people are talking so Whisper skips the gaps between.</p></dd>
+          </div>
+          <div class="feats__item">
+            <dt>Cancel means now</dt>
+            <dd><p>Cancel reaches into whisper.cpp itself, so a two-hour film stops mid-file instead of finishing first.</p></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="gpu" class="scene scene--gpu" aria-labelledby="gpu-title">
+    <div class="wrap">
+      <div class="frame">
+        <div class="frame__picture">
+          <h2 id="gpu-title" class="cue cue--title"><span>Metal on a Mac, Vulkan everywhere else</span></h2>
+          <div class="frame__visual">
+            <div class="rt">
+              <div class="seg" role="group" aria-label="Show example devices for">
+                <button type="button" class="seg__btn" data-platform="macos" aria-pressed="true">macOS</button>
+                <button type="button" class="seg__btn" data-platform="windows" aria-pressed="false">Windows</button>
+                <button type="button" class="seg__btn" data-platform="linux" aria-pressed="false">Linux</button>
+              </div>
+              <div class="rt__card" data-rt>
+                <div class="rt__head">
+                  <div>
+                    <p class="rt__title">Runtime</p>
+                    <p class="rt__hint">GPU backend, smoke test, device selection.</p>
+                  </div>
+                  <span class="app__btn rt__smoke">Run smoke test</span>
+                </div>
+                <dl class="rt__rows">
+                  <div><dt>Backend</dt><dd class="rt__backend" data-rt-backend>Metal</dd></div>
+                  <div><dt>Selected device</dt><dd data-rt-selected>Apple M2 Pro</dd></div>
+                </dl>
+                <p class="rt__sub">Available devices</p>
+                <ul class="rt__list" role="list" data-rt-list>
+                  <li class="is-on"><span class="rt__radio"></span><span class="rt__name">Apple M2 Pro</span><span class="rt__tag rt__tag--gpu">Metal</span><span class="rt__tag">IntegratedGpu</span></li>
+                </ul>
+                <p class="rt__flash"><span class="rt__check is-on" data-rt-check></span><span data-rt-flash>Flash attention (Metal)</span></p>
+                <p class="rt__log" data-rt-log aria-live="polite">Smoke test ok on Apple M2 Pro (Metal)</p>
+              </div>
+              <p class="rt__note">Example adapters, shown the way Subtly’s Advanced screen lists them.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene__body">
+        <p class="scene__lede">The heavy part of transcription goes to the graphics card you already own. Switch platforms in the frame above to see what Subtly reports on each.</p>
+        <ul class="facts" role="list">
+          <li>
+            <h3>whisper.cpp is built in</h3>
+            <p>It is compiled into the app through whisper-rs: with Metal on macOS, with Vulkan on Windows and Linux. No whisper-cli, no ffmpeg, no second program to install.</p>
+          </li>
+          <li>
+            <h3>It shows you the hardware</h3>
+            <p>wgpu lists every adapter with its backend and type. Subtly prefers a discrete GPU, then an integrated one, and runs a smoke test on the device when you ask.</p>
+          </li>
+          <li>
+            <h3>A stubborn driver costs speed, not the job</h3>
+            <p>If the GPU backend will not load, Subtly loads the model on the CPU instead and says why in the activity log. Device probes are guarded so a panicking driver cannot close the window.</p>
+          </li>
+          <li>
+            <h3>Flash attention only where it is safe</h3>
+            <p>On by default with Metal. Off in the Vulkan builds, where some drivers still crash with it.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="scene" aria-labelledby="install-title">
+    <div class="wrap">
+      <div class="frame">
+        <div class="frame__picture">
+          <h2 id="install-title" class="cue cue--title"><span>Mac, Windows or Linux</span></h2>
+          <div class="frame__visual">
+            <ul class="dl" role="list">
+              <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/Subtly_2.0.0_aarch64.dmg"><span class="dl__os">macOS, Apple Silicon</span><span class="dl__file">Subtly_2.0.0_aarch64.dmg</span><span class="dl__size">9.4 MB</span></a></li>
+              <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/subtly_2.0.0_x64-setup.exe"><span class="dl__os">Windows 10 and 11, x64</span><span class="dl__file">subtly_2.0.0_x64-setup.exe</span><span class="dl__size">14.6 MB</span></a></li>
+              <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/subtly_2.0.0_x86_64.AppImage"><span class="dl__os">Linux, any distribution</span><span class="dl__file">subtly_2.0.0_x86_64.AppImage</span><span class="dl__size">20.3 MB</span></a></li>
+              <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/subtly_2.0.0_amd64.deb"><span class="dl__os">Debian and Ubuntu</span><span class="dl__file">subtly_2.0.0_amd64.deb</span><span class="dl__size">23.8 MB</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene__body">
+        <p class="scene__lede">Version 2.0 came out on 10 May 2026. Each installer is the whole app; on first run you choose a Whisper model and Subtly downloads it.</p>
+        <ul class="reqs" role="list">
+          <li>
+            <h3>macOS</h3>
+            <p>An Apple Silicon Mac. Whisper runs on the GPU through Metal. The current release has no Intel build.</p>
+          </li>
+          <li>
+            <h3>Windows</h3>
+            <p>Windows 10 (version 1809 or later) or 11, 64-bit. A GPU driver with Vulkan support is recommended; without one, Subtly uses the CPU. The Visual C++ runtime is included. Windows on ARM is not supported.</p>
+          </li>
+          <li>
+            <h3>Linux</h3>
+            <p>x86-64 with glibc 2.31 or newer (Ubuntu 20.04 and later) and the Vulkan loader, <code>libvulkan1</code>. The AppImage runs anywhere; the .deb suits Debian and Ubuntu.</p>
+          </li>
+        </ul>
+
+        <div class="models">
+          <h3>Models download inside the app</h3>
+          <p>Open the Models tab on first run. Files come from the whisper.cpp model repository on Hugging Face and stay in your app data folder. Silero VAD ships with the app.</p>
+          <table class="models__table">
+            <caption class="sr-only">Whisper models offered in Subtly’s Models tab</caption>
+            <thead><tr><th scope="col">Model</th><th scope="col">Download</th><th scope="col">Good for</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Large V2</th><td>3.1 GB</td><td>The default; accuracy first</td></tr>
+              <tr><th scope="row">Large V3</th><td>3.1 GB</td><td>Worth trying if V2 struggles with your audio</td></tr>
+              <tr><th scope="row">Large V3 Turbo</th><td>1.5 GB</td><td>Faster, slightly less careful</td></tr>
+              <tr><th scope="row">Large V3 Turbo (Q5)</th><td>574 MB</td><td>The turbo model, quantised</td></tr>
+              <tr><th scope="row">Medium</th><td>1.5 GB</td><td>Clear audio, quicker runs</td></tr>
+              <tr><th scope="row">Small</th><td>488 MB</td><td>Quick drafts</td></tr>
+              <tr><th scope="row">Base</th><td>148 MB</td><td>Light jobs</td></tr>
+              <tr><th scope="row">Tiny</th><td>78 MB</td><td>Trying the app out</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="build">
+          <h3>Build it yourself</h3>
+          <p>You need Rust 1.75 or newer, a C/C++ toolchain and CMake 3.10 or newer, plus the Vulkan headers on Windows and Linux.</p>
+          <div class="code">
+            <pre><code id="build-cmd">git clone https://github.com/Team-AER/Subtly.git
+cd Subtly
+cargo run -p xtask -- download-assets
+cargo run -p subtly-ui</code></pre>
+            <button class="code__copy" type="button" data-copy="#build-cmd">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="status" class="scene" aria-labelledby="status-title">
+    <div class="wrap">
+      <div class="frame">
+        <div class="frame__picture frame__picture--quiet">
+          <h2 id="status-title" class="cue cue--title"><span>Early, and honest about it</span></h2>
+          <div class="frame__visual">
+            <blockquote class="slate">
+              <p>“Now begins the bug bash time.”</p>
+              <footer>Release notes for v2.0, May 2026</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene__body">
+        <p class="scene__lede">Subtly 2.0 is a fresh rewrite. Here is what that means today.</p>
+        <ul class="limits" role="list">
+          <li><strong>It is new code.</strong> In May 2026, v2.0 replaced the Electron app and its whisper-cli and ffmpeg helpers with one Rust program. Expect rough edges, and please report them.</li>
+          <li><strong>Mac builds are Apple Silicon only.</strong> The current release has no Intel .dmg, and there is no Windows on ARM build.</li>
+          <li><strong>Models are a separate download.</strong> The default, Large V2, is 3.1 GB. Tiny is 78 MB if you only want to try it.</li>
+          <li><strong>No GPU means slow.</strong> Without a working Metal or Vulkan backend, transcription runs on the CPU and takes much longer.</li>
+          <li><strong>The words are Whisper’s.</strong> Subtly cleans up timing, not meaning. Check names and numbers before you publish.</li>
+        </ul>
+        <p class="scene__aside"><a class="textlink" href="https://github.com/Team-AER/Subtly/issues">Report a bug on GitHub</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="end" class="scene scene--end" aria-labelledby="end-title">
+    <div class="wrap">
+      <div class="frame">
+        <div class="frame__picture frame__picture--scene">
+          <h2 id="end-title" class="cue cue--title"><span>Yours to read, fork and fix</span></h2>
+          <svg class="frame__art" viewBox="0 0 956 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#scene-harbour"/></svg>
+        </div>
+      </div>
+      <div class="scene__body end">
+        <p class="scene__lede">Subtly is MIT licensed. The app is one Rust workspace: subtly-core runs the pipeline, subtly-ui draws the window. Read it, change it, send a fix.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href="https://github.com/Team-AER/Subtly/releases/latest">Download from GitHub</a>
+          <a class="btn btn--quiet" href="https://github.com/Team-AER/Subtly">Get the code</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Subtly</h2>
+      <p>A desktop app for Whisper subtitles on your own GPU. There is no web version; it runs on your computer.</p>
+      <ul role="list">
+        <li><a href="https://github.com/Team-AER/Subtly">Source on GitHub</a></li>
+        <li><a href="https://github.com/Team-AER/Subtly/releases">Releases</a></li>
+        <li><a href="https://github.com/Team-AER/Subtly/blob/main/LICENSE">MIT licence</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+        <li><a href="mailto:hello@aer.app">hello@aer.app</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/avifors/">Avifors</a></li>
+        <li><a href="https://cantis.aer.app">Cantis</a></li>
+        <li><a href="https://polyjuicevoice.aer.app">PolyJuiceVoice</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Prakhar Shukla. Subtly is MIT licensed.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/subtly/page.js" defer></script>
+</body>
+</html>

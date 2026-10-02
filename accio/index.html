@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accio — Team AER</title>
+<meta name="description" content="Accio is a local-first deep-research agent. Seven agents plan, search your files and the web, quote every claim and write a cited report on your machine, against your own model.">
+<meta property="og:title" content="Accio — ask one question, get a cited report">
+<meta property="og:description" content="A local-first deep-research agent from Team AER. Seven agents, verbatim quotes, six downloadable files. Nothing calls a hosted model.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/accio/">
+<meta property="og:site_name" content="Team AER apps">
+<meta name="theme-color" content="#050505">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Tomorrow, system-ui, sans-serif' font-weight='700' font-size='40' fill='%23F8EF00'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500&family=JetBrains+Mono:wght@400;500&family=Tomorrow:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/accio/style.css">
+<script src="/shared/shell.js" defer></script>
+<script src="/accio/page.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="brand" href="/accio/">
+      <svg class="brand__mark" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true" focusable="false"><rect width="64" height="64" fill="#000"/><text x="32" y="46" text-anchor="middle" font-family="Tomorrow, system-ui, sans-serif" font-weight="700" font-size="40" fill="#F8EF00">A</text></svg>
+      <span class="brand__name">Accio</span>
+      <span class="brand__tag" aria-hidden="true">// deep researcher</span>
+    </a>
+    <a class="btn btn--primary nav__cta nav__cta--bar" href="mailto:hello@aer.app?subject=Accio%20access">Ask for access</a>
+    <button class="nav__toggle" type="button" data-nav-toggle aria-controls="page-menu" aria-expanded="false" aria-label="Sections">
+      <span></span><span></span>
+    </button>
+    <nav id="page-menu" class="relay-nav" hidden aria-label="Sections">
+      <ol class="relay-nav__list" role="list">
+        <li><a class="relay-nav__link" href="#pipeline" data-agents="PLN"><span class="relay-nav__dots" aria-hidden="true"><i class="a-pln"></i></span><span class="relay-nav__label">How it works</span></a></li>
+        <li><a class="relay-nav__link" href="#sources" data-agents="SCH RDR"><span class="relay-nav__dots" aria-hidden="true"><i class="a-sch"></i><i class="a-rdr"></i></span><span class="relay-nav__label">Sources</span></a></li>
+        <li><a class="relay-nav__link" href="#claims" data-agents="ANL SYN CRT"><span class="relay-nav__dots" aria-hidden="true"><i class="a-anl"></i><i class="a-syn"></i><i class="a-crt"></i></span><span class="relay-nav__label">Claims</span></a></li>
+        <li><a class="relay-nav__link" href="#report" data-agents="WRT"><span class="relay-nav__dots" aria-hidden="true"><i class="a-wrt"></i></span><span class="relay-nav__label">Report</span></a></li>
+        <li><a class="relay-nav__link" href="#machine" data-agents="SYS"><span class="relay-nav__dots" aria-hidden="true"><i class="a-sys"></i></span><span class="relay-nav__label">Your machine</span></a></li>
+      </ol>
+      <a class="btn btn--primary nav__cta nav__cta--menu" href="mailto:hello@aer.app?subject=Accio%20access">Ask for access</a>
+    </nav>
+  </div>
+  <div class="nav__progress" aria-hidden="true">
+    <i data-agent="PLN" class="a-pln"></i><i data-agent="SCH" class="a-sch"></i><i data-agent="RDR" class="a-rdr"></i><i data-agent="ANL" class="a-anl"></i><i data-agent="SYN" class="a-syn"></i><i data-agent="CRT" class="a-crt"></i><i data-agent="WRT" class="a-wrt"></i>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero__head">
+        <div class="hero__copy">
+          <h1 id="hero-title" class="hero__title"><span>Ask one question.</span> <span>Get a cited report.</span></h1>
+          <p class="hero__sub">Seven agents plan the work, search your files and the web, quote every claim and write the report, all on your own machine.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Accio%20access">Ask for access</a>
+            <a class="btn btn--ghost" href="#machine">How it runs on your machine</a>
+          </div>
+          <p class="hero__access">Private repository, MIT licence. There is no hosted version.</p>
+        </div>
+        <div class="promise">
+          <p class="promise__line">Nothing calls a hosted model.</p>
+          <p class="promise__body">Accio ships no model and calls none of its own. It talks to the OpenAI-compatible endpoint you run, and your library, notes and reports stay on your disk.</p>
+        </div>
+      </div>
+
+      <nav class="relay" aria-label="The seven agents">
+        <ol class="relay__list" role="list">
+          <li class="relay__stop a-pln" style="--i:0"><a href="#step-pln"><span class="relay__dot" aria-hidden="true"></span><span class="relay__code">PLN</span><span class="relay__name">Planner</span></a></li>
+          <li class="relay__stop a-sch" style="--i:1"><a href="#step-sch"><span class="relay__dot" aria-hidden="true"></span><span class="relay__code">SCH</span><span class="relay__name">Searcher</span></a></li>
+          <li class="relay__stop a-rdr" style="--i:2"><a href="#step-rdr"><span class="relay__dot" aria-hidden="true"></span><span class="relay__code">RDR</span><span class="relay__name">Reader</span></a></li>
+          <li class="relay__stop a-anl" style="--i:3"><a href="#step-anl"><span class="relay__dot" aria-hidden="true"></span><span class="relay__code">ANL</span><span class="relay__name">Analyst</span></a></li>
+          <li class="relay__stop a-syn" style="--i:4"><a href="#step-syn"><span class="relay__dot" aria-hidden="true"></span><span class="relay__code">SYN</span><span class="relay__name">Synthesizer</span></a></li>
+          <li class="relay__stop a-crt" style="--i:5"><a href="#step-crt"><span class="relay__dot" aria-hidden="true"></span><span class="relay__code">CRT</span><span class="relay__name">Critic</span></a></li>
+          <li class="relay__stop a-wrt" style="--i:6"><a href="#step-wrt"><span class="relay__dot" aria-hidden="true"></span><span class="relay__code">WRT</span><span class="relay__name">Writer</span></a></li>
+        </ol>
+        <div class="relay__rail" aria-hidden="true"><span class="relay__fill"></span><span class="relay__token"></span></div>
+        <p class="relay__loop"><span>The Critic loops back to the Searcher while coverage is thin</span></p>
+      </nav>
+
+      <figure class="console" aria-labelledby="console-cap">
+        <div class="console__screen" role="img" aria-label="Accio's Agent Console during a Standard-mode run, loop 2 of 3, 46 percent done. The agent matrix shows the Searcher and Reader active. The research plan has three sub-tasks done and one live. The agent trace lists timestamped lines from each agent, and the sources pane shows pages from sqlite.org and postgresql.org being read, one library file, and one skipped low-trust page.">
+          <div class="cx-top" aria-hidden="true">
+            <span class="cx-brand">ACCIO <em>// DEEP RESEARCHER</em></span>
+            <span class="cx-tabs"><span><b>01</b>New session</span><span class="is-on"><b>02</b>Agent console</span><span><b>03</b>Report</span><span><b>04</b>Library</span></span>
+            <span class="cx-ver"><span class="k">v</span> 0.1.0</span>
+          </div>
+          <div class="cx-body" aria-hidden="true">
+            <div class="cx-main">
+              <div class="cx-panel cx-panel--cyan cx-header">
+                <div class="cx-row cx-strip">
+                  <span class="cx-micro cx-magenta">Session 0x00.12 ▸ Standard mode ▸ Loop 2 / 3</span>
+                  <span class="cx-status">/ running, t+04:12 / ~08:00</span>
+                </div>
+                <p class="cx-title">How do SQLite WAL and Postgres MVCC behave under write-heavy load?</p>
+                <div class="cx-progress"><span class="cx-progress__fill"></span><span class="cx-progress__head"></span></div>
+                <div class="cx-row cx-kvs">
+                  <span class="kv"><span class="k">progress</span> <span class="v cx-cyan">46%</span></span>
+                  <span class="kv"><span class="k">sources</span> <span class="v">18 / 40+</span></span>
+                  <span class="kv"><span class="k">claims</span> <span class="v cx-magenta">31</span></span>
+                  <span class="kv"><span class="k">tokens_in</span> <span class="v">84.2k</span></span>
+                  <span class="kv"><span class="k">tokens_out</span> <span class="v">12.9k</span></span>
+                </div>
+              </div>
+              <div class="cx-panel cx-panel--magenta cx-control">
+                <span class="cx-micro cx-magenta">▸ Control</span>
+                <span class="cx-btn cx-btn--pause">■ Pause</span>
+                <span class="cx-btn cx-btn--edit">Edit plan</span>
+                <span class="cx-btn cx-btn--jump">Jump to report</span>
+                <span class="cx-btn cx-btn--cancel">× Cancel</span>
+              </div>
+              <div class="cx-panel cx-matrix">
+                <div class="cx-row cx-panel__head"><span class="cx-micro cx-cyan">▸ Agent matrix</span><span class="cx-micro cx-faint">2 active</span></div>
+                <div class="cx-cells">
+                  <span class="cx-cell a-pln"><i></i><b>PLN</b>Planner<s>·</s></span>
+                  <span class="cx-cell a-sch is-on"><i></i><b>SCH</b>Searcher<s>/</s></span>
+                  <span class="cx-cell a-rdr is-on"><i></i><b>RDR</b>Reader<s>\</s></span>
+                  <span class="cx-cell a-anl"><i></i><b>ANL</b>Analyst<s>·</s></span>
+                  <span class="cx-cell a-syn"><i></i><b>SYN</b>Synthesizer<s>·</s></span>
+                  <span class="cx-cell a-crt"><i></i><b>CRT</b>Critic<s>·</s></span>
+                  <span class="cx-cell a-wrt"><i></i><b>WRT</b>Writer<s>·</s></span>
+                </div>
+              </div>
+              <div class="cx-panel cx-plan">
+                <div class="cx-row cx-panel__head"><span class="cx-micro cx-yellow">▸ Research plan</span><span class="cx-micro cx-purple">Edit ◢</span></div>
+                <ol class="cx-plan__list">
+                  <li><b>01</b><span>WAL mechanics and checkpoints</span><em class="done">✓ Done</em></li>
+                  <li><b>02</b><span>MVCC, vacuum and bloat</span><em class="done">✓ Done</em></li>
+                  <li><b>03</b><span>Write contention and locking</span><em class="done">✓ Done</em></li>
+                  <li class="is-live"><b>04</b><span>Benchmark evidence</span><em class="live">● Live</em></li>
+                </ol>
+              </div>
+              <div class="cx-panel cx-panel--cyan cx-trace">
+                <div class="cx-row cx-panel__head"><span class="cx-micro cx-cyan">▸ Agent trace / stdout</span><span class="cx-micro cx-faint cx-lower">tail -f session.log</span></div>
+                <div class="cx-log">
+                  <p><time>t+00:00.84</time><b class="a-pln">[PLN]</b><em>INFO</em><span>decomposing query → 4 sub-tasks: [WAL mechanics, MVCC and vacuum, write contention, benchmark evidence]</span></p>
+                  <p><time>t+00:02.10</time><b class="a-pln">[PLN]</b><em class="ok">OK</em><span>plan committed. budget = 40 sources / 3 loops</span></p>
+                  <p><time>t+00:03.02</time><b class="a-sch">[SCH]</b><em>INFO</em><span>dispatch query[1] → searxng+corpus: 'sqlite wal checkpoint starvation'</span></p>
+                  <p><time>t+00:04.77</time><b class="a-sch">[SCH]</b><em class="ok">OK</em><span>20 results, 9 unique domains, 4 from corpus</span></p>
+                  <p><time>t+00:05.12</time><b class="a-rdr">[RDR]</b><em>INFO</em><span>GET library://write-load-notes.md → library, 3.1k tokens extracted</span></p>
+                  <p><time>t+00:06.40</time><b class="a-rdr">[RDR]</b><em>INFO</em><span>GET sqlite.org/wal.html → trafilatura, 6.8k tokens extracted</span></p>
+                  <p><time>t+01:52.31</time><b class="a-anl">[ANL]</b><em class="ok">OK</em><span>+7 grounded claims, 7 quotes, 0 unverified</span></p>
+                  <p><time>t+03:40.08</time><b class="a-syn">[SYN]</b><em class="ok">OK</em><span>drafted §03 write contention and locking, 612 words</span></p>
+                  <p class="warn"><time>t+04:09.55</time><b class="a-crt">[CRT]</b><em>WARN</em><span>coverage 0.54 on §04 benchmark evidence → continue, loop 2 / 3</span></p>
+                  <p class="is-new"><time>t+04:11.02</time><b class="a-sch">[SCH]</b><em>INFO</em><span>dispatch query[9] → searxng+corpus: 'postgres sqlite insert throughput benchmark'</span></p>
+                  <p class="cx-activity"><time>t+04:12</time><b>&gt;</b><span>scanning<span class="cx-caret"></span></span></p>
+                </div>
+                <span class="cx-tick">Live</span>
+              </div>
+            </div>
+            <div class="cx-panel cx-sources">
+              <div class="cx-row cx-panel__head"><span class="cx-micro cx-cyan">▸ Sources read</span><span class="cx-mono cx-cyan">14/18+</span></div>
+              <div class="cx-src is-read on-phone"><div class="cx-row"><i></i><span class="cx-src__t">SQLite: Write-Ahead Logging</span><span class="cx-ico cx-ico--web"></span></div><span class="cx-src__u">sqlite.org/wal.html</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-cyan">92</span></span><span class="kv"><span class="k">words</span> <span class="v">6,812</span></span><em>Read</em></div></div>
+              <div class="cx-src is-read on-phone"><div class="cx-row"><i></i><span class="cx-src__t">Write-load notes</span><span class="cx-ico cx-ico--lib"></span></div><span class="cx-src__u">library://write-load-notes.md</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-yellow">80</span></span><span class="kv"><span class="k">words</span> <span class="v">3,104</span></span><em>Read</em></div></div>
+              <div class="cx-src is-read"><div class="cx-row"><i></i><span class="cx-src__t">PostgreSQL: WAL Configuration</span><span class="cx-ico cx-ico--web"></span></div><span class="cx-src__u">postgresql.org/docs/current/wal-configuration.html</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-cyan">90</span></span><span class="kv"><span class="k">words</span> <span class="v">3,260</span></span><em>Read</em></div></div>
+              <div class="cx-src is-reading on-phone"><div class="cx-row"><i></i><span class="cx-src__t">PostgreSQL: Concurrency Control</span><span class="cx-ico cx-ico--web"></span></div><span class="cx-src__u">postgresql.org/docs/current/mvcc.html</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-cyan">90</span></span><span class="kv"><span class="k">words</span> <span class="v">—</span></span><em>Reading</em></div></div>
+              <div class="cx-src is-reading"><div class="cx-row"><i></i><span class="cx-src__t">PostgreSQL: Routine Vacuuming</span><span class="cx-ico cx-ico--web"></span></div><span class="cx-src__u">postgresql.org/docs/current/routine-vacuuming.html</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-cyan">90</span></span><span class="kv"><span class="k">words</span> <span class="v">—</span></span><em>Reading</em></div></div>
+              <div class="cx-src"><div class="cx-row"><i></i><span class="cx-src__t">SQLite: File Locking and Concurrency</span><span class="cx-ico cx-ico--web"></span></div><span class="cx-src__u">sqlite.org/lockingv3.html</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-cyan">92</span></span><span class="kv"><span class="k">words</span> <span class="v">—</span></span><em>Queued</em></div></div>
+              <div class="cx-src"><div class="cx-row"><i></i><span class="cx-src__t">SQLite: Isolation In SQLite</span><span class="cx-ico cx-ico--web"></span></div><span class="cx-src__u">sqlite.org/isolation.html</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-cyan">92</span></span><span class="kv"><span class="k">words</span> <span class="v">—</span></span><em>Queued</em></div></div>
+              <div class="cx-src is-skipped on-phone"><div class="cx-row"><i></i><span class="cx-src__t">10 best databases ranked</span><span class="cx-ico cx-ico--web"></span></div><span class="cx-src__u">listicle.example/best-databases</span><div class="cx-row cx-src__m"><span class="kv"><span class="k">trust</span> <span class="v cx-magenta">31</span></span><span class="kv"><span class="k">words</span> <span class="v">—</span></span><em>Skipped</em></div></div>
+            </div>
+          </div>
+        </div>
+        <figcaption id="console-cap" class="console__cap">The Agent Console, rebuilt from the app's own components: live plan, agent matrix, trace and sources, streamed over server-sent events. You can pause, edit the plan or cancel at any point.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="pipeline" class="section" aria-labelledby="pipeline-title">
+    <div class="wrap section__grid">
+      <div class="rail" aria-hidden="true">
+        <span class="rail__chip a-pln"><i></i>PLN</span>
+        <span class="rail__name">Planner starts the run</span>
+      </div>
+      <div class="section__body">
+        <h2 id="pipeline-title" class="section__title">How the seven agents work</h2>
+        <p class="lede">A run is a relay. Each agent hands its output to the next, and the Critic can send the work back for another pass before a word of the report is written.</p>
+        <ol class="steps" role="list">
+          <li id="step-pln" class="step a-pln">
+            <span class="step__n">01</span><span class="step__code">PLN</span>
+            <h3 class="step__name">Planner</h3>
+            <p class="step__text">Splits your question into sub-tasks and commits a budget: how many sources, how many loops. You can edit the plan mid-run or fork it into a new session.</p>
+          </li>
+          <li id="step-sch" class="step a-sch">
+            <span class="step__n">02</span><span class="step__code">SCH</span>
+            <h3 class="step__name">Searcher</h3>
+            <p class="step__text">Queries your library and the web together, gives every hit a trust score and drops blocklisted domains.</p>
+          </li>
+          <li id="step-rdr" class="step a-rdr">
+            <span class="step__n">03</span><span class="step__code">RDR</span>
+            <h3 class="step__name">Reader</h3>
+            <p class="step__text">Fetches each page through a rate-limited, robots-aware fetcher, extracts the text from HTML or PDF, and pulls the matching chunks from your files.</p>
+          </li>
+          <li id="step-anl" class="step a-anl">
+            <span class="step__n">04</span><span class="step__code">ANL</span>
+            <h3 class="step__name">Analyst</h3>
+            <p class="step__text">Turns each source into claims, each carrying a verbatim quote, then checks that the quote really appears in the source. It also flags sources that contradict each other.</p>
+          </li>
+          <li id="step-syn" class="step a-syn">
+            <span class="step__n">05</span><span class="step__code">SYN</span>
+            <h3 class="step__name">Synthesizer</h3>
+            <p class="step__text">Drafts one section per plan item from that item's claims and the chunks retrieved for this session.</p>
+          </li>
+          <li id="step-crt" class="step a-crt">
+            <span class="step__n">06</span><span class="step__code">CRT</span>
+            <h3 class="step__name">Critic</h3>
+            <p class="step__text">Scores coverage for every plan item. Anything under 0.8 goes back to the Searcher for another loop while the mode's loop budget lasts.</p>
+          </li>
+          <li id="step-wrt" class="step a-wrt">
+            <span class="step__n">07</span><span class="step__code">WRT</span>
+            <h3 class="step__name">Writer</h3>
+            <p class="step__text">Assembles the report with numbered citations and saves it as six files you can download.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources" class="section" aria-labelledby="sources-title">
+    <div class="wrap section__grid">
+      <div class="rail" aria-hidden="true">
+        <span class="rail__chip a-sch"><i></i>SCH</span>
+        <span class="rail__chip a-rdr"><i></i>RDR</span>
+        <span class="rail__name">Searcher and Reader</span>
+      </div>
+      <div class="section__body">
+        <h2 id="sources-title" class="section__title">Your files and the web</h2>
+        <p class="lede">Put your own documents in the library once. Every run searches them alongside the web and cites them the same way.</p>
+        <dl class="facts">
+          <div class="fact">
+            <dt>A library of your files</dt>
+            <dd>PDF, DOCX, PPTX, XLSX, Markdown, TXT, HTML, CSV, JSON and YAML, plus source code. Each file is parsed, chunked, embedded and summarised by your own stack.</dd>
+          </div>
+          <div class="fact">
+            <dt>Hybrid retrieval</dt>
+            <dd>Dense vectors and BM25 sit side by side in Qdrant and are merged with reciprocal rank fusion, so exact names and loose paraphrases both match.</dd>
+          </div>
+          <div class="fact">
+            <dt>Web search you host</dt>
+            <dd>SearXNG by default, running next to Accio. Add Tavily or Brave keys if you want them, and crawl4ai for pages that need a real browser.</dd>
+          </div>
+          <div class="fact">
+            <dt>Trust and blocklists</dt>
+            <dd>Every hit gets a trust score. Twenty-five SEO-farm patterns are blocked out of the box, and each session can add its own trusted and blocked domains.</dd>
+          </div>
+        </dl>
+        <figure class="shot">
+          <div class="shot__scroll" data-focus="0.78"><img src="/accio/assets/library.webp" width="1600" height="884" loading="lazy" decoding="async" alt="Accio's Library screen. A drop zone accepts PDF, DOCX, Markdown, PPTX, XLSX and code files. Below it a table lists two indexed files, plan.md and accio-upload.pdf, with chunk counts and sizes. A detail panel for plan.md shows its auto-summary, size, chunk count, a trust score of 80 out of 100, the embedding model, and the sessions that used it."></div>
+          <figcaption>The Library screen: chunks, trust, an auto-summary and the sessions that used each file. <span class="shot__cue">Swipe sideways to see the whole screen.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="claims" class="section" aria-labelledby="claims-title">
+    <div class="wrap section__grid">
+      <div class="rail" aria-hidden="true">
+        <span class="rail__chip a-anl"><i></i>ANL</span>
+        <span class="rail__chip a-syn"><i></i>SYN</span>
+        <span class="rail__chip a-crt"><i></i>CRT</span>
+        <span class="rail__name">Analyst, Synthesizer and Critic</span>
+      </div>
+      <div class="section__body">
+        <h2 id="claims-title" class="section__title">Every claim, quoted</h2>
+        <p class="lede">The Analyst doesn't paraphrase from memory. Each claim carries the sentence it came from, and Accio checks that sentence against the source text before it counts the claim as verified.</p>
+        <div class="claims">
+          <figure class="claim" aria-labelledby="claim-cap">
+            <div class="claim__card">
+              <div class="claim__head"><span class="claim__n">[03]</span><span class="claim__src">sqlite.org/wal.html</span><span class="claim__ok">✓ verified</span></div>
+              <p class="claim__text">In WAL mode, reads and writes can run at the same time.</p>
+              <blockquote class="claim__quote" cite="https://sqlite.org/wal.html"><p>“WAL provides more concurrency as readers do not block writers and a writer does not block readers.”</p></blockquote>
+              <p class="claim__meta"><span class="kv"><span class="k">trust</span> <span class="v">92</span></span><span class="kv"><span class="k">agent</span> <span class="v a-anl">ANL</span></span></p>
+            </div>
+            <figcaption id="claim-cap">A claim as the Analyst stores it: the statement, the quote it rests on, and where the quote was found.</figcaption>
+          </figure>
+          <ul class="rules" role="list">
+            <li>
+              <h3>Verbatim, then verified</h3>
+              <p>Quotes are compared after folding case, quote marks, dashes and spacing. Long quotes are checked in 40-character windows, so one changed word fails the check.</p>
+            </li>
+            <li>
+              <h3>Unverified stays visible</h3>
+              <p>A claim whose quote can't be found is marked unverified rather than quietly dropped, and sources that disagree are flagged for you.</p>
+            </li>
+            <li>
+              <h3>The Critic decides when to stop</h3>
+              <p>Coverage is scored per plan item. Thin items trigger another loop, and the Critic's flags sit beside the citations in the finished report.</p>
+            </li>
+          </ul>
+        </div>
+
+        <h3 class="sub-title">Pick a depth</h3>
+        <ul class="modes" role="list">
+          <li class="mode mode--quick">
+            <h4 class="mode__name">Quick</h4>
+            <dl class="mode__kv"><div><dt>sources</dt><dd>10–20</dd></div><div><dt>loops</dt><dd>1</dd></div><div><dt>wall time</dt><dd>≤ 2 min</dd></div></dl>
+            <span class="mode__bar" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></span>
+          </li>
+          <li class="mode mode--standard">
+            <h4 class="mode__name">Standard</h4>
+            <dl class="mode__kv"><div><dt>sources</dt><dd>30–50</dd></div><div><dt>loops</dt><dd>3</dd></div><div><dt>wall time</dt><dd>5–8 min</dd></div></dl>
+            <span class="mode__bar" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span>
+          </li>
+          <li class="mode mode--deep">
+            <h4 class="mode__name">Deep</h4>
+            <dl class="mode__kv"><div><dt>sources</dt><dd>80–150</dd></div><div><dt>loops</dt><dd>6</dd></div><div><dt>wall time</dt><dd>12–20 min</dd></div></dl>
+            <span class="mode__bar" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
+          </li>
+        </ul>
+        <p class="note">Wall times are the app's own estimates. Your model and hardware set the real pace.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="report" class="section" aria-labelledby="report-title">
+    <div class="wrap section__grid">
+      <div class="rail" aria-hidden="true">
+        <span class="rail__chip a-wrt"><i></i>WRT</span>
+        <span class="rail__name">Writer</span>
+      </div>
+      <div class="section__body">
+        <h2 id="report-title" class="section__title">Read it two ways, keep six files</h2>
+        <p class="lede">The report opens as a dense terminal view or a long-form magazine view, with the table of contents on one side and numbered citations on the other.</p>
+        <div class="views" data-views>
+          <div class="views__switch" role="group" aria-label="Report view" hidden data-views-switch>
+            <button type="button" class="views__btn" aria-pressed="true" data-view="terminal">Terminal</button>
+            <button type="button" class="views__btn" aria-pressed="false" data-view="magazine">Magazine</button>
+          </div>
+          <figure class="shot" data-view-panel="terminal">
+            <div class="shot__scroll" data-focus="0.45"><img src="/accio/assets/report-terminal.webp" width="1600" height="884" loading="lazy" decoding="async" alt="Accio's Report screen in terminal view. A table of contents and the six artifact downloads sit on the left. The centre shows the dossier header for a report titled Accio architecture and seven-agent research pipeline, with 2 sources, 1,393 words and 9 claims, followed by a monospaced TL;DR and the first section. Numbered citations are listed on the right."></div>
+            <figcaption>Terminal view: monospaced, dense, built for skimming. <span class="shot__cue">Swipe sideways to see the whole screen.</span></figcaption>
+          </figure>
+          <figure class="shot" data-view-panel="magazine">
+            <div class="shot__scroll" data-focus="0.45"><img src="/accio/assets/report-magazine.webp" width="1600" height="884" loading="lazy" decoding="async" alt="The same Accio report in magazine view: a large display title, a meta line with 2 sources, 1,393 words, 9 grounded claims and a runtime of 3 minutes 18 seconds, then an executive summary set in a proportional font. The table of contents, artifact downloads and citations stay in their side columns."></div>
+            <figcaption>Magazine view: the same report set for reading, and the layout the PDF is rendered from. <span class="shot__cue">Swipe sideways to see the whole screen.</span></figcaption>
+          </figure>
+        </div>
+
+        <h3 class="sub-title">Six files per report</h3>
+        <ul class="files" role="list">
+          <li><code>report.md</code><span>The report in Markdown: TL;DR, sections with [n] markers, flagged gaps and the reference list.</span></li>
+          <li><code>citations.json</code><span>Every citation, with the claims that point at it.</span></li>
+          <li><code>raw_notes.md</code><span>The Planner, Analyst, Synthesizer and Critic notes, verbatim.</span></li>
+          <li><code>queries.log</code><span>Every search the run sent, one line each.</span></li>
+          <li><code>report.pdf</code><span>The magazine layout, rendered with WeasyPrint.</span></li>
+          <li><code>report.docx</code><span>The same report for Word, with superscript citations.</span></li>
+        </ul>
+        <p class="note">Not finished with it? Enhance report and Continue research start a child revision that reuses the evidence you already approved. Fork plan starts a new session from an edited plan.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="machine" class="section section--machine" aria-labelledby="machine-title">
+    <div class="wrap section__grid">
+      <div class="rail" aria-hidden="true">
+        <span class="rail__chip a-sys"><i></i>SYS</span>
+        <span class="rail__name">Your stack</span>
+      </div>
+      <div class="section__body">
+        <h2 id="machine-title" class="section__title">Your machine, your model</h2>
+        <p class="lede lede--strong">Nothing calls a hosted model. Point Accio at any OpenAI-compatible endpoint you run, such as a local proxy or a vLLM server, pick a default model and give individual agents a different one if you like.</p>
+        <dl class="facts facts--tight">
+          <div class="fact">
+            <dt>Models</dt>
+            <dd>Chat and model listing over the OpenAI-compatible API, with per-role overrides. Accio reads each model's context window and output cap from the endpoint and works out structured output per model.</dd>
+          </div>
+          <div class="fact">
+            <dt>Embeddings</dt>
+            <dd>Computed locally, in process with fastembed or by an embeddings server you run.</dd>
+          </div>
+          <div class="fact">
+            <dt>Stack</dt>
+            <dd>Django 6 and DRF on ASGI with an asyncio worker on Python 3.14. React 19, Vite and TypeScript. Postgres 17, Redis 7, Qdrant and SearXNG under Docker Compose.</dd>
+          </div>
+          <div class="fact">
+            <dt>Sign-in</dt>
+            <dd>Local mode identifies you by the network: loopback, a trusted proxy or a Tailscale Serve header. Accounts mode gives each person their own sessions and files plus a shared pool.</dd>
+          </div>
+        </dl>
+
+        <div class="run">
+          <div class="run__head">
+            <h3 class="sub-title sub-title--flush">Run it</h3>
+            <button type="button" class="copy" data-copy="#run-cmds">Copy commands</button>
+          </div>
+          <p class="run__pre">Once you have the code you need Docker with Compose v2, uv, Node with pnpm, and pango for PDF export.</p>
+<pre class="run__code" id="run-cmds" tabindex="0" aria-label="Commands to run Accio"><code>cp .env.example .env
+make config    <span class="c"># writes ~/.accio/config.yaml</span>
+make up        <span class="c"># postgres, redis, qdrant, searxng</span>
+make install   <span class="c"># uv sync in api/, pnpm install in ui/</span>
+make seed      <span class="c"># migrations, templates, embedding model</span>
+make dev       <span class="c"># api :8000, worker, ui :5173</span></code></pre>
+          <p class="run__post">Open localhost:5173. The boot screen checks the LLM endpoint, Qdrant, SearXNG, Redis, Postgres and the embedding model before your first question.</p>
+        </div>
+        <p class="note">MIT licence, © 2026 Prakhar Shukla and contributors. Dependencies keep their own licences: PyMuPDF is AGPL or commercial, so check its terms before you distribute an image that includes it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="access" class="section section--access" aria-labelledby="access-title">
+    <div class="wrap section__grid">
+      <div class="rail" aria-hidden="true">
+        <span class="rail__done"><i class="a-pln"></i><i class="a-sch"></i><i class="a-rdr"></i><i class="a-anl"></i><i class="a-syn"></i><i class="a-crt"></i><i class="a-wrt"></i></span>
+        <span class="rail__name">Run complete</span>
+      </div>
+      <div class="section__body">
+        <h2 id="access-title" class="section__title">The code is private for now</h2>
+        <p class="lede">There is no hosted Accio to try. It runs on your hardware, so access means the repository. Write to us and tell us what you'd research with it.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Accio%20access">Ask for access</a>
+          <a class="btn btn--ghost" href="/">See the other apps</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Accio</h2>
+      <p>A local-first deep-research agent. Private repository, MIT licence, no hosted version.</p>
+      <ul role="list" class="aer-footer__links">
+        <li><a href="mailto:hello@aer.app?subject=Accio%20access">Ask for access</a></li>
+        <li><a href="#machine">How it runs on your machine</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+        <li><a href="mailto:hello@aer.app">hello@aer.app</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/pensieve/">Pensieve</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/hedwig/">Hedwig</a></li>
+        <li><a href="/avifors/">Avifors</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Prakhar Shukla and contributors. Accio is MIT licensed.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

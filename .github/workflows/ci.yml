@@ -28,15 +28,22 @@ jobs:
       - name: Smoke test
         run: |
           for i in $(seq 1 15); do
-            if curl -fsS -o /dev/null http://127.0.0.1:8080/aer.app.html; then
-              echo "site is up"
-              exit 0
-            fi
+            curl -fsS -o /dev/null http://127.0.0.1:8080/ && break
             sleep 2
           done
-          echo "site did not come up in time"
-          docker logs aer-landing
-          exit 1
+          set -e
+          # The team page and every app page serve 200.
+          for p in / $(find . -mindepth 2 -name index.html -not -path './.git/*' -not -path './docs/*' | sed 's#^\./##; s#index\.html$##'); do
+            curl -fsS -o /dev/null "http://127.0.0.1:8080/$p" && echo "ok  /$p"
+          done
+          # Clean URLs redirect, unknown paths get the 404 page, docs stay private.
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/pensieve)" = 301
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/no-such-app/)" = 404
+          curl -s http://127.0.0.1:8080/no-such-app/ | grep -q "Nothing lives at this address"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/docs/APP-PAGES-DESIGN.md)" = 404
+          # App pages get the strict CSP; only the team page may eval.
+          curl -sI http://127.0.0.1:8080/pensieve/ | grep -i '^content-security-policy' | grep -vq "unsafe-eval"
+          curl -sI http://127.0.0.1:8080/ | grep -i '^content-security-policy' | grep -q "unsafe-eval"
 
       - name: Tear down
         if: always()

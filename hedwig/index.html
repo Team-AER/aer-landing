@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hedwig — Team AER</title>
+<meta name="description" content="Hedwig is Team AER's self-hosted webmail client: Gmail, iCloud, Microsoft 365 and any IMAP account in one window that sorts itself, explains every decision and changes nothing without you.">
+<meta property="og:title" content="Hedwig — every inbox, one quiet window">
+<meta property="og:description" content="A unified, self-hosted webmail client with a context engine, triage that learns and an assistant that asks first. AGPL-3.0.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#EEF0F3">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7.5' fill='%23007AFF'/%3E%3Cg transform='translate(4 4)' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3c-4 0-7 3-7 7v6c0 3 3 5 7 5s7-2 7-5v-6c0-4-3-7-7-7z'/%3E%3Ccircle cx='9.5' cy='11' r='1.4'/%3E%3Ccircle cx='14.5' cy='11' r='1.4'/%3E%3Cpath d='M11 14.5l1 1 1-1'/%3E%3Cpath d='M5 8l-2-3M19 8l2-3'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/hedwig/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-owl" viewBox="0 0 24 24"><path d="M12 3c-4 0-7 3-7 7v6c0 3 3 5 7 5s7-2 7-5v-6c0-4-3-7-7-7z"/><circle cx="9.5" cy="11" r="1.4"/><circle cx="14.5" cy="11" r="1.4"/><path d="M11 14.5l1 1 1-1"/><path d="M5 8l-2-3M19 8l2-3"/></symbol>
+  <symbol id="i-compose" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.4 2.6a2.1 2.1 0 0 1 3 3L12.4 14.6a2 2 0 0 1-.9.5l-2.9.8a.5.5 0 0 1-.6-.6l.8-2.9a2 2 0 0 1 .5-.9z"/></symbol>
+  <symbol id="i-door-open" viewBox="0 0 24 24"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.56v16.16a1 1 0 0 1-1.24.97L5 20V5.56a2 2 0 0 1 1.52-1.94l4-1A2 2 0 0 1 13 4.56z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1z"/><path d="M14 8H8M16 12H8M13 16H8"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-shopping-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M9 17 4 12l5-5"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></symbol>
+  <symbol id="i-reply-all" viewBox="0 0 24 24"><path d="M7 17 2 12l5-5"/><path d="m12 17-5-5 5-5"/><path d="M22 18v-2a4 4 0 0 0-4-4H7"/></symbol>
+  <symbol id="i-forward" viewBox="0 0 24 24"><path d="m15 17 5-5-5-5"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-alarm-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6M22 6l-3-3"/><path d="M6.38 18.7 4 21M17.64 18.67 20 21"/></symbol>
+  <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></symbol>
+  <symbol id="i-newspaper" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5"/><path d="M10 6h8v4h-8z"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></symbol>
+  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-list-filter" viewBox="0 0 24 24"><path d="M3 6h18M7 12h10M10 18h4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-alert-octagon" viewBox="0 0 24 24"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86z"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-folder-input" viewBox="0 0 24 24"><path d="M2 9V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-1"/><path d="M2 13h10"/><path d="m9 16 3-3-3-3"/></symbol>
+  <symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"/><path d="M20 3v4M22 5h-4M4 17v2M5 18H3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-image-off" viewBox="0 0 24 24"><path d="m2 2 20 20"/><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"/><path d="M13.5 13.5 6 21M18 12l3 3"/><path d="M3.59 3.59A2 2 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.05-.22 1.41-.59"/><path d="M21 15V5a2 2 0 0 0-2-2H9"/></symbol>
+  <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+  <symbol id="i-popout" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4l-8 8"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9.5 16h5"/></symbol>
+  <symbol id="i-plugin" viewBox="0 0 24 24"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.27 21a2 2 0 0 0 3.46 0"/><path d="M3.26 15.33A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.67C19.41 13.96 18 12.5 18 8A6 6 0 0 0 6 8c0 4.5-1.41 5.96-2.74 7.33"/></symbol>
+  <symbol id="i-contacts" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M16 4.5a3.5 3.5 0 010 7M18.5 20a6.5 6.5 0 00-2.5-5.1"/></symbol>
+  <symbol id="i-insights" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-thread" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+</svg>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="nav__brand" href="/hedwig/"><svg class="i i--18" aria-hidden="true"><use href="#i-owl"/></svg><span>Hedwig</span></a>
+    <nav id="menu" class="nav__menu" hidden aria-label="Sections">
+      <a href="#inbox">Inbox</a>
+      <a href="#triage">Triage</a>
+      <a href="#assistant">Assistant</a>
+      <a href="#selfhost">Self-host</a>
+    </nav>
+    <a class="nav__cta" href="https://hedwig.brainfc.uk">Open Hedwig</a>
+    <button class="nav__toggle" data-nav-toggle aria-controls="menu" aria-expanded="false" aria-label="Menu"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <h1 id="hero-title" class="hero__title">Every inbox.<br>One quiet window.</h1>
+    <p class="hero__lede">Gmail, iCloud, Microsoft 365 and any IMAP account in one self-hosted window that sorts itself, explains every decision and changes nothing without you.</p>
+    <div class="hero__cta">
+      <a class="btn btn--accent" href="https://hedwig.brainfc.uk">Open Hedwig</a>
+      <a class="btn btn--quiet" href="https://github.com/Team-AER/hedwig">Get the code</a>
+    </div>
+    <p class="hero__note">Accounts on the live instance are by invitation; anyone can run their own.</p>
+  </div>
+
+  <div class="wrap wrap--wide">
+    <div class="win" role="img" aria-label="The Hedwig window. On the left a frosted glass rail lists the streams: Screener, People, Reading, Records, then Later and Hedwig sections, with four accounts and an up-to-date status at the foot. In the middle, the People list with a search field, a Needs you group of two rows that each say why they are there, then today's and yesterday's mail with avatars, subjects and previews. On the right, an opaque reader with a toolbar of Done, Delete, Junk, Flag, Reply, Reply all and Forward, the subject Re: Invoice 4471, a short cited summary, one folded earlier message, the newest message from Maria Costa, a banner saying remote images are hidden, the HTML invoice rendered as sent, a folded quoted history, a PDF attachment and a reply field.">
+
+      <aside class="rail">
+        <div class="rail__top">
+          <svg class="i i--18" aria-hidden="true"><use href="#i-owl"/></svg>
+          <span class="rail__brand">Hedwig</span>
+          <span class="ibtn"><svg class="i"><use href="#i-compose"/></svg></span>
+        </div>
+        <div class="rail__nav">
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-door-open"/></svg></span><span class="nitem__label">Screener</span><span class="nitem__n">3</span></span>
+          <span class="nitem nitem--on"><span class="nitem__ico"><svg class="i"><use href="#i-users"/></svg></span><span class="nitem__label">People</span><span class="nitem__n nitem__n--att">2</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-book-open"/></svg></span><span class="nitem__label">Reading</span><span class="nitem__n">12</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-receipt"/></svg></span><span class="nitem__label">Records</span></span>
+          <span class="nitem nitem--sub"><span class="nitem__ico"><svg class="i"><use href="#i-calendar"/></svg></span><span class="nitem__label">Bills</span></span>
+          <span class="nitem nitem--sub"><span class="nitem__ico"><svg class="i"><use href="#i-shopping-bag"/></svg></span><span class="nitem__label">Purchases</span></span>
+          <span class="rail__sec">Later</span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-reply"/></svg></span><span class="nitem__label">Reply Later</span><span class="nitem__n">4</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-bookmark"/></svg></span><span class="nitem__label">Set Aside</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-alarm-clock"/></svg></span><span class="nitem__label">Snoozed</span><span class="nitem__n">1</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-hourglass"/></svg></span><span class="nitem__label">Waiting on</span><span class="nitem__n">2</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-file"/></svg></span><span class="nitem__label">Drafts</span><span class="nitem__n">1</span></span>
+          <span class="rail__sec">Hedwig</span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-newspaper"/></svg></span><span class="nitem__label">Daily Brief</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-history"/></svg></span><span class="nitem__label">Today</span></span>
+          <span class="nitem"><span class="nitem__ico"><svg class="i"><use href="#i-settings"/></svg></span><span class="nitem__label">Settings</span></span>
+        </div>
+        <div class="rail__foot">
+          <span class="rail__acct"><span class="av av--0 av--20">G</span><span>4 accounts</span></span>
+          <span class="rail__status"><svg class="i i--12"><use href="#i-circle-check"/></svg><span>Up to date · 2 min</span></span>
+        </div>
+      </aside>
+
+      <div class="sheetc">
+        <div class="list">
+          <div class="ptop">
+            <div class="ptop__row"><span class="ptop__title">People</span><span class="list__sub">24 · 2 unread</span></div>
+            <div class="search"><svg class="i i--14"><use href="#i-search"/></svg><span class="search__q">Search or ask</span></div>
+          </div>
+          <div class="list__head">
+            <div class="search"><svg class="i i--14"><use href="#i-search"/></svg><span class="search__q">Search or ask</span><span class="search__k">⌘K</span></div>
+            <div class="list__title"><b>People</b><span class="list__sub">24 · 2 unread</span><span class="ibtn list__filter"><svg class="i"><use href="#i-list-filter"/></svg></span></div>
+          </div>
+          <div class="list__body">
+            <div class="grp grp--att">Needs you <span>2</span></div>
+            <div class="row row--needs row--sel">
+              <span class="row__dot"></span>
+              <span class="av av--4">MC</span>
+              <span class="row__text">
+                <span class="row__l1"><span class="row__from">Maria Costa</span><span class="row__meta"><svg class="i i--12"><use href="#i-paperclip"/></svg><span>2</span><span>09:14</span></span></span>
+                <span class="row__subj">Re: Invoice 4471 for the September retainer</span>
+                <span class="row__prev row__prev--1"><svg class="i i--11"><use href="#i-sparkles"/></svg>Asks you to confirm the amount today.</span>
+              </span>
+              <span class="row__reason row__reason--att"><svg class="i i--12"><use href="#i-circle-alert"/></svg><span class="row__rtext">You owe Maria a reply</span></span>
+            </div>
+            <div class="row row--unread row--needs">
+              <span class="row__dot"></span>
+              <span class="av av--5">DR</span>
+              <span class="row__text">
+                <span class="row__l1"><span class="row__from">Daniel Reyes</span><span class="row__meta"><span>08:40</span></span></span>
+                <span class="row__subj">The hold on the offsite venue ends today</span>
+                <span class="row__prev row__prev--1"><svg class="i i--11"><use href="#i-sparkles"/></svg>The room is held until 17:00 today.</span>
+              </span>
+              <span class="row__reason row__reason--att"><svg class="i i--12"><use href="#i-circle-alert"/></svg><span class="row__rtext">Confirm the venue by 17:00</span></span>
+            </div>
+            <div class="grp">Today</div>
+            <div class="row row--unread">
+              <span class="row__dot"></span>
+              <span class="av av--3">JL</span>
+              <span class="row__text">
+                <span class="row__l1"><span class="row__from">Jonas Lind</span><span class="row__meta"><span>07:52</span></span></span>
+                <span class="row__subj">Lunch on Thursday?</span>
+                <span class="row__prev">Same place as last time? I can do 12:30 or 13:00, whichever suits the studio. Bringing the printed proofs so we can mark them up over coffee.</span>
+              </span>
+            </div>
+            <div class="row">
+              <span class="row__dot"></span>
+              <span class="av av--7">AT</span>
+              <span class="row__text">
+                <span class="row__l1"><span class="row__from">Anna Tsai</span><span class="row__meta"><span>3</span><span>07:10</span></span></span>
+                <span class="row__subj">Design review notes</span>
+                <span class="row__prev">Thanks both. I folded the toolbar comments into the doc and left two questions open on the empty states; have a look when you get a minute.</span>
+              </span>
+            </div>
+            <div class="grp">Yesterday</div>
+            <div class="row">
+              <span class="row__dot"></span>
+              <span class="av av--2">SO</span>
+              <span class="row__text">
+                <span class="row__l1"><span class="row__from">Sam Okafor</span><span class="row__meta"><span>Yesterday</span></span></span>
+                <span class="row__subj">Draft agenda for the offsite</span>
+                <span class="row__prev">Three blocks and one long lunch. Shout if you want the budget talk moved earlier in the day.</span>
+              </span>
+            </div>
+            <div class="row">
+              <span class="row__dot"></span>
+              <span class="av av--0">PN</span>
+              <span class="row__text">
+                <span class="row__l1"><span class="row__from">Priya Natarajan</span><span class="row__meta"><svg class="i i--12 att"><use href="#i-flag"/></svg><svg class="i i--12"><use href="#i-paperclip"/></svg><span>Yesterday</span></span></span>
+                <span class="row__subj">Re: Contract renewal</span>
+                <span class="row__prev">Legal came back with two small changes, nothing material. Redline attached; happy to walk through it on a call.</span>
+              </span>
+            </div>
+            <div class="row">
+              <span class="row__dot"></span>
+              <span class="av av--6">LF</span>
+              <span class="row__text">
+                <span class="row__l1"><span class="row__from">Lena Fischer</span><span class="row__meta"><svg class="i i--12"><use href="#i-paperclip"/></svg><span>Yesterday</span></span></span>
+                <span class="row__subj">Photos from Saturday</span>
+                <span class="row__prev">Finally sorted the good ones. The one of the whole table at dusk is the keeper, I think.</span>
+              </span>
+            </div>
+          </div>
+          <div class="ptabs">
+            <span class="ptab ptab--on"><svg class="i"><use href="#i-users"/></svg><span>People</span><span class="ptab__badge">2</span></span>
+            <span class="ptab"><svg class="i"><use href="#i-book-open"/></svg><span>Reading</span></span>
+            <span class="ptab"><svg class="i"><use href="#i-receipt"/></svg><span>Records</span></span>
+            <span class="ptab"><svg class="i"><use href="#i-newspaper"/></svg><span>Brief</span></span>
+            <span class="ptab"><svg class="i"><use href="#i-door-open"/></svg><span>Screener</span></span>
+          </div>
+        </div>
+
+        <div class="rd">
+          <div class="tb">
+            <span class="tb__g">
+              <span class="ibtn ibtn--primary"><svg class="i"><use href="#i-circle-check"/></svg>Done</span>
+              <span class="ibtn"><svg class="i"><use href="#i-trash"/></svg></span>
+              <span class="ibtn"><svg class="i"><use href="#i-alert-octagon"/></svg></span>
+              <span class="ibtn"><svg class="i"><use href="#i-flag"/></svg></span>
+            </span>
+            <span class="tb__g tb__g--later">
+              <span class="ibtn"><svg class="i"><use href="#i-clock"/></svg></span>
+              <span class="ibtn"><svg class="i"><use href="#i-alarm-clock"/></svg></span>
+              <span class="ibtn"><svg class="i"><use href="#i-bookmark"/></svg></span>
+            </span>
+            <span class="tb__g">
+              <span class="ibtn"><svg class="i"><use href="#i-reply"/></svg></span>
+              <span class="ibtn"><svg class="i"><use href="#i-reply-all"/></svg></span>
+              <span class="ibtn"><svg class="i"><use href="#i-forward"/></svg></span>
+            </span>
+            <span class="tb__sp"></span>
+            <span class="tb__g">
+              <span class="ibtn"><svg class="i"><use href="#i-folder-input"/></svg></span>
+              <span class="ibtn"><svg class="i"><use href="#i-ellipsis"/></svg></span>
+            </span>
+          </div>
+          <div class="rd__scroll">
+            <div class="rd__subject">
+              <div class="rd__title">Re: Invoice 4471 for the September retainer</div>
+              <div class="rd__reason"><span class="rd__count">2 messages</span><span class="rd__sep">·</span><span class="rd__why"><svg class="i i--12"><use href="#i-info"/></svg>In People because you replied to Maria last week <span class="rd__link">Change</span></span></div>
+            </div>
+            <div class="slip">
+              <div class="slip__head"><svg class="i i--14"><use href="#i-sparkles"/></svg><span>Summary</span></div>
+              <p>Maria sent the September retainer invoice (€4,200) on Monday and asked you to confirm the amount by Friday.<sup class="cite">1</sup> You have not replied, so she followed up this morning.<sup class="cite">2</sup></p>
+            </div>
+            <div class="msgs">
+              <div class="mrow"><span class="av av--4">MC</span><span class="mrow__name">Maria Costa</span><span class="mrow__snip">Invoice attached for September, as agreed.</span><span class="mrow__date">Mon</span></div>
+              <div class="msg">
+                <div class="msg__head">
+                  <span class="av av--4">MC</span>
+                  <span><span class="msg__name">Maria Costa</span><span class="msg__to">To: you</span></span>
+                  <span class="msg__date"><span>Fri 2 Oct, 09:14</span><span class="msg__att"><svg class="i i--12"><use href="#i-paperclip"/></svg>1</span></span>
+                </div>
+                <div class="banner"><svg class="i i--14"><use href="#i-image-off"/></svg><span class="banner__t">Remote images are hidden to protect your privacy.</span><span class="banner__acts"><span class="rd__link">Load images</span><span class="rd__link">Always for this sender</span></span></div>
+                <div class="mail">
+                  <div class="mail__band"><span class="mail__brand">Costa Studio</span><span class="mail__ref">Invoice 4471</span></div>
+                  <div class="mail__body">
+                    <p>Here is the September retainer with the corrected date. Could you confirm the amount today?</p>
+                    <table class="mail__tbl">
+                      <tr><td>Design retainer, September 2026</td><td>€4,200.00</td></tr>
+                      <tr><td>Total, due 9 October</td><td>€4,200.00</td></tr>
+                    </table>
+                    <span class="mail__btn">View invoice</span>
+                    <p class="mail__sig">Thanks, Maria</p>
+                  </div>
+                </div>
+                <span class="quote">•••</span>
+                <span class="attf"><svg class="i i--20"><use href="#i-file"/></svg><span><span class="attf__n">Invoice-4471.pdf</span><span class="attf__s">128 KB</span></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="quick"><span>Confirmed, thanks</span><span>Can we make it Monday?</span><span>Looking at it now</span></div>
+            <div class="reply__field"><span>Reply to Maria…</span><span class="ibtn"><svg class="i"><use href="#i-popout"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="inbox" aria-labelledby="inbox-title">
+  <div class="wrap g12">
+    <div class="g12__copy">
+      <h2 id="inbox-title">Every account in one list</h2>
+      <p class="sec__lede">Gmail, iCloud, Microsoft 365 and Outlook over OAuth2, or any IMAP and SMTP server. Hedwig merges them into one inbox and keeps its own state in its own tables, so your accounts stay exactly as they were.</p>
+      <ul class="feat" role="list">
+        <li><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><div><h3>Merged, not mirrored</h3><p>One list across every account, threads intact. MailFlow syncs IMAP as it always has.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><div><h3>OAuth2 where it is required</h3><p>Microsoft 365 and Outlook sign in with OAuth2. Gmail, iCloud and your own server connect over IMAP and SMTP.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><div><h3>Nothing added to your mailbox</h3><p>Hedwig never creates folders or labels. Its streams, lists and decisions live in its own tables and leave with it.</p></div></li>
+      </ul>
+    </div>
+    <div class="g12__vis">
+      <div class="pop acct" role="img" aria-label="The account switcher: four accounts, a Gmail address, an iCloud address, a Microsoft 365 address signed in with OAuth2, and an address on your own IMAP server, each marked up to date, with an Add an account row at the bottom.">
+        <div class="pop__head">Accounts</div>
+        <div class="acct__row"><span class="av av--0 av--20">G</span><span class="acct__t"><span class="acct__a">you@gmail.com</span><span class="acct__p">Gmail, IMAP and SMTP</span></span><span class="acct__s"><svg class="i i--12"><use href="#i-circle-check"/></svg>Up to date</span></div>
+        <div class="acct__row"><span class="av av--4 av--20">I</span><span class="acct__t"><span class="acct__a">you@icloud.com</span><span class="acct__p">iCloud, IMAP and SMTP</span></span><span class="acct__s"><svg class="i i--12"><use href="#i-circle-check"/></svg>Up to date</span></div>
+        <div class="acct__row"><span class="av av--5 av--20">W</span><span class="acct__t"><span class="acct__a">you@company.example</span><span class="acct__p">Microsoft 365, OAuth2</span></span><span class="acct__s"><svg class="i i--12"><use href="#i-circle-check"/></svg>Up to date</span></div>
+        <div class="acct__row"><span class="av av--3 av--20">D</span><span class="acct__t"><span class="acct__a">you@yourdomain.example</span><span class="acct__p">Your server, IMAP and SMTP</span></span><span class="acct__s"><svg class="i i--12"><use href="#i-circle-check"/></svg>Up to date</span></div>
+        <div class="acct__row acct__row--add"><span class="acct__plus"><svg class="i"><use href="#i-plus"/></svg></span><span class="acct__a">Add an account</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="triage" aria-labelledby="triage-title">
+  <div class="wrap g12">
+    <div class="g12__copy">
+      <h2 id="triage-title">Only what needs you</h2>
+      <p class="sec__lede">Three layers sort every message, cheapest first, and each one writes down its reason. Open the reason on any row to see the decision and change it.</p>
+      <ul class="feat" role="list">
+        <li><svg class="i" aria-hidden="true"><use href="#i-settings"/></svg><div><h3>Your rules</h3><p>Plain settings you write. When a rule matches, it decides and says so.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-insights"/></svg><div><h3>Your classifier</h3><p>Trained per user on what you reply to, archive and correct. Every correction becomes a training label.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-sparkles"/></svg><div><h3>A local model</h3><p>Only for the uncertain cases, through your own OpenAI-compatible gateway, with its reason written down.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-hourglass"/></svg><div><h3>Needs you and Waiting on</h3><p>A ranked list of what wants an answer from you, and a list of who owes you one.</p></div></li>
+      </ul>
+    </div>
+    <div class="g12__vis">
+      <div class="sheet demo" role="group" aria-label="Needs you, a working example">
+        <div class="demo__head"><b>People</b><span class="list__sub">24 · 2 unread</span></div>
+        <div class="demo__list">
+          <div class="grp grp--att">Needs you <span>2</span></div>
+          <div class="row row--needs">
+            <span class="row__dot"></span>
+            <span class="av av--4" aria-hidden="true">MC</span>
+            <span class="row__text">
+              <span class="row__l1"><span class="row__from">Maria Costa</span><span class="row__meta"><span>09:14</span></span></span>
+              <span class="row__subj">Re: Invoice 4471 for the September retainer</span>
+            </span>
+            <button type="button" class="row__reason row__reason--att" data-door aria-controls="door-1" aria-expanded="false" aria-haspopup="dialog" aria-label="Why is this here? You owe Maria a reply. Open to see or change"><svg class="i i--12" aria-hidden="true"><use href="#i-circle-alert"/></svg><span class="row__rtext">You owe Maria a reply</span></button>
+          </div>
+          <div class="row row--unread row--needs">
+            <span class="row__dot"></span>
+            <span class="av av--5" aria-hidden="true">DR</span>
+            <span class="row__text">
+              <span class="row__l1"><span class="row__from">Daniel Reyes</span><span class="row__meta"><span>08:40</span></span></span>
+              <span class="row__subj">The hold on the offsite venue ends today</span>
+            </span>
+            <button type="button" class="row__reason row__reason--att" data-door aria-controls="door-2" aria-expanded="false" aria-haspopup="dialog" aria-label="Why is this here? Confirm the venue by 17:00. Open to see or change"><svg class="i i--12" aria-hidden="true"><use href="#i-circle-alert"/></svg><span class="row__rtext">Confirm the venue by 17:00</span></button>
+          </div>
+          <div class="grp">Waiting on <span>2</span></div>
+          <div class="row">
+            <span class="row__dot"></span>
+            <span class="av av--2" aria-hidden="true">SO</span>
+            <span class="row__text">
+              <span class="row__l1"><span class="row__from">Sam Okafor</span><span class="row__meta"><span>Mon</span></span></span>
+              <span class="row__subj">Budget for the offsite</span>
+            </span>
+            <span class="row__reason"><svg class="i i--12" aria-hidden="true"><use href="#i-info"/></svg><span class="row__rtext">Asked on Monday; no reply yet</span></span>
+          </div>
+          <div class="row">
+            <span class="row__dot"></span>
+            <span class="av av--1" aria-hidden="true">TB</span>
+            <span class="row__text">
+              <span class="row__l1"><span class="row__from">Tomas Berg</span><span class="row__meta"><span>Tue</span></span></span>
+              <span class="row__subj">Quote for the studio shelving</span>
+            </span>
+            <span class="row__reason"><svg class="i i--12" aria-hidden="true"><use href="#i-info"/></svg><span class="row__rtext">Promised it by Wednesday</span></span>
+          </div>
+        </div>
+        <p class="demo__status" role="status" data-door-status></p>
+
+        <div id="door-1" class="pop door" role="dialog" aria-labelledby="door-1-t" hidden>
+          <div class="door__head"><b id="door-1-t">Why is this here?</b><button type="button" class="ibtn door__x" data-door-close aria-label="Close"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <p class="door__dec"><svg class="i i--12" aria-hidden="true"><use href="#i-circle-alert"/></svg>Needs you</p>
+          <p class="door__by">Decided by your classifier, from three signals</p>
+          <ul class="door__sig" role="list"><li>You usually reply to Maria within a day</li><li>She has written twice without a reply</li><li>Her newest message asks for an answer today</li></ul>
+          <p class="door__ch">Change this</p>
+          <div class="door__scopes">
+            <button type="button" data-scope="Just this one">Just this one</button>
+            <button type="button" data-scope="This thread">This thread</button>
+            <button type="button" data-scope="Everything from Maria">Everything from Maria</button>
+            <button type="button" data-scope="Always">Always</button>
+          </div>
+        </div>
+        <div id="door-2" class="pop door" role="dialog" aria-labelledby="door-2-t" hidden>
+          <div class="door__head"><b id="door-2-t">Why is this here?</b><button type="button" class="ibtn door__x" data-door-close aria-label="Close"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <p class="door__dec"><svg class="i i--12" aria-hidden="true"><use href="#i-circle-alert"/></svg>Needs you</p>
+          <p class="door__by">Decided by your rule “Same-day deadlines”, from two signals</p>
+          <ul class="door__sig" role="list"><li>Daniel is in your contacts</li><li>The message carries a deadline that falls today</li></ul>
+          <p class="door__ch">Change this</p>
+          <div class="door__scopes">
+            <button type="button" data-scope="Just this one">Just this one</button>
+            <button type="button" data-scope="This thread">This thread</button>
+            <button type="button" data-scope="Everything from Daniel">Everything from Daniel</button>
+            <button type="button" data-scope="Always">Always</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <h2 id="how-title">How it works</h2>
+    <ol class="steps" role="list">
+      <li><span class="step__n">1</span><h3>Connect your accounts</h3><p>MailFlow syncs each one over IMAP, exactly as it did before Hedwig.</p></li>
+      <li><span class="step__n">2</span><h3>A worker reads after each sync</h3><p>It reads every message once and writes only to Hedwig's own tables. Your mailbox is never touched.</p></li>
+      <li><span class="step__n">3</span><h3>Two models, two jobs</h3><p>A small always-on model sorts every message with a stated reason. A larger one answers questions, drafts replies and takes the hard cases.</p></li>
+      <li><span class="step__n">4</span><h3>Your corrections teach it</h3><p>Change a decision and it becomes a rule or a training label, scoped as narrowly or widely as you chose.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="context" aria-labelledby="context-title">
+  <div class="wrap g12">
+    <div class="g12__copy">
+      <h2 id="context-title">A mailbox that remembers</h2>
+      <p class="sec__lede">People and organisations merged across accounts, topics that run for months, commitments in both directions, and answers that cite the message they came from.</p>
+      <ul class="feat" role="list">
+        <li><svg class="i" aria-hidden="true"><use href="#i-contacts"/></svg><div><h3>People, merged</h3><p>One card per person across every account and address, with the history between you.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-hourglass"/></svg><div><h3>Commitments</h3><p>What you owe and what they owe, extracted with the message that says so.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><div><h3>Search or ask</h3><p>Hybrid search over keywords and bge-m3 embeddings. A question gets an answer with citations you can open.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-newspaper"/></svg><div><h3>Insights and the daily brief</h3><p>Volume, reply times, cards backed by evidence, and a cited briefing each morning.</p></div></li>
+      </ul>
+    </div>
+    <div class="g12__vis">
+      <div class="sheet ask" role="img" aria-label="The Search or ask field holding the question What did we agree with Costa Studio about the retainer, and the answer: 4,200 euro a month from September, invoiced at the end of each month, with a review in January, followed by two citations that open the source messages. Beside it, commitments: you owe four, they owe two.">
+        <div class="ask__field"><svg class="i i--14"><use href="#i-search"/></svg><span class="ask__q">What did we agree with Costa Studio about the retainer?</span></div>
+        <div class="ask__body">
+          <div class="ask__answer">
+            <div class="slip__head"><svg class="i i--14"><use href="#i-sparkles"/></svg><span>Answer</span></div>
+            <p>€4,200 a month from September, invoiced at the end of each month,<sup class="cite">1</sup> with a review of the scope in January.<sup class="cite">2</sup> The September invoice is still waiting for your confirmation.<sup class="cite">3</sup></p>
+            <div class="ask__cites">
+              <span class="ask__cite"><span class="cite cite--n">1</span><span class="av av--4 av--20">MC</span><span class="ask__ct"><span>Maria Costa, 1 Sep</span><span>Retainer terms for the autumn</span></span></span>
+              <span class="ask__cite"><span class="cite cite--n">2</span><span class="av av--4 av--20">MC</span><span class="ask__ct"><span>Maria Costa, 3 Sep</span><span>Re: Retainer terms for the autumn</span></span></span>
+              <span class="ask__cite"><span class="cite cite--n">3</span><span class="av av--4 av--20">MC</span><span class="ask__ct"><span>Maria Costa, today</span><span>Re: Invoice 4471 for the September retainer</span></span></span>
+            </div>
+          </div>
+          <div class="ask__owe">
+            <span class="fig"><span class="fig__v fig__v--att">4</span><span class="fig__c">You owe</span><span class="fig__s">Maria, Daniel, Jonas, Priya</span></span>
+            <span class="fig"><span class="fig__v">2</span><span class="fig__c">They owe</span><span class="fig__s">Sam, Tomas</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="assistant" aria-labelledby="assistant-title">
+  <div class="wrap g12">
+    <div class="g12__copy">
+      <h2 id="assistant-title">An assistant that asks first</h2>
+      <p class="sec__lede">The assistant and its scheduled automations can read everything you own. They cannot change mail until you approve the action, and they never send or delete on their own.</p>
+      <ul class="feat" role="list">
+        <li><svg class="i" aria-hidden="true"><use href="#i-agent"/></svg><div><h3>Tool-calling assistant</h3><p>Ask it to find, summarise or draft. Anything that would change mail comes back as a proposal.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><h3>Scheduled automations</h3><p>The same tools on a timer. Ones that only read run on their own; the rest queue for your approval.</p></div></li>
+        <li><svg class="i" aria-hidden="true"><use href="#i-history"/></svg><div><h3>Every action undoable</h3><p>What Hedwig did today sits in one place, and every inbox action has an Undo.</p></div></li>
+      </ul>
+    </div>
+    <div class="g12__vis">
+      <div class="sheet approve" role="img" aria-label="A proposal card from the assistant: reply to Maria Costa, with the drafted text confirming 4,200 euro for September and payment by 9 October. Buttons: Approve and send, Edit, Not now. A note says nothing is sent until you approve. Below, two automations: Daily brief on weekdays at 07:30, which only reads, and Suggest unsubscribes on Sundays, which asks first.">
+        <div class="approve__head"><svg class="i i--14"><use href="#i-sparkles"/></svg><span>Proposed by the assistant</span><span class="approve__wait"><svg class="i i--12"><use href="#i-circle-alert"/></svg>Needs your approval</span></div>
+        <div class="approve__title">Reply to Maria Costa</div>
+        <div class="approve__draft">Hi Maria, confirmed: €4,200 for September, as agreed. Thanks for correcting the date; we will pay by 9 October.</div>
+        <div class="approve__actions"><span class="pbtn pbtn--accent">Approve and send</span><span class="pbtn">Edit</span><span class="pbtn">Not now</span></div>
+        <p class="approve__note">Nothing is sent until you approve. The assistant cannot send or delete on its own.</p>
+        <div class="auto">
+          <div class="auto__row"><svg class="i"><use href="#i-newspaper"/></svg><span class="auto__t"><span class="auto__n">Daily brief</span><span class="auto__w">Weekdays at 07:30</span></span><span class="auto__k">Reads only</span></div>
+          <div class="auto__row"><svg class="i"><use href="#i-mail"/></svg><span class="auto__t"><span class="auto__n">Suggest unsubscribes</span><span class="auto__w">Sundays, newsletters unread for 90 days</span></span><span class="auto__k auto__k--att">Asks first</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="plugins" aria-labelledby="plugins-title">
+  <div class="wrap g12">
+    <div class="g12__copy">
+      <h2 id="plugins-title">Plugins with permissions you grant</h2>
+      <p class="sec__lede">A plugin declares what it needs in a manifest; each user grants or refuses it. Views, commands, agent tools and hooks all go through the same door. Four ship as examples.</p>
+    </div>
+    <div class="g12__vis">
+      <div class="sheet plug" role="img" aria-label="Four plugins with their grants: Receipts, which reads mail and writes to Records; Newsletter digest, which reads mail; Pensieve bridge, which reads mail and talks to Pensieve; Send guard, which reads drafts before they are sent.">
+        <div class="plug__row"><span class="plug__ico"><svg class="i"><use href="#i-receipt"/></svg></span><span class="plug__t"><span class="plug__n">Receipts</span><span class="plug__d">Finds receipts and keeps them in the Records ledger.</span></span><span class="plug__g">Reads mail, writes Records</span></div>
+        <div class="plug__row"><span class="plug__ico"><svg class="i"><use href="#i-newspaper"/></svg></span><span class="plug__t"><span class="plug__n">Newsletter digest</span><span class="plug__d">Bundles the day's newsletters into one read.</span></span><span class="plug__g">Reads mail</span></div>
+        <div class="plug__row"><span class="plug__ico"><svg class="i"><use href="#i-book-open"/></svg></span><span class="plug__t"><span class="plug__n">Pensieve bridge</span><span class="plug__d">Hands saved reading to Pensieve, Team AER's feed reader.</span></span><span class="plug__g">Reads mail, talks to Pensieve</span></div>
+        <div class="plug__row"><span class="plug__ico"><svg class="i"><use href="#i-shield"/></svg></span><span class="plug__t"><span class="plug__n">Send guard</span><span class="plug__d">A check before a message leaves.</span></span><span class="plug__g">Reads drafts</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="client" aria-labelledby="client-title">
+  <div class="wrap">
+    <h2 id="client-title">A complete mail client underneath</h2>
+    <p class="sec__lede">Everything MailFlow does, Hedwig still does.</p>
+    <ul class="feat feat--2" role="list">
+      <li><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg><div><h3>WYSIWYG compose</h3><p>Rich text, attachments and signatures; drafts are saved as you write.</p></div></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-thread"/></svg><div><h3>Threads</h3><p>Conversations grouped across accounts, newest open, older ones folded into one row.</p></div></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-layout"/></svg><div><h3>Layouts and themes</h3><p>Panes are a tree of views you arrange yourself. Light and dark themes.</p></div></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg><div><h3>Ten languages</h3><p>English, German, French, Spanish, Italian, Portuguese, Czech, Polish, Russian and Chinese.</p></div></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg><div><h3>Command palette</h3><p>⌘K for every command, with its key shown beside it. E for Done, R for Reply.</p></div></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-smartphone"/></svg><div><h3>Installable PWA</h3><p>Add it to a phone or desktop; web push tells you about new mail.</p></div></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><div><h3>2FA and SSO</h3><p>A TOTP second factor, or sign in through your OIDC provider.</p></div></li>
+      <li><svg class="i" aria-hidden="true"><use href="#i-image-off"/></svg><div><h3>Mail rendered as sent</h3><p>HTML in a sandboxed frame, remote images blocked until you say otherwise, quoted history folded.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="selfhost" aria-labelledby="selfhost-title">
+  <div class="wrap g12">
+    <div class="g12__copy">
+      <h2 id="selfhost-title">Run it on your own server</h2>
+      <p class="sec__lede">Node.js and Express, React, PostgreSQL and Redis. Docker Compose or a native install, with optional Caddy for automatic HTTPS. Models through any OpenAI-compatible gateway; embeddings with bge-m3.</p>
+      <h3 class="sec__h3">Licence</h3>
+      <p class="sec__p">Hedwig is <strong>AGPL-3.0</strong>, inherited from MailFlow. Run it, change it, host it. If you host a modified copy for other people, you publish your changes. A <strong>commercial licence</strong> per installation is available for teams that cannot work under the AGPL.</p>
+    </div>
+    <div class="g12__vis">
+      <div class="code">
+        <div class="code__bar"><span>Terminal</span><button type="button" class="copy" data-copy="#install">Copy</button></div>
+        <pre id="install" tabindex="0"><code>git clone https://github.com/Team-AER/hedwig.git
+cd hedwig
+cp .env.hedwig.example .env
+# fill in the secrets: openssl rand -hex 32
+docker compose -f docker-compose.hedwig.yml up -d --build</code></pre>
+      </div>
+      <ul class="stack" role="list">
+        <li><b>App</b><span>Node.js, Express, React</span></li>
+        <li><b>Data</b><span>PostgreSQL with pgvector, Redis</span></li>
+        <li><b>Models</b><span>Any OpenAI-compatible gateway; bge-m3 embeddings</span></li>
+        <li><b>HTTPS</b><span>Optional Caddy overlay, or your own reverse proxy</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta" aria-labelledby="cta-title">
+  <div class="wrap">
+    <h2 id="cta-title">One quiet window for all of it.</h2>
+    <p class="sec__lede">Run your own with Docker Compose, or open the live instance if you have an invitation. The code, the docs and the licence are on GitHub.</p>
+    <div class="hero__cta">
+      <a class="btn btn--accent" href="https://hedwig.brainfc.uk">Open Hedwig</a>
+      <a class="btn btn--quiet" href="https://github.com/Team-AER/hedwig">Get the code</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Hedwig</h2>
+      <p>A unified, self-hosted webmail client. Team AER's fork of MailFlow, with a context engine, triage that learns and an assistant that asks first.</p>
+      <ul role="list">
+        <li><a href="https://github.com/Team-AER/hedwig">Source on GitHub</a></li>
+        <li><a href="https://github.com/Team-AER/hedwig/blob/main/LICENSE">AGPL-3.0 licence</a></li>
+        <li><a href="https://hedwig.brainfc.uk">Open Hedwig</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/pensieve/">Pensieve</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/erised/">Erised</a></li>
+        <li><a href="/accio/">Accio</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Hedwig is AGPL-3.0 licensed, with a commercial licence available.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/hedwig/page.js" defer></script>
+</body>
+</html>

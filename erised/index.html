@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Erised — Team AER</title>
+<meta name="description" content="Erised is an illustrated, AI-led adventure for phones and desktops. Tell the mirror what you want, choose one of three openings, and play alone or with up to four. Invite-only.">
+<meta property="og:title" content="Erised — Team AER">
+<meta property="og:description" content="Tell the mirror what you want. Then step through. An illustrated adventure for one to four players, told by a storyteller that remembers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/erised/">
+<meta name="theme-color" content="#111D2D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%23111d2d'/%3E%3Cpath d='M48 153V76a48 48 0 0 1 96 0v77z' fill='%231e3349' stroke='%23c9b78a' stroke-width='5'/%3E%3Cpath d='M59 143V76a37 37 0 0 1 74 0v67z' fill='none' stroke='%23acbfce' stroke-width='1'/%3E%3Cpath d='m96 55 6 20 20 6-20 6-6 20-6-20-20-6 20-6z' fill='%23dce6ed'/%3E%3Cpath d='M73 126h46' stroke='%23c9b78a' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..500&family=Newsreader:ital,opsz,wght@0,6..72,400..500;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/erised/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="nav__brand" href="/erised/">
+      <svg viewBox="0 0 44 56" fill="none" aria-hidden="true"><path d="M3 53V24a19 19 0 0 1 38 0v29z" stroke="currentColor" stroke-width="1.3"/><path d="M8 48V24a14 14 0 0 1 28 0v24z" stroke="currentColor" stroke-width=".5"/><path d="m22 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="currentColor"/><path d="M17 44h10" stroke="currentColor"/></svg>
+      <span>Erised</span>
+    </a>
+    <a class="btn btn--primary btn--sm nav__cta" href="https://erised.brainfc.uk">Open Erised</a>
+    <button class="nav__toggle" data-nav-toggle aria-controls="site-menu" aria-expanded="false" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+    <nav id="site-menu" class="nav__menu" hidden aria-label="Sections">
+      <a href="#how">How it begins</a>
+      <a href="#party">Play together</a>
+      <a href="#remembers">It remembers</a>
+      <a href="#mirror">The mirror</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__grid">
+
+      <h1 class="hero__title" id="hero-title"><span>Tell the mirror what you want.</span> <span>Then step through.</span></h1>
+      <p class="hero__lede">An illustrated adventure for phones and desktops: a storyteller that remembers, dice the server rolls, scenes painted while you read. Alone, or with four.</p>
+
+      <div class="hero__art">
+        <figure class="mirror" data-mirror data-base="coast">
+          <div class="mirror__glass">
+            <div class="mirror__pan">
+              <img class="mirror__scene is-current" data-scene="coast" src="/erised/assets/coast-scene.webp" width="960" height="440" alt="Pixel-art shore: a lamplit boathouse on stilts, a skiff at anchor beyond it and a small traveller on the sand">
+              <img class="mirror__scene" data-scene="frost" aria-hidden="true" src="/erised/assets/frost-scene.webp" width="960" height="440" alt="Pixel-art winter village: a bell tower above the snow, a campfire and a traveller on a frozen path">
+              <img class="mirror__scene" data-scene="ember" aria-hidden="true" src="/erised/assets/ember-scene.webp" width="960" height="440" alt="Pixel-art ember valley: a forge with three lit arches, a brazier and a traveller on a dark road">
+            </div>
+            <span class="mirror__sheen" aria-hidden="true"></span>
+          </div>
+          <span class="mirror__plinth" aria-hidden="true"></span>
+          <figcaption class="mirror__caption">Pixel art from the 8-bit modes. In a story, the scene’s own painting appears here.</figcaption>
+        </figure>
+      </div>
+
+      <div class="scene">
+        <div class="scene__eyebrow">
+          <p>Scene 3</p>
+          <span class="turn-badge">Your turn</span>
+        </div>
+        <p class="scene__prior"><span>You</span> Follow the lamp down to the shore.</p>
+        <p class="scene__title">The lighthouse keeps its own hours</p>
+        <span class="scene__hairline" aria-hidden="true"></span>
+        <div class="scene__prose">
+          <p>The tide has gone out further than the fishermen said it would, and the sand it left behind is ribbed and cold under your boots. Up the slope the lighthouse is dark, though someone has lit a lamp in the boathouse beneath it.</p>
+          <p>A skiff rides at anchor a little way out: close enough to swim to, far enough that you would have to want it. Behind you the road to the village has already gone into the dusk. The keeper’s door stands half open.</p>
+        </div>
+
+        <div class="choices" role="group" aria-labelledby="choices-ask">
+          <p class="choices__ask" id="choices-ask">What will you do?</p>
+          <a class="choice choice--primary" href="https://erised.brainfc.uk" data-scene="coast">
+            <span class="choice__index" aria-hidden="true"><svg viewBox="0 0 44 56" fill="none"><path d="M3 53V24a19 19 0 0 1 38 0v29z" stroke="currentColor" stroke-width="2"/><path d="m22 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="currentColor"/><path d="M17 44h10" stroke="currentColor" stroke-width="2"/></svg></span>
+            <span class="choice__text"><strong>Open Erised</strong><small>Sign in and step through. Your stories are where you left them.</small></span>
+            <svg class="choice__arrow" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 5l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="choice" href="mailto:hello@aer.app?subject=Erised%20invitation" data-scene="frost">
+            <span class="choice__index" aria-hidden="true"></span>
+            <span class="choice__text"><strong>Ask for access</strong><small>Erised is invite-only. Write to hello@aer.app and an administrator sends a <span class="nowrap">single-use</span> code.</small></span>
+            <svg class="choice__arrow" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 5l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="choice" href="#how" data-scene="ember">
+            <span class="choice__index" aria-hidden="true"></span>
+            <span class="choice__text"><strong>See how a story begins</strong><small>Four questions, three openings, then the first scene.</small></span>
+            <svg class="choice__arrow" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 5l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <a class="free-action" href="https://erised.brainfc.uk" aria-label="Open Erised and write your own action">
+          <span class="free-action__field" aria-hidden="true">Or write your own action…</span>
+          <span class="free-action__send" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="M3 9h11M10 5l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="how-title">How a story begins</h2>
+        <p class="section__lede">There is no lobby and no character builder to get lost in. Four short questions, three openings written for you, and then the first scene with its three choices.</p>
+      </div>
+      <div class="section__grid">
+        <ol class="steps" role="list">
+          <li><strong>Redeem an invitation.</strong><p>There is no public sign-up. An administrator issues single-use codes that expire after seven days; one code makes one account.</p></li>
+          <li><strong>Answer four questions.</strong><p>A world of your own or one of six familiar settings, a play style, a tone, and your character, ending with the line the mirror asks for: what does your heart desire?</p></li>
+          <li><strong>Choose one of three openings.</strong><p>The storyteller writes three openings from your answers, each with a pitch and a hook. Pick one and the first scene is written, with its three choices and a backdrop already on the page.</p></li>
+          <li><strong>Play by turns.</strong><p>Each turn the model proposes prose and bounded changes to the world. The server checks them, rolls any dice, and writes the journal. Paintings arrive on their own time; a turn can take a few minutes.</p></li>
+        </ol>
+        <figure class="replica sheet desire-replica">
+          <div class="sheet__body">
+            <div class="setup-top" aria-hidden="true"><span class="setup-top__back"><svg viewBox="0 0 18 18"><path d="M15 9H4M8 5 4 9l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</span><span class="quiet">Question 4 of 4</span></div>
+            <div class="track" aria-hidden="true"><span class="is-filled"></span><span class="is-filled"></span><span class="is-filled"></span><span class="is-filled is-current"></span></div>
+            <p class="desire-replica__label">What does your heart desire?</p>
+            <p class="desire-replica__input">To find the person I lost. To belong somewhere. To prove them wrong.</p>
+            <p class="desire-replica__hint">Your decisions and responses to chance shape a private reflection after the story. Play as yourself, your character, or a little of both.</p>
+            <div class="setup-foot" aria-hidden="true"><span class="quiet">Your story is saved as you play.</span><span class="btn btn--primary btn--static is-disabled">Look into the mirror</span></div>
+          </div>
+          <figcaption class="replica__caption">The last of the four setup questions, still empty, so the mirror stays shut.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="party" aria-labelledby="party-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="party-title">Play alone, or with four</h2>
+        <p class="section__lede">A campaign is yours alone or a party of up to four. Everyone plays on their own phone or desktop; the story is one shared world.</p>
+      </div>
+      <div class="section__grid">
+        <ul class="features" role="list">
+          <li><strong>Invitation codes</strong><p>The host shares a ten-character party code from the party sheet. It grants a seat in that story and nothing else; a new player still needs their own access invitation.</p></li>
+          <li><strong>Rotating turns</strong><p>Every mode takes explicit turns, so a decision is never ambiguous, a double tap never commits twice, and a phone that loses its connection picks up where it left off.</p></li>
+          <li><strong>Shared saved campaigns</strong><p>World state, journal and recap belong to the campaign, not the device. Pause for a week, come back, read the recap, carry on.</p></li>
+          <li><strong>Scene alerts</strong><p>When a scene is ready, or the turn passes to you, the app says so in a quiet card. If you turn browser notifications on for a device, it can tell you while the tab is hidden.</p></li>
+        </ul>
+        <figure class="replica sheet">
+          <div class="sheet__heading">
+            <svg viewBox="0 0 44 56" fill="none" aria-hidden="true"><path d="M3 53V24a19 19 0 0 1 38 0v29z" stroke="currentColor" stroke-width="1.3"/><path d="M8 48V24a14 14 0 0 1 28 0v24z" stroke="currentColor" stroke-width=".5"/><path d="m22 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="currentColor"/><path d="M17 44h10" stroke="currentColor"/></svg>
+            <p class="sheet__title">Your party</p>
+          </div>
+          <div class="sheet__body">
+            <p class="quiet">One shared world. Everyone gets a turn.</p>
+            <ul class="party" role="list">
+              <li class="party__member"><span class="monogram monogram--sm" aria-hidden="true">M</span><span><strong>Mira Vell</strong><small>Lamplighter’s apprentice</small></span><span class="turn-badge">Your turn</span></li>
+              <li class="party__member"><span class="monogram monogram--sm" aria-hidden="true">N</span><span><strong>Neris Caul</strong><small>Tide-reader</small></span></li>
+              <li class="party__member"><span class="monogram monogram--sm" aria-hidden="true">T</span><span><strong>Tobias Fenn</strong><small>Runaway cartographer</small></span></li>
+            </ul>
+            <div class="invite">
+              <p class="sheet__sub">Invite a friend</p>
+              <p class="invite__code">4E1B7C9A2D</p>
+              <span class="btn btn--quiet btn--static" aria-hidden="true">Copy code</span>
+            </div>
+          </div>
+          <figcaption class="replica__caption">The party sheet: who is playing, whose turn it is, and the code that seats one more.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="story" aria-labelledby="story-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="story-title">Your kind of story</h2>
+        <p class="section__lede">Two ways to play, and a storyteller that knows which books count.</p>
+      </div>
+      <div class="section__grid">
+        <div>
+          <div class="modes" role="group" aria-label="Play styles, as offered in setup">
+            <div class="mode mode--selected">
+              <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h7a3 3 0 0 1 3 3v15a2 2 0 0 0-2-2H3zM23 4h-7a3 3 0 0 0-3 3v15a2 2 0 0 1 2-2h8z"/></svg>
+              <span><strong>Journey</strong><span>Story first, with a d20 when it matters. Rewards, setbacks and room to recover.</span></span>
+            </div>
+            <div class="mode">
+              <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M22 3l16.5 9.5v19L22 41 5.5 31.5v-19z"/><path d="M22 3v12M5.5 12.5L22 15l16.5-2.5M22 15L8 30h28L22 15zM8 30l-2.5 1.5M36 30l2.5 1.5M8 30l14 11 14-11"/></svg>
+              <span><strong>Dice &amp; destiny</strong><span>Take risks with a d20, four abilities and real consequences.</span></span>
+            </div>
+          </div>
+          <figure class="replica dice-replica">
+            <div class="dice">
+              <span class="dice__die" aria-hidden="true"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M22 3l16.5 9.5v19L22 41 5.5 31.5v-19z"/><path d="M22 3v12M5.5 12.5L22 15l16.5-2.5M22 15L8 30h28L22 15zM8 30l-2.5 1.5M36 30l2.5 1.5M8 30l14 11 14-11"/></svg><b>16</b></span>
+              <span><strong>Agility check <span>Success</span></strong><p>Rolled 13, plus 3, against difficulty 12</p></span>
+            </div>
+            <div class="dice dice--setback">
+              <span class="dice__die" aria-hidden="true"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M22 3l16.5 9.5v19L22 41 5.5 31.5v-19z"/><path d="M22 3v12M5.5 12.5L22 15l16.5-2.5M22 15L8 30h28L22 15zM8 30l-2.5 1.5M36 30l2.5 1.5M8 30l14 11 14-11"/></svg><b>7</b></span>
+              <span><strong>Might check <span>Setback</span></strong><p>Rolled 5, plus 2, against difficulty 13</p></span>
+            </div>
+            <figcaption class="replica__caption">Two dice notes as they appear above a scene: the roll, the ability, the difficulty and what came of it.</figcaption>
+          </figure>
+        </div>
+        <ul class="features" role="list">
+          <li><strong>Suggested choices and a free action</strong><p>Every scene offers three choices with their stakes shown before you pick, and a line where you write whatever you like instead.</p></li>
+          <li><strong>A d20 the server rolls</strong><p>Checks use four abilities: might, agility, wits and spirit. A natural 20 succeeds with an advantage, a natural 1 fails with a complication, and otherwise the total has to meet the difficulty. The roll is made before the storyteller writes, and a failed check always costs something.</p></li>
+          <li><strong>Original worlds or familiar ones</strong><p>Start from a genre of your own, or from one of six literary settings: Harry Potter, Game of Thrones, Middle-earth, Star Wars, Avatar and The Witcher, with era, place and canon controls and a storyteller told which books count.</p></li>
+          <li><strong>Health, inventory and trade-offs</strong><p>Dice &amp; destiny adds more frequent checks, health that can reach zero without ending the story, and choices that cost something even when they are safe.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="remembers" aria-labelledby="remembers-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="remembers-title">A world that remembers</h2>
+        <p class="section__lede">Continuity is canonical world state, the recent turns, a rolling recap and recalled memories. The storyteller proposes; the server keeps the books.</p>
+      </div>
+      <ul class="features features--row" role="list">
+        <li><strong>Journal</strong><p>Every scene, every choice and every consequence, in order, with a written journal beside a visual index of the paintings.</p></li>
+        <li><strong>Lore and recap</strong><p>Threads to follow, places, people, the rules of this world and what you have learned, on a sheet you can open from any scene.</p></li>
+        <li><strong>Character sheet</strong><p>Name, calling, what your heart desires, health, four abilities and what you carry. A character can be saved and brought into the next story.</p></li>
+        <li><strong>Pause, resume, export</strong><p>Pause a story and return later; download the whole journal as Markdown. A story that ends keeps its journal, and a saved scene can be read offline.</p></li>
+      </ul>
+      <div class="section__grid section__grid--tight">
+        <figure class="replica sheet">
+          <div class="sheet__heading">
+            <svg viewBox="0 0 44 56" fill="none" aria-hidden="true"><path d="M3 53V24a19 19 0 0 1 38 0v29z" stroke="currentColor" stroke-width="1.3"/><path d="M8 48V24a14 14 0 0 1 28 0v24z" stroke="currentColor" stroke-width=".5"/><path d="m22 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="currentColor"/><path d="M17 44h10" stroke="currentColor"/></svg>
+            <p class="sheet__title">Journal</p>
+          </div>
+          <div class="sheet__body">
+            <div class="tabs" aria-hidden="true"><span class="is-on">Written journal</span><span>Visual lore</span></div>
+            <p class="quiet">Every choice. Every consequence.</p>
+            <ol class="journal" role="list" reversed>
+              <li class="journal__entry is-current"><span class="journal__num" aria-hidden="true">3</span><span><span class="journal__now">✧ Reading now</span><strong>The lighthouse keeps its own hours</strong><small>The shore</small><p>The keeper’s door stands half open.</p></span></li>
+              <li class="journal__entry"><span class="journal__num" aria-hidden="true">2</span><span><strong>The keeper’s lamp</strong><small>The sea stair</small><p>A light in the boathouse, a boat at anchor, and no one on the stair.</p></span></li>
+              <li class="journal__entry"><span class="journal__num" aria-hidden="true">1</span><span><strong>Where the road ends</strong><small>The village road</small><p>You left the village with a letter you had not opened and a lamp you had not lit.</p></span></li>
+            </ol>
+            <span class="btn btn--quiet btn--static journal__export" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="M9 3v9M5 8l4 4 4-4M3 15h12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Download the full story</span>
+          </div>
+          <figcaption class="replica__caption">The journal sheet, newest scene first, with the one on the page lit.</figcaption>
+        </figure>
+        <figure class="replica sheet">
+          <div class="sheet__heading">
+            <svg viewBox="0 0 44 56" fill="none" aria-hidden="true"><path d="M3 53V24a19 19 0 0 1 38 0v29z" stroke="currentColor" stroke-width="1.3"/><path d="M8 48V24a14 14 0 0 1 28 0v24z" stroke="currentColor" stroke-width=".5"/><path d="m22 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="currentColor"/><path d="M17 44h10" stroke="currentColor"/></svg>
+            <p class="sheet__title">Character</p>
+          </div>
+          <div class="sheet__body">
+            <div class="char__head">
+              <span class="monogram" aria-hidden="true">M</span>
+              <span><p class="char__name">Mira Vell</p><p class="quiet">Lamplighter’s apprentice</p></span>
+            </div>
+            <blockquote class="desire">To find the person I lost.<span>What your heart desires</span></blockquote>
+            <p class="health"><strong>Health</strong><span>8 / 10</span></p>
+            <div class="meter" aria-hidden="true"><i style="--w:80%"></i></div>
+            <div class="stats">
+              <div><strong>2</strong><span>Might</span></div>
+              <div><strong>3</strong><span>Agility</span></div>
+              <div><strong>3</strong><span>Wits</span></div>
+              <div><strong>1</strong><span>Spirit</span></div>
+            </div>
+            <div class="carry">
+              <p class="sheet__sub">What you carry</p>
+              <ul role="list"><li>Brass lamp, unlit</li><li>A letter, unopened</li><li>Three coins</li></ul>
+            </div>
+          </div>
+          <figcaption class="replica__caption">The character sheet drawer. No portrait: an arched monogram, as in the app.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="painted" aria-labelledby="painted-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="painted-title">Painted while you play</h2>
+        <p class="section__lede">Scenes are illustrated by a local image backend after the prose is written, so reading never waits on a picture. Portraits are never generated.</p>
+      </div>
+      <div class="section__grid">
+        <ul class="features" role="list">
+          <li><strong>Backdrop first, painting later</strong><p>A shared scenic backdrop appears at once; the scene’s own painting fades in over it when it is ready. That can take several minutes, and the page says so rather than pretending.</p></li>
+          <li><strong>Eight moods</strong><p>A helper model names one of eight fixed atmospheres for each scene. They are fixed themes, never model-written styles, and the whole effect has an off switch.</p></li>
+          <li><strong>Never a portrait</strong><p>Paintings show unpeopled places: terrain, architecture, weather and light. Faces are never generated; you and your party stay as arched monograms.</p></li>
+          <li><strong>Sharpened on the server</strong><p>Paintings are made at 512 by 768 and super-resolved to 2560 pixels on the CPU with a bundled network. You see the original first and the sharp copy when it arrives.</p></li>
+        </ul>
+        <div>
+          <figure class="replica mirror mirror--pending" data-base="frost">
+            <div class="mirror__glass">
+              <div class="mirror__pan">
+                <img class="mirror__scene is-current" src="/erised/assets/frost-scene.webp" width="960" height="440" alt="The same winter village backdrop, dimmed and blurred behind the mirror mark while a painting is pending">
+              </div>
+              <span class="mirror__pending" aria-hidden="true"><svg viewBox="0 0 44 56" fill="none"><path d="M3 53V24a19 19 0 0 1 38 0v29z" stroke="currentColor" stroke-width="1.3"/><path d="M8 48V24a14 14 0 0 1 28 0v24z" stroke="currentColor" stroke-width=".5"/><path d="m22 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="currentColor"/><path d="M17 44h10" stroke="currentColor"/></svg></span>
+              <span class="mirror__sheen" aria-hidden="true"></span>
+            </div>
+            <span class="mirror__plinth" aria-hidden="true"></span>
+            <figcaption class="mirror__caption">Painting your story illustration. You can keep playing.</figcaption>
+          </figure>
+          <ul class="moods" role="list" aria-label="The eight atmospheres">
+            <li><i style="--c:#B45136" aria-hidden="true"></i>ember</li>
+            <li><i style="--c:#759EC7" aria-hidden="true"></i>storm</li>
+            <li><i style="--c:#8BC6D6" aria-hidden="true"></i>frost</li>
+            <li><i style="--c:#79AC88" aria-hidden="true"></i>verdant</li>
+            <li><i style="--c:#58A7AB" aria-hidden="true"></i>tide</li>
+            <li><i style="--c:#A78BBA" aria-hidden="true"></i>dusk</li>
+            <li><i style="--c:#CAA268" aria-hidden="true"></i>radiant</li>
+            <li><i style="--c:#8072B3" aria-hidden="true"></i>void</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section arcade" id="arcade" aria-labelledby="arcade-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="arcade-title">8-bit interludes</h2>
+        <p class="section__lede">Two distinct solo modes sit beside Journey and Dice &amp; destiny: a Platformer and an Explorer, built on Phaser, with stages the storyteller plans and a compiler checks.</p>
+      </div>
+      <div class="section__grid">
+        <div>
+          <figure class="replica arcade__frame">
+            <div class="arcade__screen">
+              <div class="arcade__bar" aria-hidden="true"><span class="arcade__back">‹ <span>Adventures</span></span><span class="arcade__name">erised<span> / Platformer</span></span><span class="arcade__btn">♪ Off</span><span class="arcade__btn">Ⅱ Menu</span></div>
+              <div class="arcade__game">
+                <img src="/erised/assets/ember-scene.webp" width="960" height="440" alt="Cinder Foundry in the Platformer: a forge with three lit arches, a brazier, winding gear and a small traveller on the trail" loading="lazy">
+                <div class="arcade__hud" aria-hidden="true">
+                  <span class="arcade__hp"><span><i class="full">♥</i><i class="full">♥</i><i class="full">♥</i><i class="full">♥</i><i class="full">♥</i><i>♥</i></span><small>10/12</small></span>
+                  <span class="arcade__shards"><b>◆</b> 1<small> / 3</small></span>
+                  <span class="arcade__stage"><small>Stage 5</small><strong>Cinder Foundry</strong></span>
+                  <span class="arcade__wallet"><span><b>●</b> 110</span><small>550 XP</small></span>
+                </div>
+                <p class="arcade__message" aria-hidden="true">Collect all three shards and reach the gate</p>
+              </div>
+              <div class="arcade__foot" aria-hidden="true"><span class="arcade__saved"><i></i>Progress saved</span><span class="arcade__keys"><span><kbd>A</kbd> <kbd>D</kbd> move</span><span><kbd>Space</kbd> jump</span><span><kbd>Esc</kbd> pause</span></span></div>
+            </div>
+            <figcaption class="replica__caption">Stage five of the Platformer, mid-run: health, shards, coins and XP over the stage, the objective at its foot.</figcaption>
+          </figure>
+        </div>
+        <ul class="features" role="list">
+          <li><strong>Platformer</strong><p>Left and right, or A and D; Space to jump; E to talk or pull a lever. Land on enemies to defeat them, finish the stage’s objectives and reach the gate. Trail camps heal and become respawn points.</p></li>
+          <li><strong>Explorer</strong><p>Arrows or WASD; E to talk, open chests and throw switches. Turn-based encounters with Attack, Guard, Heal and Flee; keys, shards and gates to open.</p></li>
+          <li><strong>Worlds that grow</strong><p>One saved stage at a time. Completing the objectives opens the exit and grants XP, coins and a keepsake once. The storyteller plans the next stage; the compiler owns physics, combat and rewards, and rejects anything unreachable.</p></li>
+          <li><strong>Original pixels</strong><p>Textures are drawn in code; no copyrighted game art is loaded. Sound starts muted. Touch controls, pause, an objective checklist and a stage map on every stage.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mirror" aria-labelledby="mirror-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="mirror-title">The private mirror</h2>
+        <p class="section__lede">When a story ends, the mirror offers a reflection: what you chose, what chance changed, what you did next. It is private to you, every finding links to the scenes behind it, and it is not a clinical assessment.</p>
+      </div>
+      <div class="section__grid">
+        <ul class="features" role="list">
+          <li><strong>Six categories</strong><p>Uncertainty, agency, trust, care, values and flexibility. From the third scene on, roughly every fourth scene can carry a small test of one of them, chosen on a shuffled cycle rather than from a guess about you.</p></li>
+          <li><strong>Evidence, not scores</strong><p>At most four findings, each citing the decisions it rests on and labelled tentative, mixed or repeated. Coverage is shown as counts of observations. No trait percentiles, no diagnoses, no personality badges.</p></li>
+          <li><strong>You can disagree</strong><p>Each finding ends with a question, a small experiment to try, and a place to say whether the reading fits, partly fits, does not fit, or was roleplay. Your corrections inform the next update.</p></li>
+          <li><strong>Yours to delete</strong><p>The reflection never appears in campaign exports, in prompts to the storyteller or in admin metrics. Deleting it removes the observations and the report; the story stays in your journal.</p></li>
+        </ul>
+        <figure class="replica sheet finding">
+          <div class="sheet__heading">
+            <svg viewBox="0 0 44 56" fill="none" aria-hidden="true"><path d="M3 53V24a19 19 0 0 1 38 0v29z" stroke="currentColor" stroke-width="1.3"/><path d="M8 48V24a14 14 0 0 1 28 0v24z" stroke="currentColor" stroke-width=".5"/><path d="m22 15 3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="currentColor"/><path d="M17 44h10" stroke="currentColor"/></svg>
+            <p class="sheet__title">The mirror</p>
+          </div>
+          <div class="sheet__body">
+            <p class="quiet">A private reflection on this journey, with possible interpretations of your decisions. Roleplay and luck matter; this is not a clinical assessment.</p>
+            <p class="finding__label">A tentative reading</p>
+            <p class="finding__title">You let situations ripen</p>
+            <p class="finding__reading">Twice at the shore and once in the keeper’s house you waited, watched and let someone else move first, and each wait cost you something you could afford. That looks like patience. It could also be a reluctance to commit while the odds were unclear.</p>
+            <details>
+              <summary>The decisions behind this reading</summary>
+              <ul class="evidence" role="list">
+                <li><span>Scene 3</span><span>Watched the keeper’s door instead of knocking</span></li>
+                <li><span>Scene 7</span><span>Let the keeper finish before answering</span></li>
+                <li><span>Scene 11</span><span>Held the skiff until the tide turned</span></li>
+              </ul>
+            </details>
+            <p class="finding__q">When the next choice has a clock on it, what would you need to know to move at once?</p>
+            <p class="finding__exp"><strong>A small experiment.</strong> Next story, take the first checked choice you are offered and notice how the setback feels.</p>
+          </div>
+          <figcaption class="replica__caption">One finding from the reflection sheet, with its evidence folded away.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="access" id="access" aria-labelledby="access-title">
+    <div class="wrap">
+    <div class="access__inner">
+      <svg class="access__icon" viewBox="0 0 192 192" role="img" aria-label="The Erised app icon: a silver star inside a gold-rimmed arch on midnight blue"><rect width="192" height="192" rx="40" fill="#111d2d"/><path d="M48 153V76a48 48 0 0 1 96 0v77z" fill="#1e3349" stroke="#c9b78a" stroke-width="5"/><path d="M59 143V76a37 37 0 0 1 74 0v67z" fill="none" stroke="#acbfce" stroke-width="1"/><path d="m96 55 6 20 20 6-20 6-6 20-6-20-20-6 20-6z" fill="#dce6ed"/><path d="M73 126h46" stroke="#c9b78a" stroke-width="2"/></svg>
+      <h2 id="access-title">Invite-only, on purpose</h2>
+      <p class="access__lede">Erised runs on Team AER’s own machines against local models; there is no external inference dependency, no billing and no public sign-up. The repository is private. If you would like to play, ask, and an administrator sends a single-use access invitation that expires in seven days.</p>
+      <div class="access__ctas">
+        <a class="btn btn--primary" href="https://erised.brainfc.uk">Open Erised</a>
+        <a class="btn btn--quiet" href="mailto:hello@aer.app?subject=Erised%20invitation">Ask for access</a>
+      </div>
+      <ul class="access__notes" role="list">
+        <li>Accounts are a local username and password; no third-party identity provider.</li>
+        <li>Browsers never hold model credentials; every model call goes from the server to the gateway.</li>
+        <li>Works on phones and desktops; a saved scene can be read offline, playing needs the server.</li>
+      </ul>
+    </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Erised</h2>
+      <p>An illustrated, AI-led adventure game by Team AER. Private repository, invite-only, live at erised.brainfc.uk.</p>
+      <ul role="list">
+        <li><a href="https://erised.brainfc.uk">Open Erised</a></li>
+        <li><a href="mailto:hello@aer.app?subject=Erised%20invitation">Ask for access</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/pensieve/">Pensieve</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/hedwig/">Hedwig</a></li>
+        <li><a href="/subtly/">Subtly</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Erised is a private project, all rights reserved.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/erised/page.js" defer></script>
+</body>
+</html>

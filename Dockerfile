@@ -1,4 +1,4 @@
-# AER landing — static site served by hardened, non-root nginx.
+# aer.app — team page and per-app landing pages, served by hardened, non-root nginx.
 # Single stage: the site is plain static assets (React + Babel are loaded
 # in-browser from CDN), so there is no compile step — just copy and serve.
 FROM nginxinc/nginx-unprivileged:1.27-alpine
@@ -15,4 +15,4 @@ COPY --chown=nginx:nginx . /usr/share/nginx/html/
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD ["sh", "-c", "wget -q -O /dev/null http://127.0.0.1:8080/aer.app.html || exit 1"]
+  CMD ["sh", "-c", "wget -q -O /dev/null http://127.0.0.1:8080/ || exit 1"]

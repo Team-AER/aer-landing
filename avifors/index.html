@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avifors — Team AER</title>
+<meta name="description" content="Avifors is a demand-loaded inference broker: vLLM, image and speech workers share one GPU under bounded leases, with multi-user scheduling behind your OpenAI-compatible gateway.">
+<meta property="og:title" content="Avifors: one GPU, many models, bounded leases">
+<meta property="og:description" content="A demand-loaded GPU inference broker from Team AER. Loads the model a request needs and bounds how long any workload can hold the card. MIT.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/avifors/">
+<meta name="theme-color" content="#121417">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23121417'/%3E%3Crect x='5' y='8' width='15' height='6' rx='1' fill='%232DD4BF'/%3E%3Crect x='22.5' y='5' width='3' height='12' fill='%23E6E8EB'/%3E%3Crect x='5' y='19' width='21' height='8' rx='1' fill='%23FFB020'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/avifors/style.css">
+<noscript><style>svg[data-play="pending"] .tl-dyn { opacity: 1; animation: none; }</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="nav__brand" href="/avifors/">
+      <svg class="mark" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="6" fill="#1B1F24"/><rect x="5" y="8" width="15" height="6" rx="1" fill="#2DD4BF"/><rect x="22.5" y="5" width="3" height="12" fill="#E6E8EB"/><rect x="5" y="19" width="21" height="8" rx="1" fill="#FFB020"/></svg>
+      <span>avifors</span>
+    </a>
+    <a class="btn btn--primary nav__cta nav__cta--phone" href="https://github.com/Team-AER/avifors">Get the code</a>
+    <button class="nav__toggle" type="button" data-nav-toggle aria-controls="site-menu" aria-expanded="false" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+    <nav id="site-menu" class="nav__menu" hidden aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#scheduling">Scheduling</a>
+      <a href="#leases">Leases</a>
+      <a href="#install">Install</a>
+      <a class="btn btn--primary nav__cta" href="https://github.com/Team-AER/avifors">Get the code</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero__top">
+        <h1 id="hero-title">One GPU, many models. No one waits forever.</h1>
+        <div class="hero__aside">
+          <p class="hero__sub">Avifors sits behind your OpenAI-compatible gateway, loads the model each request needs, and bounds how long any workload can hold the card.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary" href="https://github.com/Team-AER/avifors">Get the code</a>
+            <a class="btn btn--quiet" href="#install">Read the install guide</a>
+          </div>
+        </div>
+      </div>
+
+      <figure class="panel tl-panel">
+        <div class="tl-head">
+          <p class="tl-endpoint"><code>GET /admin/state</code></p>
+          <dl class="tl-readout">
+            <div><dt>policy</dt><dd>latency</dd></div>
+            <div><dt>state</dt><dd class="tl-v-state" data-readout="state">ready</dd></div>
+            <div><dt>resident</dt><dd class="tl-v-resident" data-readout="resident">aer-stt-v1</dd></div>
+            <div><dt>queued</dt><dd class="tl-v-num" data-readout="queued">0</dd></div>
+            <div><dt>lease_remaining_seconds</dt><dd class="tl-v-num tl-v-lease" data-readout="lease">217</dd></div>
+          </dl>
+          <button class="tl-replay" type="button" data-replay hidden>Replay trace</button>
+        </div>
+        <div class="tl-scroll">
+<!-- timeline:start -->
+<svg id="timeline" class="tl" viewBox="0 0 1200 424" role="img" aria-label="Lease timeline over ten minutes for four workers sharing one 16 GiB GPU under the latency policy. text-chat starts cold for ana and ben, sleeps when kai calls embed, then wakes for ben. kai's flux2-klein image request waits while text-chat drains. ben's long stream runs until the text-chat lease reaches 0 seconds at 7 minutes 34 seconds: the stream gets an error event, the worker is reset, GPU memory falls to zero and flux2-klein loads into the freed memory. ana's two-hour recording then runs on aer-stt-v1 in chunks of up to 30 seconds, with 217 seconds of lease left." data-x0="164" data-pps="1.43" data-tmax="710" data-now="580" data-label-w="148" data-park="445.7" data-play="pending" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern id="tl-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#1B1F24"/><line x1="1" y1="0" x2="1" y2="6" stroke="#8C96A0" stroke-width="2.4"/></pattern>
+<clipPath id="tl-track"><rect x="148" y="0" width="1032.30" height="424"/></clipPath>
+<clipPath id="tl-vram-clip"><rect id="tl-vram-reveal" x="164" y="284" width="829.40" height="119"/></clipPath>
+<linearGradient id="tl-fade" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1B1F24" stop-opacity="0"/><stop offset="1" stop-color="#1B1F24"/></linearGradient>
+</defs>
+<g class="tl-grid" aria-hidden="true">
+<line x1="164.0" y1="24" x2="164.0" y2="402"/>
+<text class="tl-tick" x="168.0" y="17">0:00</text>
+<line class="tl-minor" x1="206.9" y1="24" x2="206.9" y2="30"/>
+<line x1="249.8" y1="24" x2="249.8" y2="402"/>
+<text class="tl-tick" x="253.8" y="17">1:00</text>
+<line class="tl-minor" x1="292.7" y1="24" x2="292.7" y2="30"/>
+<line x1="335.6" y1="24" x2="335.6" y2="402"/>
+<text class="tl-tick" x="339.6" y="17">2:00</text>
+<line class="tl-minor" x1="378.5" y1="24" x2="378.5" y2="30"/>
+<line x1="421.4" y1="24" x2="421.4" y2="402"/>
+<text class="tl-tick" x="425.4" y="17">3:00</text>
+<line class="tl-minor" x1="464.3" y1="24" x2="464.3" y2="30"/>
+<line x1="507.2" y1="24" x2="507.2" y2="402"/>
+<text class="tl-tick" x="511.2" y="17">4:00</text>
+<line class="tl-minor" x1="550.1" y1="24" x2="550.1" y2="30"/>
+<line x1="593.0" y1="24" x2="593.0" y2="402"/>
+<text class="tl-tick" x="597.0" y="17">5:00</text>
+<line class="tl-minor" x1="635.9" y1="24" x2="635.9" y2="30"/>
+<line x1="678.8" y1="24" x2="678.8" y2="402"/>
+<text class="tl-tick" x="682.8" y="17">6:00</text>
+<line class="tl-minor" x1="721.7" y1="24" x2="721.7" y2="30"/>
+<line x1="764.6" y1="24" x2="764.6" y2="402"/>
+<text class="tl-tick" x="768.6" y="17">7:00</text>
+<line class="tl-minor" x1="807.5" y1="24" x2="807.5" y2="30"/>
+<line x1="850.4" y1="24" x2="850.4" y2="402"/>
+<text class="tl-tick" x="854.4" y="17">8:00</text>
+<line class="tl-minor" x1="893.3" y1="24" x2="893.3" y2="30"/>
+<line x1="936.2" y1="24" x2="936.2" y2="402"/>
+<text class="tl-tick" x="940.2" y="17">9:00</text>
+<line class="tl-minor" x1="979.1" y1="24" x2="979.1" y2="30"/>
+<line x1="1022.0" y1="24" x2="1022.0" y2="402"/>
+<text class="tl-tick" x="1026.0" y="17">10:00</text>
+<line class="tl-minor" x1="1064.9" y1="24" x2="1064.9" y2="30"/>
+<line x1="1107.8" y1="24" x2="1107.8" y2="402"/>
+<text class="tl-tick" x="1111.8" y="17">11:00</text>
+<line class="tl-minor" x1="1150.7" y1="24" x2="1150.7" y2="30"/>
+<line class="tl-rule" x1="0" y1="36" x2="1200" y2="36"/>
+<line class="tl-rule" x1="0" y1="102" x2="1200" y2="102"/>
+<line class="tl-rule" x1="0" y1="168" x2="1200" y2="168"/>
+<line class="tl-rule" x1="0" y1="234" x2="1200" y2="234"/>
+<line class="tl-rule" x1="0" y1="300" x2="1200" y2="300"/>
+<line class="tl-cap" x1="164" y1="314" x2="1179.30" y2="314"/>
+<line class="tl-rule" x1="0" y1="402" x2="1200" y2="402"/>
+</g>
+<g class="tl-dyn" clip-path="url(#tl-track)">
+<g class="tl-lease" data-t0="0" data-t1="100" data-dl="300"><rect class="tl-lease-used" x="164.0" y="81" width="143.00" height="7"/><rect class="tl-lease-left" x="164.0" y="81" width="0" height="7" visibility="hidden"/><line class="tl-deadline" x1="593.0" y1="77" x2="593.0" y2="92" visibility="hidden"/></g>
+<rect class="tl-act tl-grow" data-t0="0" data-t1="24" x="164.0" y="54" width="34.32" height="20"/>
+<rect class="tl-req tl-grow" data-t0="24" data-t1="50" x="198.32" y="55" width="37.18" height="8" rx="1.5"/>
+<rect class="tl-req tl-grow" data-t0="36" data-t1="76" x="215.48" y="65" width="57.20" height="8" rx="1.5"/>
+<rect class="tl-req tl-grow" data-t0="64" data-t1="100" x="255.52" y="55" width="51.48" height="8" rx="1.5"/>
+<rect class="tl-rel tl-grow" data-t0="100" data-t1="106" x="307.0" y="54" width="8.58" height="20"/>
+<line class="tl-sleep tl-grow" data-t0="106" data-t1="154" x1="315.58" y1="69" x2="384.22" y2="69"/>
+<g class="tl-lease" data-t0="154" data-t1="454" data-dl="454"><rect class="tl-lease-used" x="384.22" y="81" width="429.00" height="7"/><rect class="tl-lease-left" x="384.22" y="81" width="0" height="7" visibility="hidden"/><line class="tl-deadline" x1="813.22" y1="77" x2="813.22" y2="92"/></g>
+<rect class="tl-act tl-grow" data-t0="154" data-t1="158" x="384.22" y="54" width="5.72" height="20"/>
+<rect class="tl-req tl-grow" data-t0="158" data-t1="180" x="389.94" y="55" width="31.46" height="8" rx="1.5"/>
+<rect class="tl-req tl-stream tl-grow" data-t0="190" data-t1="454" x="435.7" y="55" width="377.52" height="8" rx="1.5"/>
+<rect class="tl-req tl-grow" data-t0="214" data-t1="240" x="470.02" y="65" width="37.18" height="8" rx="1.5"/>
+<rect class="tl-req tl-grow" data-t0="262" data-t1="280" x="538.66" y="65" width="25.74" height="8" rx="1.5"/>
+<rect class="tl-rel tl-grow" data-t0="454" data-t1="463" x="813.22" y="54" width="12.87" height="20"/>
+<g class="tl-lease" data-t0="106" data-t1="150" data-dl="406"><rect class="tl-lease-used" x="315.58" y="147" width="62.92" height="7"/><rect class="tl-lease-left" x="315.58" y="147" width="0" height="7" visibility="hidden"/><line class="tl-deadline" x1="744.58" y1="143" x2="744.58" y2="158" visibility="hidden"/></g>
+<line class="tl-queue tl-grow" data-t0="84" data-t1="106" x1="284.12" y1="130" x2="315.58" y2="130"/>
+<rect class="tl-act tl-grow" data-t0="106" data-t1="112" x="315.58" y="120" width="8.58" height="20"/>
+<rect class="tl-req tl-grow" data-t0="112" data-t1="122" x="324.16" y="121" width="14.30" height="8" rx="1.5"/>
+<rect class="tl-idle tl-grow" data-t0="122" data-t1="150" x="338.46" y="121" width="40.04" height="18"/>
+<rect class="tl-rel tl-grow" data-t0="150" data-t1="154" x="378.5" y="120" width="5.72" height="20"/>
+<g class="tl-lease" data-t0="463" data-t1="493" data-dl="763"><rect class="tl-lease-used" x="826.09" y="213" width="42.90" height="7"/><rect class="tl-lease-left" x="826.09" y="213" width="0" height="7" visibility="hidden"/><line class="tl-deadline" x1="1179.3" y1="209" x2="1179.3" y2="224" visibility="hidden"/></g>
+<line class="tl-queue tl-grow" data-t0="290" data-t1="463" x1="578.7" y1="196" x2="826.09" y2="196"/>
+<rect class="tl-act tl-grow" data-t0="463" data-t1="468" x="826.09" y="186" width="7.15" height="20"/>
+<rect class="tl-req tl-grow" data-t0="468" data-t1="493" x="833.24" y="187" width="35.75" height="8" rx="1.5"/>
+<rect class="tl-rel tl-grow" data-t0="493" data-t1="497" x="868.99" y="186" width="5.72" height="20"/>
+<g class="tl-lease" data-t0="497" data-t1="inf" data-dl="797"><rect class="tl-lease-used" x="874.71" y="279" width="118.69" height="7"/><rect class="tl-lease-left" x="993.4" y="279" width="185.90" height="7"/><line class="tl-deadline" x1="1179.3" y1="275" x2="1179.3" y2="290" visibility="hidden"/></g>
+<line class="tl-queue tl-grow" data-t0="478" data-t1="497" x1="847.54" y1="262" x2="874.71" y2="262"/>
+<rect class="tl-act tl-grow" data-t0="497" data-t1="515" x="874.71" y="252" width="25.74" height="20"/>
+<rect class="tl-req tl-chunk tl-grow" data-t0="515" data-t1="527" x="900.45" y="257" width="17.16" height="8" rx="1.5"/>
+<rect class="tl-req tl-chunk tl-grow" data-t0="528" data-t1="540" x="919.04" y="257" width="17.16" height="8" rx="1.5"/>
+<rect class="tl-req tl-chunk tl-grow" data-t0="541" data-t1="553" x="937.63" y="257" width="17.16" height="8" rx="1.5"/>
+<rect class="tl-req tl-chunk tl-grow" data-t0="554" data-t1="566" x="956.22" y="257" width="17.16" height="8" rx="1.5"/>
+<rect class="tl-req tl-chunk tl-grow" data-t0="567" data-t1="579" x="974.81" y="257" width="17.16" height="8" rx="1.5"/>
+<g class="tl-at tl-expiry" data-at="454"><line class="tl-drop" x1="813.22" y1="50" x2="813.22" y2="402"/></g>
+<g clip-path="url(#tl-vram-clip)">
+<path class="tl-vram" d="M164.0,402.0 L198.32,322.8 L307.0,322.8 L315.58,397.6 L324.16,391.0 L378.5,391.0 L384.22,397.6 L389.94,322.8 L813.22,322.8 L826.09,402.0 L833.24,384.4 L861.84,343.15 L868.99,343.15 L874.71,402.0 L900.45,355.8 L993.4,355.8 L993.4,402 L164.0,402 Z"/>
+<path class="tl-vram-edge" d="M164.0,402.0 L198.32,322.8 L307.0,322.8 L315.58,397.6 L324.16,391.0 L378.5,391.0 L384.22,397.6 L389.94,322.8 L813.22,322.8 L826.09,402.0 L833.24,384.4 L861.84,343.15 L868.99,343.15 L874.71,402.0 L900.45,355.8 L993.4,355.8"/>
+<text class="tl-vlabel" x="221.2" y="366.4">text-chat</text>
+<text class="tl-vlabel" x="521.5" y="366.4">text-chat</text>
+<text class="tl-vlabel" x="910.46" y="382.9">aer-stt-v1</text>
+</g>
+<rect x="1145.30" y="36" width="36" height="366" fill="url(#tl-fade)"/>
+<g id="tl-now" class="tl-now" transform="translate(993.4,0)"><line x1="0" y1="24" x2="0" y2="404"/><rect x="-24" y="406" width="48" height="18" rx="2"/><text id="tl-now-text" x="0" y="419">9:40</text></g>
+<g class="tl-at" data-at="0"><line class="tl-arrive" x1="164.0" y1="40" x2="164.0" y2="54"/><text class="tl-user" x="168.0" y="49">ana</text></g>
+<g class="tl-at" data-at="36"><line class="tl-arrive" x1="215.48" y1="40" x2="215.48" y2="54"/><text class="tl-user" x="219.48" y="49">ben</text></g>
+<g class="tl-at" data-at="64"><line class="tl-arrive" x1="255.52" y1="40" x2="255.52" y2="54"/><text class="tl-user" x="259.52" y="49">ana</text></g>
+<text class="tl-note tl-at" data-at="108" x="318.44" y="63">asleep</text>
+<g class="tl-at" data-at="150"><line class="tl-arrive" x1="378.5" y1="40" x2="378.5" y2="54"/><text class="tl-user" x="382.5" y="49">ben</text></g>
+<g class="tl-at" data-at="190"><line class="tl-arrive" x1="435.7" y1="40" x2="435.7" y2="54"/><text class="tl-user" x="439.7" y="49">ben</text></g>
+<g class="tl-at" data-at="214"><line class="tl-arrive" x1="470.02" y1="40" x2="470.02" y2="54"/><text class="tl-user" x="474.02" y="49">ana</text></g>
+<g class="tl-at" data-at="262"><line class="tl-arrive" x1="538.66" y1="40" x2="538.66" y2="54"/><text class="tl-user" x="542.66" y="49">ana</text></g>
+<g class="tl-at" data-at="84"><line class="tl-arrive" x1="284.12" y1="106" x2="284.12" y2="120"/><text class="tl-user" x="288.12" y="115">kai</text></g>
+<g class="tl-at" data-at="290"><line class="tl-arrive" x1="578.7" y1="172" x2="578.7" y2="186"/><text class="tl-user" x="582.7" y="181">kai</text></g>
+<text class="tl-note tl-at" data-at="300" x="593.0" y="225">kai waits while text-chat drains</text>
+<g class="tl-at" data-at="478"><line class="tl-arrive" x1="847.54" y1="238" x2="847.54" y2="252"/><text class="tl-user" x="851.54" y="247">ana, 2 h recording</text></g>
+<g class="tl-at" data-at="454"><text class="tl-zero" x="834.09" y="51">lease 0 s at 7:34</text></g>
+<g class="tl-at" data-at="457"><text class="tl-anno" x="834.09" y="68">ben’s stream: error event</text><text class="tl-anno" x="834.09" y="85">worker reset, memory freed</text></g>
+<text class="tl-vnote tl-at" data-at="108" x="321.3" y="385.0">embed</text>
+<text class="tl-vnote tl-at" data-at="480" x="833.24" y="336.1">flux2-klein 10.7 GiB</text>
+</g>
+<g id="tl-labels" class="tl-labels">
+<rect class="tl-labels-bg" x="0" y="0" width="148" height="424"/>
+<line class="tl-labels-edge" x1="148" y1="0" x2="148" y2="424"/>
+<text class="tl-colhead" x="16" y="17">worker</text>
+<text class="tl-id" x="16" y="59">text-chat</text>
+<text class="tl-kind" x="16" y="76">vLLM, sleep: true</text>
+<text class="tl-status" data-status-row="0" x="16" y="93">unloaded</text>
+<text class="tl-id" x="16" y="125">embed</text>
+<text class="tl-kind" x="16" y="142">HTTP worker</text>
+<text class="tl-status" data-status-row="1" x="16" y="159">unloaded</text>
+<text class="tl-id" x="16" y="191">flux2-klein</text>
+<text class="tl-kind" x="16" y="208">sdapi, FLUX.2 Klein</text>
+<text class="tl-status" data-status-row="2" x="16" y="225">unloaded</text>
+<text class="tl-id" x="16" y="257">aer-stt-v1</text>
+<text class="tl-kind" x="16" y="274">stt, durable jobs</text>
+<text class="tl-status is-lease" data-status-row="3" x="16" y="291">lease 217 s</text>
+<text class="tl-id" x="16" y="328">GPU memory</text>
+<text class="tl-kind" x="16" y="345">one 16 GiB card</text>
+<text class="tl-axis-y" x="156" y="318" text-anchor="end">16</text>
+<text class="tl-axis-y" x="156" y="402" text-anchor="end">0</text>
+</g>
+</svg>
+<!-- timeline:end -->
+        </div>
+        <figcaption class="tl-foot">
+          <p>Illustrative trace: one 16 GiB card, <code>policy: latency</code>, <code>max_hold: 300</code>, three users. Not a benchmark.</p>
+          <ul class="legend" role="list" aria-label="Legend">
+            <li><span class="sw sw--queue" aria-hidden="true"></span>queued</li>
+            <li><span class="sw sw--act" aria-hidden="true"></span>activate</li>
+            <li><span class="sw sw--serve" aria-hidden="true"></span>serve</li>
+            <li><span class="sw sw--idle" aria-hidden="true"></span>idle</li>
+            <li><span class="sw sw--rel" aria-hidden="true"></span>release</li>
+            <li><span class="sw sw--lease" aria-hidden="true"></span>lease left</li>
+            <li><span class="sw sw--used" aria-hidden="true"></span>lease used</li>
+            <li><span class="sw sw--vram" aria-hidden="true"></span>GPU memory</li>
+          </ul>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="how" class="sec" aria-labelledby="how-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="how-title">How a request moves</h2>
+        <p class="sec__lead">Every call on the trace above goes through the same four steps. The colours are the ones the timeline uses.</p>
+      </header>
+      <ol class="steps" role="list">
+        <li class="step">
+          <p class="step__name"><span class="step__num">1</span>admit<span class="sw sw--queue" aria-hidden="true"></span></p>
+          <p>The request joins the queue for its model. Global, per-model and per-user <code>max_pending</code> limits count queued and running work, and a full queue answers 429.</p>
+        </li>
+        <li class="step">
+          <p class="step__name"><span class="step__num">2</span>activate<span class="sw sw--act" aria-hidden="true"></span></p>
+          <p>If another model holds the card, it drains and then stops or sleeps. <code>release_check</code> confirms the memory is free, the next worker starts, and its health check has to pass.</p>
+        </li>
+        <li class="step">
+          <p class="step__name"><span class="step__num">3</span>serve<span class="sw sw--serve" aria-hidden="true"></span></p>
+          <p>Requests go to the worker as sent, up to its <code>concurrency</code>. Avifors never changes sampling, context, quantization or vLLM batch settings.</p>
+        </li>
+        <li class="step">
+          <p class="step__name"><span class="step__num">4</span>expire<span class="sw sw--lease" aria-hidden="true"></span></p>
+          <p>The lease counts down from <code>max_hold</code>. At zero, running work is cancelled and the worker is reset to prove it stopped, then the next model in line loads. An idle lease with nobody waiting renews without a reload.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="residency" class="sec" aria-labelledby="residency-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="residency-title">Load on demand, unload on time</h2>
+        <p class="sec__key sec__key--vram"><code>idle_timeout: 300</code></p>
+        <p class="sec__lead">The broker starts at boot with every model unloaded. Real inference activates a worker; an idle timeout or a competing model releases it.</p>
+      </header>
+
+      <figure class="track states-fig">
+        <ul class="states" role="list">
+          <li class="state state--unloaded">
+            <span class="state__glyph" aria-hidden="true"><span class="state__mem"></span><span class="state__band"></span></span>
+            <code class="state__name">unloaded</code>
+            <p>Nothing on the card. Where the broker boots.</p>
+          </li>
+          <li class="state state--loading">
+            <span class="state__glyph" aria-hidden="true"><span class="state__mem"></span><span class="state__band"></span></span>
+            <code class="state__name">loading</code>
+            <p><code>start</code> runs, or a wake for a sleeping vLLM, until the health check passes within <code>activation_timeout</code>.</p>
+          </li>
+          <li class="state state--ready">
+            <span class="state__glyph" aria-hidden="true"><span class="state__mem"></span><span class="state__band"></span></span>
+            <code class="state__name">ready</code>
+            <p>Requests are admitted up to the worker’s <code>concurrency</code>.</p>
+          </li>
+          <li class="state state--draining">
+            <span class="state__glyph" aria-hidden="true"><span class="state__mem"></span><span class="state__band"></span></span>
+            <code class="state__name">draining</code>
+            <p>Another model is waiting. No new admissions; running work finishes.</p>
+          </li>
+          <li class="state state--releasing">
+            <span class="state__glyph" aria-hidden="true"><span class="state__mem"></span><span class="state__band"></span></span>
+            <code class="state__name">releasing</code>
+            <p><code>stop</code> and <code>verify_stopped</code>, or a level-1 sleep, then <code>release_check</code>.</p>
+          </li>
+        </ul>
+        <figcaption>One worker’s states, named as <code>/admin/state</code> reports them, with its GPU memory above.</figcaption>
+      </figure>
+
+      <div class="track facts">
+        <div class="fact">
+          <h3>Commands, not shell strings</h3>
+          <p>Start, stop and verify are argument arrays the administrator writes, never request input. Stops must be idempotent and confirm termination.</p>
+        </div>
+        <div class="fact">
+          <h3>Memory checked at every handoff</h3>
+          <p>A root-owned <code>release_check</code> command you supply confirms the GPU has room before the next worker starts. If a release fails, admission stops rather than starting a second owner.</p>
+        </div>
+        <div class="fact">
+          <h3>vLLM sleep, level 1</h3>
+          <p>With <code>sleep: true</code> on a vLLM launched with <code>--enable-sleep-mode</code>, weights move to CPU RAM and the KV cache is discarded. A failed sleep falls back to a full stop.</p>
+        </div>
+        <div class="fact">
+          <h3>Probes that load nothing</h3>
+          <p><code>/v1/models</code> and a scoped <code>/backend/NAME/v1/models</code> answer health checks without activating a model. A faulted model reports failure until it activates again.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="scheduling" class="sec" aria-labelledby="scheduling-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="scheduling-title">Fair to many users</h2>
+        <p class="sec__key"><code>policy: latency | fifo | fair | throughput</code></p>
+        <p class="sec__lead">One setting, <code>server.policy</code>, decides which model gets the card next and whose request runs first. Every limit counts queued and running work.</p>
+      </header>
+
+      <div class="track table-wrap">
+        <table class="policy">
+          <caption class="sr-only">The four scheduling policies</caption>
+          <thead>
+            <tr>
+              <th scope="col">Policy</th>
+              <th scope="col">Switches models</th>
+              <th scope="col">Next model</th>
+              <th scope="col">Next request for that model</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>latency</code><span class="policy__default">default</span></th>
+              <td data-label="Switches models">As soon as another model queues: stop admitting, drain running work, switch.</td>
+              <td data-label="Next model">The earliest waiting request’s model.</td>
+              <td data-label="Next request">Arrival order.</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>fifo</code></th>
+              <td data-label="Switches models">When the oldest request in the global queue is for a different model.</td>
+              <td data-label="Next model">Strict arrival order; only consecutive compatible jobs batch.</td>
+              <td data-label="Next request">Arrival order.</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>fair</code></th>
+              <td data-label="Switches models">As soon as another model queues, like <code>latency</code>.</td>
+              <td data-label="Next model">Least measured service time per <code>weight</code>. Aging lets a model that has waited a full <code>max_hold</code> go next.</td>
+              <td data-label="Next request">The user with the least measured service time.</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>throughput</code></th>
+              <td data-label="Switches models">When the current model runs out of queued work, or <code>drain_margin</code> seconds before its lease ends.</td>
+              <td data-label="Next model">The earliest waiting request’s model.</td>
+              <td data-label="Next request">Arrival order.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="track split">
+        <div class="users-col">
+          <div class="code">
+            <div class="code__bar"><span>config.yaml</span><button class="copy" type="button" data-copy="#code-users">Copy</button></div>
+<pre><code id="code-users">users:
+  - name: ana
+    key_env: AVIFORS_KEY_ANA
+    models: ["*"]
+    max_pending: 8
+  - name: ben
+    key_env: AVIFORS_KEY_BEN
+    models: ["*"]
+    max_pending: 8
+  - name: kai
+    key_env: AVIFORS_KEY_KAI
+    models: [embed, flux2-klein]
+    max_pending: 2</code></pre>
+          </div>
+          <p class="small">Authentication is on by default. For a private gateway, <code>trusted_networks</code> can admit keyless calls from listed networks; they all share one identity and the <code>trusted_max_pending</code> quota.</p>
+        </div>
+        <div class="facts facts--one">
+          <div class="fact">
+            <h3>Keys come from the environment</h3>
+            <p>Each named user’s bearer key is read from the variable in <code>key_env</code> and must be at least 16 characters. The config file never holds it.</p>
+          </div>
+          <div class="fact">
+            <h3>Allowlists and pending limits</h3>
+            <p><code>models</code> limits which model ids a user may call; <code>max_pending</code> caps their requests alongside the model and global limits.</p>
+          </div>
+          <div class="fact">
+            <h3>Keys stop at the broker</h3>
+            <p>API keys are never forwarded to workers, and caller-supplied forwarding or user headers never establish identity.</p>
+          </div>
+          <div class="fact">
+            <h3>A separate admin key</h3>
+            <p><code>/admin/state</code> needs its own key and reports residency and aggregate queues, not prompts or credentials.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leases" class="sec" aria-labelledby="leases-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="leases-title">Leases, not hopes</h2>
+        <p class="sec__key sec__key--lease"><code>max_hold: 300</code></p>
+        <p class="sec__lead">Every ownership period has a deadline, and it holds whether or not the work has finished. That is what lets the next request in line count on getting the card.</p>
+      </header>
+
+      <figure class="anat">
+        <div class="anat__row anat__row--scale" aria-hidden="true">
+          <span class="anat__label"></span>
+          <div class="anat__track anat__track--scale"><span class="anat__t0">0 s</span><span class="anat__t1">300 s</span></div>
+          <span class="anat__note"></span>
+        </div>
+        <div class="anat__row">
+          <span class="anat__label">lease</span>
+          <div class="anat__track" aria-hidden="true"><i class="bar bar--lease" style="--l:12%;--w:88%"></i></div>
+          <p class="anat__note"><code>max_hold</code> starts before activation.</p>
+        </div>
+        <div class="anat__row">
+          <span class="anat__label">activate</span>
+          <div class="anat__track" aria-hidden="true"><i class="bar bar--act" style="--l:12%;--w:11%"></i></div>
+          <p class="anat__note"><code>activation_timeout</code> bounds start and health check.</p>
+        </div>
+        <div class="anat__row">
+          <span class="anat__label">request a</span>
+          <div class="anat__track" aria-hidden="true"><i class="bar bar--queue" style="--l:2%;--w:21%"></i><i class="bar bar--serve" style="--l:23%;--w:36%"></i></div>
+          <p class="anat__note">Waiting counts against <code>queue_timeout</code>, not the lease.</p>
+        </div>
+        <div class="anat__row">
+          <span class="anat__label">request b</span>
+          <div class="anat__track" aria-hidden="true"><i class="bar bar--queue" style="--l:64%;--w:9%"></i><i class="bar bar--serve bar--cut" style="--l:73%;--w:27%"></i></div>
+          <p class="anat__note">Admitted late, it gets only what is left of the lease.</p>
+        </div>
+        <div class="anat__row anat__row--end">
+          <span class="anat__label"></span>
+          <div class="anat__track anat__track--end"><span>0 s: cancel, reset, release</span></div>
+          <span class="anat__note"></span>
+        </div>
+        <figcaption class="sr-only">One ownership period of 300 seconds. The lease starts before activation. Request a waits in the queue, then runs well inside the lease. Request b is admitted late and is cut off when the lease reaches zero, after which the worker is reset and released.</figcaption>
+      </figure>
+
+      <div class="track lease-grid">
+        <dl class="timeouts">
+          <div><dt><code>max_hold</code></dt><dd class="timeouts__v">300</dd><dd>Ownership period, counted from before activation.</dd></div>
+          <div><dt><code>max_runtime</code></dt><dd class="timeouts__v">300</dd><dd>Per request, cut short by the ownership period.</dd></div>
+          <div><dt><code>queue_timeout</code></dt><dd class="timeouts__v">300</dd><dd>Longest wait for admission.</dd></div>
+          <div><dt><code>activation_timeout</code></dt><dd class="timeouts__v">180</dd><dd>Start plus health check.</dd></div>
+          <div><dt><code>release_timeout</code></dt><dd class="timeouts__v">15</dd><dd>Each stop, sleep or verify command.</dd></div>
+          <div><dt><code>idle_timeout</code></dt><dd class="timeouts__v">300</dd><dd>From the last finished inference, not from health probes.</dd></div>
+        </dl>
+        <div class="lease-side">
+          <p class="small">Defaults, in seconds. Set them under <code>defaults</code> or per model.</p>
+          <dl class="codes">
+            <div><dt>429</dt><dd>Queue full.</dd></div>
+            <div><dt>503</dt><dd>Worker fault.</dd></div>
+            <div><dt>504</dt><dd>Deadline reached before response headers.</dd></div>
+          </dl>
+          <div class="code code--wrap">
+            <div class="code__bar"><span>A stream at its deadline</span><button class="copy" type="button" data-copy="#code-stream">Copy</button></div>
+<pre><code id="code-stream">data: {"error": {"message": "GPU execution deadline exceeded", "type": "avifors_error"}}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="track facts">
+        <div class="fact">
+          <h3>Late requests get the remainder</h3>
+          <p>A request admitted late in an ownership period gets only the budget that is left. No active request extends a lease.</p>
+        </div>
+        <div class="fact">
+          <h3>Streams end with an error, not a fake finish</h3>
+          <p>A response that is already streaming cannot change its HTTP status, so the deadline arrives as an error event in the stream.</p>
+        </div>
+        <div class="fact">
+          <h3>A reset proves it stopped</h3>
+          <p>At a deadline or worker failure the broker resets the worker. Other requests on that worker may fail too; there is no transparent replay.</p>
+        </div>
+        <div class="fact">
+          <h3>Disconnects stay contained</h3>
+          <p>A queued disconnect removes its request. An executing one drains within its original deadline and never resets other users’ work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="workers" class="sec" aria-labelledby="workers-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="workers-title">Chat, images, speech</h2>
+        <p class="sec__key"><code>kind: openai</code><br><code>kind: sdapi</code><br><code>kind: stt</code></p>
+        <p class="sec__lead">Three worker kinds share one scheduler. Each keeps its own engine and runtime; Avifors decides only when it runs.</p>
+      </header>
+
+      <div class="kinds">
+        <article class="kind">
+          <p class="kind__id"><code>openai</code><span>default</span></p>
+          <div class="kind__body">
+            <h3>vLLM text and any HTTP worker you define</h3>
+            <p>JSON and multipart bodies pass through without sampling rewrites. Request and trace context is forwarded; worker credentials, cookies and lifecycle endpoints are not.</p>
+          </div>
+          <ul class="kind__routes" role="list" aria-label="Routes">
+            <li><code>/v1/chat/completions</code></li>
+            <li><code>/v1/completions</code></li>
+            <li>or the <code>/v1/</code> <code>paths</code> you register</li>
+          </ul>
+        </article>
+        <article class="kind">
+          <p class="kind__id"><code>sdapi</code></p>
+          <div class="kind__body">
+            <h3>Images through a Stable Diffusion API adapter</h3>
+            <p>OpenAI-shaped requests with n=1 and URL output, sent to an engine’s <code>/sdapi/v1/txt2img</code>, such as stable-diffusion.cpp. PNGs are written atomically before the response, and authenticated reads keep working while the worker is unloaded, isolated by user, for 24 hours by default.</p>
+          </div>
+          <ul class="kind__routes" role="list" aria-label="Routes">
+            <li><code>/v1/images/generations</code></li>
+            <li><code>/generated/NAME.png</code></li>
+          </ul>
+        </article>
+        <article class="kind">
+          <p class="kind__id"><code>stt</code></p>
+          <div class="kind__body">
+            <h3>Multilingual speech, as durable jobs</h3>
+            <p>Recordings up to 8 hours and 2 GiB by default, checkpointed in chunks of up to 30 seconds that each run as an ordinary GPU job, so a long file never extends a lease. Poll, cancel, retry, and download text, JSON, SRT or VTT. Subtitle cues follow chunk boundaries, not word alignment, so treat them as drafts.</p>
+          </div>
+          <ul class="kind__routes" role="list" aria-label="Routes">
+            <li><code>/v1/audio/transcriptions/jobs</code></li>
+            <li><code>/v1/audio/transcriptions</code></li>
+          </ul>
+        </article>
+        <article class="kind kind--profile">
+          <p class="kind__id"><code>render_sizes</code><span>sdapi profile</span></p>
+          <div class="kind__body">
+            <h3>FLUX.2 Klein 9B FP8 render profiles</h3>
+            <p>The example profile renders legacy 512 and 640 square requests at 1024 and returns exactly the size asked for. On one qualification run, a 16 GiB RTX 4060 Ti produced a 1024×1024 image in 25.02 seconds, with 10,922 MiB sampled peak device memory. One run, not a benchmark.</p>
+          </div>
+          <ul class="kind__routes" role="list" aria-label="Files">
+            <li><code>FLUX2.md</code></li>
+            <li><code>deploy/flux2/</code></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gateway" class="sec" aria-labelledby="gateway-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="gateway-title">Drop-in behind your gateway</h2>
+        <p class="sec__key"><code>host: 127.0.0.1</code><br><code>port: 8000</code></p>
+        <p class="sec__lead">Clients keep the OpenAI-compatible routes they already call. Your gateway keeps TLS and routing; Avifors sits behind it and the workers stay on loopback.</p>
+      </header>
+
+      <ul class="track topo" role="list" aria-label="Request path, from client to worker">
+        <li class="topo__node"><span class="topo__name">Clients</span><span class="topo__meta">OpenAI SDKs, curl</span></li>
+        <li class="topo__node"><span class="topo__name">Your gateway</span><span class="topo__meta">TLS, routing, catalog</span></li>
+        <li class="topo__node topo__node--self"><span class="topo__name">avifors</span><span class="topo__meta">127.0.0.1:8000</span></li>
+        <li class="topo__node"><span class="topo__name">Workers on loopback</span><span class="topo__meta">:18000 text<br>:1234 image<br>:18002 speech</span></li>
+      </ul>
+
+      <div class="track routes-grid">
+        <dl class="routes">
+          <div><dt><code>POST /v1/chat/completions</code></dt><dd>Text, streamed or not.</dd></div>
+          <div><dt><code>POST /v1/images/generations</code></dt><dd>Images from an <code>sdapi</code> worker.</dd></div>
+          <div><dt><code>POST /v1/audio/transcriptions/jobs</code></dt><dd>Durable speech jobs; poll by job id.</dd></div>
+          <div><dt><code>GET /v1/models</code></dt><dd>Catalog and health. Never loads a model.</dd></div>
+          <div><dt><code>GET /backend/NAME/v1/models</code></dt><dd>Scoped health for one worker.</dd></div>
+          <div><dt><code>GET /metrics</code></dt><dd>Queue and lifecycle counters.</dd></div>
+          <div><dt><code>GET /admin/state</code></dt><dd>Residency and aggregate queues, with the admin key.</dd></div>
+        </dl>
+        <div class="leaves">
+          <h3 class="leaves__title">What it leaves to you</h3>
+          <ul role="list">
+            <li><strong>Models.</strong> Avifors does not download weights. Engines, weights and NVIDIA drivers are installed separately.</li>
+            <li><strong>Token scheduling.</strong> vLLM keeps its own scheduler; Avifors does not replace it.</li>
+            <li><strong>Other GPU users.</strong> It controls its configured workers and cannot arbitrate anything else on the card.</li>
+            <li><strong>Restarts.</strong> Pending requests are not persisted and fail when the broker restarts.</li>
+            <li><strong>Your hardware.</strong> Real performance, GPU release and sleep compatibility have to be tested on the target GPU.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="sec" aria-labelledby="install-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="install-title">Install and check a config</h2>
+        <p class="sec__key"><code>requires-python &gt;=3.11</code></p>
+        <p class="sec__lead">Linux is recommended for production. The broker needs aiohttp, PyYAML and Pillow; engines, weights and drivers come from you. Adapt the example’s model ids, paths and worker commands before the first run.</p>
+      </header>
+
+      <div class="track install">
+        <div class="install__col">
+          <div class="code">
+            <div class="code__bar"><span>shell</span><button class="copy" type="button" data-copy="#code-install">Copy</button></div>
+<pre><code id="code-install">git clone https://github.com/Team-AER/avifors.git
+cd avifors
+python3 -m venv .venv
+.venv/bin/pip install .
+export AVIFORS_USER_KEY='replace-with-a-long-secret'
+export AVIFORS_ADMIN_KEY='replace-with-another-secret'
+.venv/bin/avifors --config examples/config.yaml --check
+.venv/bin/avifors --config examples/config.yaml</code></pre>
+          </div>
+          <p class="small"><code>--check</code> validates the file and prints the model count and policy, for example <code>Valid configuration: 2 models, policy=latency</code>.</p>
+
+          <div class="code">
+            <div class="code__bar"><span>systemd</span><button class="copy" type="button" data-copy="#code-systemd">Copy</button></div>
+<pre><code id="code-systemd">sudo cp deploy/avifors.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now avifors.service</code></pre>
+          </div>
+          <p class="small">The unit expects the broker in <code>/opt/avifors/.venv</code> and the config at <code>/etc/avifors/config.yaml</code>, runs as a dedicated <code>avifors</code> user and reads keys from <code>/etc/avifors/secrets.env</code>. Give workers <code>Restart=no</code> and no boot enablement: only the broker starts at boot, with models unloaded. <a href="https://github.com/Team-AER/avifors/blob/main/deploy/README.md">Read the deployment notes</a></p>
+        </div>
+
+        <div class="code install__config">
+          <div class="code__bar"><span>examples/config.yaml, trimmed</span><button class="copy" type="button" data-copy="#code-config">Copy</button></div>
+<pre><code id="code-config">server:
+  host: 127.0.0.1
+  port: 8000
+  policy: latency # latency | fifo | fair | throughput
+  max_pending: 64
+  admin_key_env: AVIFORS_ADMIN_KEY
+  store: ./local/images
+  public_base: http://localhost:8000/generated
+  drain_margin: 15
+users:
+  - name: example-user
+    key_env: AVIFORS_USER_KEY
+    models: ["*"]
+    max_pending: 8
+defaults:
+  idle_timeout: 300
+  max_hold: 300
+  max_runtime: 300
+  queue_timeout: 300
+  activation_timeout: 180
+  release_timeout: 15
+models:
+  - id: your-text-model
+    upstream: http://127.0.0.1:18000
+    start: [sudo, /usr/local/sbin/avifors-worker, start, text]
+    stop: [sudo, /usr/local/sbin/avifors-worker, stop, text]
+    verify_stopped: [sudo, /usr/local/sbin/avifors-worker, verify, text]
+    concurrency: 4
+    parameters: {route: text}
+  - id: your-image-model
+    kind: sdapi
+    upstream: http://127.0.0.1:1234
+    health_path: /v1/models
+    paths: [/v1/images/generations]
+    start: [sudo, /usr/local/sbin/avifors-worker, start, image]
+    stop: [sudo, /usr/local/sbin/avifors-worker, stop, image]
+    verify_stopped: [sudo, /usr/local/sbin/avifors-worker, verify, image]
+    concurrency: 1
+    parameters:
+      route: image
+      default_size: 640x640</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--cta" aria-labelledby="cta-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <h2 id="cta-title">Put one GPU on a schedule.</h2>
+        <p class="sec__lead">Avifors is MIT licensed. Inference engines, model weights and vendor dependencies keep their own licences, and none of them ship in the repository.</p>
+      </header>
+      <div class="track cta__actions">
+        <a class="btn btn--primary" href="https://github.com/Team-AER/avifors">Get the code</a>
+        <a class="btn btn--quiet" href="https://github.com/Team-AER/avifors#readme">Read the README</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Avifors</h2>
+      <p>Demand-loaded GPU inference with bounded leases and multi-user scheduling. There is no hosted version: you run it on your own card.</p>
+      <ul role="list">
+        <li><a href="https://github.com/Team-AER/avifors">Source on GitHub</a></li>
+        <li><a href="https://github.com/Team-AER/avifors/blob/main/LICENSE">MIT licence</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/hedwig/">Hedwig</a></li>
+        <li><a href="/athena/">Athena Sandbox</a></li>
+        <li><a href="/erised/">Erised</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Avifors is MIT licensed.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/avifors/page.js" defer></script>
+</body>
+</html>

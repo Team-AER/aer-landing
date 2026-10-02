@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quill — Team AER</title>
+<meta name="description" content="Quill turns a meeting recording into a speaker-attributed transcript, key slides and grounded notes with decisions and action items, each tied to the moment it was said. Self-hosted, CPU-only on the app side, MIT.">
+<meta property="og:title" content="Quill — meeting transcription and grounded notes">
+<meta property="og:description" content="Record the meeting. Keep the decisions. Speaker-attributed transcripts, key slides and notes tied to timestamps, self-hosted by Team AER.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0D1218">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23007AFF'/%3E%3Cpath d='M22.5 7.5c-5.5.5-10 5-11.5 11.5l-1.5 5.5 1.3.3 1.3-3.3c4.5-.3 8.2-3.6 9.2-8.2-1.4.6-2.9.9-4.3.9 2.1-1.5 3.7-3.7 5.5-6.7z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/quill/style.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-quill" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#007AFF"/><path d="M22.5 7.5c-5.5.5-10 5-11.5 11.5l-1.5 5.5 1.3.3 1.3-3.3c4.5-.3 8.2-3.6 9.2-8.2-1.4.6-2.9.9-4.3.9 2.1-1.5 3.7-3.7 5.5-6.7z" fill="#fff"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></symbol>
+  <symbol id="i-back10" viewBox="0 0 24 24"><path d="M1 4v6h6"/><path d="M3.5 15a9 9 0 1 0 2.1-9.4L1 10"/></symbol>
+  <symbol id="i-fwd10" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.5 15a9 9 0 1 1-2.1-9.4L23 10"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></symbol>
+  <symbol id="i-pip" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="12" y="11" width="8" height="6" rx="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-fullscreen" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-library" viewBox="0 0 24 24"><path d="M16 6l4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z" fill="currentColor" stroke="none"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-listchecks" viewBox="0 0 24 24"><path d="M3 17l2 2 4-4"/><path d="M3 7l2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="M22 8l-6 4 6 4z"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-audio" viewBox="0 0 24 24"><path d="M2 10v3M6 6v11M10 3v18M14 8v7M18 5v13M22 10v3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></symbol>
+  <symbol id="i-loader" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.2-8.6"/></symbol>
+  <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 13h.01M18 13h.01M8 17h8"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></symbol>
+  <symbol id="i-enter" viewBox="0 0 24 24"><path d="M9 10l-5 5 5 5"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="nav__brand" href="/quill/"><svg class="nav__mark" aria-hidden="true" focusable="false"><use href="#i-quill"/></svg><span>Quill</span></a>
+    <a class="nav__cta nav__cta--bar" href="https://quill.brainfc.uk">Open Quill</a>
+    <button class="nav__toggle" data-nav-toggle aria-controls="menu" aria-expanded="false" aria-label="Menu"><span></span><span></span></button>
+    <nav id="menu" class="nav__menu" hidden aria-label="Sections">
+      <a href="#what">What you get</a>
+      <a href="#how">How it works</a>
+      <a href="#exports">Exports</a>
+      <a href="#selfhost">Self-host</a>
+      <a class="nav__cta" href="https://quill.brainfc.uk">Open Quill</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero__copy">
+      <h1 class="hero__title">Record the meeting.<br>Keep the decisions.</h1>
+      <p class="hero__lede">Quill turns a recording into a speaker-attributed transcript, key slides, and notes with decisions and action items, each tied to the moment it was said.</p>
+      <div class="hero__cta">
+        <a class="btn-primary" href="https://quill.brainfc.uk">Open Quill</a>
+        <a class="btn-quiet" href="https://github.com/Team-AER/quill">Get the code</a>
+      </div>
+    </div>
+
+    <figure class="reader" data-reader data-duration="2832" aria-labelledby="reader-cap" style="--pos:26.73%">
+      <div class="win">
+        <div class="win__bar" aria-hidden="true"><i></i><i></i><i></i><span class="win__url">quill.brainfc.uk/m/launch-readiness-review</span></div>
+        <div class="q-app">
+
+          <div class="q-rail" aria-hidden="true">
+            <div class="q-brand"><svg class="q-mark"><use href="#i-quill"/></svg><span>Quill</span></div>
+            <div class="q-jump"><svg class="ic ic--14"><use href="#i-search"/></svg><span>Search or jump to…</span><kbd>⌘K</kbd></div>
+            <div class="q-nav">
+              <span class="is-cur"><svg class="ic"><use href="#i-library"/></svg>Library</span>
+              <span><svg class="ic"><use href="#i-search"/></svg>Search</span>
+              <span><svg class="ic"><use href="#i-settings"/></svg>Settings</span>
+            </div>
+            <div class="q-railsec">Processing</div>
+            <div class="q-proc"><span class="q-proc__top"><i></i><span>Design sync</span><b>37%</b></span><span class="q-progress q-progress--thin"><i style="width:37%"></i></span></div>
+            <div class="q-railsec">Recent</div>
+            <div class="q-recent"><span class="is-cur">Launch readiness review</span><span>Hiring loop retro</span><span>Support rota planning</span><span>Budget check-in</span></div>
+          </div>
+
+          <div class="q-sheet">
+            <div class="q-mhead">
+              <span class="q-iconbtn" aria-hidden="true"><svg class="ic"><use href="#i-back"/></svg></span>
+              <div class="q-mtitle">
+                <p class="q-h1">Launch readiness review</p>
+                <div class="q-sub">
+                  <span>Today 10:04</span><span>47 min</span>
+                  <span class="q-withicon"><svg class="ic ic--12" aria-hidden="true"><use href="#i-video"/></svg>Video</span>
+                  <span class="q-stack" role="img" aria-label="4 speakers: Maya Chen, Tomás Rivera, Priya Nair, Jonas Weber"><i class="q-av q-av--18" style="--c:var(--spk-0)"></i><i class="q-av q-av--18" style="--c:var(--spk-1)"></i><i class="q-av q-av--18" style="--c:var(--spk-2)"></i><i class="q-av q-av--18" style="--c:var(--spk-3)"></i></span>
+                </div>
+              </div>
+              <div class="q-mactions" aria-hidden="true">
+                <span class="q-btn q-btn--sm"><svg class="ic ic--14"><use href="#i-users"/></svg>Share</span>
+                <span class="q-iconbtn"><svg class="ic"><use href="#i-link"/></svg></span>
+                <span class="q-iconbtn"><svg class="ic"><use href="#i-download"/></svg></span>
+                <span class="q-iconbtn"><svg class="ic"><use href="#i-more"/></svg></span>
+              </div>
+            </div>
+
+            <div class="q-mbody">
+              <div class="q-left">
+
+                <div class="q-player">
+                  <div class="q-frame" aria-hidden="true">
+                    <div class="q-slide">
+                      <span class="q-slide__kicker">Launch readiness</span>
+                      <span class="q-slide__title">Pricing page</span>
+                      <div class="q-slide__plans">
+                        <span class="q-plan"><b>Monthly</b><em>$12</em><small>per month</small></span>
+                        <span class="q-plan q-plan--hot"><b>Annual</b><em>$96</em><small>per year, save 33%</small></span>
+                      </div>
+                      <span class="q-slide__foot">Cancel any time. Full refund within 14 days.</span>
+                    </div>
+                  </div>
+                  <div class="q-vc">
+                    <div class="q-scrub" data-seek-track aria-hidden="true">
+                      <div class="q-scrub__rail">
+                        <i class="q-scrub__fill"></i>
+                        <i class="q-scrub__tick" style="left:14.12%"></i><i class="q-scrub__tick" style="left:31.6%"></i><i class="q-scrub__tick" style="left:57.56%"></i><i class="q-scrub__tick" style="left:83.69%"></i>
+                        <i class="q-scrub__knob"></i>
+                      </div>
+                    </div>
+                    <div class="q-ctl" aria-hidden="true">
+                      <span class="q-ctl__play"><svg class="ic ic--14"><use href="#i-play"/></svg></span>
+                      <span class="q-ctl__btn"><svg class="ic"><use href="#i-back10"/></svg></span>
+                      <span class="q-ctl__btn"><svg class="ic"><use href="#i-fwd10"/></svg></span>
+                      <span class="q-ctl__time"><b data-time>12:37</b> <span>/ 47:12</span></span>
+                      <span class="q-ctl__chapter" data-chapter>Pricing</span>
+                      <span class="q-spacer"></span>
+                      <span class="q-ctl__rate">1.25×</span>
+                      <span class="q-ctl__btn"><svg class="ic"><use href="#i-volume"/></svg></span>
+                      <span class="q-ctl__btn q-hide-sm"><svg class="ic"><use href="#i-pip"/></svg></span>
+                      <span class="q-ctl__btn"><svg class="ic"><use href="#i-fullscreen"/></svg></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="q-map" role="group" aria-label="Meeting map (replica)">
+                  <div class="q-map__labels" aria-hidden="true">
+                    <span class="q-ml q-ml--head">Chapters</span>
+                    <span class="q-ml"><i style="background:var(--spk-0)"></i><span>Maya<span class="q-ml__last"> Chen</span></span></span>
+                    <span class="q-ml"><i style="background:var(--spk-1)"></i><span>Tomás<span class="q-ml__last"> Rivera</span></span></span>
+                    <span class="q-ml"><i style="background:var(--spk-2)"></i><span>Priya<span class="q-ml__last"> Nair</span></span></span>
+                    <span class="q-ml"><i style="background:var(--spk-3)"></i><span>Jonas<span class="q-ml__last"> Weber</span></span></span>
+                    <span class="q-ml q-ml--head q-ml--moments">Key moments</span>
+                  </div>
+                  <div class="q-map__track" data-seek-track>
+                    <div class="q-mt q-mt--chapters">
+                      <button type="button" class="q-chapter" data-seek="0" style="left:0;width:calc(14.12% - 2px)"><span>Status</span></button>
+                      <button type="button" class="q-chapter is-cur" data-seek="400" style="left:14.12%;width:calc(17.48% - 2px)"><span>Pricing</span></button>
+                      <button type="button" class="q-chapter" data-seek="895" style="left:31.6%;width:calc(25.96% - 2px)"><span>Support rota</span></button>
+                      <button type="button" class="q-chapter" data-seek="1630" style="left:57.56%;width:calc(26.13% - 2px)"><span>Open bugs</span></button>
+                      <button type="button" class="q-chapter" data-seek="2370" style="left:83.69%;width:calc(16.31% - 2px)"><span>Decision</span></button>
+                    </div>
+                    <div class="q-mt q-lane" aria-hidden="true" style="--c:var(--spk-0)"><i class="q-lane__rail"></i><i class="q-band" style="left:0%;width:2.6%"></i><i class="q-band" style="left:5%;width:4%"></i><i class="q-band" style="left:14%;width:4%"></i><i class="q-band" style="left:24.5%;width:1.2%"></i><i class="q-band" style="left:27.35%;width:0.25%"></i><i class="q-band" style="left:28%;width:1%"></i><i class="q-band" style="left:33%;width:3%"></i><i class="q-band" style="left:43%;width:4.5%"></i><i class="q-band" style="left:57%;width:2%"></i><i class="q-band" style="left:69%;width:2%"></i><i class="q-band" style="left:84%;width:4%"></i><i class="q-band" style="left:95%;width:5%"></i></div>
+                    <div class="q-mt q-lane" aria-hidden="true" style="--c:var(--spk-1)"><i class="q-lane__rail"></i><i class="q-band" style="left:2.6%;width:2.4%"></i><i class="q-band" style="left:9%;width:3.4%"></i><i class="q-band" style="left:18%;width:5%"></i><i class="q-band" style="left:25.7%;width:0.65%"></i><i class="q-band" style="left:26.6%;width:0.35%"></i><i class="q-band" style="left:50%;width:4.25%"></i><i class="q-band" style="left:62%;width:4%"></i><i class="q-band" style="left:80%;width:4%"></i><i class="q-band" style="left:88%;width:5%"></i></div>
+                    <div class="q-mt q-lane" aria-hidden="true" style="--c:var(--spk-2)"><i class="q-lane__rail"></i><i class="q-band" style="left:12.4%;width:1.6%"></i><i class="q-band" style="left:23%;width:1.5%"></i><i class="q-band" style="left:26.35%;width:0.25%"></i><i class="q-band" style="left:27.2%;width:0.15%"></i><i class="q-band" style="left:29%;width:4%"></i><i class="q-band" style="left:36%;width:3%"></i><i class="q-band" style="left:47.5%;width:2.5%"></i><i class="q-band" style="left:66%;width:3%"></i><i class="q-band" style="left:74%;width:3%"></i><i class="q-band" style="left:93%;width:2%"></i></div>
+                    <div class="q-mt q-lane" aria-hidden="true" style="--c:var(--spk-3)"><i class="q-lane__rail"></i><i class="q-band" style="left:26.95%;width:0.25%"></i><i class="q-band" style="left:27.6%;width:0.4%"></i><i class="q-band" style="left:39%;width:4%"></i><i class="q-band" style="left:54.25%;width:2.75%"></i><i class="q-band" style="left:59%;width:3%"></i><i class="q-band" style="left:71%;width:3%"></i><i class="q-band" style="left:77%;width:3%"></i></div>
+                    <div class="q-mt q-mt--moments" aria-hidden="true">
+                      <span class="q-marker" style="left:17.48%"><i class="q-thumb q-thumb--a"></i></span>
+                      <span class="q-marker" style="left:43.43%"><i class="q-thumb q-thumb--b"></i></span>
+                      <span class="q-marker" style="left:65.68%"><i class="q-thumb q-thumb--c"></i></span>
+                      <span class="q-marker" style="left:87.04%"><i class="q-thumb q-thumb--d"></i></span>
+                    </div>
+                    <i class="q-played" aria-hidden="true"></i><i class="q-head" aria-hidden="true"></i>
+                  </div>
+                </div>
+
+                <div class="q-tabs" aria-hidden="true">
+                  <span class="is-sel">Overview</span><span>Notes <b>5</b></span><span>Action items <b>4</b></span><span>Key moments <b>4</b></span><span>Speakers <b>4</b></span>
+                </div>
+
+                <div class="q-ov">
+                  <div class="q-card q-card--tldr">
+                    <p class="q-ovhead"><svg class="ic ic--13" aria-hidden="true"><use href="#i-sparkles"/></svg>TL;DR</p>
+                    <ul class="q-tldr">
+                      <li>Launch holds at 14 Oct; support and legal have no blockers.</li>
+                      <li>Pricing page is on staging; the refund line moves under the button.</li>
+                      <li>Two bugs block launch, both owned by Jonas.</li>
+                    </ul>
+                  </div>
+                  <div class="q-card">
+                    <p class="q-ovhead">Talk time</p>
+                    <div class="q-talkbar" aria-hidden="true"><i style="flex-grow:.34;background:var(--spk-0)"></i><i style="flex-grow:.29;background:var(--spk-1)"></i><i style="flex-grow:.21;background:var(--spk-2)"></i><i style="flex-grow:.16;background:var(--spk-3)"></i></div>
+                    <ul class="q-legend" role="list">
+                      <li><i style="background:var(--spk-0)"></i><span>Maya Chen</span><b>34%</b><span class="q-legend__tm">16:02</span></li>
+                      <li><i style="background:var(--spk-1)"></i><span>Tomás Rivera</span><b>29%</b><span class="q-legend__tm">13:41</span></li>
+                      <li><i style="background:var(--spk-2)"></i><span>Priya Nair</span><b>21%</b><span class="q-legend__tm">9:55</span></li>
+                      <li><i style="background:var(--spk-3)"></i><span>Jonas Weber</span><b>16%</b><span class="q-legend__tm">7:34</span></li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="q-rightcell">
+                <aside class="q-right" aria-label="Transcript (replica)">
+                  <div class="q-txhead">
+                    <div class="q-row"><p class="q-h2">Transcript</p><span class="q-count">412 lines</span><span class="q-spacer"></span><span class="q-follow"><svg class="ic ic--13" aria-hidden="true"><use href="#i-cross"/></svg>Following</span></div>
+                    <div class="q-search" aria-hidden="true"><svg class="ic ic--14"><use href="#i-search"/></svg><span>Search transcript</span><kbd>/</kbd></div>
+                    <div class="q-chips" role="group" aria-label="Show speakers">
+                      <button type="button" class="q-chip" aria-pressed="true" data-spk-chip="S1" style="--c:var(--spk-0)"><i class="q-av q-av--18" aria-hidden="true">MC</i>Maya</button>
+                      <button type="button" class="q-chip" aria-pressed="true" data-spk-chip="S2" style="--c:var(--spk-1)"><i class="q-av q-av--18" aria-hidden="true">TR</i>Tomás</button>
+                      <button type="button" class="q-chip" aria-pressed="true" data-spk-chip="S3" style="--c:var(--spk-2)"><i class="q-av q-av--18" aria-hidden="true">PN</i>Priya</button>
+                      <button type="button" class="q-chip" aria-pressed="true" data-spk-chip="S4" style="--c:var(--spk-3)"><i class="q-av q-av--18" aria-hidden="true">JW</i>Jonas</button>
+                      <button type="button" class="q-chip q-chip--reset" data-spk-reset hidden>Show all</button>
+                    </div>
+                  </div>
+                  <div class="q-txscroll">
+                    <div class="q-line q-line--start" data-spk="S1" style="--i:0">
+                      <button type="button" class="q-l" data-seek="724">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-0)" aria-hidden="true">MC</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-0)">Maya Chen <b class="q-t"><span class="sr-only">Play from </span>12:04</b></span><span class="q-txt">Back to the pricing page. Tomás, is the annual toggle done?</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line q-line--start" data-spk="S2" style="--i:1">
+                      <button type="button" class="q-l" data-seek="729">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-1)" aria-hidden="true">TR</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-1)">Tomás Rivera <b class="q-t"><span class="sr-only">Play from </span>12:09</b></span><span class="q-txt">Done, and on staging since this morning. Monthly and annual, with the saving shown next to the toggle.</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line" data-spk="S2" style="--i:2">
+                      <button type="button" class="q-l" data-seek="741">
+                        <span class="q-l__gutter"><b class="q-t"><span class="sr-only">Play from </span>12:21</b></span>
+                        <span class="q-l__body"><span class="sr-only">Tomás Rivera: </span><span class="q-txt">Legal still wants the refund line under the button, not in the footer.</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line q-line--start" data-spk="S3" style="--i:3">
+                      <button type="button" class="q-l" data-seek="748">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-2)" aria-hidden="true">PN</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-2)">Priya Nair <b class="q-t"><span class="sr-only">Play from </span>12:28</b></span><span class="q-txt">Then it moves. I’d rather lose a line of copy than a signup.</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line q-line--start is-active" data-spk="S2" style="--i:4" aria-current="true">
+                      <button type="button" class="q-l" data-seek="754">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-1)" aria-hidden="true">TR</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-1)">Tomás Rivera <b class="q-t"><span class="sr-only">Play from </span>12:34</b></span><span class="q-txt">Agreed. I’ll move it today and ask legal for a final read.</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line q-line--start" data-spk="S4" style="--i:5">
+                      <button type="button" class="q-l" data-seek="764">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-3)" aria-hidden="true">JW</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-3)">Jonas Weber <b class="q-t"><span class="sr-only">Play from </span>12:44</b></span><span class="q-txt">Decision: the refund line goes under the button. Priya, can you own the legal sign-off?</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line q-line--start" data-spk="S3" style="--i:6">
+                      <button type="button" class="q-l" data-seek="771">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-2)" aria-hidden="true">PN</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-2)">Priya Nair <b class="q-t"><span class="sr-only">Play from </span>12:51</b></span><span class="q-txt">Yes. Thursday at the latest.</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line q-line--start" data-spk="S1" style="--i:7">
+                      <button type="button" class="q-l" data-seek="775">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-0)" aria-hidden="true">MC</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-0)">Maya Chen <b class="q-t"><span class="sr-only">Play from </span>12:55</b></span><span class="q-txt">Good, that settles the refund line. Two more minutes on pricing, then the support rota.</span></span>
+                      </button>
+                    </div>
+                    <div class="q-line q-line--start" data-spk="S4" style="--i:8">
+                      <button type="button" class="q-l" data-seek="784">
+                        <span class="q-l__gutter"><i class="q-av q-av--28" style="--c:var(--spk-3)" aria-hidden="true">JW</i></span>
+                        <span class="q-l__body"><span class="q-who" style="color:var(--spk-3)">Jonas Weber <b class="q-t"><span class="sr-only">Play from </span>13:04</b></span><span class="q-txt">Before the rota: the invite-link bug touches the pricing page too, so I’ll test them together.</span></span>
+                      </button>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption id="reader-cap" class="reader__cap">The meeting page at 12:37 of a fictional meeting: the player with chapter ticks, the meeting map with a lane per speaker and key-frame pins, the Overview tab, and the follow-along transcript. Rebuilt in HTML from the app’s components, not a screenshot. Click a line or a chapter to seek; click a speaker chip to filter.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="what" class="get">
+  <div class="wrap">
+    <h2 class="sec__h">What you get from one upload</h2>
+    <p class="sec__lede">Drop a recording and read it back like a document: who said what, what was on screen, what was decided and who owns what.</p>
+
+    <div class="feat">
+      <div class="feat__text">
+        <h3>A transcript that knows who is talking</h3>
+        <p>Speaker diarization runs on CPU with nvidia/Nemotron-3-Diarization and tells up to 8 voices apart. Each speaker turn is transcribed on its own, so the words stay with the voice. Rename a speaker or merge two, and every line, lane and avatar follows.</p>
+      </div>
+      <div class="feat__vis">
+        <div class="q-panel" role="img" aria-label="The Speakers tab: four rows with avatar, name, label, talk time, line count and a talk-time bar in each speaker’s colour, plus a merge control.">
+          <div class="q-tabs"><span>Overview</span><span>Notes <b>5</b></span><span>Action items <b>4</b></span><span>Key moments <b>4</b></span><span class="is-sel">Speakers <b>4</b></span></div>
+          <p class="q-sech">Speakers <span>· 4</span></p>
+          <div class="q-spk"><i class="q-av q-av--36" style="--c:var(--spk-0)">MC</i><div class="q-spk__main"><span class="q-spk__name">Maya Chen <svg class="ic ic--12"><use href="#i-pencil"/></svg></span><span class="q-spk__meta"><span class="q-chipflat">S1</span><span>16:02 · 34%</span><span>138 lines</span></span><span class="q-spk__bar"><i style="width:34%;background:var(--spk-0)"></i></span></div><span class="q-iconbtn"><svg class="ic"><use href="#i-merge"/></svg></span></div>
+          <div class="q-spk"><i class="q-av q-av--36" style="--c:var(--spk-1)">TR</i><div class="q-spk__main"><span class="q-spk__name">Tomás Rivera <svg class="ic ic--12"><use href="#i-pencil"/></svg></span><span class="q-spk__meta"><span class="q-chipflat">S2</span><span>13:41 · 29%</span><span>117 lines</span></span><span class="q-spk__bar"><i style="width:29%;background:var(--spk-1)"></i></span></div><span class="q-iconbtn"><svg class="ic"><use href="#i-merge"/></svg></span></div>
+          <div class="q-spk"><i class="q-av q-av--36" style="--c:var(--spk-2)">PN</i><div class="q-spk__main"><span class="q-spk__name">Priya Nair <svg class="ic ic--12"><use href="#i-pencil"/></svg></span><span class="q-spk__meta"><span class="q-chipflat">S3</span><span>9:55 · 21%</span><span>92 lines</span></span><span class="q-spk__bar"><i style="width:21%;background:var(--spk-2)"></i></span></div><span class="q-iconbtn"><svg class="ic"><use href="#i-merge"/></svg></span></div>
+          <div class="q-spk"><i class="q-av q-av--36" style="--c:var(--spk-3)">JW</i><div class="q-spk__main"><span class="q-spk__name">Jonas Weber <svg class="ic ic--12"><use href="#i-pencil"/></svg></span><span class="q-spk__meta"><span class="q-chipflat">S4</span><span>7:34 · 16%</span><span>65 lines</span></span><span class="q-spk__bar"><i style="width:16%;background:var(--spk-3)"></i></span></div><span class="q-iconbtn"><svg class="ic"><use href="#i-merge"/></svg></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat feat--flip">
+      <div class="feat__text">
+        <h3>Key slides, with the text on them</h3>
+        <p>Scene changes and transcript cues pick the frames worth keeping. A vision model reads each one, so the words on a slide or a shared screen are searchable like anything that was said, and every frame opens at its moment in the recording.</p>
+      </div>
+      <div class="feat__vis">
+        <div class="q-panel q-panel--frame" role="img" aria-label="A key moment at 8:15: the pricing slide, its caption, two key facts and the text read from the slide.">
+          <div class="q-fside__top"><span class="q-tslink">8:15</span><span class="q-chipflat">Slide</span><span class="q-chipflat">Relevance 3/3</span><span class="q-spacer"></span><span class="q-fside__count">1 / 4</span></div>
+          <p class="q-fside__title">Pricing page draft with monthly and annual plans</p>
+          <div class="q-fcard">
+            <span class="q-fcard__thumb"><span class="q-slide q-slide--thumb"><span class="q-slide__kicker">Launch readiness</span><span class="q-slide__title">Pricing page</span><span class="q-slide__plans"><span class="q-plan"><b>Monthly</b><em>$12</em></span><span class="q-plan q-plan--hot"><b>Annual</b><em>$96</em></span></span></span><span class="q-fcard__ts">8:15</span><span class="q-fcard__kind">slide</span></span>
+          </div>
+          <div class="q-fside">
+            <p class="q-fside__label">Key facts</p>
+            <ul class="q-fside__facts"><li>The annual plan saves 33%</li><li>The refund window is 14 days</li></ul>
+            <p class="q-fside__label">Text on screen</p>
+            <pre class="q-fside__pre">Pricing page
+Monthly $12 per month
+Annual $96 per year, save 33%
+Cancel any time. Full refund within 14 days.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat">
+      <div class="feat__text">
+        <h3>Notes grounded to a timestamp</h3>
+        <p>TL;DR, summary, chapters, decisions and open questions, each pointing at the second it came from. When Quill cannot match a note to the transcript it says so instead of pretending.</p>
+        <h3 class="feat__h3b">Action items with owners</h3>
+        <p>Every task carries who said they’d do it, when it is due, and the moment it was agreed. Tick them off in the browser, or copy the list as a Markdown checklist.</p>
+      </div>
+      <div class="feat__vis feat__vis--stack">
+        <div class="q-panel" role="img" aria-label="The Notes tab: three decisions and two open questions, each with a timestamp. One open question is flagged Not found in transcript.">
+          <div class="q-tabs"><span>Overview</span><span class="is-sel">Notes <b>5</b></span><span>Action items <b>4</b></span><span>Key moments <b>4</b></span><span>Speakers <b>4</b></span></div>
+          <p class="q-sech"><svg class="ic ic--12 q-sech__ic"><use href="#i-check"/></svg>Decisions <span>· 3</span></p>
+          <div class="q-list">
+            <div class="q-lrow"><span class="q-tslink">12:44</span><span class="q-lrow__body">The refund line moves under the buy button, not the footer.</span></div>
+            <div class="q-lrow"><span class="q-tslink">22:18</span><span class="q-lrow__body">The support rota starts the Monday before launch.</span></div>
+            <div class="q-lrow"><span class="q-tslink">41:05</span><span class="q-lrow__body">The launch date holds at 14 Oct.</span></div>
+          </div>
+          <p class="q-sech"><svg class="ic ic--12 q-sech__ic"><use href="#i-help"/></svg>Open questions and risks <span>· 2</span></p>
+          <div class="q-list">
+            <div class="q-lrow"><span class="q-tslink">9:52</span><span class="q-lrow__body">Does the annual price need a separate VAT line for EU customers?</span></div>
+            <div class="q-lrow"><span class="q-chipflat">–:–</span><span class="q-lrow__body">Marketing may not have the launch email ready if copy slips again.<span class="q-lrow__meta"><span class="q-flag"><svg class="ic ic--11"><use href="#i-alert"/></svg>Not found in transcript</span></span></span></div>
+          </div>
+        </div>
+        <div class="q-panel" role="group" aria-label="Action items, a working example">
+          <p class="q-sech"><svg class="ic ic--12 q-sech__ic" aria-hidden="true"><use href="#i-listchecks"/></svg>Action items <span data-done-count>· 4</span><span class="q-spacer"></span><button type="button" class="q-ghost" data-copy-checklist><svg class="ic ic--12" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy checklist</span></button></p>
+          <div class="q-list">
+            <label class="q-lrow q-action"><input type="checkbox" class="q-check"><span class="q-check__box" aria-hidden="true"><svg class="ic ic--11"><use href="#i-check"/></svg></span><span class="q-lrow__body"><span class="q-task">Move the refund line under the buy button and send the page to legal</span><span class="q-lrow__meta"><span class="q-owner"><i class="q-av q-av--16" style="--c:var(--spk-1)" aria-hidden="true">TR</i>Tomás Rivera</span><span>Due 2 Oct</span></span></span><span class="q-tslink">12:34</span></label>
+            <label class="q-lrow q-action"><input type="checkbox" class="q-check"><span class="q-check__box" aria-hidden="true"><svg class="ic ic--11"><use href="#i-check"/></svg></span><span class="q-lrow__body"><span class="q-task">Get legal sign-off on the pricing page</span><span class="q-lrow__meta"><span class="q-owner"><i class="q-av q-av--16" style="--c:var(--spk-2)" aria-hidden="true">PN</i>Priya Nair</span><span>Due 8 Oct</span></span></span><span class="q-tslink">12:51</span></label>
+            <label class="q-lrow q-action"><input type="checkbox" class="q-check"><span class="q-check__box" aria-hidden="true"><svg class="ic ic--11"><use href="#i-check"/></svg></span><span class="q-lrow__body"><span class="q-task">Fix the two launch-blocking bugs: export and invite link</span><span class="q-lrow__meta"><span class="q-owner"><i class="q-av q-av--16" style="--c:var(--spk-3)" aria-hidden="true">JW</i>Jonas Weber</span><span>Due 12 Oct</span></span></span><span class="q-tslink">33:40</span></label>
+            <label class="q-lrow q-action"><input type="checkbox" class="q-check"><span class="q-check__box" aria-hidden="true"><svg class="ic ic--11"><use href="#i-check"/></svg></span><span class="q-lrow__body"><span class="q-task">Publish the support rota</span><span class="q-lrow__meta"><span class="q-owner"><i class="q-av q-av--16" style="--c:var(--spk-0)" aria-hidden="true">MC</i>Maya Chen</span><span>Due 5 Oct</span></span></span><span class="q-tslink">22:18</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat feat--flip">
+      <div class="feat__text">
+        <h3>⌘K to jump, full-text search to find</h3>
+        <p>⌘K opens a palette that jumps to any meeting or action. Search runs over every transcript and every slide Quill has read, with SQLite FTS5 underneath. Press C on a meeting to copy a link to the current moment, or copy a quote with its link from any line.</p>
+      </div>
+      <div class="feat__vis">
+        <div class="q-panel q-pal" role="img" aria-label="The command palette with “refund” typed: one matching meeting, a search across every transcript, and actions such as Upload a recording and Keyboard shortcuts.">
+          <div class="q-pal__input"><svg class="ic ic--14"><use href="#i-search"/></svg><span>refund</span><kbd>esc</kbd></div>
+          <div class="q-pal__head">Meetings</div>
+          <div class="q-pal__item is-sel"><svg class="ic ic--14"><use href="#i-video"/></svg><span class="q-pal__label">Launch readiness review</span><span class="q-pal__sub">Today · 47 min</span><svg class="ic ic--13"><use href="#i-enter"/></svg></div>
+          <div class="q-pal__head">Search</div>
+          <div class="q-pal__item"><svg class="ic ic--14"><use href="#i-message"/></svg><span class="q-pal__label">Search every transcript for “refund”</span></div>
+          <div class="q-pal__head">Actions</div>
+          <div class="q-pal__item"><svg class="ic ic--14"><use href="#i-upload"/></svg><span class="q-pal__label">Upload a recording</span><span class="q-pal__sub"><kbd>U</kbd></span></div>
+          <div class="q-pal__item"><svg class="ic ic--14"><use href="#i-keyboard"/></svg><span class="q-pal__label">Keyboard shortcuts</span><span class="q-pal__sub"><kbd>?</kbd></span></div>
+          <div class="q-pal__foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>⌘</kbd> <kbd>↵</kbd> new tab</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="how">
+  <div class="wrap how__in">
+    <div class="how__text">
+      <h2 class="sec__h">How it works</h2>
+      <p class="sec__lede">One worker, seven stages, every one of them checkpointed. A restart picks up where it stopped, and progress streams to the page over server-sent events.</p>
+      <ol class="steps">
+        <li><b>Drop a file.</b> Resumable tus uploads in 64 MB chunks, up to 10 GB, from anywhere in the app. A dropped connection resumes at the last chunk, not from zero.</li>
+        <li><b>Probe and extract.</b> ffprobe reads the container; ffmpeg pulls a clean audio track.</li>
+        <li><b>Tell the speakers apart.</b> nvidia/Nemotron-3-Diarization runs on CPU in its own PyTorch venv and labels up to 8 speakers.</li>
+        <li><b>Transcribe each turn.</b> Speech-to-text goes through your OpenAI-compatible gateway’s STT jobs API, one speaker turn at a time.</li>
+        <li><b>Read the screen, write the notes.</b> Scene changes and transcript cues pick key frames; a vision model reads them; a text model writes the TL;DR, chapters, decisions and action items, each grounded to a timestamp.</li>
+      </ol>
+      <p class="how__note">If a model is switched off in the gateway, the stage that needs it pauses and resumes on its own when the model is back. A pause is never counted as a failure, and nothing already done is lost.</p>
+    </div>
+    <div class="how__vis">
+      <div class="q-upload" role="img" aria-label="An upload row: all-hands-october.mp4, 3.2 GB of 6.8 GB, 47%, resumed, with pause and cancel controls.">
+        <span class="q-upload__icon"><svg class="ic"><use href="#i-video"/></svg></span>
+        <span class="q-upload__name">all-hands-october.mp4</span>
+        <span class="q-upload__actions"><span class="q-iconbtn"><svg class="ic"><use href="#i-pause"/></svg></span><span class="q-iconbtn"><svg class="ic"><use href="#i-x"/></svg></span></span>
+        <span class="q-progress"><i style="width:47%"></i></span>
+        <span class="q-upload__meta"><span>3.2 GB of 6.8 GB · 47%</span><span>Resumed</span></span>
+      </div>
+      <div class="q-pipeline" role="img" aria-label="The processing pipeline: Probe, Audio, Speakers, Transcribe, Key moments and Frames are done; Notes is paused at 40% with a banner saying the text model is disabled in the gateway and Quill resumes automatically.">
+        <div class="q-banner"><svg class="ic ic--14"><use href="#i-pause"/></svg><span><b>Notes paused.</b> The text model is disabled in the gateway. Quill resumes automatically; nothing is lost.</span></div>
+        <div class="q-stages">
+          <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Probe</span><span class="q-stage__sub">Done</span></span>
+          <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Audio</span><span class="q-stage__sub">Done</span></span>
+          <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Speakers</span><span class="q-stage__sub">Done</span></span>
+          <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Transcribe</span><span class="q-stage__sub">Done</span></span>
+          <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Key moments</span><span class="q-stage__sub">Done</span></span>
+          <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Frames</span><span class="q-stage__sub">Done</span></span>
+          <span class="q-stage is-paused"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-pause"/></svg>Notes</span><span class="q-progress q-progress--paused"><i style="width:40%"></i></span><span class="q-stage__sub">Paused at 40%</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h3 class="lib__h">The library while it works</h3>
+    <ul class="lib" role="list">
+      <li class="q-mcard" role="img" aria-label="A finished audio meeting, Hiring loop retro, 38:04, three speakers, three action items, with its first TL;DR line.">
+        <span class="q-cover q-cover--audio"><span class="q-bars"><i style="height:34%;background:var(--spk-0)"></i><i style="height:61%;background:var(--spk-0)"></i><i style="height:48%;background:var(--spk-0)"></i><i style="height:22%;background:var(--spk-2)"></i><i style="height:70%;background:var(--spk-2)"></i><i style="height:55%;background:var(--spk-2)"></i><i style="height:38%;background:var(--spk-2)"></i><i style="height:76%;background:var(--spk-4)"></i><i style="height:30%;background:var(--spk-4)"></i><i style="height:52%;background:var(--spk-4)"></i><i style="height:81%;background:var(--spk-0)"></i><i style="height:26%;background:var(--spk-0)"></i><i style="height:44%;background:var(--spk-0)"></i><i style="height:63%;background:var(--spk-0)"></i><i style="height:18%;background:var(--spk-2)"></i><i style="height:58%;background:var(--spk-2)"></i><i style="height:72%;background:var(--spk-2)"></i><i style="height:36%;background:var(--spk-4)"></i><i style="height:66%;background:var(--spk-4)"></i><i style="height:28%;background:var(--spk-4)"></i><i style="height:50%;background:var(--spk-4)"></i><i style="height:79%;background:var(--spk-0)"></i><i style="height:40%;background:var(--spk-0)"></i><i style="height:24%;background:var(--spk-2)"></i><i style="height:60%;background:var(--spk-2)"></i><i style="height:46%;background:var(--spk-2)"></i><i style="height:68%;background:var(--spk-4)"></i><i style="height:32%;background:var(--spk-4)"></i></span><span class="q-cover__mode"><svg class="ic ic--12"><use href="#i-audio"/></svg></span><span class="q-cover__dur">38:04</span></span>
+        <span class="q-mcard__body">
+          <span class="q-mcard__title">Hiring loop retro</span>
+          <span class="q-mcard__meta"><span class="q-stack q-stack--18"><i class="q-av q-av--18" style="--c:var(--spk-0)">AO</i><i class="q-av q-av--18" style="--c:var(--spk-2)">LB</i><i class="q-av q-av--18" style="--c:var(--spk-4)">SK</i></span><span>Yesterday</span><span>· 3 action items</span></span>
+          <span class="q-gist">Take-home cut to 90 minutes, plus a paired debugging round.</span>
+        </span>
+      </li>
+      <li class="q-mcard" role="img" aria-label="A meeting still processing, Design sync: a progress ring at 37% overall on the cover, the Speakers stage at 62% with about 4 minutes left, and stage pips below the title.">
+        <span class="q-cover q-cover--blank"><span class="q-cover__busy"><svg class="q-ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" class="q-ring__bg"/><circle cx="20" cy="20" r="16" class="q-ring__fg" stroke-dasharray="37.6 100.5"/></svg><span>Speakers · 62%</span></span><span class="q-cover__mode"><svg class="ic ic--12"><use href="#i-video"/></svg></span><span class="q-cover__dur">52:10</span></span>
+        <span class="q-mcard__body">
+          <span class="q-mcard__title">Design sync</span>
+          <span class="q-mcard__meta"><span>10:41</span><span>· about 4 min left</span></span>
+          <span class="q-pips"><i class="is-done"></i><i class="is-done"></i><i class="is-running"><b style="width:62%"></b></i><i></i><i></i><i></i><i></i></span>
+        </span>
+      </li>
+      <li class="q-mcard" role="img" aria-label="A paused meeting, Budget check-in, 24:30, two speakers, with an orange note: Notes paused, the text model is disabled in the gateway.">
+        <span class="q-cover q-cover--slide"><span class="q-slide q-slide--thumb q-slide--budget"><span class="q-slide__kicker">Q3</span><span class="q-slide__title">Budget</span><span class="q-slide__rows"><i style="width:72%"></i><i style="width:54%"></i><i style="width:63%"></i></span></span><span class="q-cover__mode"><svg class="ic ic--12"><use href="#i-video"/></svg></span><span class="q-cover__dur">24:30</span></span>
+        <span class="q-mcard__body">
+          <span class="q-mcard__title">Budget check-in</span>
+          <span class="q-mcard__meta"><span class="q-stack q-stack--18"><i class="q-av q-av--18" style="--c:var(--spk-5)">RD</i><i class="q-av q-av--18" style="--c:var(--spk-6)">EH</i></span><span>Tue 29 Sep</span></span>
+          <span class="q-note"><svg class="ic ic--13"><use href="#i-pause"/></svg><span><b>Notes paused</b> · The text model is disabled in the gateway</span></span>
+        </span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="exports" class="exports">
+  <div class="wrap">
+    <h2 class="sec__h">Take it with you</h2>
+    <p class="sec__lede">Every meeting exports from the same menu, on the meeting page and on each card in the library.</p>
+    <ul class="exp" role="list">
+      <li><span class="exp__fmt">Notes (Markdown)</span><span class="exp__ext">.md</span><span class="exp__what">The notes as a document: paste them into a wiki, an issue or an email.</span></li>
+      <li><span class="exp__fmt">Transcript (TXT)</span><span class="exp__ext">.txt</span><span class="exp__what">The speaker-attributed transcript as plain text.</span></li>
+      <li><span class="exp__fmt">Subtitles (SRT)</span><span class="exp__ext">.srt</span><span class="exp__what">Timed captions for a video player or an editor.</span></li>
+      <li><span class="exp__fmt">Subtitles (VTT)</span><span class="exp__ext">.vtt</span><span class="exp__what">The same captions for the web.</span></li>
+      <li><span class="exp__fmt">Everything (JSON)</span><span class="exp__ext">.json</span><span class="exp__what">The whole meeting as data, for your own tools.</span></li>
+      <li><span class="exp__fmt">Diarization (RTTM)</span><span class="exp__ext">.rttm</span><span class="exp__what">Who spoke when, in the format diarization tools share.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="team" class="team">
+  <div class="wrap team__in">
+    <div class="team__text">
+      <h2 class="sec__h">Built for a small team</h2>
+      <ul class="plain" role="list">
+        <li><b>Admins and members.</b> Admins invite people, reset passwords and pick the models; everyone else uploads, reads and shares.</li>
+        <li><b>Invites without a mail server.</b> Invites and password resets are one-time links Quill shows once. Copy the link or a ready-to-send message and pass it on however you like.</li>
+        <li><b>Share one meeting, not the library.</b> Can view or can edit, per person or for everyone on this Quill. A shared meeting carries its owner’s name on the cover.</li>
+        <li><b>Sign out a device.</b> Account settings list where you are signed in and end any session.</li>
+      </ul>
+    </div>
+    <div class="team__vis">
+      <div class="q-panel q-share" role="img" aria-label="The Share sheet for Launch readiness review: a field to add people, Priya Nair can edit, Jonas Weber can view, Everyone on this Quill can view, and a Copy link button.">
+        <div class="q-share__head"><span class="q-share__icon"><svg class="ic"><use href="#i-users"/></svg></span><span><span class="q-share__title">Share meeting</span><span class="q-share__sub">Launch readiness review</span></span></div>
+        <div class="q-search q-search--field"><svg class="ic ic--14"><use href="#i-search"/></svg><span>Add people by name or email</span></div>
+        <p class="q-share__h">People with access</p>
+        <div class="q-share__row"><span class="q-pav">MC</span><span class="q-share__who">Maya Chen <small>you</small></span><span class="q-share__lvl">Owner</span></div>
+        <div class="q-share__row"><span class="q-pav">PN</span><span class="q-share__who">Priya Nair</span><span class="q-select">Can edit</span></div>
+        <div class="q-share__row"><span class="q-pav">JW</span><span class="q-share__who">Jonas Weber</span><span class="q-select">Can view</span></div>
+        <div class="q-share__row q-share__row--all"><span class="q-pav q-pav--org"><svg class="ic ic--14"><use href="#i-building"/></svg></span><span class="q-share__who">Everyone on this Quill</span><span class="q-select">Can view</span></div>
+        <div class="q-share__foot"><span class="q-btn q-btn--sm"><svg class="ic ic--14"><use href="#i-link"/></svg>Copy link</span><span class="q-btn q-btn--sm q-btn--primary">Done</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="selfhost" class="host">
+  <div class="wrap host__in">
+    <div class="host__text">
+      <h2 class="sec__h">Run it yourself</h2>
+      <p>The app side needs no GPU: Python 3.12 with FastAPI, SQLite with WAL and FTS5, one worker process, ffmpeg, and the diarizer in its own PyTorch-CPU venv. The React frontend is a static build served by nginx in front of the API.</p>
+      <h3>What your gateway must provide</h3>
+      <p>Quill talks to one OpenAI-compatible gateway and nothing else. The models run wherever that gateway puts them. It expects:</p>
+      <ul class="plain plain--tight" role="list">
+        <li><code>POST /v1/chat/completions</code> with JSON-schema structured output and a model that accepts images, for frames and notes.</li>
+        <li>A durable speech-to-text jobs API: <code>POST /v1/audio/transcriptions/jobs</code>, then <code>GET</code> the job, its result, or <code>DELETE</code> it.</li>
+        <li><code>GET /catalog.json</code> with each model’s status, so Quill can pause when a model is disabled rather than fail.</li>
+      </ul>
+      <p>Team AER runs it behind its own gateway, with <a href="https://github.com/Team-AER/avifors">Avifors</a> sharing one GPU between the speech, vision and text models. Any gateway with the same routes works. Model weights keep their own licences.</p>
+    </div>
+    <div class="host__code">
+      <div class="code">
+        <div class="code__bar"><span>Production install</span><button type="button" class="code__copy" data-copy="#install-prod">Copy</button></div>
+<pre id="install-prod" tabindex="0"><code>git clone https://github.com/Team-AER/quill.git
+cd quill
+# one unprivileged Proxmox container, CPU only
+deploy/provision-lxc.sh root@pve &lt;CTID&gt;
+# tests, build, release; rolls back on failure
+deploy/deploy-lxc.sh root@pve &lt;CTID&gt;
+# then set QUILL_GATEWAY_URL and QUILL_PUBLIC_URL
+# in /etc/quill/quill.env, restart quill-api and
+# quill-worker, and put a TLS reverse proxy in front</code></pre>
+      </div>
+      <p class="host__note">The scripts target a Proxmox LXC and install everything inside the container: systemd units for the API and the worker, nginx for the static build, nightly SQLite backups, and releases that roll back on their own if a check fails. <a href="https://github.com/Team-AER/quill/tree/main/deploy">deploy/README.md</a> has the layout, the reverse-proxy settings uploads need, and recovery for a locked-out admin.</p>
+      <div class="code code--second">
+        <div class="code__bar"><span>Try the reader without a gateway (mock API)</span><button type="button" class="code__copy" data-copy="#install-mock">Copy</button></div>
+<pre id="install-mock" tabindex="0"><code>git clone https://github.com/Team-AER/quill.git
+cd quill/frontend &amp;&amp; npm install &amp;&amp; npm run dev</code></pre>
+      </div>
+      <p class="host__note">The frontend dev server includes a mock of the whole API with sample meetings, people and shares, so you can try the reader before wiring up a gateway.</p>
+      <p class="host__note">MIT licence. Version 0.1.0, brand new: expect rough edges and say so in an issue.</p>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap close__in">
+    <div>
+      <h2 class="sec__h">Try it on a recording you already have.</h2>
+      <p class="sec__lede">Quill is MIT-licensed and built by Team AER. Open the live install, or clone it and run the reader against the included mock API.</p>
+    </div>
+    <div class="close__cta">
+      <a class="btn-primary" href="https://quill.brainfc.uk">Open Quill</a>
+      <a class="btn-quiet" href="https://github.com/Team-AER/quill">Get the code</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Quill</h2>
+      <p>Meeting transcription and grounded notes for small teams. Self-hosted, CPU-only on the app side, bring your own model gateway.</p>
+      <ul role="list">
+        <li><a href="https://quill.brainfc.uk">Open Quill</a></li>
+        <li><a href="https://github.com/Team-AER/quill">Source on GitHub</a></li>
+        <li><a href="https://github.com/Team-AER/quill/blob/main/LICENSE">MIT licence</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/pensieve/">Pensieve</a></li>
+        <li><a href="/hedwig/">Hedwig</a></li>
+        <li><a href="/erised/">Erised</a></li>
+        <li><a href="/accio/">Accio</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Quill is MIT licensed.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+      <span>The meeting shown here is fictional.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/quill/page.js" defer></script>
+</body>
+</html>

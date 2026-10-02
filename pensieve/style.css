@@ -1,0 +1,536 @@
+/* Pensieve landing page. Tokens are the product's own (pensieve/static/app.css, light theme).
+ * Layout: the page sits on the reader's three-pane grid (folders 240 / list 400 / article flexible),
+ * so every left edge on the page lands on a pane edge of the hero replica.
+ * Specificity is kept flat: single classes, plus state attributes. Replica classes are prefixed r-. */
+
+:root {
+  color-scheme: light;
+  --max-w: 1240px;
+  --pane-nav: 240px;
+  --pane-list: 400px;
+  --pane-list-t: 360px;
+
+  --paper: #F3F1EA;
+  --panel: #FBFAF6;
+  --card: #FFFFFF;
+  --ink: #1B1A17;
+  --ink-2: #3A3934;
+  --muted: #5C5A53;
+  --faint: #6F6C60;
+  --line: #E2DFD5;
+  --line-2: #ECE9DF;
+  --line-3: #DDD9CC;
+  --chip: #EFEBE0;
+  --accent: #2E5E78;
+  --accent-ink: #1F4457;
+  --accent-soft: #E3ECF1;
+  --accent-light: #7FB0CC;
+  --ai: #3E7C6E;
+  --ai-ink: #245A4C;
+  --ai-soft: #E4EFEA;
+  --ai-line: #CFE0D9;
+  --star: #8A6A1E;
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --font-serif: Charter, 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+
+  /* Shared shell tints (shared/base.css). */
+  --shell-bg: #1B1A17;
+  --shell-fg: #F3F1EA;
+  --footer-bg: #1B1A17;
+  --footer-fg: #F3F1EA;
+  --focus-ring: #2E5E78;
+  --selection-bg: #E3ECF1;
+  --selection-fg: #1B1A17;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.55 var(--font-body);
+}
+
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ic { display: inline-block; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+code { font-family: var(--font-mono); font-size: 0.86em; padding: 0.1em 0.35em; border-radius: 4px; background: var(--chip); color: var(--ink); overflow-wrap: anywhere; }
+kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid var(--line-3); border-radius: 4px; color: var(--muted); background: var(--card); }
+
+/* Dark shell surfaces get a ring that shows on ink. */
+.aer-strip, .aer-footer { --focus-ring: #7FB0CC; }
+.aer-footer { font-family: var(--font-body); }
+
+/* ---------- Buttons (the product's .btn / .btn-primary / .btn-lg) ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 18px;
+  border: 1px solid var(--line-3); border-radius: 10px;
+  background: var(--card); color: var(--ink-2);
+  font: 500 15px/1 var(--font-body); text-decoration: none; white-space: nowrap;
+  transition: background-color 0.12s, border-color 0.12s, color 0.12s;
+}
+.btn:hover { background: var(--line-2); border-color: var(--faint); color: var(--ink); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: #FFFFFF; font-weight: 600; }
+.btn--primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); color: #FFFFFF; }
+.btn--lg { min-height: 50px; padding: 0 22px; font-size: 16px; }
+
+/* ---------- Page nav: the product's topbar, quiet links, one primary button ---------- */
+.pn {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pn__in { display: grid; grid-template-columns: var(--pane-nav) minmax(0, 1fr) auto; align-items: center; min-height: 64px; }
+.pn__brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; justify-self: start; color: var(--ink); text-decoration: none; font: 600 21px/1 var(--font-display); letter-spacing: -0.01em; }
+.pn__mark { width: 30px; height: 30px; border-radius: 7px; }
+.pn__menu { display: flex; gap: 4px; }
+.pn__menu a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 8px; color: var(--muted); font-size: 15px; text-decoration: none; }
+.pn__menu a:hover { background: var(--line-2); color: var(--ink); }
+.pn__cta { min-height: 44px; }
+.pn__toggle { display: none; }
+
+/* ---------- Hero ---------- */
+.hero { padding: clamp(28px, 4.5vw, 52px) 0 clamp(24px, 3vw, 40px); }
+.hero__words { display: grid; grid-template-columns: var(--pane-nav) var(--pane-list) minmax(0, 1fr); row-gap: 22px; align-items: end; }
+.hero__title {
+  grid-column: 1 / -1;
+  font: 500 clamp(38px, calc(20px + 3vw), 60px)/1.04 var(--font-display);
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+.hero__lede { grid-column: 1 / 3; padding-right: 48px; max-width: 34em; font-size: 19px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.hero__act { grid-column: 3; display: flex; flex-direction: column; gap: 12px; }
+.hero__btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.hero__note { max-width: 50ch; font-size: 13.5px; line-height: 1.5; color: var(--muted); text-wrap: pretty; }
+
+.hero__fig { margin: clamp(28px, 4vw, 44px) 0 0; }
+.hero__cap { display: grid; grid-template-columns: calc(var(--pane-nav) + var(--pane-list)) minmax(0, 1fr); align-items: center; gap: 12px 0; margin-top: 16px; }
+.hero__legend { padding-right: 48px; font-size: 14px; line-height: 1.5; color: var(--muted); text-wrap: pretty; }
+.swatch { display: inline-block; width: 10px; height: 10px; margin-right: 8px; border-radius: 3px; background: var(--ai); }
+
+/* The order toggle: the product's .seg control. */
+.order { display: inline-flex; justify-self: start; border: 1px solid var(--line-3); border-radius: 10px; overflow: hidden; background: var(--card); }
+.order[hidden] { display: none; }
+.order__btn { min-height: 44px; padding: 0 16px; font-size: 14px; color: var(--muted); }
+.order__btn + .order__btn { border-left: 1px solid var(--line-3); }
+.order__btn:hover { background: var(--line-2); color: var(--ink); }
+.order__btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
+.order__btn:focus-visible { outline-offset: -3px; }
+
+/* =====================================================================
+   The reader replica (templates/reader.html, partials/nav.html, list.html,
+   paper_section.html, paper_story.html, article.html; static/app.css + web.css)
+   ===================================================================== */
+.r-app {
+  display: flex; flex-direction: column;
+  background: var(--panel); color: var(--ink);
+  border: 1px solid var(--line-3); border-radius: 14px; overflow: hidden;
+  box-shadow: 0 32px 72px -36px rgba(27, 26, 23, 0.42), 0 2px 6px rgba(27, 26, 23, 0.06);
+  font: 400 15px/1.45 var(--font-body);
+  -webkit-user-select: none; user-select: none;
+  container: app / inline-size;
+}
+.r-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.r-grow { flex: 1; }
+.r-ai { color: var(--ai); }
+.r-ink { color: var(--ink); }
+.r-faint { color: var(--faint); }
+.r-link { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.16em; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+
+.r-top { display: flex; align-items: center; gap: 20px; height: 56px; padding: 0 20px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.r-brand { display: flex; align-items: center; gap: 10px; font: 600 20px/1 var(--font-display); letter-spacing: -0.01em; white-space: nowrap; }
+.r-topnav { display: flex; gap: 4px; }
+.r-topnav span { padding: 6px 12px; border-radius: 8px; color: var(--muted); font-size: 14px; }
+.r-topnav .is-on { background: var(--accent-soft); color: var(--ink); font-weight: 600; }
+.r-search { display: flex; align-items: center; gap: 8px; flex: 1; max-width: 420px; height: 36px; padding: 0 12px; border: 1px solid var(--line-3); border-radius: 10px; background: var(--card); color: var(--faint); font-size: 14px; }
+.r-search > span { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r-topact { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.r-avatar { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #FFFFFF; font-size: 13px; font-weight: 600; text-transform: uppercase; }
+.r-avatar--sm { width: 30px; height: 30px; font-size: 12px; justify-self: end; }
+
+.r-btn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border: 1px solid var(--line-3); border-radius: 8px; background: var(--card); color: var(--ink-2); font-size: 13px; font-weight: 500; line-height: 1; white-space: nowrap; }
+.r-btn--sm { height: 28px; padding: 0 10px; border-radius: 6px; font-size: 12px; }
+.r-btn--icon { width: 28px; padding: 0; justify-content: center; }
+.r-btn--ghost { border-color: transparent; background: transparent; }
+.r-btn--ghost.is-on { background: var(--accent-soft); color: var(--accent-ink); }
+.r-btn--accent { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+.r-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; background: var(--chip); color: var(--muted); font-size: 12px; font-weight: 600; line-height: 1.3; white-space: nowrap; }
+.r-chip--ai { background: var(--ai-soft); color: var(--ai-ink); }
+.r-chip--sm { padding: 1px 7px; font-size: 12px; }
+.r-chip--dashed { border: 1px dashed var(--faint); background: transparent; font-weight: 400; }
+.r-conf { font-weight: 400; opacity: 0.85; }
+.r-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--faint); }
+.r-eyebrow.r-ai { color: var(--ai); }
+
+/* "N sources": the merge chip, with its favicon stack. */
+.r-sources { display: inline-flex; align-items: center; gap: 6px; height: 20px; padding: 1px 8px 1px 4px; border-radius: 10px; background: var(--ai-soft); color: var(--ai-ink); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.r-favs { display: inline-flex; }
+.r-favs i { width: 12px; height: 12px; border: 1.5px solid var(--panel); border-radius: 50%; background: var(--accent); }
+.r-favs i + i { margin-left: -5px; }
+.r-favs i:nth-child(2) { background: var(--accent-light); }
+.r-favs i:nth-child(3) { background: var(--ink-2); }
+
+/* Tall enough that the seventh story shows its title under the skip box: the front page goes on past the frame. */
+.r-panes { display: grid; grid-template-columns: var(--pane-nav) var(--pane-list) minmax(0, 1fr); height: 726px; }
+
+/* Folders pane */
+.r-nav { display: flex; flex-direction: column; gap: 18px; padding: 16px 12px; overflow: hidden; border-right: 1px solid var(--line); background: var(--paper); font-size: 14px; }
+.r-navsec { display: flex; flex-direction: column; gap: 2px; }
+.r-navlabel { display: flex; align-items: center; gap: 8px; padding: 0 10px 6px; color: var(--faint); font-size: 12px; font-weight: 600; }
+.r-navitem { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 34px; padding: 0 10px; border-radius: 8px; }
+.r-navitem .ic { color: var(--muted); }
+.r-navitem .ic.r-ai, .r-navitem .r-ai .ic { color: var(--ai); }
+.r-navitem.is-on { background: var(--accent-soft); font-weight: 600; }
+.r-count { flex: none; color: var(--faint); font-size: 12px; }
+
+/* List pane: the paper */
+.r-list { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; border-right: 1px solid var(--line); background: var(--panel); container: list / inline-size; }
+.r-phonehead { display: none; }
+.r-paperhead { display: flex; flex-direction: column; gap: 3px; padding: 14px 18px 12px; border-bottom: 1px solid var(--line); }
+.r-date { font: 500 26px/1.1 var(--font-display); letter-spacing: -0.02em; }
+.r-stand { color: var(--muted); font-size: 13px; }
+.r-sechead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 12px 14px 10px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+.r-sectitle { font: 500 20px/1.15 var(--font-display); letter-spacing: -0.01em; }
+.r-seccount { color: var(--faint); font-size: 12px; text-wrap: pretty; }
+
+.r-stories { display: flex; flex: 0 1 auto; flex-direction: column; gap: 6px; min-height: 0; padding: 0 12px 10px; overflow: hidden; }
+.r-story {
+  position: relative;
+  order: var(--rank);
+  transition: transform 0.95s cubic-bezier(0.22, 0.8, 0.24, 1);
+  transition-delay: calc((var(--rank) - 1) * 45ms);
+}
+.r-storyrow { position: relative; z-index: 1; display: flex; gap: 12px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.r-story.is-open .r-storyrow { border-color: #C6D7E1; background: var(--accent-soft); }
+.r-under { display: none; }
+.r-dot { flex: none; width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; background: var(--accent); }
+.r-main { display: flex; flex: 1; flex-direction: column; gap: 4px; min-width: 0; }
+.r-title { color: var(--ink); font-size: 14.5px; font-weight: 600; line-height: 1.3; text-wrap: pretty; }
+.r-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; color: var(--faint); font-size: 12px; }
+.r-src { color: var(--ink-2); font-weight: 500; }
+
+/* The interest signal: the digest's affinity bar + "N% match" (partials/insight_body.html).
+   Bar and figure are one unit, so a narrow row wraps them together; narrower than 380px the unit
+   takes its own line in every row, so the rows match before and after the bars fill. */
+.r-match { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+@container list (max-width: 379.98px) { .r-match { flex-basis: 100%; } }
+.r-aff { display: inline-block; width: 36px; height: 6px; overflow: hidden; border-radius: 3px; background: var(--line-2); }
+.r-aff i { display: block; height: 100%; background: var(--ai); transform-origin: left center; transform: scaleX(var(--m)); transition: transform 0.75s cubic-bezier(0.3, 0.7, 0.3, 1); }
+.r-aff-n { color: var(--ai-ink); font-weight: 600; transition: opacity 0.45s 0.2s; }
+
+/* Sort states. Default: ranked, bars full (reduced motion, and the end state).
+   With motion allowed the page starts in arrival order with empty bars; page.js then fills and sorts.
+   If page.js never runs, the same thing happens without movement after a few seconds. */
+@media (prefers-reduced-motion: no-preference) {
+  .r-stories:not([data-order]) .r-story { order: var(--chrono); animation: r-rank 0s 4s forwards; }
+  .r-stories:not([data-bars]) .r-aff i { transform: scaleX(0); animation: r-fill 0.75s 3.2s forwards; }
+  .r-stories:not([data-bars]) .r-aff-n { opacity: 0; animation: r-show 0.45s 3.4s forwards; }
+}
+@keyframes r-rank { to { order: var(--rank); } }
+@keyframes r-fill { to { transform: scaleX(var(--m)); } }
+@keyframes r-show { to { opacity: 1; } }
+@keyframes r-swipe { 0% { transform: none; } 34%, 62% { transform: translateX(108px); } 100% { transform: none; } }
+.r-stories[data-order="newest"] .r-story { order: var(--chrono); }
+.r-stories[data-order="ranked"] .r-story { order: var(--rank); }
+.r-stories[data-bars="empty"] .r-aff i { transform: scaleX(0); }
+.r-stories[data-bars="empty"] .r-aff-n { opacity: 0; }
+
+.r-skip { display: flex; align-items: center; gap: 12px; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--panel); color: var(--ink-2); font-size: 13px; line-height: 1.4; text-wrap: pretty; }
+.r-skiptext b { display: block; color: var(--ink); font: 500 16px/1.3 var(--font-display); }
+
+/* Article pane */
+/* Only the pane's last 40px fade, where the clip falls when the pane is narrow; full text never ghosts. */
+.r-article {
+  display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: var(--card);
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(#000 calc(100% - 40px), transparent);
+}
+.r-arthead { display: flex; align-items: center; gap: 6px; min-height: 46px; padding: 0 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.r-artbody {
+  display: flex; flex-direction: column; gap: 16px;
+  max-width: 760px; padding: 26px 40px 0;
+}
+.r-artmeta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+.r-artmeta b { color: var(--ink-2); font-weight: 600; }
+.r-favicon { width: 14px; height: 14px; border-radius: 4px; background: var(--accent); }
+.r-arttitle { font: 500 30px/1.15 var(--font-display); letter-spacing: -0.012em; }
+.r-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.r-aicard { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border: 1px solid var(--ai-line); border-radius: 12px; background: var(--ai-soft); font-size: 14px; text-wrap: pretty; }
+.r-aicard .r-eyebrow.r-ai { color: var(--ai-ink); }
+.r-aicard ul { display: flex; flex-direction: column; gap: 6px; margin: 0; padding-left: 1.2em; }
+.r-aicard p { color: var(--ink-2); }
+.r-aicard p .r-eyebrow { display: block; margin-bottom: 4px; }
+.r-memory { display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); font-size: 13px; line-height: 1.45; }
+.r-memlabel { color: var(--muted); font-size: 12px; }
+.r-memrow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.r-memnote { color: var(--muted); font-size: 12px; }
+.r-prose { color: var(--ink); font-size: 17px; line-height: 1.65; }
+
+.r-keys { display: flex; align-items: center; gap: 18px; height: 34px; padding: 0 24px; overflow: hidden; border-top: 1px solid var(--line); background: var(--panel); color: var(--faint); font-size: 12px; white-space: nowrap; }
+
+/* =====================================================================
+   Sections: titles in the folders column (sticky, like the rail),
+   words in the list column, the product in the article column.
+   ===================================================================== */
+.sec { padding: clamp(56px, 7vw, 100px) 0; scroll-margin-top: 64px; }
+.sec--panel { background: var(--panel); }
+.sec__grid { display: grid; grid-template-columns: var(--pane-nav) var(--pane-list) minmax(0, 1fr); align-items: start; }
+.sec__title {
+  grid-column: 1;
+  position: sticky; top: 96px;
+  padding-right: 28px;
+  font: 500 clamp(28px, calc(16px + 1.2vw), 32px)/1.1 var(--font-display);
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+.sec__words { grid-column: 2; padding-right: 44px; }
+.sec__show { grid-column: 3; min-width: 0; position: sticky; top: 96px; }
+.sec__lead { color: var(--ink-2); font-size: 18px; line-height: 1.55; text-wrap: pretty; }
+.sec__after { margin-top: 14px; color: var(--muted); font-size: 15px; line-height: 1.5; text-wrap: pretty; }
+
+.feats { margin-top: 26px; border-top: 1px solid var(--line); }
+.feats li { padding: 14px 0; border-bottom: 1px solid var(--line-2); color: var(--muted); font-size: 15px; line-height: 1.5; text-wrap: pretty; }
+.feats b { color: var(--ink); font-weight: 600; }
+
+/* What the AI layer needs: drawn in the AI colour, because it is about the AI layer. */
+.needs { margin-top: 26px; padding: 18px 20px 6px; border: 1px solid var(--ai-line); border-radius: 12px; background: var(--card); }
+.needs__title { font: 500 20px/1.2 var(--font-display); letter-spacing: -0.01em; }
+.needs__list { margin: 10px 0 0; }
+.needs__list > div { padding: 11px 0; border-top: 1px solid var(--line-2); }
+.needs__list dt { color: var(--ink); font-size: 15px; font-weight: 600; }
+.needs__list dd { margin: 2px 0 0; color: var(--muted); font-size: 14.5px; line-height: 1.5; text-wrap: pretty; }
+
+/* Product fragments */
+.frag { padding: 18px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); font: 400 14px/1.45 var(--font-body); -webkit-user-select: none; user-select: none; }
+
+.frag--paper { padding: 0; border: 0; background: transparent; }
+.p-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+.p-title { font: 500 26px/1.15 var(--font-display); letter-spacing: -0.01em; }
+.p-count { color: var(--faint); font-size: 12px; text-wrap: pretty; }
+.p-held { margin: 12px 0 14px; color: var(--muted); font-size: 13px; text-wrap: pretty; }
+.p-link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.p-story { border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.p-storyhead { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line-2); }
+.p-storytitle { font-size: 17px; font-weight: 600; line-height: 1.3; }
+.p-chev { margin-top: 3px; color: var(--faint); transform: rotate(180deg); }
+.p-body { display: flex; flex-direction: column; gap: 12px; padding: 12px 14px 14px 34px; }
+.p-copies { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: 13px; }
+.p-copies li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+.p-copy { color: var(--accent); }
+.p-copies .is-read .p-copy { color: var(--muted); }
+.p-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.p-tune { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.p-tuned { color: var(--faint); font-size: 13px; }
+
+.m-ask { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border: 1px solid var(--ai-line); border-radius: 12px; background: var(--ai-soft); }
+.m-ask .r-eyebrow.r-ai { color: var(--ai-ink); }
+.m-q { color: var(--muted); font-size: 13px; }
+.m-ask p { font-size: 14px; line-height: 1.55; text-wrap: pretty; }
+.m-cites { display: flex; flex-direction: column; gap: 4px; margin: 0; padding-left: 1.4em; font-size: 13px; }
+.m-tags { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.m-tagslabel { color: var(--muted); font-size: 12px; }
+
+.frag--archive { padding: 14px; }
+.a-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--panel); }
+.a-seg { display: inline-flex; overflow: hidden; border: 1px solid var(--line-3); border-radius: 8px; background: var(--card); }
+.a-seg span { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; color: var(--muted); font-size: 12px; }
+.a-seg span + span { border-left: 1px solid var(--line-3); }
+.a-seg .is-on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.a-meta { display: inline-flex; align-items: center; gap: 6px; color: var(--faint); font-size: 12px; }
+
+.iso { width: 100%; height: auto; margin-top: 20px; font-family: var(--font-body); }
+.iso__net { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 5 5; }
+.iso__box { fill: var(--card); stroke: var(--line-3); stroke-width: 1.5; }
+.iso__no { fill: var(--paper); stroke: var(--faint); stroke-width: 1; stroke-dasharray: 2 4; }
+.iso__ok { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.iso__label { fill: var(--ink); font-size: 15px; font-weight: 600; text-anchor: middle; }
+.iso__small { fill: var(--muted); font-size: 12px; text-anchor: middle; }
+.iso__no-t { fill: var(--ink-2); font-size: 13px; text-anchor: middle; }
+.iso__start { text-anchor: start; }
+.iso--tall { display: none; max-width: 420px; }
+
+.frag--reading { max-width: 400px; padding: 14px 16px; box-shadow: 0 8px 24px rgba(27, 26, 23, 0.08); }
+.rd-head { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--line-2); font-size: 13px; }
+.rd-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; padding: 7px 0; color: var(--ink-2); font-size: 13px; }
+.rd-seg { display: inline-flex; overflow: hidden; border: 1px solid var(--line-3); border-radius: 8px; background: var(--card); }
+.rd-seg span { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 30px; padding: 0 9px; color: var(--muted); font-size: 12px; }
+.rd-seg span + span { border-left: 1px solid var(--line-3); }
+.rd-seg .is-on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.rd-serif { font-family: var(--font-serif); }
+.rd-foot { padding-top: 8px; border-top: 1px solid var(--line-2); color: var(--faint); font-size: 12px; line-height: 1.5; }
+
+/* How it works: the one real sequence, so the one numbered list. */
+.steps { grid-column: 2 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 44px; margin: 0; padding: 0; list-style: none; }
+.steps li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 0 12px; color: var(--muted); font-size: 15.5px; line-height: 1.55; text-wrap: pretty; }
+.steps__n { color: var(--accent); font: 500 34px/1 var(--font-display); }
+.steps b { color: var(--ink); font-weight: 600; }
+
+/* Code blocks: mono only here. Lines wrap at every width (no scrollbar inside a card); each line is a block,
+   key/value lines a two-column grid and commands a hanging indent, so a wrapped value sits under itself. */
+.code { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.code__cap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 6px 6px 6px 16px; border-bottom: 1px solid var(--line-2); background: var(--panel); color: var(--muted); font-size: 13px; }
+.code__pre { margin: 0; padding: 16px 18px; color: var(--ink); font: 13.5px/1.75 var(--font-mono); tab-size: 4; white-space: pre-wrap; overflow-wrap: anywhere; }
+.code__pre code { display: block; padding: 0; background: none; font-size: inherit; overflow-wrap: anywhere; }
+.c-line { display: block; }
+.c-gap { height: 1.75em; }
+.c-com { color: var(--faint); }
+.c-line.c-com { padding-left: 2ch; text-indent: -2ch; }
+.c-kv { display: grid; grid-template-columns: 9ch minmax(0, 1fr); }
+.c-cmd { padding-left: 4ch; text-indent: -4ch; }
+.c-nb { white-space: nowrap; } /* a URL path breaks before its slash, never inside a word */
+.c-key { color: var(--accent); }
+.code__btn { min-height: 44px; padding: 0 16px; border: 1px solid var(--line-3); border-radius: 8px; background: var(--card); color: var(--ink-2); font-size: 13px; font-weight: 600; }
+.code__btn:hover { background: var(--line-2); color: var(--ink); }
+.code__btn[data-copied] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-ink); }
+
+/* Closing */
+.close { padding: clamp(64px, 9vw, 120px) 0; background: var(--panel); }
+.close__grid { display: grid; grid-template-columns: calc(var(--pane-nav) + var(--pane-list)) minmax(0, 1fr); align-items: end; gap: 24px 0; }
+.close__words { padding-right: 48px; }
+.close__title { font: 500 clamp(34px, calc(18px + 2.6vw), 52px)/1.05 var(--font-display); letter-spacing: -0.02em; }
+.close__words p { max-width: 40ch; margin-top: 14px; color: var(--ink-2); font-size: 18px; text-wrap: pretty; }
+.close__btns { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Footer: columns sit on the same pane edges. */
+@media (min-width: 1160px) {
+  .aer-footer .wrap { grid-template-columns: calc(var(--pane-nav) + var(--pane-list)) minmax(0, 1fr) minmax(0, 1fr); column-gap: 0; }
+  .aer-footer .wrap > div { padding-right: 24px; }
+}
+.aer-footer p { max-width: 42ch; margin-bottom: 10px; opacity: 0.85; }
+
+/* =====================================================================
+   900 to 1159: the app drops its folders pane; so does the page.
+   ===================================================================== */
+@media (max-width: 1159.98px) {
+  .pn__in { grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; }
+  .pn__menu { justify-content: flex-end; }
+
+  .hero__words { grid-template-columns: var(--pane-list-t) minmax(0, 1fr); }
+  .hero__lede { grid-column: 1; padding-right: 36px; font-size: 18px; }
+  .hero__act { grid-column: 2; }
+  .hero__cap { grid-template-columns: var(--pane-list-t) minmax(0, 1fr); }
+
+  .r-panes { grid-template-columns: var(--pane-list-t) minmax(0, 1fr); }
+  .r-nav { display: none; }
+  .r-search { max-width: 300px; }
+  .r-artbody { padding: 22px 28px 0; }
+
+  .sec__grid { grid-template-columns: var(--pane-list-t) minmax(0, 1fr); }
+  .sec__title { grid-column: 1 / -1; position: static; max-width: 22ch; margin-bottom: 28px; padding-right: 0; font-size: clamp(30px, calc(18px + 1.6vw), 38px); }
+  .sec__words { grid-column: 1; padding-right: 36px; }
+  .sec__show { grid-column: 2; }
+  .steps { grid-column: 1 / -1; }
+
+  .close__grid { grid-template-columns: var(--pane-list-t) minmax(0, 1fr); }
+}
+
+/* =====================================================================
+   Under 900: the app's phone layout. One column, the list pane alone,
+   bars that slide away while reading down.
+   ===================================================================== */
+@media (max-width: 899.98px) {
+  .aer-strip .wrap { min-height: 44px; }
+  .aer-strip a { min-height: 44px; padding: 0; }
+
+  .pn__in { grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; min-height: 60px; }
+  .pn[data-away] { transform: translateY(-100%); }
+  .pn__brand { font-size: 20px; }
+  .pn__cta { padding: 0 14px; font-size: 14px; }
+  .pn__toggle { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 44px; height: 44px; border: 1px solid var(--line-3); border-radius: 10px; background: var(--card); }
+  .pn__toggle span { width: 18px; height: 2px; border-radius: 1px; background: var(--ink); transition: transform 0.16s ease; }
+  .pn__toggle[aria-expanded="true"] span:first-child { transform: translateY(4px) rotate(45deg); }
+  .pn__toggle[aria-expanded="true"] span:last-child { transform: translateY(-4px) rotate(-45deg); }
+  .pn__menu { position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; padding: 4px var(--gutter) 14px; border-bottom: 1px solid var(--line); background: var(--paper); box-shadow: 0 16px 28px -18px rgba(27, 26, 23, 0.35); }
+  .pn__menu[hidden] { display: none; }
+  .pn__menu a { min-height: 52px; padding: 0 2px; border-bottom: 1px solid var(--line-2); border-radius: 0; color: var(--ink); font-size: 17px; }
+  .pn__menu a:last-child { border-bottom: 0; }
+
+  .hero__words { display: flex; flex-direction: column; align-items: stretch; gap: 18px; }
+  .hero__lede { padding-right: 0; font-size: 18px; }
+  .hero__fig { display: grid; gap: 18px; }
+  .hero__cap { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 0; }
+  .hero__legend { padding-right: 0; }
+
+  /* The replica becomes the phone list (web.css, "Mobile: < 900"). */
+  .r-app { width: 100%; max-width: 420px; border-radius: 26px; }
+  .r-top, .r-nav, .r-article, .r-keys, .r-paperhead { display: none; }
+  /* A phone's screen, not the whole document: five stories and the top of the sixth, fading out at the
+     bottom edge, so "your best 10" reads as a list that continues. The frame keeps its edge and corners. */
+  .r-panes { display: block; height: auto; max-height: 752px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 calc(100% - 48px), transparent); mask-image: linear-gradient(#000 calc(100% - 48px), transparent); }
+  /* A frame 382px or wider fits each row's meta on one line, so the same five-and-a-bit stories end sooner. */
+  @container app (min-width: 382px) { .r-panes { max-height: 600px; } }
+  .r-list { border-right: 0; }
+  .r-phonehead { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--paper); }
+  .r-iconbtn { display: grid; place-items: center; width: 44px; height: 44px; color: var(--ink); }
+  .r-phonetitle { display: flex; flex-direction: column; align-items: center; text-align: center; line-height: 1.2; }
+  .r-phonetitle b { font: 500 18px/1.2 var(--font-display); letter-spacing: -0.01em; }
+  .r-phonetitle span { color: var(--faint); font-size: 12px; }
+  .r-sechead { margin: 14px 20px 4px; }
+  .r-stories { gap: 0; padding: 0; }
+  .r-story { overflow: hidden; }
+  .r-storyrow { padding: 14px 20px; border-width: 0 0 1px; border-color: var(--line-2); border-radius: 0; }
+  .r-story.is-open .r-storyrow { border-color: var(--line-2); background: var(--card); }
+  .r-title { font-size: 16px; }
+  /* After the sort, the last story fully inside the frame is swiped right once: the row slides over a strip
+     that names the action (web.css .swipe-under, armed), springs back, and is read. page.js sets data-swipe; phones only. */
+  .r-under { position: absolute; inset: 0; display: flex; align-items: center; gap: 8px; padding: 0 22px; background: var(--accent); color: #FFFFFF; font-size: 13px; font-weight: 600; }
+  .r-stories[data-swipe="play"] .r-swiped { animation: r-swipe 1.5s cubic-bezier(0.3, 0.7, 0.3, 1) both; box-shadow: -1px 0 0 var(--line-3); }
+  .r-stories[data-swipe="done"] .r-story--swipe .r-dot { background: transparent; box-shadow: inset 0 0 0 1px var(--line-3); }
+  .r-stories[data-swipe="done"] .r-story--swipe .r-title { color: var(--ink-2); font-weight: 400; }
+  .r-skip { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px 20px 20px; }
+  .r-skip .r-btn { height: 40px; padding: 0 14px; font-size: 13px; border-radius: 8px; }
+
+  .sec { padding: 64px 0; }
+  .sec__grid { display: block; }
+  .sec__title { max-width: none; margin-bottom: 18px; font-size: clamp(30px, 8.4vw, 36px); }
+  .sec__words { padding-right: 0; }
+  .sec__show { position: static; margin-top: 32px; }
+  .frag { padding: 16px; }
+  .frag--paper { padding: 0; }
+  .p-body { padding-left: 14px; }
+  .steps { grid-template-columns: 1fr; gap: 24px; }
+
+  .close__grid { display: flex; flex-direction: column; align-items: flex-start; }
+  .close__words { padding-right: 0; }
+
+  .aer-footer ul { gap: 0; }
+  .aer-footer li a { display: inline-flex; align-items: center; min-height: 44px; }
+}
+
+@media (min-width: 900px) {
+  .pn__menu[hidden] { display: flex; }
+}
+
+/* Small tablets and big phones held sideways (720 to 899): the phone frame stands beside the words.
+   The words column holds the headline, lede, buttons and the caption; the frame spans all four rows. */
+@media (min-width: 720px) and (max-width: 899.98px) {
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) min(400px, 48%); grid-template-rows: auto auto auto 1fr; column-gap: 32px; row-gap: 18px; align-items: start; }
+  .hero__words, .hero__fig { display: contents; }
+  .hero__title { grid-column: 1; grid-row: 1; }
+  .hero__title br { display: none; } /* let balance set the lines in the narrow column */
+  .hero__lede { grid-column: 1; grid-row: 2; }
+  .hero__act { grid-column: 1; grid-row: 3; }
+  .hero__cap { grid-column: 1; grid-row: 4; margin-top: 10px; }
+  .r-app { grid-column: 2; grid-row: 1 / 5; max-width: none; }
+}
+
+@media (max-width: 380px) {
+  .pn__cta { padding: 0 12px; }
+  .pn__brand { gap: 8px; }
+}
+
+/* Phones: the diagram turns vertical and the archive switch drops its icons. */
+@media (max-width: 639.98px) {
+  .iso--wide { display: none; }
+  .iso--tall { display: block; }
+  .a-seg .ic { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .r-story, .r-aff i, .r-aff-n, .pn { transition: none; }
+}

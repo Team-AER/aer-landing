@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pensieve — Team AER</title>
+<meta name="description" content="Pensieve is a self-hosted RSS reader with Reeder and NetNewsWire sync, a daily paper ranked by what you open and star, and an optional AI layer that runs on your own model gateway.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F3F1EA">
+<meta property="og:title" content="Pensieve: read what matters first">
+<meta property="og:description" content="A self-hosted feed reader with Reeder sync, a daily paper ranked by what you read, and an optional memory on your own model gateway. MIT licensed.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/pensieve/">
+<meta property="og:site_name" content="Team AER">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231B1A17'/%3E%3Cg fill='none' stroke='%23F3F1EA' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='32' cy='32' r='20'/%3E%3Cpath d='M17 36c6-9 24-9 30 0'/%3E%3Cpath d='M22 28c5-4.5 15-4.5 20 0' stroke='%236FB39F'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..600&amp;family=Instrument+Sans:wght@400..600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css">
+<link rel="stylesheet" href="/pensieve/style.css">
+<noscript><style>.r-stories:not([data-order]) .r-story { order: var(--rank); animation: none; } .r-stories:not([data-bars]) .r-aff i { transform: scaleX(var(--m)); animation: none; } .r-stories:not([data-bars]) .r-aff-n { opacity: 1; animation: none; }</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Icon set: the product's own 24px line icons (pensieve/templates/_macros.html). -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-mark" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.5 13.5c2.5-4 10.5-4 13 0"/><path d="M7.5 10c2-2 7-2 9 0"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 16.9l-5.3 2.8 1.1-5.9L3.5 9.7l5.9-.8z"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 13l2.5-8h11L20 13v6H4z"/><path d="M4 13h5l1.5 2.5h3L15 13h5"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 4l9 4.5-9 4.5-9-4.5z"/><path d="M3 13l9 4.5 9-4.5"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/></symbol>
+  <symbol id="i-bookmark-plus" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/><path d="M12 7.5v6M9 10.5h6"/></symbol>
+  <symbol id="i-digest" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="8.5" r="1.2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M5 12v8h14v-8"/></symbol>
+  <symbol id="i-reader" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 12h8M8 15h5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="4.5" rx="1"/><path d="M5 8.5V19a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5M10 12.5h4"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.4 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.4-3.5-8.5S9.6 5.9 12 3.5z"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="1.5"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8.5 8.5"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M5 19h14"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></symbol>
+</svg>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="pn" data-pagenav>
+  <div class="wrap pn__in">
+    <a class="pn__brand" href="/pensieve/">
+      <svg class="pn__mark" viewBox="0 0 64 64" width="30" height="30" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1B1A17"/><g fill="none" stroke="#F3F1EA" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="20"/><path d="M17 36c6-9 24-9 30 0"/><path d="M22 28c5-4.5 15-4.5 20 0" stroke="#6FB39F"/></g></svg>
+      <span>Pensieve</span>
+    </a>
+    <nav id="pn-menu" class="pn__menu" hidden aria-label="Sections">
+      <a href="#paper">The paper</a>
+      <a href="#memory">Memory</a>
+      <a href="#sync">Sync and save</a>
+      <a href="#self-host">Self-host</a>
+    </nav>
+    <a class="btn btn--primary pn__cta" href="https://pensieve.brainfc.uk">Open Pensieve</a>
+    <button class="pn__toggle" type="button" data-nav-toggle aria-controls="pn-menu" aria-expanded="false" aria-label="Sections menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero__words">
+        <h1 id="hero-title" class="hero__title">Read what matters first.<br> Skip the rest with a clear conscience.</h1>
+        <p class="hero__lede">A self-hosted feed reader with Reeder sync. Add your own model gateway and the day’s stories rank by what you open and star.</p>
+        <div class="hero__act">
+          <div class="hero__btns">
+            <a class="btn btn--primary btn--lg" href="https://pensieve.brainfc.uk">Open Pensieve</a>
+            <a class="btn btn--lg" href="https://github.com/Team-AER/pensieve">Get the code</a>
+          </div>
+          <p class="hero__note">Version 0.1.0, alpha, MIT licence. Accounts on the live instance are by invitation from its admin; anyone can run their own.</p>
+        </div>
+      </div>
+
+      <figure class="hero__fig">
+        <div class="r-app" role="img" aria-label="Pensieve's reader on a desktop. Left, the folders pane with Today's digest selected. Middle, today's paper: the front page ranked by interest, each story with its match to your reading, the top one merged from four sources; below the list, a safe-to-skip box for 14 repeat items. Right, the top story open with its AI tags, an AI summary and two related articles from your reading history.">
+
+          <div class="r-top">
+            <span class="r-brand"><svg viewBox="0 0 24 24" class="ic" width="22" height="22"><use href="#i-mark"/></svg>Pensieve</span>
+            <span class="r-topnav"><span>Reader</span><span class="is-on">Insights</span><span>Manage</span></span>
+            <span class="r-search"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-search"/></svg><span>Search, or ask your reading</span><kbd>/</kbd></span>
+            <span class="r-topact"><span class="r-btn r-btn--sm"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-bookmark-plus"/></svg>Save</span><span class="r-avatar">r</span></span>
+          </div>
+
+          <div class="r-panes">
+            <div class="r-nav">
+              <div class="r-navsec">
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-inbox"/></svg>All unread</span><span class="r-count">86</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-layers"/></svg>All items</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-star"/></svg>Starred</span><span class="r-count">6</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-bookmark"/></svg>Saved</span><span class="r-count">14</span></span>
+                <span class="r-navitem is-on"><span class="r-row r-ai"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-sparkle"/></svg><span class="r-ink">Today’s digest</span></span><span class="r-chip r-chip--ai r-chip--sm">AI</span></span>
+              </div>
+              <div class="r-navsec">
+                <span class="r-navlabel">Folders</span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-folder"/></svg>Tech</span><span class="r-count">31</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-folder"/></svg>Homelab</span><span class="r-count">22</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-folder"/></svg>Science</span><span class="r-count">14</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-folder"/></svg>Long reads</span><span class="r-count">11</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-folder"/></svg>Local</span><span class="r-count">8</span></span>
+              </div>
+              <div class="r-navsec">
+                <span class="r-navlabel">AI tags <span class="r-chip r-chip--ai r-chip--sm">auto</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic r-ai" width="16" height="16"><use href="#i-sparkle"/></svg>self-hosting</span><span class="r-count">7</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic r-ai" width="16" height="16"><use href="#i-sparkle"/></svg>local models</span><span class="r-count">5</span></span>
+                <span class="r-navitem"><span class="r-row"><svg viewBox="0 0 24 24" class="ic r-ai" width="16" height="16"><use href="#i-sparkle"/></svg>databases</span><span class="r-count">3</span></span>
+              </div>
+            </div>
+
+            <div class="r-list">
+              <div class="r-phonehead">
+                <span class="r-iconbtn"><svg viewBox="0 0 24 24" class="ic" width="22" height="22"><use href="#i-menu"/></svg></span>
+                <span class="r-phonetitle"><b>The paper</b><span data-today>Friday, 2 October</span></span>
+                <span class="r-avatar r-avatar--sm">r</span>
+              </div>
+              <div class="r-paperhead">
+                <span class="r-eyebrow r-ai"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-digest"/></svg>The paper</span>
+                <span class="r-date" data-today>Friday, 2 October</span>
+                <span class="r-stand">38 stories from 112 items in the last 24 hours, 29 unread</span>
+              </div>
+              <div class="r-sechead">
+                <span class="r-sectitle">Front page</span>
+                <span class="r-seccount">Your best 10 from every section, by what you open and star</span>
+              </div>
+
+              <!-- DOM order = arrival order (newest first). CSS `order` shows the ranked order; page.js animates between them. -->
+              <div class="r-stories" data-paper>
+                <div class="r-story" style="--rank:6;--chrono:1">
+                  <div class="r-storyrow">
+                    <span class="r-dot"></span>
+                    <span class="r-main">
+                      <span class="r-title">Ten gadgets we liked this month</span>
+                      <span class="r-meta"><span class="r-src">Gadget Roundup</span><span class="r-chip r-chip--ai r-chip--sm">shopping</span><span class="r-time">4m</span><span class="r-match"><span class="r-aff"><i style="--m:.52"></i></span><span class="r-aff-n">52% match</span></span></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="r-story r-story--swipe" style="--rank:5;--chrono:2">
+                  <span class="r-under"><svg viewBox="0 0 24 24" class="ic" width="20" height="20"><use href="#i-check-circle"/></svg>Read</span>
+                  <div class="r-storyrow r-swiped">
+                    <span class="r-dot"></span>
+                    <span class="r-main">
+                      <span class="r-title">Council approves the harbour cycle lane</span>
+                      <span class="r-meta"><span class="r-src">Harbour Ledger</span><span class="r-chip r-chip--ai r-chip--sm">local news</span><span class="r-time">12m</span><span class="r-match"><span class="r-aff"><i style="--m:.63"></i></span><span class="r-aff-n">63% match</span></span></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="r-story" style="--rank:4;--chrono:3">
+                  <div class="r-storyrow">
+                    <span class="r-dot"></span>
+                    <span class="r-main">
+                      <span class="r-title">Vector search, explained without the hype</span>
+                      <span class="r-meta"><span class="r-src">Index Weekly</span><span class="r-chip r-chip--ai r-chip--sm">databases</span><span class="r-time">40m</span><span class="r-match"><span class="r-aff"><i style="--m:.76"></i></span><span class="r-aff-n">76% match</span></span></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="r-story" style="--rank:2;--chrono:4">
+                  <div class="r-storyrow">
+                    <span class="r-dot"></span>
+                    <span class="r-main">
+                      <span class="r-title">Small language models are getting good at boring jobs</span>
+                      <span class="r-meta"><span class="r-sources"><span class="r-favs"><i></i><i></i><i></i></span>3 sources</span><span class="r-chip r-chip--ai r-chip--sm">local models</span><span class="r-time">2h</span><span class="r-match"><span class="r-aff"><i style="--m:.84"></i></span><span class="r-aff-n">84% match</span></span></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="r-story is-open" style="--rank:1;--chrono:5">
+                  <div class="r-storyrow">
+                    <span class="r-dot"></span>
+                    <span class="r-main">
+                      <span class="r-title">The quiet return of the home server</span>
+                      <span class="r-meta"><span class="r-sources"><span class="r-favs"><i></i><i></i><i></i></span>4 sources</span><span class="r-chip r-chip--ai r-chip--sm">self-hosting</span><span class="r-time">5h</span><span class="r-match"><span class="r-aff"><i style="--m:.91"></i></span><span class="r-aff-n">91% match</span></span></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="r-story" style="--rank:3;--chrono:6">
+                  <div class="r-storyrow">
+                    <span class="r-dot"></span>
+                    <span class="r-main">
+                      <span class="r-title">What a year of logging every article I opened taught me</span>
+                      <span class="r-meta"><span class="r-src">Margin Notes</span><span class="r-chip r-chip--ai r-chip--sm">reading</span><span class="r-time">9h</span><span class="r-match"><span class="r-aff"><i style="--m:.88"></i></span><span class="r-aff-n">88% match</span></span></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="r-story" style="--rank:7;--chrono:7">
+                  <div class="r-storyrow">
+                    <span class="r-dot"></span>
+                    <span class="r-main">
+                      <span class="r-title">Postgres 18 in production, first notes</span>
+                      <span class="r-meta"><span class="r-src">Query Plan</span><span class="r-chip r-chip--ai r-chip--sm">databases</span><span class="r-time">14h</span><span class="r-match"><span class="r-aff"><i style="--m:.47"></i></span><span class="r-aff-n">47% match</span></span></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="r-skip">
+                <span class="r-skiptext"><b>Safe to skip</b> 14 items across 9 stories look like repeats or things you usually skip.</span>
+                <span class="r-btn r-btn--accent r-btn--sm"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-check-circle"/></svg>Mark these read</span>
+              </div>
+            </div>
+
+            <div class="r-article">
+              <div class="r-arthead">
+                <span class="r-btn r-btn--sm"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-star"/></svg>Star</span>
+                <span class="r-btn r-btn--sm"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-check-circle"/></svg>Mark unread</span>
+                <span class="r-btn r-btn--sm"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-note"/></svg>Note</span>
+                <span class="r-grow"></span>
+                <span class="r-btn r-btn--sm r-btn--icon"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-share"/></svg></span>
+                <span class="r-btn r-btn--sm r-btn--icon"><svg viewBox="0 0 24 24" class="ic" width="16" height="16"><use href="#i-more"/></svg></span>
+              </div>
+              <div class="r-artbody">
+                <div class="r-artmeta">
+                  <span class="r-row"><span class="r-favicon"></span><b>Small Servers</b></span>
+                  <span>by Ines Okafor</span>
+                  <span>5h</span>
+                  <span>6 min read</span>
+                  <span class="r-sources"><span class="r-favs"><i></i><i></i><i></i></span>4 sources</span>
+                </div>
+                <span class="r-arttitle">The quiet return of the home server</span>
+                <span class="r-tags">
+                  <span class="r-chip r-chip--ai"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-sparkle"/></svg>self-hosting <span class="r-conf">92%</span></span>
+                  <span class="r-chip r-chip--ai"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-sparkle"/></svg>homelab <span class="r-conf">81%</span></span>
+                  <span class="r-chip"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-tag"/></svg>to-try</span>
+                  <span class="r-chip r-chip--dashed">+ tag</span>
+                </span>
+                <div class="r-aicard">
+                  <span class="r-eyebrow r-ai"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-sparkle"/></svg>Summary</span>
+                  <ul>
+                    <li>Four outlets report more readers running a small server at home for mail, photos and feeds.</li>
+                    <li>Low-power boards and simpler container tooling are the reasons given most often.</li>
+                  </ul>
+                  <p><span class="r-eyebrow r-ai">Why it matters</span>It picks up your September note on moving backups off the spare box.</p>
+                </div>
+                <div class="r-memory">
+                  <span class="r-memlabel">Related in your reading</span>
+                  <span class="r-memrow"><span class="r-link">Backups for people who hate backups</span><span class="r-faint">Sep 18</span></span>
+                  <span class="r-memnote">Your note: try restic to the spare box before winter.</span>
+                  <span class="r-memrow"><span class="r-link">Running a feed reader on a 4 W board</span><span class="r-faint">Sep 4</span></span>
+                </div>
+                <p class="r-prose">For a decade the advice was simple: rent it. This year the box under the desk is back, smaller and quieter than before.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="r-keys">
+            <span><kbd>j</kbd> <kbd>k</kbd> next / previous</span>
+            <span><kbd>s</kbd> star</span>
+            <span><kbd>A</kbd> mark all read</span>
+            <span><kbd>x</kbd> expand sources</span>
+            <span><kbd>?</kbd> all shortcuts</span>
+          </div>
+        </div>
+
+        <figcaption class="hero__cap">
+          <p class="hero__legend"><span class="swatch" aria-hidden="true"></span>Green marks the optional AI layer: tags, merged sources, summaries and the ranking itself. It runs on a model gateway you provide.</p>
+          <div class="order" role="group" aria-label="Order the paper" data-order-control hidden>
+            <button type="button" class="order__btn" data-order="newest" aria-pressed="false">Newest first</button>
+            <button type="button" class="order__btn" data-order="ranked" aria-pressed="true">Ranked for you</button>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="paper" class="sec" aria-labelledby="paper-title">
+    <div class="wrap sec__grid">
+      <h2 id="paper-title" class="sec__title">Your paper, ranked by what you read</h2>
+      <div class="sec__words">
+        <p class="sec__lead">The paper lays out the day’s stories in sections, one row per story however many feeds ran it. Building it makes no model call, so it appears in well under a second. It does need the AI layer switched on: the tags and story groups it sorts come from there.</p>
+        <ul class="feats" role="list">
+          <li><b>Front page first.</b> Your best ten unread stories from every section open the paper, never more than two from one source.</li>
+          <li><b>Ranked by interest.</b> A story’s place comes from how close it is to what you open and star, with a lift for each extra source that ran it.</li>
+          <li><b>Daily limits per feed.</b> A busy feed keeps only its best few stories a day. The rest stay unread in Reader, so nothing is thrown away.</li>
+          <li><b>Safe to skip.</b> Repeats and things you usually skip are gathered in one place, with one button to mark them read.</li>
+          <li><b>Read once.</b> Open any copy of a story and every copy is marked read, in the paper and in Reader.</li>
+          <li><b>More like this, less like this.</b> Tune a story and its tags and sources gain or lose weight the next time the paper updates.</li>
+        </ul>
+      </div>
+      <div class="sec__show">
+        <div class="frag frag--paper" role="img" aria-label="A story in the paper, expanded: three copies from three feeds, one already read, with buttons to read, mark read, remove from the paper, and rank more or less like this. Under the section heading, a note that daily limits held back six stories, which stay unread in Reader.">
+          <div class="p-head"><span class="p-title">Front page</span><span class="p-count">Your best 10 from every section, by what you open and star</span></div>
+          <p class="p-held"><span class="p-link">Daily limits held back 6 stories</span>: Gadget Roundup 4, Index Weekly 2. They stay unread in Reader.</p>
+          <div class="p-story">
+            <div class="p-storyhead">
+              <span class="r-dot"></span>
+              <span class="r-main">
+                <span class="p-storytitle">Small language models are getting good at boring jobs</span>
+                <span class="r-meta"><span class="r-sources"><span class="r-favs"><i></i><i></i><i></i></span>3 sources</span><span class="r-chip r-chip--ai r-chip--sm">local models</span><span class="r-time">2h</span></span>
+              </span>
+              <svg viewBox="0 0 24 24" class="ic p-chev" width="16" height="16"><use href="#i-chevron-down"/></svg>
+            </div>
+            <div class="p-body">
+              <ul class="p-copies">
+                <li><span class="p-copy">Small models are quietly doing the boring work</span><span class="r-faint">Index Weekly, 2h</span></li>
+                <li class="is-read"><span class="p-copy">The unglamorous case for tiny language models</span><span class="r-faint">Margin Notes, 3h</span></li>
+                <li><span class="p-copy">Why your next model might be a small one</span><span class="r-faint">Small Servers, 4h</span></li>
+              </ul>
+              <div class="p-actions">
+                <span class="r-btn r-btn--sm"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-reader"/></svg>Read</span>
+                <span class="r-btn r-btn--sm"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-check-circle"/></svg>Mark read</span>
+                <span class="r-btn r-btn--sm r-btn--ghost"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-close"/></svg>Remove from paper</span>
+                <span class="r-grow"></span>
+                <span class="p-tune"><span class="r-btn r-btn--sm r-btn--ghost is-on"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-plus"/></svg>More like this</span><span class="r-btn r-btn--sm r-btn--ghost"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-minus"/></svg>Less like this</span></span>
+              </div>
+              <p class="p-tuned">Tuned: local models +1, applies when the paper next updates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="memory" class="sec sec--panel" aria-labelledby="memory-title">
+    <div class="wrap sec__grid">
+      <h2 id="memory-title" class="sec__title">A reader that remembers</h2>
+      <div class="sec__words">
+        <p class="sec__lead">Connect a model gateway and Pensieve files, groups and summarises items as they arrive, then uses what you have read to answer questions later. Leave it off and you still have a fast, plain feed reader.</p>
+        <div class="needs">
+          <h3 class="needs__title">Before you switch it on</h3>
+          <dl class="needs__list">
+            <div><dt>A gateway you run or choose</dt><dd>Any OpenAI-compatible endpoint that serves a chat model and an embedding model. Pensieve ships no model and calls no hosted one on its own.</dd></div>
+            <div><dt>pgvector for embeddings</dt><dd>The Compose stack’s PostgreSQL image includes it; a database you bring yourself must have it.</dd></div>
+            <div><dt>One switch to turn it all off</dt><dd><code>PENSIEVE_AI_ENABLED=false</code> disables every model-backed feature, the paper included.</dd></div>
+          </dl>
+        </div>
+        <ul class="feats" role="list">
+          <li><b>Tags with a confidence.</b> Auto-tags from your own vocabulary show how sure the model was, and a wrong one comes off in one click.</li>
+          <li><b>Stories, not copies.</b> The same news from several feeds folds into one row with a sources chip. Press x to see every copy, u to split one out.</li>
+          <li><b>Summaries as items arrive.</b> Each new item gets a few bullet points and a why-it-matters line. Missed ones are retried every half hour.</li>
+          <li><b>Related in your reading.</b> Open an article and Pensieve lists what you read before on the same thread, with your notes beside it.</li>
+          <li><b>Ask your reading.</b> Type a question in the search box and get an answer that cites the articles it came from.</li>
+          <li><b>Folders filed for you.</b> New feeds land in Inbox with a suggested folder that you accept in one click.</li>
+        </ul>
+      </div>
+      <div class="sec__show">
+        <div class="frag frag--memory" role="img" aria-label="An answer to the question 'What did I read about backing up a home server?', written from your reading and citing two articles, followed by AI tags with confidence scores.">
+          <div class="m-ask">
+            <span class="r-eyebrow r-ai"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-sparkle"/></svg>Ask about your reading</span>
+            <span class="m-q">What did I read about backing up a home server?</span>
+            <p>Two pieces in September. One argues for a single nightly snapshot to a second disk and a weekly copy off site. The other walks through restic to a spare machine, which you noted you wanted to try.</p>
+            <ol class="m-cites">
+              <li><span class="r-link">Backups for people who hate backups</span> <span class="r-faint">Sep 18</span></li>
+              <li><span class="r-link">Restic, three years in</span> <span class="r-faint">Sep 9</span></li>
+            </ol>
+          </div>
+          <div class="m-tags">
+            <span class="m-tagslabel">Tags on the open story</span>
+            <span class="r-tags">
+              <span class="r-chip r-chip--ai"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-sparkle"/></svg>self-hosting <span class="r-conf">92%</span></span>
+              <span class="r-chip r-chip--ai"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-sparkle"/></svg>homelab <span class="r-conf">81%</span></span>
+              <span class="r-chip r-chip--ai"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-sparkle"/></svg>backups <span class="r-conf">64%</span></span>
+              <span class="r-chip"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-tag"/></svg>to-try</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sync" class="sec" aria-labelledby="sync-title">
+    <div class="wrap sec__grid">
+      <h2 id="sync-title" class="sec__title">Keep Reeder. Keep NetNewsWire.</h2>
+      <div class="sec__words">
+        <p class="sec__lead">Pensieve speaks the Google Reader and Fever sync APIs, so the native apps you already use keep working, with Pensieve as their server.</p>
+        <ul class="feats" role="list">
+          <li><b>One token per app.</b> Each client signs in with its own token, labelled something like “Reeder on iPhone”, and you can revoke one without touching the rest.</li>
+          <li><b>OPML in and out.</b> Import subscriptions from any reader. Export them again as OPML, or everything (items, read and star state, notes, interests) as JSON.</li>
+          <li><b>Pocket, Instapaper, bookmarks.</b> Upload Pocket’s export, Instapaper’s CSV or a browser bookmarks file. Tags, dates and read status come across.</li>
+        </ul>
+      </div>
+      <div class="sec__show">
+        <figure class="code">
+          <figcaption class="code__cap">What you type into your sync client</figcaption>
+<pre class="code__pre"><code><span class="c-line c-com"># Reeder, NetNewsWire: pick “Google Reader API” (or FreshRSS)</span><span class="c-line c-kv"><span class="c-key">server</span><span>https://pensieve.example.com</span></span><span class="c-line c-kv"><span class="c-key">email</span><span>the address you sign in with</span></span><span class="c-line c-kv"><span class="c-key">password</span><span>a token from Manage, API tokens</span></span><span class="c-line c-gap"></span><span class="c-line c-com"># Clients that speak Fever</span><span class="c-line c-kv"><span class="c-key">server</span><span>https://pensieve.example.com<wbr><span class="c-nb">/api/fever/</span></span></span></code></pre>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="archive" class="sec sec--panel" aria-labelledby="archive-title">
+    <div class="wrap sec__grid">
+      <h2 id="archive-title" class="sec__title">Save a page and keep it</h2>
+      <div class="sec__words">
+        <p class="sec__lead">Pensieve keeps a full copy of every page you save, as it renders, so it stays readable and searchable if the site changes or goes away. Save from the app (press b), a bookmarklet, the Android share sheet, an iOS Shortcut or the browser extension.</p>
+        <ul class="feats" role="list">
+          <li><b>Four copies of each page.</b> The article text, a static offline copy with its images, a full-page screenshot and the original HTML.</li>
+          <li><b>On your own object store.</b> A bundled Garage S3 store holds the copies. Back it up alongside the database.</li>
+          <li><b>Capture in a box.</b> Pages render in headless Chromium on its own network, with no route to the database, Redis or Garage. Every request passes the same SSRF check as feed fetches.</li>
+          <li><b>What you see is what you keep.</b> The extension for Chrome, Edge, Brave and Firefox 121 sends the page as your browser shows it, signed in and after scripts ran.</li>
+          <li><b>Stars are kept too.</b> Starred feed items are archived the same way.</li>
+        </ul>
+      </div>
+      <div class="sec__show">
+        <div class="frag frag--archive" role="img" aria-label="The archive bar above a saved page, switching between its Article, Page, Screenshot and File copies.">
+          <div class="a-bar">
+            <span class="a-seg"><span class="is-on"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-reader"/></svg>Article</span><span><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-globe"/></svg>Page</span><span><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-image"/></svg>Screenshot</span><span><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-download"/></svg>File</span></span>
+            <span class="a-meta"><svg viewBox="0 0 24 24" class="ic" width="12" height="12"><use href="#i-archive"/></svg>Archived 2m, 1.8 MB, rendered</span>
+          </div>
+        </div>
+        <svg class="iso iso--wide" viewBox="0 0 560 228" role="img" aria-labelledby="iso-t">
+          <title id="iso-t">The capture path. The capture worker drives headless Chromium, which sits on its own network and reaches only the web, through an SSRF check. The worker writes the copies to Garage. Chromium has no route to PostgreSQL, Redis or Garage.</title>
+          <rect class="iso__net" x="206" y="6" width="172" height="216" rx="14"/>
+          <rect class="iso__box" x="8" y="24" width="130" height="58" rx="10"/>
+          <rect class="iso__box" x="222" y="24" width="140" height="58" rx="10"/>
+          <rect class="iso__box" x="420" y="24" width="132" height="58" rx="10"/>
+          <rect class="iso__box" x="420" y="146" width="132" height="46" rx="10"/>
+          <rect class="iso__no" x="222" y="104" width="140" height="84" rx="8"/>
+          <path class="iso__ok" d="M222 53H146M152 47l-7 6 7 6"/>
+          <path class="iso__ok" d="M420 53H370M376 47l-7 6 7 6"/>
+          <path class="iso__ok" d="M486 82v56M480 132l6 7 6-7"/>
+          <text class="iso__label" x="73" y="58">the web</text>
+          <text class="iso__label" x="292" y="50">headless</text>
+          <text class="iso__label" x="292" y="68">Chromium</text>
+          <text class="iso__label" x="486" y="50">capture</text>
+          <text class="iso__label" x="486" y="68">worker</text>
+          <text class="iso__label" x="486" y="174">Garage (S3)</text>
+          <text class="iso__small" x="176" y="78">SSRF</text>
+          <text class="iso__small" x="176" y="93">check</text>
+          <text class="iso__no-t" x="292" y="128">no route to</text>
+          <text class="iso__no-t" x="292" y="147">PostgreSQL,</text>
+          <text class="iso__no-t" x="292" y="166">Redis or Garage</text>
+          <text class="iso__small" x="292" y="210">its own network</text>
+        </svg>
+        <svg class="iso iso--tall" viewBox="0 0 320 366" role="img" aria-labelledby="iso-t2">
+          <title id="iso-t2">The capture path. The capture worker drives headless Chromium, which sits on its own network and reaches only the web, through an SSRF check. The worker writes the copies to Garage. Chromium has no route to PostgreSQL, Redis or Garage.</title>
+          <rect class="iso__net" x="6" y="88" width="308" height="178" rx="14"/>
+          <rect class="iso__box" x="16" y="8" width="150" height="54" rx="10"/>
+          <rect class="iso__box" x="200" y="8" width="112" height="54" rx="10"/>
+          <rect class="iso__box" x="16" y="110" width="150" height="58" rx="10"/>
+          <rect class="iso__no" x="180" y="110" width="124" height="86" rx="8"/>
+          <rect class="iso__box" x="16" y="304" width="150" height="54" rx="10"/>
+          <path class="iso__ok" d="M166 35H192M186 29l7 6-7 6"/>
+          <path class="iso__ok" d="M91 62v40M85 96l6 7 6-7"/>
+          <path class="iso__ok" d="M91 168v128M85 290l6 7 6-7"/>
+          <text class="iso__label" x="91" y="40">capture worker</text>
+          <text class="iso__label" x="256" y="32">Garage</text>
+          <text class="iso__label" x="256" y="50">(S3)</text>
+          <text class="iso__label" x="91" y="135">headless</text>
+          <text class="iso__label" x="91" y="154">Chromium</text>
+          <text class="iso__no-t" x="242" y="135">no route to</text>
+          <text class="iso__no-t" x="242" y="155">PostgreSQL,</text>
+          <text class="iso__no-t" x="242" y="175">Redis or Garage</text>
+          <text class="iso__small iso__start" x="104" y="226">SSRF check</text>
+          <text class="iso__small" x="242" y="254">its own network</text>
+          <text class="iso__label" x="91" y="336">the web</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="household" class="sec" aria-labelledby="household-title">
+    <div class="wrap sec__grid">
+      <h2 id="household-title" class="sec__title">One server for the household</h2>
+      <div class="sec__words">
+        <p class="sec__lead">Every account gets its own reader. The first one is the admin, created at <code>/setup</code>; the admin invites everyone else.</p>
+        <ul class="feats" role="list">
+          <li><b>Separate libraries.</b> Folders, tags, rules, saved items, notes and full-text search are per person.</li>
+          <li><b>Read your way.</b> Text size, font, line height, width and alignment are saved to each account, with light, sepia, dark and black themes.</li>
+          <li><b>Keyboard first.</b> j and k move, s stars, x expands sources, b saves a link, and ? lists the rest.</li>
+          <li><b>At home on a phone.</b> Install it as an app with an offline shell. The page scrolls, the bars slide away, a row swiped right is read and swiped left is starred.</li>
+          <li><b>Hardened.</b> Argon2 password hashing, CSRF protection, rate limiting, SSRF checks and secure proxy headers.</li>
+        </ul>
+      </div>
+      <div class="sec__show">
+        <div class="frag frag--reading" role="img" aria-label="The reading settings panel: text size M, font Sans, line height Normal, width Normal, align Left, theme Sepia. Saved to your account.">
+          <div class="rd-head"><b>Reading</b><span class="r-link">All settings</span></div>
+          <div class="rd-row"><span>Text size</span><span class="rd-seg"><span>S</span><span class="is-on">M</span><span>L</span><span>XL</span></span></div>
+          <div class="rd-row"><span>Font</span><span class="rd-seg"><span class="is-on">Sans</span><span class="rd-serif">Serif</span><span>System</span></span></div>
+          <div class="rd-row"><span>Line height</span><span class="rd-seg"><span>Tight</span><span class="is-on">Normal</span><span>Loose</span></span></div>
+          <div class="rd-row"><span>Width</span><span class="rd-seg"><span>Narrow</span><span class="is-on">Normal</span><span>Wide</span></span></div>
+          <div class="rd-row"><span>Align</span><span class="rd-seg"><span class="is-on">Left</span><span>Justify</span></span></div>
+          <div class="rd-row"><span>Theme</span><span class="rd-seg"><span>Auto</span><span>Light</span><span class="is-on">Sepia</span><span>Dark</span><span>Black</span></span></div>
+          <div class="rd-foot">Saved to your account. <kbd>+</kbd> / <kbd>-</kbd> change the text size too.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="sec sec--panel" aria-labelledby="how-title">
+    <div class="wrap sec__grid">
+      <h2 id="how-title" class="sec__title">How a story reaches you</h2>
+      <ol class="steps" role="list">
+        <li><span class="steps__n" aria-hidden="true">1</span><div><b>Subscribe, or import an OPML file.</b> Pensieve polls each feed adaptively, with conditional fetches, and finds feeds from a site address.</div></li>
+        <li><span class="steps__n" aria-hidden="true">2</span><div><b>Workers do the fetching.</b> The fetch worker parses new items; the capture worker archives the pages you save.</div></li>
+        <li><span class="steps__n" aria-hidden="true">3</span><div><b>The AI worker, if you connected a gateway,</b> files, groups and summarises the new items, and the paper is built from what it made.</div></li>
+        <li><span class="steps__n" aria-hidden="true">4</span><div><b>You read.</b> In the three-pane web app, the installable PWA on your phone, or a native client over sync.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="self-host" class="sec" aria-labelledby="self-host-title">
+    <div class="wrap sec__grid">
+      <h2 id="self-host-title" class="sec__title">Run it yourself</h2>
+      <div class="sec__words">
+        <p class="sec__lead">Pensieve ships as a Docker Compose stack: the web app, fetch, AI and capture workers, PostgreSQL with pgvector, Redis, Garage and a headless browser. Put it behind your HTTPS reverse proxy on port 8000.</p>
+        <ul class="feats feats--plain" role="list">
+          <li><b>You need</b> Docker Engine with Compose v2 and a hostname served over HTTPS.</li>
+          <li><b>In <code>.env</code></b> set <code>PENSIEVE_BASE_URL</code> and the six secrets the README shows how to generate.</li>
+          <li><b>No gateway yet?</b> Add <code>PENSIEVE_AI_ENABLED=false</code> and connect one later.</li>
+          <li><b>Under the hood:</b> Python 3.12, FastAPI, Jinja and HTMX, SQLAlchemy and Alembic. No Node build step.</li>
+        </ul>
+      </div>
+      <div class="sec__show">
+        <figure class="code code--copy">
+          <figcaption class="code__cap"><span>From an empty directory</span><button type="button" class="code__btn" data-copy="#install">Copy</button></figcaption>
+<pre class="code__pre"><code id="install" data-copy-text="git clone https://github.com/Team-AER/pensieve.git&#10;cd pensieve&#10;cp .env.example .env   # add the base URL and six secrets&#10;docker compose up -d --build"><span class="c-line c-cmd">git clone https://github.com<wbr><span class="c-nb">/Team-AER/pensieve.git</span></span><span class="c-line c-cmd">cd pensieve</span><span class="c-line c-cmd">cp .env.example .env<span class="c-com">   # add the base URL and six secrets</span></span><span class="c-line c-cmd">docker compose up -d --build</span></code></pre>
+        </figure>
+        <p class="sec__after">Then point your proxy at port 8000 and create the first account at <code>/setup</code>. The web container runs its database migrations before it takes traffic.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" aria-labelledby="close-title">
+    <div class="wrap close__grid">
+      <div class="close__words">
+        <h2 id="close-title" class="close__title">Start with your OPML file.</h2>
+        <p>Bring your subscriptions across, read as usual for a few days, and the paper starts ranking from what you open and star.</p>
+      </div>
+      <div class="close__btns">
+        <a class="btn btn--primary btn--lg" href="https://pensieve.brainfc.uk">Open Pensieve</a>
+        <a class="btn btn--lg" href="https://github.com/Team-AER/pensieve">Get the code</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Pensieve</h2>
+      <p>A self-hosted RSS reader with a daily paper and an optional memory, made by Team AER.</p>
+      <ul role="list" class="foot__links">
+        <li><a href="https://github.com/Team-AER/pensieve">Source on GitHub</a></li>
+        <li><a href="https://github.com/Team-AER/pensieve/blob/main/LICENSE">MIT licence</a></li>
+        <li><a href="https://pensieve.brainfc.uk">Open Pensieve</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/hedwig/">Hedwig</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/accio/">Accio</a></li>
+        <li><a href="/erised/">Erised</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Pensieve is MIT licensed.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js" defer></script>
+<script src="/pensieve/page.js" defer></script>
+</body>
+</html>
