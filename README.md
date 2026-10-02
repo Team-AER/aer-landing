@@ -74,6 +74,14 @@ terminates TLS):
 ssh ubuntu@aer.app 'cd ~/aer-landing && git pull --ff-only && docker compose up -d --build && docker image prune -f'
 ```
 
+Pages load their own CSS/JS with a `?v=YYYYMMDD` stamp and HTML is served
+`no-cache`, so visitors pick up a deploy on their next visit. When you change
+a stylesheet or script, bump the stamp:
+
+```sh
+grep -rl '?v=' --include='*.html' . | xargs sed -i '' "s/?v=[0-9]*/?v=$(date +%Y%m%d)/g"
+```
+
 ## CI
 
 `.github/workflows/ci.yml` runs on every push / PR: lints the Dockerfile
