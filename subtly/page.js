@@ -3,7 +3,9 @@
 //    lights up and its cue types into the frame, while the app window's progress card counts up
 //    the way Subtly's engine reports it (end of the latest recognised segment / file length).
 //    Static HTML is the final state, which is what reduced-motion and no-JS visitors see.
-// 2. The GPU frame's platform switch (motion only in answer to a click).
+// 2. The GPU frame's platform switch.
+// 3. Pass 2 motion: staggered entrances as content arrives, frames whose cue pops on after the picture,
+//    the pipeline track lighting node by node. Skipped under reduced motion (final states stay).
 (function () {
   'use strict';
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -203,4 +205,52 @@
       b.addEventListener('click', function () { show(b.getAttribute('data-platform')); });
     });
   }
+
+  /* ---------------- phone nav CTA ---------------- */
+  // While the hero's or the closing section's download buttons are on screen, the bar's Download steps aside.
+  var barCta = document.querySelector('.nav__cta');
+  var zones = Array.prototype.slice.call(document.querySelectorAll('.hero .hero__ctas, .end .hero__ctas'));
+  if (barCta && zones.length && 'IntersectionObserver' in window) {
+    var seen = [];
+    var zio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var i = seen.indexOf(en.target);
+        if (en.isIntersecting && i === -1) seen.push(en.target);
+        if (!en.isIntersecting && i !== -1) seen.splice(i, 1);
+      });
+      barCta.classList.toggle('is-tucked', seen.length > 0);
+    }, { rootMargin: '-64px 0px 0px 0px' });
+    zones.forEach(function (z) { zio.observe(z); });
+  }
+
+  /* ---------------- entrances ---------------- */
+  if (reduce || !('IntersectionObserver' in window)) return;
+  document.documentElement.classList.add('sx');
+  var numberKids = function (sel) {
+    document.querySelectorAll(sel).forEach(function (list) {
+      Array.prototype.forEach.call(list.children, function (c, i) { c.style.setProperty('--n', String(i)); });
+    });
+  };
+  numberKids('.track'); numberKids('.dl'); numberKids('.models__table tbody');
+  // Resegmentation cards count across both columns: the long cue, then the two short ones.
+  Array.prototype.forEach.call(document.querySelectorAll('.reseg .reseg__label, .reseg .srt'), function (c, i) { c.style.setProperty('--n', String(i)); });
+
+  var frames = Array.prototype.slice.call(document.querySelectorAll('.scene .frame'));
+  var items = Array.prototype.slice.call(document.querySelectorAll(
+    '.scene__lede, .steps__item, .feats__item, .facts > li, .reqs > li, .models > h3, .models > p, .build, .limits > li, .scene__aside, .end .hero__ctas'
+  ));
+  var table = document.querySelector('.models__table');
+  items.forEach(function (el) { el.classList.add('rv'); });
+  var io = new IntersectionObserver(function (entries) {
+    var d = 0;
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      if (en.target.classList.contains('rv')) en.target.style.setProperty('--d', String(Math.min(d++, 8)));
+      en.target.classList.add('is-in');
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+  frames.concat(items).forEach(function (el) { io.observe(el); });
+  if (table) io.observe(table);
 })();
+

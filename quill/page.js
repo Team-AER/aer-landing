@@ -4,6 +4,8 @@
 // The copy button and the nav toggle live in /shared/shell.js.
 (function () {
   'use strict';
+  // html.js lets style.css hold section children back until shell.js reveals them; without JS nothing hides.
+  document.documentElement.classList.add('js');
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Action items: the heading counts what is ticked, as the app does ("· 1 of 4 done").
@@ -66,7 +68,13 @@
   // The one orchestrated moment is plain CSS and starts on load (no flash, no JS needed). A group that
   // starts fully below the fold (phones, tablets) is held back and plays when it scrolls into view;
   // once played it settles to a static final frame. Reduced motion: final frame at once (style.css).
-  function settle(el, ms) { setTimeout(function () { el.classList.add('is-static'); }, ms); }
+  var afterLanding = [];
+  function settle(el, ms) {
+    setTimeout(function () {
+      el.classList.add('is-static');
+      if (el === txs) afterLanding.forEach(function (fn) { fn(); });
+    }, ms);
+  }
   // [element that animates, element to watch (the bar's card: the bar itself is clipped while it fills), settle after ms]
   [[txs, txs, 1800 + 9 * 120], [bar, bar && bar.parentNode, 2100]].forEach(function (g) {
     var el = g[0], watch = g[1], ms = g[2];
@@ -202,4 +210,33 @@
 
   // Start where the markup says (12:37), with the active line in view.
   seek(currentTime(), false);
+
+  // Once the transcript has landed, the player plays a few seconds at 1.25x and pauses on Jonas's
+  // decision at 12:44: the time ticks, the playhead and the map's head move, the active line follows.
+  // Only while the reader is on screen, never after the visitor has touched it, never under reduced motion.
+  var playBtn = reader.querySelector('[data-play]');
+  var playUse = playBtn && playBtn.querySelector('use');
+  var touched = false, onScreen = true;
+  reader.addEventListener('click', function () { touched = true; }, true);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; }, { threshold: 0.2 }).observe(reader);
+  }
+  function setPlaying(on) {
+    if (!playBtn) return;
+    playBtn.classList.toggle('is-playing', on);
+    if (playUse) playUse.setAttribute('href', on ? '#i-pause' : '#i-play');
+  }
+  function playDemo() {
+    if (reduce || touched || !onScreen) return;
+    var t = Math.round(currentTime()), stop = 764;
+    if (t >= stop) return;
+    setPlaying(true);
+    var tick = setInterval(function () {
+      if (touched || !onScreen) { clearInterval(tick); setPlaying(false); return; }
+      t += 1;
+      seek(t, true);
+      if (t >= stop) { clearInterval(tick); setTimeout(function () { setPlaying(false); }, 400); }
+    }, 800);
+  }
+  afterLanding.push(function () { setTimeout(playDemo, 700); });
 })();

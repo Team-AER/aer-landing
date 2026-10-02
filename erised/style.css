@@ -92,7 +92,6 @@ h1, h2 { text-wrap: balance; }
 .btn--quiet:hover { border-color: var(--gold); }
 .btn--sm { min-height: 44px; padding: 10px 16px; font-size: 13px; }
 .btn--static { min-height: 40px; padding: 8px 16px; margin-top: 12px; font-size: 13px; pointer-events: none; }
-.btn--static.is-disabled { opacity: 0.45; box-shadow: none; }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -269,7 +268,14 @@ h1, h2 { text-wrap: balance; }
 .track .is-filled { background: var(--gold-edge); }
 .track .is-current { background: var(--gold); }
 .desire-replica__label { font: 400 22px/1.3 var(--display); color: var(--silver); }
-.desire-replica__input { margin-top: 14px; padding: 12px 0; border-bottom: 1px solid var(--gold); font: italic 400 19px/1.5 var(--serif); color: color-mix(in srgb, var(--mist) 85%, transparent); text-wrap: pretty; }
+.desire-replica__input { position: relative; min-height: calc(1.5em + 24px); margin-top: 14px; padding: 12px 0; border-bottom: 1px solid var(--gold); font: 400 19px/1.5 var(--serif); color: var(--silver); text-wrap: pretty; }
+/* While the demo has cleared the field, the product's placeholder shows in its place. */
+.desire-replica__input.is-empty::before { content: attr(data-placeholder); position: absolute; left: 0; right: 0; top: 12px; font-style: italic; color: color-mix(in srgb, var(--mist) 85%, transparent); pointer-events: none; }
+.desire-replica__caret { display: none; width: 1.5px; height: 1.1em; margin-left: 2px; vertical-align: -0.18em; background: var(--gold); }
+.desire-replica.is-typing .desire-replica__caret { display: inline-block; }
+.desire-replica__input.is-empty .desire-replica__caret { position: relative; z-index: 1; margin-left: 0; }
+/* Locked (field empty): an outline, not a faded fill, so it reads as "not yet" rather than broken. */
+.desire-replica.is-locked .desire-replica__go { background: transparent; color: var(--mist); border-color: var(--line); box-shadow: none; }
 .desire-replica__hint { margin-top: 12px; font: italic 400 14px/1.5 var(--serif); color: var(--gold); text-wrap: pretty; }
 
 /* Party */
@@ -315,8 +321,7 @@ h1, h2 { text-wrap: balance; }
 .journal__entry strong { display: block; font: 400 21px/1.3 var(--display); letter-spacing: -0.005em; color: var(--silver); }
 .journal__entry small { display: block; margin: 6px 0; font: 600 10.5px/1.4 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
 .journal__entry p { margin-top: 6px; font: 400 15px/1.6 var(--serif); color: var(--mist); }
-.journal__entry.is-current { background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 8%, transparent), transparent 78%); }
-.journal__entry.is-current::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 2px; border-radius: 1px; background: var(--gold); box-shadow: 0 0 8px color-mix(in srgb, var(--gold) 70%, transparent), 0 0 20px color-mix(in srgb, var(--gold) 35%, transparent); }
+.journal__entry.is-current { background: color-mix(in srgb, var(--gold) 8%, transparent); border: 1px solid var(--gold-edge); border-radius: var(--radius); margin-bottom: 4px; }
 .journal__entry.is-current .journal__num { opacity: 1; text-shadow: 0 0 16px color-mix(in srgb, var(--gold) 55%, transparent); }
 .journal__export { margin-top: 20px; }
 .journal__export svg { width: 16px; height: 16px; }
@@ -344,7 +349,7 @@ h1, h2 { text-wrap: balance; }
 
 /* Moods: the eight atmospheres, read as data */
 .moods { display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 12px 24px; width: min(100% - 36px, 470px); margin: 28px auto 0; padding-top: 16px; border-top: 1px solid var(--line); }
-@media (max-width: 400px) { .moods { grid-template-columns: repeat(3, auto); } }
+@media (max-width: 480px) { .moods { column-gap: 8px; } .moods li { font-size: 14px; gap: 6px; } .moods i { width: 8px; height: 8px; } }
 .moods[role="list"] { padding-top: 16px; } /* base.css zeroes list padding at higher specificity */
 .moods li { display: inline-flex; align-items: center; gap: 8px; font: 400 15px/1 var(--serif); color: var(--silver); }
 .moods i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); }
@@ -443,4 +448,70 @@ h1, h2 { text-wrap: balance; }
 /* ---------- Reduced motion: parallax is off in page.js; here nothing is left to settle ---------- */
 @media (prefers-reduced-motion: reduce) {
   .mirror__pan { transform: none !important; }
+}
+
+/* ---------- Pass 2: phones. Replica micro text never drops under 11px. ---------- */
+@media (max-width: 640px) {
+  .scene__eyebrow p, .turn-badge, .scene__prior span, .journal__entry small, .journal__now, .desire span,
+  .health strong, .stats span, .dice strong span { font-size: 11px; letter-spacing: 0.12em; }
+  .party__member small, .arcade__hp small, .arcade__wallet small, .arcade__shards small, .arcade__btn, .arcade__foot, .arcade__stage small { font-size: 11px; }
+  .arcade__screen { font-size: 12px; }
+  .choice:active { background: var(--gold-soft); }
+}
+
+/* ---------- Pass 2: motion. Transform/opacity only; plays once, then settles. Hidden starting
+   states exist only under .ex, which page.js adds when JS runs without reduced motion. ---------- */
+.btn { transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 180ms var(--ease-settle), box-shadow 160ms ease; }
+.btn:not(.btn--static):active { transform: translateY(1px) scale(0.98); }
+@media (hover: hover) {
+  .btn:not(.btn--static):hover { transform: translateY(-1px); }
+  .btn--primary:not(.btn--static):hover { box-shadow: inset 0 1px rgb(255 255 255 / 0.28), 0 6px 16px -6px rgb(0 0 0 / 0.6); }
+}
+.btn--quiet:not(.btn--static):hover { background: var(--gold-soft); }
+.btn--quiet:active { background: var(--gold-soft); }
+.choice:active .choice__index { transform: scale(0.92); }
+.choice__index { transition: background-color 160ms ease, border-color 160ms ease, transform 160ms var(--ease-settle); }
+.free-action:active { border-color: var(--gold); }
+.nav__menu a { position: relative; }
+@media (min-width: 761px) {
+  .nav__menu a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left center; transition: transform 240ms var(--ease-settle); }
+  .nav__menu a:hover::after, .nav__menu a:focus-visible::after { transform: scaleX(1); }
+}
+.desire-replica__go { transition: background-color 420ms ease, color 420ms ease, border-color 420ms ease, box-shadow 420ms ease; }
+/* The hero's path preview (page.js) borrows the hover look of a choice row. */
+.choice.is-preview { background: linear-gradient(90deg, var(--gold-soft), transparent 70%); }
+.choice.is-preview .choice__index { background: var(--gold); border-color: var(--gold); }
+.choice.is-preview .choice__arrow { color: var(--gold); transform: translateX(3px); }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ex-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes ex-pop { 0% { opacity: 0; transform: scale(0.9); } 60% { opacity: 1; transform: scale(1.04); } 100% { opacity: 1; transform: none; } }
+  @keyframes ex-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  /* Hero title and lede arrive before the reading column (pure CSS: finishes without JS). */
+  .hero__title span, .hero__lede { animation: ex-rise 640ms var(--ease-settle) both; }
+  .hero__title span:nth-child(2) { animation-delay: 90ms; }
+  .hero__lede { animation-delay: 180ms; }
+  .scene__hairline { transform-origin: left center; animation-name: ex-grow; animation-duration: 600ms; }
+
+  /* Staggered entrances, batched by arrival (page.js sets --d). */
+  .ex .rv:not(.is-in) { opacity: 0; transform: translateY(18px); }
+  .ex .rv.is-in { animation: ex-rise 620ms var(--ease-settle) both; animation-delay: calc(var(--d, 0) * 70ms); }
+
+  /* Inside the sheets, rows arrive in order once the sheet is in. */
+  .ex .sheet.rv:not(.is-in) :is(.party__member, .journal__entry, .carry li, .stats > div, .evidence li) { opacity: 0; }
+  .ex .sheet.rv.is-in :is(.party__member, .journal__entry, .carry li, .stats > div) { animation: ex-rise 520ms var(--ease-settle) both; animation-delay: calc(var(--d, 0) * 70ms + 260ms + var(--n, 0) * 90ms); }
+  .ex .sheet.rv.is-in .party__member .turn-badge { animation: ex-pop 420ms var(--ease-settle) both; animation-delay: calc(var(--d, 0) * 70ms + 760ms); }
+  .ex .sheet.rv.is-in .meter i { transform-origin: left center; animation: ex-grow 900ms var(--ease-settle) both; animation-delay: calc(var(--d, 0) * 70ms + 500ms); }
+  .ex .sheet.rv.is-in .journal__now { animation: ex-pop 420ms var(--ease-settle) both; animation-delay: calc(var(--d, 0) * 70ms + 700ms); }
+  .ex .moods.rv.is-in li { animation: ex-pop 420ms var(--ease-settle) both; animation-delay: calc(var(--d, 0) * 70ms + var(--n, 0) * 60ms); }
+  .ex .moods.rv:not(.is-in) li { opacity: 0; }
+  .ex .track span { transform-origin: left center; }
+  .ex .desire-replica.rv.is-in .track span { animation: ex-grow 360ms var(--ease-settle) both; animation-delay: calc(var(--d, 0) * 70ms + 200ms + var(--n, 0) * 110ms); }
+  .ex .desire-replica.is-typing .desire-replica__caret { animation: ex-blink 0.9s steps(1) infinite; }
+  @keyframes ex-blink { 50% { opacity: 0; } }
+  .ex .desire-replica.is-ready .desire-replica__go { animation: ex-pop 480ms var(--ease-settle) both; }
+  /* Dice: the die face settles after page.js has rolled it. */
+  .ex .dice.is-rolling .dice__die b { opacity: 0.7; }
+  .ex .dice.is-landed .dice__die { animation: ex-pop 420ms var(--ease-settle) both; }
+  .ex .dice.is-landed strong span { animation: ex-pop 420ms var(--ease-settle) 120ms both; }
 }

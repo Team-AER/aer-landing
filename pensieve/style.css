@@ -69,12 +69,14 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
   border: 1px solid var(--line-3); border-radius: 10px;
   background: var(--card); color: var(--ink-2);
   font: 500 15px/1 var(--font-body); text-decoration: none; white-space: nowrap;
-  transition: background-color 0.12s, border-color 0.12s, color 0.12s;
+  transition: background-color 0.12s, border-color 0.12s, color 0.12s, transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.18s;
 }
-.btn:hover { background: var(--line-2); border-color: var(--faint); color: var(--ink); }
+.btn:hover { background: var(--line-2); border-color: var(--faint); color: var(--ink); transform: translateY(-1px); box-shadow: 0 8px 18px -10px rgba(27, 26, 23, 0.4); }
+.btn:active { transform: translateY(0) scale(0.98); box-shadow: none; transition-duration: 0.06s; }
 .btn--primary { background: var(--accent); border-color: var(--accent); color: #FFFFFF; font-weight: 600; }
-.btn--primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); color: #FFFFFF; }
+.btn--primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); color: #FFFFFF; box-shadow: 0 10px 20px -10px rgba(46, 94, 120, 0.6); }
 .btn--lg { min-height: 50px; padding: 0 22px; font-size: 16px; }
+@media (hover: none) { .btn:hover { transform: none; box-shadow: none; } }
 
 /* ---------- Page nav: the product's topbar, quiet links, one primary button ---------- */
 .pn {
@@ -89,9 +91,31 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
 .pn__mark { width: 30px; height: 30px; border-radius: 7px; }
 .pn__menu { display: flex; gap: 4px; }
 .pn__menu a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 8px; color: var(--muted); font-size: 15px; text-decoration: none; }
+.pn__menu a { transition: background-color 0.15s, color 0.15s; }
 .pn__menu a:hover { background: var(--line-2); color: var(--ink); }
+.pn__menu a:active { background: var(--line-3); }
 .pn__cta { min-height: 44px; }
 .pn__toggle { display: none; }
+
+/* ---------- Section entrances: the children of a [data-reveal] block arrive in sequence.
+   shell.js adds .is-in once the block is in view; page.js adds html.js, so with no JS nothing is hidden.
+   An animation (not a transition) so buttons and links keep their own hover transitions, and fill
+   "backwards" so the end state is the element's own style. Reduced motion: shown at once (below). ---------- */
+@keyframes rv-rise { from { opacity: 0; transform: translateY(18px); } }
+.js [data-reveal]:not(.is-in) > * { opacity: 0; }
+.js [data-reveal].is-in > * { animation: rv-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+[data-reveal] > :nth-child(2) { --i: 1; } [data-reveal] > :nth-child(3) { --i: 2; } [data-reveal] > :nth-child(4) { --i: 3; }
+[data-reveal] > :nth-child(5) { --i: 4; } [data-reveal] > :nth-child(6) { --i: 5; } [data-reveal] > :nth-child(n+7) { --i: 6; }
+
+/* Reading progress: a 2px ledger-blue rule under the page nav that fills as the page is read.
+   Scroll-driven where supported; elsewhere it simply is not drawn. */
+.pn__progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pn__progress { display: block; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform-origin: left center; transform: scaleX(0); animation: pn-read linear both; animation-timeline: scroll(root); pointer-events: none; }
+  }
+}
+@keyframes pn-read { to { transform: scaleX(1); } }
 
 /* ---------- Hero ---------- */
 .hero { padding: clamp(28px, 4.5vw, 52px) 0 clamp(24px, 3vw, 40px); }
@@ -115,7 +139,8 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
 /* The order toggle: the product's .seg control. */
 .order { display: inline-flex; justify-self: start; border: 1px solid var(--line-3); border-radius: 10px; overflow: hidden; background: var(--card); }
 .order[hidden] { display: none; }
-.order__btn { min-height: 44px; padding: 0 16px; font-size: 14px; color: var(--muted); }
+.order__btn { min-height: 44px; padding: 0 16px; font-size: 14px; color: var(--muted); transition: background-color 0.15s, color 0.15s; }
+.order__btn:active { background: var(--line-3); }
 .order__btn + .order__btn { border-left: 1px solid var(--line-3); }
 .order__btn:hover { background: var(--line-2); color: var(--ink); }
 .order__btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
@@ -221,7 +246,7 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
 @container list (max-width: 379.98px) { .r-match { flex-basis: 100%; } }
 .r-aff { display: inline-block; width: 36px; height: 6px; overflow: hidden; border-radius: 3px; background: var(--line-2); }
 .r-aff i { display: block; height: 100%; background: var(--ai); transform-origin: left center; transform: scaleX(var(--m)); transition: transform 0.75s cubic-bezier(0.3, 0.7, 0.3, 1); }
-.r-aff-n { color: var(--ai-ink); font-weight: 600; transition: opacity 0.45s 0.2s; }
+.r-aff-n { color: var(--ai-ink); font-weight: 600; font-variant-numeric: tabular-nums; transition: opacity 0.45s 0.2s; }
 
 /* Sort states. Default: ranked, bars full (reduced motion, and the end state).
    With motion allowed the page starts in arrival order with empty bars; page.js then fills and sorts.
@@ -239,6 +264,17 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
 .r-stories[data-order="ranked"] .r-story { order: var(--rank); }
 .r-stories[data-bars="empty"] .r-aff i { transform: scaleX(0); }
 .r-stories[data-bars="empty"] .r-aff-n { opacity: 0; }
+
+/* The paper loads: rows land top to bottom, then the skip box (plain CSS on load, so nothing waits on JS).
+   After the sort, the story that climbed to first gets one ring of attention (page.js sets data-picked). */
+@keyframes r-arrive { from { opacity: 0; transform: translateY(-10px); } }
+@keyframes r-pick { 0% { opacity: 0; transform: scale(0.985); } 30% { opacity: 1; transform: none; } 100% { opacity: 0; transform: scale(1.012); } }
+@media (prefers-reduced-motion: no-preference) {
+  .r-storyrow { animation: r-arrive 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--chrono) * 80ms + 150ms); }
+  .r-skip { animation: rv-rise 0.5s 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+}
+.r-storyrow::after { content: ""; position: absolute; inset: -1px; border: 2px solid var(--accent); border-radius: inherit; opacity: 0; pointer-events: none; }
+.r-stories[data-picked] .r-story.is-open .r-storyrow::after { animation: r-pick 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
 .r-skip { display: flex; align-items: center; gap: 12px; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--panel); color: var(--ink-2); font-size: 13px; line-height: 1.4; text-wrap: pretty; }
 .r-skiptext b { display: block; color: var(--ink); font: 500 16px/1.3 var(--font-display); }
@@ -352,6 +388,17 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
 .iso__small { fill: var(--muted); font-size: 12px; text-anchor: middle; }
 .iso__no-t { fill: var(--ink-2); font-size: 13px; text-anchor: middle; }
 .iso__start { text-anchor: start; }
+/* As the diagram enters, the allowed paths arrive one after another, then the isolated network's edge. */
+@keyframes iso-in { from { opacity: 0; transform: translateX(-6px); } }
+@keyframes iso-down { from { opacity: 0; transform: translateY(-6px); } }
+.js .sec__show:not(.is-in) .iso__ok, .js .sec__show:not(.is-in) .iso__net { opacity: 0; }
+.js .sec__show.is-in .iso--wide .iso__ok { animation: iso-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+.js .sec__show.is-in .iso--tall .iso__ok { animation: iso-down 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+.js .sec__show.is-in .iso__ok:nth-of-type(1) { animation-delay: 0.45s; }
+.js .sec__show.is-in .iso__ok:nth-of-type(2) { animation-delay: 0.65s; }
+.js .sec__show.is-in .iso__ok:nth-of-type(3) { animation-delay: 0.85s; }
+@keyframes rv-fade { from { opacity: 0; } }
+.js .sec__show.is-in .iso__net { animation: rv-fade 0.6s 1.05s backwards; }
 .iso--tall { display: none; max-width: 420px; }
 
 .frag--reading { max-width: 400px; padding: 14px 16px; box-shadow: 0 8px 24px rgba(27, 26, 23, 0.08); }
@@ -385,8 +432,11 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
 .c-nb { white-space: nowrap; } /* a URL path breaks before its slash, never inside a word */
 .c-key { color: var(--accent); }
 .code__btn { min-height: 44px; padding: 0 16px; border: 1px solid var(--line-3); border-radius: 8px; background: var(--card); color: var(--ink-2); font-size: 13px; font-weight: 600; }
+.code__btn { transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.12s; }
 .code__btn:hover { background: var(--line-2); color: var(--ink); }
-.code__btn[data-copied] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-ink); }
+.code__btn:active { transform: scale(0.96); }
+.code__btn[data-copied] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-ink); animation: copied 0.32s cubic-bezier(0.3, 1.4, 0.5, 1); }
+@keyframes copied { from { transform: scale(0.92); } }
 
 /* Closing */
 .close { padding: clamp(64px, 9vw, 120px) 0; background: var(--panel); }
@@ -533,4 +583,6 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
 
 @media (prefers-reduced-motion: reduce) {
   .r-story, .r-aff i, .r-aff-n, .pn { transition: none; }
+  .js [data-reveal] > *, .js .sec__show .iso__ok, .js .sec__show .iso__net { opacity: 1 !important; animation: none !important; }
+  .r-storyrow, .r-skip, .r-storyrow::after { animation: none !important; }
 }

@@ -11,8 +11,8 @@
 <meta name="theme-color" content="#EEF0F3">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7.5' fill='%23007AFF'/%3E%3Cg transform='translate(4 4)' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3c-4 0-7 3-7 7v6c0 3 3 5 7 5s7-2 7-5v-6c0-4-3-7-7-7z'/%3E%3Ccircle cx='9.5' cy='11' r='1.4'/%3E%3Ccircle cx='14.5' cy='11' r='1.4'/%3E%3Cpath d='M11 14.5l1 1 1-1'/%3E%3Cpath d='M5 8l-2-3M19 8l2-3'/%3E%3C/g%3E%3C/svg%3E">
-<link rel="stylesheet" href="/shared/base.css?v=20261003">
-<link rel="stylesheet" href="/hedwig/style.css?v=20261003">
+<link rel="stylesheet" href="/shared/base.css?v=20261004">
+<link rel="stylesheet" href="/hedwig/style.css?v=20261004">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -106,7 +106,7 @@
       <a class="btn btn--accent" href="https://hedwig.brainfc.uk">Open Hedwig</a>
       <a class="btn btn--quiet" href="https://github.com/Team-AER/hedwig">Get the code</a>
     </div>
-    <p class="hero__note">Accounts on the live instance are by invitation; anyone can run their own.</p>
+    <p class="hero__note">Built on <a href="https://github.com/maathimself/mailflow">MailFlow</a> by @maathimself. Accounts on the live instance are by invitation; anyone can run their own.</p>
   </div>
 
   <div class="wrap wrap--wide">
@@ -138,7 +138,7 @@
         </div>
         <div class="rail__foot">
           <span class="rail__acct"><span class="av av--0 av--20">G</span><span>4 accounts</span></span>
-          <span class="rail__status"><svg class="i i--12"><use href="#i-circle-check"/></svg><span>Up to date · 2 min</span></span>
+          <span class="rail__status"><svg class="i i--12"><use href="#i-circle-check"/></svg><span data-sync>Up to date · 2 min</span></span>
         </div>
       </aside>
 
@@ -305,14 +305,14 @@
     <div class="g12__copy">
       <h2 id="inbox-title">Every account in one list</h2>
       <p class="sec__lede">Gmail, iCloud, Microsoft 365 and Outlook over OAuth2, or any IMAP and SMTP server. Hedwig merges them into one inbox and keeps its own state in its own tables, so your accounts stay exactly as they were.</p>
-      <ul class="feat" role="list">
+      <ul class="feat" role="list" data-reveal>
         <li><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><div><h3>Merged, not mirrored</h3><p>One list across every account, threads intact. MailFlow syncs IMAP as it always has.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><div><h3>OAuth2 where it is required</h3><p>Microsoft 365 and Outlook sign in with OAuth2. Gmail, iCloud and your own server connect over IMAP and SMTP.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><div><h3>Nothing added to your mailbox</h3><p>Hedwig never creates folders or labels. Its streams, lists and decisions live in its own tables and leave with it.</p></div></li>
       </ul>
     </div>
-    <div class="g12__vis">
-      <div class="pop acct" role="img" aria-label="The account switcher: four accounts, a Gmail address, an iCloud address, a Microsoft 365 address signed in with OAuth2, and an address on your own IMAP server, each marked up to date, with an Add an account row at the bottom.">
+    <div class="g12__vis" data-reveal>
+      <div class="pop acct" data-reveal role="img" aria-label="The account switcher: four accounts, a Gmail address, an iCloud address, a Microsoft 365 address signed in with OAuth2, and an address on your own IMAP server, each marked up to date, with an Add an account row at the bottom.">
         <div class="pop__head">Accounts</div>
         <div class="acct__row"><span class="av av--0 av--20">G</span><span class="acct__t"><span class="acct__a">you@gmail.com</span><span class="acct__p">Gmail, IMAP and SMTP</span></span><span class="acct__s"><svg class="i i--12"><use href="#i-circle-check"/></svg>Up to date</span></div>
         <div class="acct__row"><span class="av av--4 av--20">I</span><span class="acct__t"><span class="acct__a">you@icloud.com</span><span class="acct__p">iCloud, IMAP and SMTP</span></span><span class="acct__s"><svg class="i i--12"><use href="#i-circle-check"/></svg>Up to date</span></div>
@@ -329,14 +329,14 @@
     <div class="g12__copy">
       <h2 id="triage-title">Only what needs you</h2>
       <p class="sec__lede">Three layers sort every message, cheapest first, and each one writes down its reason. Open the reason on any row to see the decision and change it.</p>
-      <ul class="feat" role="list">
+      <ul class="feat" role="list" data-reveal>
         <li><svg class="i" aria-hidden="true"><use href="#i-settings"/></svg><div><h3>Your rules</h3><p>Plain settings you write. When a rule matches, it decides and says so.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-insights"/></svg><div><h3>Your classifier</h3><p>Trained per user on what you reply to, archive and correct. Every correction becomes a training label.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-sparkles"/></svg><div><h3>A local model</h3><p>Only for the uncertain cases, through your own OpenAI-compatible gateway, with its reason written down.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-hourglass"/></svg><div><h3>Needs you and Waiting on</h3><p>A ranked list of what wants an answer from you, and a list of who owes you one.</p></div></li>
       </ul>
     </div>
-    <div class="g12__vis">
+    <div class="g12__vis" data-reveal>
       <div class="sheet demo" role="group" aria-label="Needs you, a working example">
         <div class="demo__head"><b>People</b><span class="list__sub">24 · 2 unread</span></div>
         <div class="demo__list">
@@ -415,7 +415,7 @@
 <section class="sec" id="how" aria-labelledby="how-title">
   <div class="wrap">
     <h2 id="how-title">How it works</h2>
-    <ol class="steps" role="list">
+    <ol class="steps" role="list" data-reveal>
       <li><span class="step__n">1</span><h3>Connect your accounts</h3><p>MailFlow syncs each one over IMAP, exactly as it did before Hedwig.</p></li>
       <li><span class="step__n">2</span><h3>A worker reads after each sync</h3><p>It reads every message once and writes only to Hedwig's own tables. Your mailbox is never touched.</p></li>
       <li><span class="step__n">3</span><h3>Two models, two jobs</h3><p>A small always-on model sorts every message with a stated reason. A larger one answers questions, drafts replies and takes the hard cases.</p></li>
@@ -429,21 +429,21 @@
     <div class="g12__copy">
       <h2 id="context-title">A mailbox that remembers</h2>
       <p class="sec__lede">People and organisations merged across accounts, topics that run for months, commitments in both directions, and answers that cite the message they came from.</p>
-      <ul class="feat" role="list">
+      <ul class="feat" role="list" data-reveal>
         <li><svg class="i" aria-hidden="true"><use href="#i-contacts"/></svg><div><h3>People, merged</h3><p>One card per person across every account and address, with the history between you.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-hourglass"/></svg><div><h3>Commitments</h3><p>What you owe and what they owe, extracted with the message that says so.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><div><h3>Search or ask</h3><p>Hybrid search over keywords and bge-m3 embeddings. A question gets an answer with citations you can open.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-newspaper"/></svg><div><h3>Insights and the daily brief</h3><p>Volume, reply times, cards backed by evidence, and a cited briefing each morning.</p></div></li>
       </ul>
     </div>
-    <div class="g12__vis">
+    <div class="g12__vis" data-reveal>
       <div class="sheet ask" role="img" aria-label="The Search or ask field holding the question What did we agree with Costa Studio about the retainer, and the answer: 4,200 euro a month from September, invoiced at the end of each month, with a review in January, followed by two citations that open the source messages. Beside it, commitments: you owe four, they owe two.">
         <div class="ask__field"><svg class="i i--14"><use href="#i-search"/></svg><span class="ask__q">What did we agree with Costa Studio about the retainer?</span></div>
         <div class="ask__body">
           <div class="ask__answer">
             <div class="slip__head"><svg class="i i--14"><use href="#i-sparkles"/></svg><span>Answer</span></div>
             <p>€4,200 a month from September, invoiced at the end of each month,<sup class="cite">1</sup> with a review of the scope in January.<sup class="cite">2</sup> The September invoice is still waiting for your confirmation.<sup class="cite">3</sup></p>
-            <div class="ask__cites">
+            <div class="ask__cites" data-reveal>
               <span class="ask__cite"><span class="cite cite--n">1</span><span class="av av--4 av--20">MC</span><span class="ask__ct"><span>Maria Costa, 1 Sep</span><span>Retainer terms for the autumn</span></span></span>
               <span class="ask__cite"><span class="cite cite--n">2</span><span class="av av--4 av--20">MC</span><span class="ask__ct"><span>Maria Costa, 3 Sep</span><span>Re: Retainer terms for the autumn</span></span></span>
               <span class="ask__cite"><span class="cite cite--n">3</span><span class="av av--4 av--20">MC</span><span class="ask__ct"><span>Maria Costa, today</span><span>Re: Invoice 4471 for the September retainer</span></span></span>
@@ -464,20 +464,20 @@
     <div class="g12__copy">
       <h2 id="assistant-title">An assistant that asks first</h2>
       <p class="sec__lede">The assistant and its scheduled automations can read everything you own. They cannot change mail until you approve the action, and they never send or delete on their own.</p>
-      <ul class="feat" role="list">
+      <ul class="feat" role="list" data-reveal>
         <li><svg class="i" aria-hidden="true"><use href="#i-agent"/></svg><div><h3>Tool-calling assistant</h3><p>Ask it to find, summarise or draft. Anything that would change mail comes back as a proposal.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><h3>Scheduled automations</h3><p>The same tools on a timer. Ones that only read run on their own; the rest queue for your approval.</p></div></li>
         <li><svg class="i" aria-hidden="true"><use href="#i-history"/></svg><div><h3>Every action undoable</h3><p>What Hedwig did today sits in one place, and every inbox action has an Undo.</p></div></li>
       </ul>
     </div>
-    <div class="g12__vis">
+    <div class="g12__vis" data-reveal>
       <div class="sheet approve" role="img" aria-label="A proposal card from the assistant: reply to Maria Costa, with the drafted text confirming 4,200 euro for September and payment by 9 October. Buttons: Approve and send, Edit, Not now. A note says nothing is sent until you approve. Below, two automations: Daily brief on weekdays at 07:30, which only reads, and Suggest unsubscribes on Sundays, which asks first.">
         <div class="approve__head"><svg class="i i--14"><use href="#i-sparkles"/></svg><span>Proposed by the assistant</span><span class="approve__wait"><svg class="i i--12"><use href="#i-circle-alert"/></svg>Needs your approval</span></div>
         <div class="approve__title">Reply to Maria Costa</div>
         <div class="approve__draft">Hi Maria, confirmed: €4,200 for September, as agreed. Thanks for correcting the date; we will pay by 9 October.</div>
         <div class="approve__actions"><span class="pbtn pbtn--accent">Approve and send</span><span class="pbtn">Edit</span><span class="pbtn">Not now</span></div>
         <p class="approve__note">Nothing is sent until you approve. The assistant cannot send or delete on its own.</p>
-        <div class="auto">
+        <div class="auto" data-reveal>
           <div class="auto__row"><svg class="i"><use href="#i-newspaper"/></svg><span class="auto__t"><span class="auto__n">Daily brief</span><span class="auto__w">Weekdays at 07:30</span></span><span class="auto__k">Reads only</span></div>
           <div class="auto__row"><svg class="i"><use href="#i-mail"/></svg><span class="auto__t"><span class="auto__n">Suggest unsubscribes</span><span class="auto__w">Sundays, newsletters unread for 90 days</span></span><span class="auto__k auto__k--att">Asks first</span></div>
         </div>
@@ -492,8 +492,8 @@
       <h2 id="plugins-title">Plugins with permissions you grant</h2>
       <p class="sec__lede">A plugin declares what it needs in a manifest; each user grants or refuses it. Views, commands, agent tools and hooks all go through the same door. Four ship as examples.</p>
     </div>
-    <div class="g12__vis">
-      <div class="sheet plug" role="img" aria-label="Four plugins with their grants: Receipts, which reads mail and writes to Records; Newsletter digest, which reads mail; Pensieve bridge, which reads mail and talks to Pensieve; Send guard, which reads drafts before they are sent.">
+    <div class="g12__vis" data-reveal>
+      <div class="sheet plug" data-reveal role="img" aria-label="Four plugins with their grants: Receipts, which reads mail and writes to Records; Newsletter digest, which reads mail; Pensieve bridge, which reads mail and talks to Pensieve; Send guard, which reads drafts before they are sent.">
         <div class="plug__row"><span class="plug__ico"><svg class="i"><use href="#i-receipt"/></svg></span><span class="plug__t"><span class="plug__n">Receipts</span><span class="plug__d">Finds receipts and keeps them in the Records ledger.</span></span><span class="plug__g">Reads mail, writes Records</span></div>
         <div class="plug__row"><span class="plug__ico"><svg class="i"><use href="#i-newspaper"/></svg></span><span class="plug__t"><span class="plug__n">Newsletter digest</span><span class="plug__d">Bundles the day's newsletters into one read.</span></span><span class="plug__g">Reads mail</span></div>
         <div class="plug__row"><span class="plug__ico"><svg class="i"><use href="#i-book-open"/></svg></span><span class="plug__t"><span class="plug__n">Pensieve bridge</span><span class="plug__d">Hands saved reading to Pensieve, Team AER's feed reader.</span></span><span class="plug__g">Reads mail, talks to Pensieve</span></div>
@@ -506,8 +506,8 @@
 <section class="sec" id="client" aria-labelledby="client-title">
   <div class="wrap">
     <h2 id="client-title">A complete mail client underneath</h2>
-    <p class="sec__lede">Everything MailFlow does, Hedwig still does.</p>
-    <ul class="feat feat--2" role="list">
+    <p class="sec__lede">Hedwig is a fork of <a href="https://github.com/maathimself/mailflow">MailFlow</a>, the self-hosted webmail client by @maathimself. Everything MailFlow does, Hedwig still does.</p>
+    <ul class="feat feat--2" role="list" data-reveal>
       <li><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg><div><h3>WYSIWYG compose</h3><p>Rich text, attachments and signatures; drafts are saved as you write.</p></div></li>
       <li><svg class="i" aria-hidden="true"><use href="#i-thread"/></svg><div><h3>Threads</h3><p>Conversations grouped across accounts, newest open, older ones folded into one row.</p></div></li>
       <li><svg class="i" aria-hidden="true"><use href="#i-layout"/></svg><div><h3>Layouts and themes</h3><p>Panes are a tree of views you arrange yourself. Light and dark themes.</p></div></li>
@@ -526,9 +526,9 @@
       <h2 id="selfhost-title">Run it on your own server</h2>
       <p class="sec__lede">Node.js and Express, React, PostgreSQL and Redis. Docker Compose or a native install, with optional Caddy for automatic HTTPS. Models through any OpenAI-compatible gateway; embeddings with bge-m3.</p>
       <h3 class="sec__h3">Licence</h3>
-      <p class="sec__p">Hedwig is <strong>AGPL-3.0</strong>, inherited from MailFlow. Run it, change it, host it. If you host a modified copy for other people, you publish your changes. A <strong>commercial licence</strong> per installation is available for teams that cannot work under the AGPL.</p>
+      <p class="sec__p">Hedwig is <strong>AGPL-3.0</strong>, inherited from <a href="https://github.com/maathimself/mailflow">MailFlow</a> by @maathimself, the project Hedwig is built on. Run it, change it, host it. If you host a modified copy for other people, you publish your changes. A <strong>commercial licence</strong> per installation is available for teams that cannot work under the AGPL.</p>
     </div>
-    <div class="g12__vis">
+    <div class="g12__vis" data-reveal>
       <div class="code">
         <div class="code__bar"><span>Terminal</span><button type="button" class="copy" data-copy="#install">Copy</button></div>
         <pre id="install" tabindex="0"><code>git clone https://github.com/Team-AER/hedwig.git
@@ -537,7 +537,7 @@ cp .env.hedwig.example .env
 # fill in the secrets: openssl rand -hex 32
 docker compose -f docker-compose.hedwig.yml up -d --build</code></pre>
       </div>
-      <ul class="stack" role="list">
+      <ul class="stack" role="list" data-reveal>
         <li><b>App</b><span>Node.js, Express, React</span></li>
         <li><b>Data</b><span>PostgreSQL with pgvector, Redis</span></li>
         <li><b>Models</b><span>Any OpenAI-compatible gateway; bge-m3 embeddings</span></li>
@@ -548,7 +548,7 @@ docker compose -f docker-compose.hedwig.yml up -d --build</code></pre>
 </section>
 
 <section class="cta" aria-labelledby="cta-title">
-  <div class="wrap">
+  <div class="wrap" data-reveal>
     <h2 id="cta-title">One quiet window for all of it.</h2>
     <p class="sec__lede">Run your own with Docker Compose, or open the live instance if you have an invitation. The code, the docs and the licence are on GitHub.</p>
     <div class="hero__cta">
@@ -564,10 +564,11 @@ docker compose -f docker-compose.hedwig.yml up -d --build</code></pre>
   <div class="wrap">
     <div>
       <h2>Hedwig</h2>
-      <p>A unified, self-hosted webmail client. Team AER's fork of MailFlow, with a context engine, triage that learns and an assistant that asks first.</p>
+      <p>A unified, self-hosted webmail client. Team AER's fork of MailFlow by @maathimself, with a context engine, triage that learns and an assistant that asks first.</p>
       <ul role="list">
         <li><a href="https://github.com/Team-AER/hedwig">Source on GitHub</a></li>
         <li><a href="https://github.com/Team-AER/hedwig/blob/main/LICENSE">AGPL-3.0 licence</a></li>
+        <li><a href="https://github.com/maathimself/mailflow">Upstream: MailFlow</a></li>
         <li><a href="https://hedwig.brainfc.uk">Open Hedwig</a></li>
       </ul>
     </div>
@@ -595,7 +596,7 @@ docker compose -f docker-compose.hedwig.yml up -d --build</code></pre>
   </div>
 </footer>
 
-<script src="/shared/shell.js?v=20261003" defer></script>
-<script src="/hedwig/page.js?v=20261003" defer></script>
+<script src="/shared/shell.js?v=20261004" defer></script>
+<script src="/hedwig/page.js?v=20261004" defer></script>
 </body>
 </html>

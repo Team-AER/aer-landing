@@ -56,9 +56,36 @@
   if (ws) {
     var replayBtn = ws.querySelector('[data-replay]');
     if (replayBtn) replayBtn.addEventListener('click', play);
-    // Start now: this script is deferred, so the DOM is parsed and the stylesheet is applied, and
-    // starting before first paint avoids showing the finished workspace and then blanking it.
-    play();
+    // Desktop: start now (deferred script, so before first paint). Phones: the workspace sits
+    // below the fold, so hide it now and play once it is actually on screen.
+    var box = ws.getBoundingClientRect();
+    if (reduce || box.top < window.innerHeight * 0.85 || !('IntersectionObserver' in window)) {
+      play();
+    } else {
+      ws.classList.add('ws--play');
+      var wio = new IntersectionObserver(function (en) {
+        if (en.some(function (e) { return e.isIntersecting; })) { wio.disconnect(); play(); }
+      }, { threshold: 0.2 });
+      wio.observe(ws);
+    }
+  }
+
+  // Staggered section entrances: children rise in sequence once their group scrolls in.
+  // CSS hides them only under html.js + no-preference, so no JS (or reduced motion) = final state.
+  if (!reduce && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('js');
+    var groups = document.querySelectorAll('.sec__grid, .stages, .stat-grid, .toc');
+    var gio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('is-in'); gio.unobserve(en.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    groups.forEach(function (g) {
+      Array.prototype.forEach.call(g.children, function (c, i) { c.style.setProperty('--i', Math.min(i, 9)); });
+      g.setAttribute('data-stagger', '');
+      gio.observe(g);
+    });
   }
 
   // Citations light the row they name.

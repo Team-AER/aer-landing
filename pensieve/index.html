@@ -16,8 +16,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..600&amp;family=Instrument+Sans:wght@400..600&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/base.css?v=20261003">
-<link rel="stylesheet" href="/pensieve/style.css?v=20261003">
+<link rel="stylesheet" href="/shared/base.css?v=20261004">
+<link rel="stylesheet" href="/pensieve/style.css?v=20261004">
 <noscript><style>.r-stories:not([data-order]) .r-story { order: var(--rank); animation: none; } .r-stories:not([data-bars]) .r-aff i { transform: scaleX(var(--m)); animation: none; } .r-stories:not([data-bars]) .r-aff-n { opacity: 1; animation: none; }</style></noscript>
 </head>
 <body>
@@ -80,6 +80,7 @@
       <span></span><span></span>
     </button>
   </div>
+  <span class="pn__progress" aria-hidden="true"></span>
 </header>
 
 <main id="main">
@@ -289,9 +290,9 @@
   <section id="paper" class="sec" aria-labelledby="paper-title">
     <div class="wrap sec__grid">
       <h2 id="paper-title" class="sec__title">Your paper, ranked by what you read</h2>
-      <div class="sec__words">
+      <div class="sec__words" data-reveal>
         <p class="sec__lead">The paper lays out the day’s stories in sections, one row per story however many feeds ran it. Building it makes no model call, so it appears in well under a second. It does need the AI layer switched on: the tags and story groups it sorts come from there.</p>
-        <ul class="feats" role="list">
+        <ul class="feats" role="list" data-reveal>
           <li><b>Front page first.</b> Your best ten unread stories from every section open the paper, never more than two from one source.</li>
           <li><b>Ranked by interest.</b> A story’s place comes from how close it is to what you open and star, with a lift for each extra source that ran it.</li>
           <li><b>Daily limits per feed.</b> A busy feed keeps only its best few stories a day. The rest stay unread in Reader, so nothing is thrown away.</li>
@@ -300,7 +301,7 @@
           <li><b>More like this, less like this.</b> Tune a story and its tags and sources gain or lose weight the next time the paper updates.</li>
         </ul>
       </div>
-      <div class="sec__show">
+      <div class="sec__show" data-reveal>
         <div class="frag frag--paper" role="img" aria-label="A story in the paper, expanded: three copies from three feeds, one already read, with buttons to read, mark read, remove from the paper, and rank more or less like this. Under the section heading, a note that daily limits held back six stories, which stay unread in Reader.">
           <div class="p-head"><span class="p-title">Front page</span><span class="p-count">Your best 10 from every section, by what you open and star</span></div>
           <p class="p-held"><span class="p-link">Daily limits held back 6 stories</span>: Gadget Roundup 4, Index Weekly 2. They stay unread in Reader.</p>
@@ -337,7 +338,7 @@
   <section id="memory" class="sec sec--panel" aria-labelledby="memory-title">
     <div class="wrap sec__grid">
       <h2 id="memory-title" class="sec__title">A reader that remembers</h2>
-      <div class="sec__words">
+      <div class="sec__words" data-reveal>
         <p class="sec__lead">Connect a model gateway and Pensieve files, groups and summarises items as they arrive, then uses what you have read to answer questions later. Leave it off and you still have a fast, plain feed reader.</p>
         <div class="needs">
           <h3 class="needs__title">Before you switch it on</h3>
@@ -347,7 +348,7 @@
             <div><dt>One switch to turn it all off</dt><dd><code>PENSIEVE_AI_ENABLED=false</code> disables every model-backed feature, the paper included.</dd></div>
           </dl>
         </div>
-        <ul class="feats" role="list">
+        <ul class="feats" role="list" data-reveal>
           <li><b>Tags with a confidence.</b> Auto-tags from your own vocabulary show how sure the model was, and a wrong one comes off in one click.</li>
           <li><b>Stories, not copies.</b> The same news from several feeds folds into one row with a sources chip. Press x to see every copy, u to split one out.</li>
           <li><b>Summaries as items arrive.</b> Each new item gets a few bullet points and a why-it-matters line. Missed ones are retried every half hour.</li>
@@ -356,7 +357,7 @@
           <li><b>Folders filed for you.</b> New feeds land in Inbox with a suggested folder that you accept in one click.</li>
         </ul>
       </div>
-      <div class="sec__show">
+      <div class="sec__show" data-reveal>
         <div class="frag frag--memory" role="img" aria-label="An answer to the question 'What did I read about backing up a home server?', written from your reading and citing two articles, followed by AI tags with confidence scores.">
           <div class="m-ask">
             <span class="r-eyebrow r-ai"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-sparkle"/></svg>Ask about your reading</span>
@@ -384,15 +385,15 @@
   <section id="sync" class="sec" aria-labelledby="sync-title">
     <div class="wrap sec__grid">
       <h2 id="sync-title" class="sec__title">Keep Reeder. Keep NetNewsWire.</h2>
-      <div class="sec__words">
+      <div class="sec__words" data-reveal>
         <p class="sec__lead">Pensieve speaks the Google Reader and Fever sync APIs, so the native apps you already use keep working, with Pensieve as their server.</p>
-        <ul class="feats" role="list">
+        <ul class="feats" role="list" data-reveal>
           <li><b>One token per app.</b> Each client signs in with its own token, labelled something like “Reeder on iPhone”, and you can revoke one without touching the rest.</li>
           <li><b>OPML in and out.</b> Import subscriptions from any reader. Export them again as OPML, or everything (items, read and star state, notes, interests) as JSON.</li>
           <li><b>Pocket, Instapaper, bookmarks.</b> Upload Pocket’s export, Instapaper’s CSV or a browser bookmarks file. Tags, dates and read status come across.</li>
         </ul>
       </div>
-      <div class="sec__show">
+      <div class="sec__show" data-reveal>
         <figure class="code">
           <figcaption class="code__cap">What you type into your sync client</figcaption>
 <pre class="code__pre"><code><span class="c-line c-com"># Reeder, NetNewsWire: pick “Google Reader API” (or FreshRSS)</span><span class="c-line c-kv"><span class="c-key">server</span><span>https://pensieve.example.com</span></span><span class="c-line c-kv"><span class="c-key">email</span><span>the address you sign in with</span></span><span class="c-line c-kv"><span class="c-key">password</span><span>a token from Manage, API tokens</span></span><span class="c-line c-gap"></span><span class="c-line c-com"># Clients that speak Fever</span><span class="c-line c-kv"><span class="c-key">server</span><span>https://pensieve.example.com<wbr><span class="c-nb">/api/fever/</span></span></span></code></pre>
@@ -404,9 +405,9 @@
   <section id="archive" class="sec sec--panel" aria-labelledby="archive-title">
     <div class="wrap sec__grid">
       <h2 id="archive-title" class="sec__title">Save a page and keep it</h2>
-      <div class="sec__words">
+      <div class="sec__words" data-reveal>
         <p class="sec__lead">Pensieve keeps a full copy of every page you save, as it renders, so it stays readable and searchable if the site changes or goes away. Save from the app (press b), a bookmarklet, the Android share sheet, an iOS Shortcut or the browser extension.</p>
-        <ul class="feats" role="list">
+        <ul class="feats" role="list" data-reveal>
           <li><b>Four copies of each page.</b> The article text, a static offline copy with its images, a full-page screenshot and the original HTML.</li>
           <li><b>On your own object store.</b> A bundled Garage S3 store holds the copies. Back it up alongside the database.</li>
           <li><b>Capture in a box.</b> Pages render in headless Chromium on its own network, with no route to the database, Redis or Garage. Every request passes the same SSRF check as feed fetches.</li>
@@ -414,7 +415,7 @@
           <li><b>Stars are kept too.</b> Starred feed items are archived the same way.</li>
         </ul>
       </div>
-      <div class="sec__show">
+      <div class="sec__show" data-reveal>
         <div class="frag frag--archive" role="img" aria-label="The archive bar above a saved page, switching between its Article, Page, Screenshot and File copies.">
           <div class="a-bar">
             <span class="a-seg"><span class="is-on"><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-reader"/></svg>Article</span><span><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-globe"/></svg>Page</span><span><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-image"/></svg>Screenshot</span><span><svg viewBox="0 0 24 24" class="ic" width="14" height="14"><use href="#i-download"/></svg>File</span></span>
@@ -475,9 +476,9 @@
   <section id="household" class="sec" aria-labelledby="household-title">
     <div class="wrap sec__grid">
       <h2 id="household-title" class="sec__title">One server for the household</h2>
-      <div class="sec__words">
+      <div class="sec__words" data-reveal>
         <p class="sec__lead">Every account gets its own reader. The first one is the admin, created at <code>/setup</code>; the admin invites everyone else.</p>
-        <ul class="feats" role="list">
+        <ul class="feats" role="list" data-reveal>
           <li><b>Separate libraries.</b> Folders, tags, rules, saved items, notes and full-text search are per person.</li>
           <li><b>Read your way.</b> Text size, font, line height, width and alignment are saved to each account, with light, sepia, dark and black themes.</li>
           <li><b>Keyboard first.</b> j and k move, s stars, x expands sources, b saves a link, and ? lists the rest.</li>
@@ -485,7 +486,7 @@
           <li><b>Hardened.</b> Argon2 password hashing, CSRF protection, rate limiting, SSRF checks and secure proxy headers.</li>
         </ul>
       </div>
-      <div class="sec__show">
+      <div class="sec__show" data-reveal>
         <div class="frag frag--reading" role="img" aria-label="The reading settings panel: text size M, font Sans, line height Normal, width Normal, align Left, theme Sepia. Saved to your account.">
           <div class="rd-head"><b>Reading</b><span class="r-link">All settings</span></div>
           <div class="rd-row"><span>Text size</span><span class="rd-seg"><span>S</span><span class="is-on">M</span><span>L</span><span>XL</span></span></div>
@@ -503,7 +504,7 @@
   <section id="how" class="sec sec--panel" aria-labelledby="how-title">
     <div class="wrap sec__grid">
       <h2 id="how-title" class="sec__title">How a story reaches you</h2>
-      <ol class="steps" role="list">
+      <ol class="steps" role="list" data-reveal>
         <li><span class="steps__n" aria-hidden="true">1</span><div><b>Subscribe, or import an OPML file.</b> Pensieve polls each feed adaptively, with conditional fetches, and finds feeds from a site address.</div></li>
         <li><span class="steps__n" aria-hidden="true">2</span><div><b>Workers do the fetching.</b> The fetch worker parses new items; the capture worker archives the pages you save.</div></li>
         <li><span class="steps__n" aria-hidden="true">3</span><div><b>The AI worker, if you connected a gateway,</b> files, groups and summarises the new items, and the paper is built from what it made.</div></li>
@@ -515,16 +516,16 @@
   <section id="self-host" class="sec" aria-labelledby="self-host-title">
     <div class="wrap sec__grid">
       <h2 id="self-host-title" class="sec__title">Run it yourself</h2>
-      <div class="sec__words">
+      <div class="sec__words" data-reveal>
         <p class="sec__lead">Pensieve ships as a Docker Compose stack: the web app, fetch, AI and capture workers, PostgreSQL with pgvector, Redis, Garage and a headless browser. Put it behind your HTTPS reverse proxy on port 8000.</p>
-        <ul class="feats feats--plain" role="list">
+        <ul class="feats feats--plain" role="list" data-reveal>
           <li><b>You need</b> Docker Engine with Compose v2 and a hostname served over HTTPS.</li>
           <li><b>In <code>.env</code></b> set <code>PENSIEVE_BASE_URL</code> and the six secrets the README shows how to generate.</li>
           <li><b>No gateway yet?</b> Add <code>PENSIEVE_AI_ENABLED=false</code> and connect one later.</li>
           <li><b>Under the hood:</b> Python 3.12, FastAPI, Jinja and HTMX, SQLAlchemy and Alembic. No Node build step.</li>
         </ul>
       </div>
-      <div class="sec__show">
+      <div class="sec__show" data-reveal>
         <figure class="code code--copy">
           <figcaption class="code__cap"><span>From an empty directory</span><button type="button" class="code__btn" data-copy="#install">Copy</button></figcaption>
 <pre class="code__pre"><code id="install" data-copy-text="git clone https://github.com/Team-AER/pensieve.git&#10;cd pensieve&#10;cp .env.example .env   # add the base URL and six secrets&#10;docker compose up -d --build"><span class="c-line c-cmd">git clone https://github.com<wbr><span class="c-nb">/Team-AER/pensieve.git</span></span><span class="c-line c-cmd">cd pensieve</span><span class="c-line c-cmd">cp .env.example .env<span class="c-com">   # add the base URL and six secrets</span></span><span class="c-line c-cmd">docker compose up -d --build</span></code></pre>
@@ -535,7 +536,7 @@
   </section>
 
   <section class="close" aria-labelledby="close-title">
-    <div class="wrap close__grid">
+    <div class="wrap close__grid" data-reveal>
       <div class="close__words">
         <h2 id="close-title" class="close__title">Start with your OPML file.</h2>
         <p>Bring your subscriptions across, read as usual for a few days, and the paper starts ranking from what you open and star.</p>
@@ -583,7 +584,7 @@
   </div>
 </footer>
 
-<script src="/shared/shell.js?v=20261003" defer></script>
-<script src="/pensieve/page.js?v=20261003" defer></script>
+<script src="/shared/shell.js?v=20261004" defer></script>
+<script src="/pensieve/page.js?v=20261004" defer></script>
 </body>
 </html>

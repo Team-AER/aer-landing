@@ -65,7 +65,7 @@ a { color: inherit; }
   transition: transform 120ms linear, box-shadow 120ms linear;
 }
 .btn--black { color: var(--gr-white) !important; }
-.btn:hover { transform: translate(2px, 2px); box-shadow: var(--shadow-1-hover); }
+@media (hover: hover) { .btn:hover { transform: translate(2px, 2px); box-shadow: var(--shadow-1-hover); } }
 .btn:active { transform: translate(4px, 4px); box-shadow: var(--shadow-1-active); }
 .btn--ghost { background: var(--gr-white); }
 .btn--black { background: var(--gr-black); color: var(--gr-white); }
@@ -107,7 +107,7 @@ a { color: inherit; }
 }
 .marquee__track {
   display: flex;
-  gap: 48px;
+  width: max-content;
   white-space: nowrap;
   animation: marquee 28s linear infinite;
   font-family: var(--font-display);
@@ -115,6 +115,10 @@ a { color: inherit; }
   font-size: clamp(28px, 4vw, 48px);
   letter-spacing: -0.02em;
 }
+/* Two identical halves, each trailed by one gap, so -50% lands on the seam. */
+.marquee__group { display: flex; gap: 48px; padding-right: 48px; flex: 0 0 auto; }
+.marquee.is-off .marquee__track { animation-play-state: paused; }
+@media (hover: hover) { .marquee:hover .marquee__track { animation-play-state: paused; } }
 .marquee--reverse .marquee__track { animation-direction: reverse; }
 .marquee--black { background: var(--gr-black); color: var(--gr-white); }
 .marquee--yellow { background: var(--gr-gold-500); }
@@ -160,7 +164,8 @@ a { color: inherit; }
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.04em;
-  transform: rotate(-6deg);
+  --rot: -6deg;
+  transform: rotate(var(--rot));
   box-shadow: 3px 3px 0 0 var(--gr-black);
   text-transform: uppercase;
 }
@@ -200,9 +205,11 @@ a { color: inherit; }
   overflow: hidden;
   transition: transform 160ms linear, box-shadow 160ms linear;
 }
-.member-card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 12px 12px 0 0 var(--gr-black);
+@media (hover: hover) {
+  .member-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 12px 12px 0 0 var(--gr-black);
+  }
 }
 .member-card--pink { background: var(--gr-pink-500); }
 .member-card--yellow { background: var(--gr-gold-500); }
@@ -390,14 +397,15 @@ a { color: inherit; }
   display: inline-block;
   transition: transform 300ms cubic-bezier(.2,.9,.2,1);
 }
-.hero__title .word:hover { transform: translateY(-8px) rotate(-3deg); }
+@media (hover: hover) { .hero__title .word:hover { transform: translateY(-8px) rotate(-3deg); } }
 
 .hero__pinkbar {
   display: inline-block;
   background: var(--gr-pink-500);
   border: 2px solid var(--gr-black);
   padding: 0 10px;
-  transform: rotate(-1.5deg);
+  --rot: -1.5deg;
+  transform: rotate(var(--rot));
   box-shadow: 4px 4px 0 0 var(--gr-black);
 }
 .hero__yellowbar {
@@ -405,7 +413,8 @@ a { color: inherit; }
   background: var(--gr-gold-500);
   border: 2px solid var(--gr-black);
   padding: 0 10px;
-  transform: rotate(1deg);
+  --rot: 1deg;
+  transform: rotate(var(--rot));
   box-shadow: 4px 4px 0 0 var(--gr-black);
 }
 

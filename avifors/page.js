@@ -233,3 +233,24 @@
     play();
   }
 })();
+
+// Staggered section entrances (pass 2): children rise in sequence once their group scrolls in.
+// CSS hides them only under html.js + no-preference, so no JS or reduced motion = final state.
+(function () {
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) return;
+  document.documentElement.classList.add('js');
+  var groups = document.querySelectorAll('.steps, .facts, .kinds, .split, .install');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      en.target.classList.add('is-in'); io.unobserve(en.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  groups.forEach(function (g) {
+    Array.prototype.forEach.call(g.children, function (c, i) { c.style.setProperty('--i', Math.min(i, 9)); });
+    g.setAttribute('data-stagger', '');
+    io.observe(g);
+  });
+})();

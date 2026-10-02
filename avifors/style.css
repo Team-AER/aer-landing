@@ -437,6 +437,8 @@ svg[data-play="pending"] .tl-dyn { opacity: 0; animation: tl-fallback 0s linear 
 
 /* closing */
 .sec--cta .sec__head h2 { font-size: clamp(30px, 3.6vw, 44px); }
+/* the last section hands straight to the footer: no dead band under the CTA pair on phones */
+.sec--cta { padding-bottom: clamp(36px, 6vw, 72px); }
 .cta__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* footer: tap targets */
@@ -446,3 +448,9 @@ svg[data-play="pending"] .tl-dyn { opacity: 0; animation: tl-fallback 0s linear 
 
 /* Phones: long inline code samples in prose may wrap rather than widen the page. */
 @media (max-width: 480px) { :where(p, li, dd, figcaption) code { white-space: normal; overflow-wrap: anywhere; } }
+
+/* ---- pass 2 motion: staggered entrances (JS-gated; reduced motion and no-JS keep the final state) ---- */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-stagger] > * { opacity: 0; transform: translateY(14px); transition: opacity 560ms cubic-bezier(.2,.7,.2,1), transform 560ms cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--i, 0) * 60ms); }
+  html.js [data-stagger].is-in > * { opacity: 1; transform: none; }
+}

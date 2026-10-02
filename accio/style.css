@@ -165,7 +165,8 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .hero__access { margin-top: 14px; font: 500 15px/1.5 var(--ff-micro); color: var(--smoke); }
 
-.promise { border-left: 2px solid var(--cyan); padding: 2px 0 4px 20px; margin-bottom: 6px; }
+.promise { position: relative; padding: 20px 0 4px; margin-bottom: 6px; }
+.promise::before { content: ""; position: absolute; left: 0; top: 0; width: 48px; height: 2px; background: var(--cyan); }
 .promise__line { font: 600 22px/1.25 var(--ff-display); }
 .promise__body { margin-top: 10px; font-size: 15px; line-height: 1.55; color: var(--ash); }
 
@@ -220,7 +221,7 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 @keyframes relay-ink { from { color: var(--muted); } }
 .relay__fill { animation: relay-fill 3.07s linear 0.5s both; }
 .relay__token { animation: relay-token 3.2s linear 0.5s both; }
-.relay__dot { animation: relay-dot 0.5s ease-out both; animation-delay: calc(0.4s + var(--i) * 0.512s); }
+.relay__dot { animation: relay-dot 0.5s ease-out backwards; animation-delay: calc(0.4s + var(--i) * 0.512s); }
 .relay__code, .relay__name { animation: relay-ink 0.5s ease-out both; animation-delay: calc(0.4s + var(--i) * 0.512s); }
 
 /* ---------- console replica ---------- */
@@ -350,10 +351,10 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 .cx-log .cx-activity, .cx-log .cx-activity span, .cx-log .cx-activity b { color: var(--cyan-soft); width: auto; }
 .cx-caret { display: inline-block; width: 7px; height: 12px; margin-left: 3px; vertical-align: -2px; background: var(--cyan-soft); }
 .cx-tick {
-  position: absolute; right: 0; bottom: -2px; width: 40px; height: 9px;
+  position: absolute; right: 0; bottom: -2px; height: 16px; padding: 0 8px 0 10px;
   display: flex; align-items: center; justify-content: center;
-  background: #D9D9D9; color: var(--yellow); text-shadow: 0 0 4px rgba(248, 239, 0, 0.8);
-  font: 600 7px/1 var(--ff-micro); letter-spacing: 0.2em; text-transform: uppercase;
+  background: #000; color: var(--yellow); border: 1px solid #4A4A50;
+  font: 600 10px/1 var(--ff-micro); letter-spacing: 0.2em; text-transform: uppercase;
 }
 .cx-tick::before { content: ""; position: absolute; left: -2px; top: 0; bottom: 0; width: 2px; background: var(--magenta); box-shadow: 0 0 6px var(--magenta); }
 
@@ -375,7 +376,9 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 .cx-src.is-reading { border-color: var(--yellow); background: rgba(248, 239, 0, 0.04); box-shadow: 0 0 12px rgba(248, 239, 0, 0.15), inset 0 0 8px rgba(248, 239, 0, 0.05); }
 .cx-src.is-reading i { background: var(--yellow); box-shadow: 0 0 4px var(--yellow); }
 .cx-src.is-reading em { color: var(--yellow); }
-.cx-src.is-skipped { opacity: 0.5; }
+.cx-src.is-skipped .cx-src__t { color: var(--smoke); text-decoration: line-through; text-decoration-color: var(--magenta); }
+.cx-src.is-skipped i { background: var(--magenta); }
+.cx-src.is-skipped em { color: var(--magenta); }
 .cx-ico { flex: none; width: 10px; height: 10px; }
 .cx-ico--web { border: 1.5px solid var(--cyan-soft); border-radius: 50%; }
 .cx-ico--lib { border: 1.5px solid var(--yellow); border-top-width: 3px; height: 8px; }
@@ -428,9 +431,9 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 .shot figcaption { margin-top: 12px; font: 500 15px/1.5 var(--ff-micro); color: var(--smoke); }
 .shot__cue { display: none; }
 @media (max-width: 640px) {
-  /* A 1600px app screen shrunk to a phone is unreadable: show it at 70% in a sideways scroller instead. */
+  /* A 1600px app screen shrunk to a phone is unreadable: show it at 85% in a sideways scroller instead. */
   .shot__scroll { overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
-  .shot__scroll img { width: 1120px; max-width: none; }
+  .shot__scroll img { width: 1360px; max-width: none; }
   .shot__cue { display: inline; color: var(--cyan-soft); }
 }
 
@@ -442,7 +445,7 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 .claim__src { color: var(--ash); }
 .claim__ok { margin-left: auto; padding: 3px 9px; border: 1px dashed var(--cyan-soft); color: var(--cyan-soft); background: rgba(0, 240, 255, 0.08); }
 .claim__text { margin-top: 16px; font: 600 19px/1.4 var(--ff-display); }
-.claim__quote { margin: 16px 0 0; padding: 12px 16px; border-left: 2px solid var(--magenta); background: rgba(237, 30, 121, 0.07); }
+.claim__quote { position: relative; overflow: hidden; margin: 16px 0 0; padding: 14px 16px; background: rgba(237, 30, 121, 0.09); }
 .claim__quote p { font: 400 14px/1.65 var(--ff-mono); color: var(--bone); }
 .claim__meta { display: flex; gap: 20px; margin-top: 14px; }
 .claim__meta .kv { font-size: 12px; }
@@ -495,12 +498,12 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 .run__pre, .run__post { margin-top: 12px; max-width: 46em; font-size: 16px; color: var(--ash); }
 .run__code {
   margin: 16px 0 0; padding: 20px 22px; overflow-x: auto;
-  background: var(--panel); border: 1px solid var(--line); border-left: 2px solid var(--cyan);
+  background: var(--panel); border: 1px solid var(--line); border-top: 2px solid var(--cyan);
   font: 400 14px/1.8 var(--ff-mono); color: var(--bone); letter-spacing: 0;
 }
 .run__code .c { color: var(--smoke); }
 
-.section--access { padding-bottom: clamp(88px, 11vw, 150px); }
+.section--access { padding-bottom: clamp(72px, 8vw, 112px); }
 
 /* footer */
 .aer-footer { border-top: 1px solid var(--line); }
@@ -551,16 +554,20 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
   .cx-title { font-size: 15px; letter-spacing: 0.1em; }
   .cx-sources { grid-template-columns: minmax(0, 1fr); }
   .cx-src:not(.on-phone) { display: none; }
-  .cx-log { font-size: 10px; }
+  .cx-log { font-size: 11px; }
+  .cx-micro, .cx-mono, .cx-cell, .cx-cell s, .cx-src__t, .cx-src__u, .cx-src em, .cx-src__m .kv, .cx-ver, .cx-tick { font-size: 11px; }
+  .cx-cell { letter-spacing: 0.1em; }
+  .cx-src__t { letter-spacing: 0.1em; }
+  .cx-tick { height: 18px; }
   .cx-log p { flex-wrap: wrap; gap: 0 8px; }
   .cx-log span { flex-basis: 100%; padding-bottom: 4px; }
   .cx-log .cx-activity span { flex-basis: auto; }
   .cx-log p:nth-child(-n + 4) { display: none; }
   .cx-cells { gap: 6px; }
-  .cx-cell { padding: 6px 8px; gap: 6px; letter-spacing: 0.12em; }
+  .cx-cell { padding: 8px 8px; gap: 6px; }
   .cx-cell b { display: none; }
   .hero__ctas .btn { flex: 1 1 100%; }
-  .run__code .c { display: block; padding-left: 2ch; }
+  .run__code .c { display: block; padding-left: 2ch; white-space: pre-wrap; }
   .aer-footer a { display: inline-flex; align-items: center; min-height: 44px; }
   .aer-footer ul { gap: 0; }
 }
@@ -577,3 +584,129 @@ section[id], li[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
   .relay__fill, .relay__token, .relay__dot, .relay__code, .relay__name { animation: none !important; }
   .relay__token { display: none; }
 }
+
+/* ======================================================================
+   Pass 2: motion. Everything here is transform/opacity, plays once and
+   settles. Hidden starting states only exist under .ax, which page.js adds
+   when JS runs and the visitor hasn't asked for reduced motion.
+   ====================================================================== */
+:root { --ease-out: cubic-bezier(.2, .7, .2, 1); }
+
+/* Buttons and controls: lift on hover, press on tap. */
+.btn { transition: background-color 150ms ease, color 150ms ease, transform 180ms var(--ease-out); }
+.btn:active, .views__btn:active, .copy:active { transform: translateY(1px) scale(0.98); }
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px); }
+  .btn:hover:active { transform: translateY(0) scale(0.98); }
+}
+.btn--ghost:active { background: rgba(0, 240, 255, 0.14); }
+.views__btn, .copy { transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, transform 150ms var(--ease-out); }
+.copy[data-copied] { animation: ax-copied 420ms var(--ease-out); }
+@keyframes ax-copied { 0% { transform: scale(1); } 35% { transform: scale(1.06); } 100% { transform: scale(1); } }
+
+/* Desktop nav: an underline in the section's agent colour sweeps under the label. */
+@media (min-width: 961px) {
+  .relay-nav__label { position: relative; }
+  .relay-nav__label::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 1.5px;
+    background: var(--cyan); transform: scaleX(0); transform-origin: left center;
+    transition: transform 260ms var(--ease-out);
+  }
+  .relay-nav__link:hover .relay-nav__label::after, .relay-nav__link[aria-current] .relay-nav__label::after { transform: scaleX(1); }
+}
+.relay__dot { transition: transform 200ms var(--ease-out); }
+.relay__stop a:hover .relay__dot, .relay__stop a:focus-visible .relay__dot { transform: scale(1.25); }
+
+/* Phones: the bar CTA steps aside while a page CTA is already on screen. */
+@media (max-width: 960px) {
+  .nav__cta--bar.is-tucked { opacity: 0; visibility: hidden; pointer-events: none; }
+  .ax .nav__cta--bar { transition: opacity 220ms ease, transform 220ms var(--ease-out), visibility 0s linear 0s; }
+  .ax .nav__cta--bar.is-tucked { transform: translateY(-6px); transition: opacity 220ms ease, transform 220ms var(--ease-out), visibility 0s linear 220ms; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero arrival (pure CSS so it finishes even without JS). */
+  @keyframes ax-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .hero__title span, .hero__sub, .hero .hero__ctas, .hero__access, .promise { animation: ax-rise 640ms var(--ease-out) both; }
+  .hero__title span:nth-child(2) { animation-delay: 80ms; }
+  .hero__sub { animation-delay: 160ms; }
+  .hero .hero__ctas { animation-delay: 230ms; }
+  .hero__access { animation-delay: 290ms; }
+  .promise { animation-delay: 360ms; }
+  .promise::before { animation: ax-draw 600ms var(--ease-out) 520ms both; transform-origin: left center; }
+  @keyframes ax-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* Staggered entrances: page.js tags items .rv and adds .is-in (with --d) as they arrive. */
+  .ax .rv:not(.is-in) { opacity: 0; transform: translateY(18px); }
+  .ax .rv.is-in { animation: ax-rise 600ms var(--ease-out) both; animation-delay: calc(var(--d, 0) * 70ms); }
+
+  /* Console demo: plays once when the console scrolls in, then holds the real frame. */
+  .ax .console:not(.is-live) .cx-panel,
+  .ax .console:not(.is-live) .cx-log p,
+  .ax .console:not(.is-live) .cx-plan__list li,
+  .ax .console:not(.is-live) .cx-cell,
+  .ax .console:not(.is-live) .cx-src { opacity: 0; }
+  .ax .console.is-live .cx-panel { animation: ax-rise 560ms var(--ease-out) both; }
+  .ax .console.is-live .cx-control { animation-delay: 80ms; }
+  .ax .console.is-live .cx-matrix { animation-delay: 160ms; }
+  .ax .console.is-live .cx-plan { animation-delay: 220ms; }
+  .ax .console.is-live .cx-trace { animation-delay: 280ms; }
+  .ax .console.is-live .cx-sources { animation-delay: 120ms; }
+  @keyframes ax-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+  @keyframes ax-pop { 0% { opacity: 0; transform: scale(0.94); } 60% { opacity: 1; transform: scale(1.03); } 100% { opacity: 1; transform: none; } }
+  .ax .console.is-live .cx-cell { animation: ax-in 380ms var(--ease-out) both; animation-delay: calc(360ms + var(--n, 0) * 50ms); }
+  .ax .console.is-live .cx-cell.a-sch { animation: ax-pop 460ms var(--ease-out) 1150ms both; }
+  .ax .console.is-live .cx-cell.a-rdr { animation: ax-pop 460ms var(--ease-out) 1650ms both; }
+  .ax .console.is-live .cx-plan__list li { animation: ax-in 380ms var(--ease-out) both; animation-delay: calc(500ms + var(--n, 0) * 110ms); }
+  .ax .console.is-live .cx-plan__list li.is-live { animation-delay: 1500ms; }
+  .ax .console.is-live .cx-log p { animation: ax-in 340ms var(--ease-out) both; animation-delay: calc(600ms + var(--n, 0) * 170ms); }
+  .ax .console.is-live .cx-src { animation: ax-in 380ms var(--ease-out) both; animation-delay: calc(700ms + var(--n, 0) * 140ms); }
+  .ax .console.is-live .cx-progress { container-type: inline-size; }
+  .ax .console.is-live .cx-progress__fill { transform-origin: left center; animation: ax-fill 2200ms cubic-bezier(.3, .6, .3, 1) 500ms both; }
+  @keyframes ax-fill { from { transform: scaleX(0.6); } to { transform: scaleX(1); } }
+  @supports (width: 1cqw) {
+    .ax .console.is-live .cx-progress__head { left: 0; transform: translateX(46cqw); animation: ax-head 2200ms cubic-bezier(.3, .6, .3, 1) 500ms both; }
+    @keyframes ax-head { from { transform: translateX(27.6cqw); } to { transform: translateX(46cqw); } }
+  }
+  .ax .console.is-live .cx-caret { animation: ax-blink 1s steps(1) 2.6s 6; }
+  @keyframes ax-blink { 50% { opacity: 0; } }
+
+  /* Claim card: a scan crosses the quote (the 40-character window check), then the badge stamps. */
+  .ax .claim__quote::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(237, 30, 121, 0.28), transparent);
+    transform: translateX(-100%); opacity: 0; pointer-events: none;
+  }
+  .ax .claim.is-in .claim__quote::after { animation: ax-scan 1100ms ease-in-out 450ms both; }
+  @keyframes ax-scan { 0% { transform: translateX(-100%); opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(260%); opacity: 0; } }
+  .ax .claim:not(.is-in) .claim__ok { opacity: 0; }
+  .ax .claim.is-in .claim__ok { animation: ax-pop 420ms var(--ease-out) 1500ms both; }
+
+  /* Mode bars fill segment by segment. */
+  .ax .mode:not(.is-in) .mode__bar i.on { transform: scaleX(0); }
+  .ax .mode.is-in .mode__bar i.on { transform-origin: left center; animation: ax-draw 260ms var(--ease-out) both; animation-delay: calc(var(--d, 0) * 70ms + 300ms + var(--s, 0) * 120ms); }
+  .mode__bar i:nth-child(2) { --s: 1; } .mode__bar i:nth-child(3) { --s: 2; } .mode__bar i:nth-child(4) { --s: 3; } .mode__bar i:nth-child(5) { --s: 4; }
+
+  /* Run complete: the seven squares light in relay order. */
+  .ax .rail.is-in .rail__done i { animation: ax-pop 360ms var(--ease-out) both; }
+  .rail__done i:nth-child(2) { animation-delay: 90ms; } .rail__done i:nth-child(3) { animation-delay: 180ms; } .rail__done i:nth-child(4) { animation-delay: 270ms; }
+  .rail__done i:nth-child(5) { animation-delay: 360ms; } .rail__done i:nth-child(6) { animation-delay: 450ms; } .rail__done i:nth-child(7) { animation-delay: 540ms; }
+
+  /* Scroll-linked: each step draws its own agent-coloured segment in the gutter as you read down. */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 901px) {
+      .step { position: relative; }
+      .step::before {
+        content: ""; position: absolute; top: -1px; bottom: 0; left: calc(-1 * clamp(24px, 4vw, 56px) / 2); width: 2px;
+        background: var(--c); opacity: 0.75; transform-origin: top center; transform: scaleY(0);
+        animation: ax-grow linear both; animation-timeline: view(); animation-range: entry 60% cover 50%;
+      }
+      @keyframes ax-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    }
+  }
+}
+
+/* Phones: the run ends on its CTA, not on a tall empty band. */
+@media (max-width: 640px) { .section--access { padding-bottom: 72px; } }
+/* Desktop console: the header panel is as tall as the control column; keep its meter on the bottom edge. */
+@media (min-width: 901px) { .cx-header { display: flex; flex-direction: column; } .cx-header .cx-title { flex: 1; } }

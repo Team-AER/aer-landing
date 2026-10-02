@@ -10,8 +10,8 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#0D1218">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23007AFF'/%3E%3Cpath d='M22.5 7.5c-5.5.5-10 5-11.5 11.5l-1.5 5.5 1.3.3 1.3-3.3c4.5-.3 8.2-3.6 9.2-8.2-1.4.6-2.9.9-4.3.9 2.1-1.5 3.7-3.7 5.5-6.7z' fill='%23fff'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="/shared/base.css?v=20261003">
-<link rel="stylesheet" href="/quill/style.css?v=20261003">
+<link rel="stylesheet" href="/shared/base.css?v=20261004">
+<link rel="stylesheet" href="/quill/style.css?v=20261004">
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
@@ -155,7 +155,7 @@
                       </div>
                     </div>
                     <div class="q-ctl" aria-hidden="true">
-                      <span class="q-ctl__play"><svg class="ic ic--14"><use href="#i-play"/></svg></span>
+                      <span class="q-ctl__play" data-play><svg class="ic ic--14"><use href="#i-play"/></svg></span>
                       <span class="q-ctl__btn"><svg class="ic"><use href="#i-back10"/></svg></span>
                       <span class="q-ctl__btn"><svg class="ic"><use href="#i-fwd10"/></svg></span>
                       <span class="q-ctl__time"><b data-time>12:37</b> <span>/ 47:12</span></span>
@@ -312,7 +312,7 @@
     <h2 class="sec__h">What you get from one upload</h2>
     <p class="sec__lede">Drop a recording and read it back like a document: who said what, what was on screen, what was decided and who owns what.</p>
 
-    <div class="feat">
+    <div class="feat" data-reveal>
       <div class="feat__text">
         <h3>A transcript that knows who is talking</h3>
         <p>Speaker diarization runs on CPU with nvidia/Nemotron-3-Diarization and tells up to 8 voices apart. Each speaker turn is transcribed on its own, so the words stay with the voice. Rename a speaker or merge two, and every line, lane and avatar follows.</p>
@@ -329,7 +329,7 @@
       </div>
     </div>
 
-    <div class="feat feat--flip">
+    <div class="feat feat--flip" data-reveal>
       <div class="feat__text">
         <h3>Key slides, with the text on them</h3>
         <p>Scene changes and transcript cues pick the frames worth keeping. A vision model reads each one, so the words on a slide or a shared screen are searchable like anything that was said, and every frame opens at its moment in the recording.</p>
@@ -354,7 +354,7 @@ Cancel any time. Full refund within 14 days.</pre>
       </div>
     </div>
 
-    <div class="feat">
+    <div class="feat" data-reveal>
       <div class="feat__text">
         <h3>Notes grounded to a timestamp</h3>
         <p>TL;DR, summary, chapters, decisions and open questions, each pointing at the second it came from. When Quill cannot match a note to the transcript it says so instead of pretending.</p>
@@ -388,13 +388,13 @@ Cancel any time. Full refund within 14 days.</pre>
       </div>
     </div>
 
-    <div class="feat feat--flip">
+    <div class="feat feat--flip" data-reveal>
       <div class="feat__text">
         <h3>⌘K to jump, full-text search to find</h3>
         <p>⌘K opens a palette that jumps to any meeting or action. Search runs over every transcript and every slide Quill has read, with SQLite FTS5 underneath. Press C on a meeting to copy a link to the current moment, or copy a quote with its link from any line.</p>
       </div>
       <div class="feat__vis">
-        <div class="q-panel q-pal" role="img" aria-label="The command palette with “refund” typed: one matching meeting, a search across every transcript, and actions such as Upload a recording and Keyboard shortcuts.">
+        <div class="q-panel q-pal" data-reveal role="img" aria-label="The command palette with “refund” typed: one matching meeting, a search across every transcript, and actions such as Upload a recording and Keyboard shortcuts.">
           <div class="q-pal__input"><svg class="ic ic--14"><use href="#i-search"/></svg><span>refund</span><kbd>esc</kbd></div>
           <div class="q-pal__head">Meetings</div>
           <div class="q-pal__item is-sel"><svg class="ic ic--14"><use href="#i-video"/></svg><span class="q-pal__label">Launch readiness review</span><span class="q-pal__sub">Today · 47 min</span><svg class="ic ic--13"><use href="#i-enter"/></svg></div>
@@ -415,16 +415,16 @@ Cancel any time. Full refund within 14 days.</pre>
     <div class="how__text">
       <h2 class="sec__h">How it works</h2>
       <p class="sec__lede">One worker, seven stages, every one of them checkpointed. A restart picks up where it stopped, and progress streams to the page over server-sent events.</p>
-      <ol class="steps">
+      <ol class="steps" data-reveal>
         <li><b>Drop a file.</b> Resumable tus uploads in 64 MB chunks, up to 10 GB, from anywhere in the app. A dropped connection resumes at the last chunk, not from zero.</li>
         <li><b>Probe and extract.</b> ffprobe reads the container; ffmpeg pulls a clean audio track.</li>
         <li><b>Tell the speakers apart.</b> nvidia/Nemotron-3-Diarization runs on CPU in its own PyTorch venv and labels up to 8 speakers.</li>
         <li><b>Transcribe each turn.</b> Speech-to-text goes through your OpenAI-compatible gateway’s STT jobs API, one speaker turn at a time.</li>
         <li><b>Read the screen, write the notes.</b> Scene changes and transcript cues pick key frames; a vision model reads them; a text model writes the TL;DR, chapters, decisions and action items, each grounded to a timestamp.</li>
       </ol>
-      <p class="how__note">If a model is switched off in the gateway, the stage that needs it pauses and resumes on its own when the model is back. A pause is never counted as a failure, and nothing already done is lost.</p>
+      <p class="how__note"><svg class="ic" aria-hidden="true"><use href="#i-pause"/></svg><span>If a model is switched off in the gateway, the stage that needs it pauses and resumes on its own when the model is back. A pause is never counted as a failure, and nothing already done is lost.</span></p>
     </div>
-    <div class="how__vis">
+    <div class="how__vis" data-reveal>
       <div class="q-upload" role="img" aria-label="An upload row: all-hands-october.mp4, 3.2 GB of 6.8 GB, 47%, resumed, with pause and cancel controls.">
         <span class="q-upload__icon"><svg class="ic"><use href="#i-video"/></svg></span>
         <span class="q-upload__name">all-hands-october.mp4</span>
@@ -434,7 +434,7 @@ Cancel any time. Full refund within 14 days.</pre>
       </div>
       <div class="q-pipeline" role="img" aria-label="The processing pipeline: Probe, Audio, Speakers, Transcribe, Key moments and Frames are done; Notes is paused at 40% with a banner saying the text model is disabled in the gateway and Quill resumes automatically.">
         <div class="q-banner"><svg class="ic ic--14"><use href="#i-pause"/></svg><span><b>Notes paused.</b> The text model is disabled in the gateway. Quill resumes automatically; nothing is lost.</span></div>
-        <div class="q-stages">
+        <div class="q-stages" data-reveal>
           <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Probe</span><span class="q-stage__sub">Done</span></span>
           <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Audio</span><span class="q-stage__sub">Done</span></span>
           <span class="q-stage is-done"><span class="q-stage__top"><svg class="ic ic--13"><use href="#i-check"/></svg>Speakers</span><span class="q-stage__sub">Done</span></span>
@@ -449,7 +449,7 @@ Cancel any time. Full refund within 14 days.</pre>
 
   <div class="wrap">
     <h3 class="lib__h">The library while it works</h3>
-    <ul class="lib" role="list">
+    <ul class="lib" role="list" data-reveal>
       <li class="q-mcard" role="img" aria-label="A finished audio meeting, Hiring loop retro, 38:04, three speakers, three action items, with its first TL;DR line.">
         <span class="q-cover q-cover--audio"><span class="q-bars"><i style="height:34%;background:var(--spk-0)"></i><i style="height:61%;background:var(--spk-0)"></i><i style="height:48%;background:var(--spk-0)"></i><i style="height:22%;background:var(--spk-2)"></i><i style="height:70%;background:var(--spk-2)"></i><i style="height:55%;background:var(--spk-2)"></i><i style="height:38%;background:var(--spk-2)"></i><i style="height:76%;background:var(--spk-4)"></i><i style="height:30%;background:var(--spk-4)"></i><i style="height:52%;background:var(--spk-4)"></i><i style="height:81%;background:var(--spk-0)"></i><i style="height:26%;background:var(--spk-0)"></i><i style="height:44%;background:var(--spk-0)"></i><i style="height:63%;background:var(--spk-0)"></i><i style="height:18%;background:var(--spk-2)"></i><i style="height:58%;background:var(--spk-2)"></i><i style="height:72%;background:var(--spk-2)"></i><i style="height:36%;background:var(--spk-4)"></i><i style="height:66%;background:var(--spk-4)"></i><i style="height:28%;background:var(--spk-4)"></i><i style="height:50%;background:var(--spk-4)"></i><i style="height:79%;background:var(--spk-0)"></i><i style="height:40%;background:var(--spk-0)"></i><i style="height:24%;background:var(--spk-2)"></i><i style="height:60%;background:var(--spk-2)"></i><i style="height:46%;background:var(--spk-2)"></i><i style="height:68%;background:var(--spk-4)"></i><i style="height:32%;background:var(--spk-4)"></i></span><span class="q-cover__mode"><svg class="ic ic--12"><use href="#i-audio"/></svg></span><span class="q-cover__dur">38:04</span></span>
         <span class="q-mcard__body">
@@ -482,7 +482,7 @@ Cancel any time. Full refund within 14 days.</pre>
   <div class="wrap">
     <h2 class="sec__h">Take it with you</h2>
     <p class="sec__lede">Every meeting exports from the same menu, on the meeting page and on each card in the library.</p>
-    <ul class="exp" role="list">
+    <ul class="exp" role="list" data-reveal>
       <li><span class="exp__fmt">Notes (Markdown)</span><span class="exp__ext">.md</span><span class="exp__what">The notes as a document: paste them into a wiki, an issue or an email.</span></li>
       <li><span class="exp__fmt">Transcript (TXT)</span><span class="exp__ext">.txt</span><span class="exp__what">The speaker-attributed transcript as plain text.</span></li>
       <li><span class="exp__fmt">Subtitles (SRT)</span><span class="exp__ext">.srt</span><span class="exp__what">Timed captions for a video player or an editor.</span></li>
@@ -497,7 +497,7 @@ Cancel any time. Full refund within 14 days.</pre>
   <div class="wrap team__in">
     <div class="team__text">
       <h2 class="sec__h">Built for a small team</h2>
-      <ul class="plain" role="list">
+      <ul class="plain" role="list" data-reveal>
         <li><b>Admins and members.</b> Admins invite people, reset passwords and pick the models; everyone else uploads, reads and shares.</li>
         <li><b>Invites without a mail server.</b> Invites and password resets are one-time links Quill shows once. Copy the link or a ready-to-send message and pass it on however you like.</li>
         <li><b>Share one meeting, not the library.</b> Can view or can edit, per person or for everyone on this Quill. A shared meeting carries its owner’s name on the cover.</li>
@@ -505,7 +505,7 @@ Cancel any time. Full refund within 14 days.</pre>
       </ul>
     </div>
     <div class="team__vis">
-      <div class="q-panel q-share" role="img" aria-label="The Share sheet for Launch readiness review: a field to add people, Priya Nair can edit, Jonas Weber can view, Everyone on this Quill can view, and a Copy link button.">
+      <div class="q-panel q-share" data-reveal role="img" aria-label="The Share sheet for Launch readiness review: a field to add people, Priya Nair can edit, Jonas Weber can view, Everyone on this Quill can view, and a Copy link button.">
         <div class="q-share__head"><span class="q-share__icon"><svg class="ic"><use href="#i-users"/></svg></span><span><span class="q-share__title">Share meeting</span><span class="q-share__sub">Launch readiness review</span></span></div>
         <div class="q-search q-search--field"><svg class="ic ic--14"><use href="#i-search"/></svg><span>Add people by name or email</span></div>
         <p class="q-share__h">People with access</p>
@@ -533,7 +533,7 @@ Cancel any time. Full refund within 14 days.</pre>
       </ul>
       <p>Team AER runs it behind its own gateway, with <a href="https://github.com/Team-AER/avifors">Avifors</a> sharing one GPU between the speech, vision and text models. Any gateway with the same routes works. Model weights keep their own licences.</p>
     </div>
-    <div class="host__code">
+    <div class="host__code" data-reveal>
       <div class="code">
         <div class="code__bar"><span>Production install</span><button type="button" class="code__copy" data-copy="#install-prod">Copy</button></div>
 <pre id="install-prod" tabindex="0"><code>git clone https://github.com/Team-AER/quill.git
@@ -559,7 +559,7 @@ cd quill/frontend &amp;&amp; npm install &amp;&amp; npm run dev</code></pre>
 </section>
 
 <section class="close">
-  <div class="wrap close__in">
+  <div class="wrap close__in" data-reveal>
     <div>
       <h2 class="sec__h">Try it on a recording you already have.</h2>
       <p class="sec__lede">Quill is MIT-licensed and built by Team AER. Open the live install, or clone it and run the reader against the included mock API.</p>
@@ -609,7 +609,7 @@ cd quill/frontend &amp;&amp; npm install &amp;&amp; npm run dev</code></pre>
   </div>
 </footer>
 
-<script src="/shared/shell.js?v=20261003" defer></script>
-<script src="/quill/page.js?v=20261003" defer></script>
+<script src="/shared/shell.js?v=20261004" defer></script>
+<script src="/quill/page.js?v=20261004" defer></script>
 </body>
 </html>

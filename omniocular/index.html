@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/base.css?v=20261003">
-<link rel="stylesheet" href="/omniocular/style.css?v=20261003">
+<link rel="stylesheet" href="/shared/base.css?v=20261004">
+<link rel="stylesheet" href="/omniocular/style.css?v=20261004">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -145,11 +145,11 @@
           <div class="phone__screen" aria-hidden="true">
             <div class="appbar">
               <span class="appbar__title">Omniocular</span>
-              <span class="appbar__link"><span class="dot"></span>Connected</span>
+              <span class="appbar__link"><span class="dot"></span><span data-link-text>Connected</span></span>
             </div>
             <div class="appscroll">
               <div class="ppanel">
-                <div class="ppanel__head">Survey</div>
+                <div class="ppanel__head">Survey <span class="ppanel__count" data-ap-count>4 access points</span></div>
                 <label class="ack">
                   <span class="ack__box" data-ack-box></span>
                   <span class="ack__text">I am authorized to perform wireless assessment on this network</span>
@@ -158,17 +158,17 @@
                   <span class="pbtn pbtn--go">Start survey</span>
                   <span class="pbtn">Start capture</span>
                 </div>
-                <p class="plab">RF-isolated lab survey (sample)</p>
+                <p class="plab" data-plab>RF-isolated lab survey (sample)</p>
                 <ul class="aplist" data-aplist>
-                  <li class="ap"><span class="ap__ssid">aer-lab-ap</span><span class="ap__bssid">0A:1B:2C:3D:4E:5F</span><span class="ap__rssi">−41</span><span class="ap__ch">6</span></li>
-                  <li class="ap"><span class="ap__ssid">omni-test-2g</span><span class="ap__bssid">12:34:56:78:9A:BC</span><span class="ap__rssi">−58</span><span class="ap__ch">1</span></li>
-                  <li class="ap"><span class="ap__ssid">rf-cage-iot</span><span class="ap__bssid">AA:BB:CC:00:11:22</span><span class="ap__rssi">−66</span><span class="ap__ch">11</span></li>
-                  <li class="ap"><span class="ap__ssid">bench-client</span><span class="ap__bssid">DE:12:34:56:78:90</span><span class="ap__rssi">−72</span><span class="ap__ch">6</span></li>
+                  <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="3"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">omni-test-2g</span><span class="ap__bssid">12:34:56:78:9A:BC</span><span class="ap__rssi">−58</span><span class="ap__ch">1</span></li>
+                  <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="4"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">aer-lab-ap</span><span class="ap__bssid">0A:1B:2C:3D:4E:5F</span><span class="ap__rssi">−41</span><span class="ap__ch">6</span></li>
+                  <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="1"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">bench-client</span><span class="ap__bssid">DE:12:34:56:78:90</span><span class="ap__rssi">−72</span><span class="ap__ch">6</span></li>
+                  <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="2"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">rf-cage-iot</span><span class="ap__bssid">AA:BB:CC:00:11:22</span><span class="ap__rssi">−66</span><span class="ap__ch">11</span></li>
                 </ul>
               </div>
 
               <div class="ppanel ppanel--expert" data-expert>
-                <div class="ppanel__head">Expert transmit <span class="lockpill" data-lockpill>locked</span></div>
+                <div class="ppanel__head">Expert transmit <span class="lockpill"><span class="lockpill__i"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg></span><span data-lockpill>locked</span></span></div>
                 <div class="field">
                   <span class="field__label">Authorized target BSSID</span>
                   <span class="field__val">0A:1B:2C:3D:4E:5F</span>
@@ -180,7 +180,7 @@
                 <span class="pbtn pbtn--window">Request 30-second authorization window</span>
                 <span class="pbtn pbtn--hold" data-hold>
                   <span class="pbtn__fill" data-hold-fill></span>
-                  <span class="pbtn__text" data-hold-text>Hold to start authorized transmit</span>
+                  <span class="pbtn__lock" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg></span><span class="pbtn__text" data-hold-text>Hold to start authorized transmit</span>
                 </span>
               </div>
 
@@ -217,7 +217,7 @@
     <div class="wrap">
       <h2 class="h2">Built for the Pi Zero 2 W</h2>
       <p class="band__lede">The primary target is the Raspberry Pi Zero&nbsp;2&nbsp;W: no screen, no external adapter, powered off a bank. The original Zero&nbsp;W is a secondary, not-yet-qualified target.</p>
-      <div class="feat">
+      <div class="feat" data-reveal>
         <article class="card">
           <h3 class="card__h">Onboard 2.4 GHz radio</h3>
           <p>The build uses Kali’s packaged Nexmon <code>brcmfmac</code> driver for onboard monitor mode and injection (both still pending qualification on the board). No USB Wi-Fi dongle in the primary design.</p>
@@ -243,7 +243,7 @@
       <h2 class="h2">Authenticated control, split by privilege</h2>
       <p class="band__lede band__lede--dark">The phone never reaches the radio directly. An unprivileged Bluetooth gateway relays typed commands to a root worker whose capabilities are bounded to the RF job.</p>
 
-      <div class="archwrap">
+      <div class="archwrap" data-reveal>
         <div class="archfig">
         <div class="arch" tabindex="0" role="region" aria-label="Control path diagram (scrolls sideways on small screens)">
         <svg class="archsvg" viewBox="0 0 680 150" role="img" aria-label="Control path: the Flutter app sends authenticated CBOR over Bluetooth to the unprivileged gateway, which passes typed CBOR over a Unix socket to the root RF worker, which drives the aircrack tools and the Nexmon radio.">
@@ -289,7 +289,7 @@
         </div>
       </div>
 
-      <div class="feat feat--dark">
+      <div class="feat feat--dark" data-reveal>
         <article class="card card--dark">
           <h3 class="card__h">Canonical CBOR v1</h3>
           <p>Every request is canonical CBOR with HMAC-SHA256 and replay protection. Python and Dart ship interop vectors so both ends agree byte-for-byte.</p>
@@ -311,21 +311,21 @@
     <div class="wrap">
       <h2 class="h2">Survey and capture</h2>
       <p class="band__lede">A dispatcher polls the newest capture CSV every two seconds and publishes a compact access-point list over BLE, so the phone fills in without streaming raw frames off the card.</p>
-      <div class="surveydemo">
+      <div class="surveydemo" data-reveal>
         <div class="surveydemo__panel" role="img" aria-label="A sample access-point survey from an RF-isolated lab: four access points with BSSID, signal and channel, and a channel-hop schedule of 1, 6 and 11 with a two-second dwell.">
           <div class="surveydemo__head">
             <span>RF-isolated lab survey</span>
             <span class="surveydemo__tag">sample</span>
           </div>
           <ul class="aplist" aria-hidden="true">
-            <li class="ap"><span class="ap__ssid">aer-lab-ap</span><span class="ap__bssid">0A:1B:2C:3D:4E:5F</span><span class="ap__rssi">−41</span><span class="ap__ch">6</span></li>
-            <li class="ap"><span class="ap__ssid">omni-test-2g</span><span class="ap__bssid">12:34:56:78:9A:BC</span><span class="ap__rssi">−58</span><span class="ap__ch">1</span></li>
-            <li class="ap"><span class="ap__ssid">rf-cage-iot</span><span class="ap__bssid">AA:BB:CC:00:11:22</span><span class="ap__rssi">−66</span><span class="ap__ch">11</span></li>
-            <li class="ap"><span class="ap__ssid">bench-client</span><span class="ap__bssid">DE:12:34:56:78:90</span><span class="ap__rssi">−72</span><span class="ap__ch">6</span></li>
+            <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="4"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">aer-lab-ap</span><span class="ap__bssid">0A:1B:2C:3D:4E:5F</span><span class="ap__rssi">−41</span><span class="ap__ch">6</span></li>
+            <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="3"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">omni-test-2g</span><span class="ap__bssid">12:34:56:78:9A:BC</span><span class="ap__rssi">−58</span><span class="ap__ch">1</span></li>
+            <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="2"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">rf-cage-iot</span><span class="ap__bssid">AA:BB:CC:00:11:22</span><span class="ap__rssi">−66</span><span class="ap__ch">11</span></li>
+            <li class="ap"><span class="ap__sig" aria-hidden="true" data-bars="1"><i></i><i></i><i></i><i></i></span><span class="ap__ssid">bench-client</span><span class="ap__bssid">DE:12:34:56:78:90</span><span class="ap__rssi">−72</span><span class="ap__ch">6</span></li>
           </ul>
           <div class="hop" aria-hidden="true">
             <span class="hop__label">Channel-hop schedule</span>
-            <span class="hop__val">1, 6, 11, dwell 2 s</span>
+            <span class="hop__val"><span class="hop__ch">1</span><span class="hop__ch">6</span><span class="hop__ch">11</span><span class="hop__dwell">dwell 2 s</span></span>
           </div>
         </div>
         <div class="surveydemo__note">
@@ -344,7 +344,7 @@
   <section class="band band--steps">
     <div class="wrap">
       <h2 class="h2">How it works</h2>
-      <ol class="steps" role="list">
+      <ol class="steps" role="list" data-reveal>
         <li class="step">
           <span class="step__n" aria-hidden="true">1</span>
           <h3 class="step__h">Flash a per-device image</h3>
@@ -378,7 +378,7 @@
       </div>
       <div class="ethics__docs">
       <p class="doclist__label">Documented in the repository</p>
-      <ul class="doclist" role="list">
+      <ul class="doclist" role="list" data-reveal>
         <li><span class="doclist__h">Authorized use</span><span>Scope, declaration, and lab setup.</span></li>
         <li><span class="doclist__h">Security</span><span>Threat model, secret handling, and reporting.</span></li>
         <li><span class="doclist__h">Architecture</span><span>Gateway and root-worker split, in full.</span></li>
@@ -391,7 +391,7 @@
     <div class="wrap status">
       <h2 class="h2">Status: software complete, hardware not yet qualified</h2>
       <p class="band__lede">Being plain about it: the v0.2 software is complete and tested on the development host. The radio has not been proven on a physical board.</p>
-      <div class="statusgrid">
+      <div class="statusgrid" data-reveal>
         <div class="statrow statrow--done">
           <span class="statrow__state">Done</span>
           <span class="statrow__txt">CBOR v1 protocol, HMAC authentication and replay protection, with Python↔Dart interop vectors.</span>
@@ -431,7 +431,6 @@
       <h2>Omniocular</h2>
       <p>A BLE-controlled, authorized-use Wi-Fi assessment device on a Raspberry Pi Zero 2 W. Private repository, MIT-licensed.</p>
       <ul role="list">
-        <li><a href="mailto:hello@aer.app?subject=Omniocular">Ask for access</a></li>
         <li><a href="#status">Project status</a></li>
       </ul>
     </div>
@@ -459,7 +458,7 @@
   </div>
 </footer>
 
-<script src="/shared/shell.js?v=20261003" defer></script>
-<script src="/omniocular/page.js?v=20261003" defer></script>
+<script src="/shared/shell.js?v=20261004" defer></script>
+<script src="/omniocular/page.js?v=20261004" defer></script>
 </body>
 </html>

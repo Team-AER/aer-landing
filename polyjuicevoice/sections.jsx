@@ -1,168 +1,134 @@
-// PolyJuiceVoice landing page sections — voice/TTS-themed, mirrors the real app
+// PolyJuiceVoice landing page sections. The studio mirrors the real Speak tab
+// (apps/PolyJuiceVoice docs/screenshots/speak.png and Features/Synthesis/Views/SynthesisView.swift).
+
+const RELEASE = 'https://github.com/Team-AER/PolyJuiceVoice/releases/latest';
+const REPO = 'https://github.com/Team-AER/PolyJuiceVoice';
 
 // =================== Helpers ===================
-const Mono = ({ children, dim, className = '', style = {} }) => (
-  <span
-    className={className}
-    style={{
-      fontFamily: 'ui-monospace, "JetBrains Mono", "Fira Code", monospace',
-      fontSize: 11,
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase',
-      color: dim ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.7)',
-      ...style,
-    }}
-  >
-    {children}
-  </span>
+const Mono = ({ children, dim, className = '', style }) => (
+  <span className={`p-mono${dim ? ' dim' : ''} ${className}`.trim()} style={style}>{children}</span>
 );
 
-const Arrow = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+const Arrow = ({ size = 12 }) => (
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
     <path d="M4 12 L12 4 M5 4 L12 4 L12 11" stroke="currentColor" strokeWidth="1.4" />
   </svg>
 );
 
-// =================== Responsive Hook ===================
-function useBreakpoint() {
-  const [w, setW] = React.useState(() => window.innerWidth);
-  React.useEffect(() => {
-    const h = () => setW(window.innerWidth);
-    window.addEventListener('resize', h);
-    return () => window.removeEventListener('resize', h);
-  }, []);
-  return { isMobile: w < 768, isTablet: w < 1024, width: w };
+const Logo = ({ accent = '#1da7ff' }) => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+    <rect x="0.5" y="0.5" width="21" height="21" rx="4" stroke="#fff" />
+    <path d="M5 11 L7 11 L7 8 L9 8 L9 14 L11 14 L11 5 L13 5 L13 17 L15 17 L15 9 L17 9" stroke={accent} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const r = Math.floor(s % 60);
+  return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
 }
 
 // =================== Top Nav ===================
-function TopNav({ accent }) {
-  const [open, setOpen] = React.useState(false);
-  const { isMobile } = useBreakpoint();
+function TopNav() {
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(12px)', background: 'rgba(8,8,10,0.72)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: isMobile ? '12px 20px' : '14px 32px', display: 'flex', alignItems: 'center', gap: isMobile ? 0 : 32 }}>
-        <a href="/polyjuicevoice/" style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#fff', textDecoration: 'none', flexShrink: 0 }}>
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <rect x="0.5" y="0.5" width="21" height="21" rx="4" stroke="#fff" />
-            {/* mirrored speech wave glyph */}
-            <path d="M5 11 L7 11 L7 8 L9 8 L9 14 L11 14 L11 5 L13 5 L13 17 L15 17 L15 9 L17 9" stroke={accent} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span style={{ fontFamily: 'Geist, ui-sans-serif, system-ui', fontWeight: 600, fontSize: 15, letterSpacing: '-0.01em' }}>PolyJuiceVoice</span>
-          {!isMobile && <Mono dim style={{ marginLeft: 6 }}>v1.0</Mono>}
+    <header className="p-nav">
+      <div className="p-nav-inner">
+        <a className="p-brand" href="/polyjuicevoice/" aria-label="PolyJuiceVoice home">
+          <Logo />
+          <span className="p-brand-name">PolyJuiceVoice</span>
+          <Mono dim className="p-nav-meta" style={{ marginLeft: 4 }}>v1.0</Mono>
         </a>
-
-        {!isMobile && (
-          <nav style={{ display: 'flex', gap: 24, marginLeft: 'auto' }}>
-            {[
-              { label: 'Speak',  href: '#speak' },
-              { label: 'Voices', href: '#voices' },
-              { label: 'Models', href: '#models' },
-              { label: 'Docs',   href: 'https://github.com/Team-AER/PolyJuiceVoice/tree/main/docs' },
-            ].map(({ label, href }) => (
-              <a key={label} href={href} style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>{label}</a>
-            ))}
-          </nav>
-        )}
-        {!isMobile && (
-          <React.Fragment>
-            <a href="https://github.com/Team-AER/PolyJuiceVoice" style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-              GITHUB <Arrow size={12} />
-            </a>
-            <a href="https://github.com/Team-AER/PolyJuiceVoice/releases/latest" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center',  fontFamily: 'Geist, ui-sans-serif', fontSize: 13, fontWeight: 500, color: '#000', background: '#fff', border: 'none', borderRadius: 4, padding: '8px 14px', cursor: 'pointer' }}>
-              Download for macOS
-            </a>
-          </React.Fragment>
-        )}
-
-        {isMobile && (
-          <button
-            onClick={() => setOpen((o) => !o)}
-            aria-label="Toggle menu"
-            style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', padding: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            {open ? (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <line x1="5" y1="5" x2="15" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                <line x1="15" y1="5" x2="5" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <line x1="4" y1="6" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                <line x1="4" y1="10" x2="16" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                <line x1="4" y1="14" x2="16" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            )}
-          </button>
-        )}
-      </div>
-
-      {isMobile && open && (
-        <nav style={{ background: 'rgba(8,8,10,0.98)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.04)', padding: '8px 20px 16px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <nav className="p-nav-links" aria-label="PolyJuiceVoice">
           {[
-            { label: 'Speak',  href: '#speak' },
             { label: 'Voices', href: '#voices' },
+            { label: 'Speak', href: '#speak' },
             { label: 'Models', href: '#models' },
-            { label: 'Docs',   href: 'https://github.com/Team-AER/PolyJuiceVoice/tree/main/docs' },
-          ].map(({ label, href }) => (
-            <a key={label} href={href} onClick={() => setOpen(false)} style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 15, color: 'rgba(255,255,255,0.7)', textDecoration: 'none', padding: '10px 8px', display: 'block', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>{label}</a>
-          ))}
-          <a href="https://github.com/Team-AER/PolyJuiceVoice" onClick={() => setOpen(false)} style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 8px' }}>
-            GITHUB <Arrow size={12} />
-          </a>
-          <div style={{ paddingTop: 8 }}>
-            <a href="https://github.com/Team-AER/PolyJuiceVoice/releases/latest" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center',  fontFamily: 'Geist, ui-sans-serif', fontSize: 14, fontWeight: 500, color: '#000', background: '#fff', border: 'none', borderRadius: 4, padding: '10px 14px', cursor: 'pointer', width: '100%' }}>
-              Download for macOS
-            </a>
-          </div>
+            { label: 'Docs', href: `${REPO}/tree/main/docs` },
+          ].map(({ label, href }) => <a key={label} className="p-navlink" href={href}>{label}</a>)}
         </nav>
-      )}
+        <a className="p-link p-nav-gh" href={REPO}>GitHub <Arrow /></a>
+        <a className="p-btn" href={RELEASE}><span>Download<span className="p-long"> for macOS</span></span></a>
+      </div>
+      <div className="p-progress" aria-hidden="true" />
     </header>
   );
 }
 
 // =================== Hero ===================
+// One orchestrated moment: the line types itself, Speak streams the waveform, the clip plays once and settles.
+const HERO_LINE = 'Hello! This voice was made on a Mac, offline.';
+const HERO_LEN = 8;
+
 function Hero({ accent }) {
-  const { isMobile } = useBreakpoint();
+  const [ref, visible] = useInView({ once: false, threshold: 0.2 });
+  const [typed, setTyped] = React.useState(REDUCED ? HERO_LINE.length : 0);
+  const [phase, setPhase] = React.useState(REDUCED ? 'done' : 'idle'); // idle → type → stream → play → done
+  const [t, setT] = React.useState(REDUCED ? HERO_LEN : 0);
+
+  React.useEffect(() => {
+    if (REDUCED || !visible || phase !== 'idle') return undefined;
+    const id = setTimeout(() => setPhase('type'), 400);
+    return () => clearTimeout(id);
+  }, [visible, phase]);
+
+  React.useEffect(() => {
+    if (phase !== 'type') return undefined;
+    if (typed >= HERO_LINE.length) { const id = setTimeout(() => setPhase('stream'), 300); return () => clearTimeout(id); }
+    const id = setTimeout(() => setTyped((n) => n + 1), 38);
+    return () => clearTimeout(id);
+  }, [phase, typed]);
+
+  React.useEffect(() => {
+    if (phase !== 'stream') return undefined;
+    const id = setTimeout(() => setPhase('play'), 2200);
+    return () => clearTimeout(id);
+  }, [phase]);
+
+  React.useEffect(() => {
+    if (phase !== 'play' || !visible) return undefined;
+    const id = setInterval(() => setT((x) => {
+      if (x + 0.1 >= HERO_LEN) { setPhase('done'); return HERO_LEN; }
+      return x + 0.1;
+    }), 100);
+    return () => clearInterval(id);
+  }, [phase, visible]);
+
+  const streaming = phase === 'stream';
+  const on = phase === 'stream' || phase === 'play' || phase === 'done';
+  const head = phase === 'play' ? t / HERO_LEN : -1;
+  const status = phase === 'idle' || phase === 'type' ? 'Ryan · English' : streaming ? 'Speaking…' : phase === 'play' ? 'Playing' : 'Ready';
+  const bar = phase === 'play' || phase === 'done' ? t / HERO_LEN : 0;
+
   return (
-    <section style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.4fr', minHeight: isMobile ? 'auto' : 620 }}>
-        <div style={{ padding: isMobile ? '48px 24px 44px' : '88px 56px 56px', borderRight: isMobile ? 'none' : '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column' }}>
-          <Mono>FIG_00 · ON_DEVICE_TTS</Mono>
-          <h1 style={{ fontFamily: 'Geist, ui-sans-serif, system-ui', fontSize: isMobile ? 52 : 76, lineHeight: 0.96, letterSpacing: '-0.035em', fontWeight: 500, margin: '32px 0 0', color: '#fff' }}>
-            Any voice
-            <br />
-            you can
-            <br />
-            <span style={{ fontStyle: 'italic', fontFamily: 'Instrument Serif, Georgia, serif', fontWeight: 400 }}>describe</span>, clone,
-            <br />
-            or imagine.
-          </h1>
-          <p style={{ fontFamily: 'ui-monospace, "JetBrains Mono", monospace', fontSize: 13, lineHeight: 1.7, color: 'rgba(255,255,255,0.65)', margin: '36px 0 0', maxWidth: 360 }}>
-            PolyJuiceVoice runs Qwen3-TTS natively on your Mac. Speak text in
-            preset voices, design new ones from a description, or clone yours
-            from a few seconds of audio — all on Metal, none of it leaves the device.
-          </p>
-          <div style={{ marginTop: isMobile ? 36 : 'auto', paddingTop: isMobile ? 0 : 56, display: 'flex', alignItems: 'center', gap: 28, flexWrap: 'wrap' }}>
-            <a href="https://github.com/Team-AER/PolyJuiceVoice/releases/latest" style={{ color: '#fff', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'ui-monospace, monospace', fontSize: 12, letterSpacing: '0.08em', textTransform: 'uppercase', borderBottom: '1px solid rgba(255,255,255,0.4)', paddingBottom: 4 }}>
-              Download · 8.5 MB <Arrow size={12} />
-            </a>
-            <a href="https://github.com/Team-AER/PolyJuiceVoice/tree/main/docs" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'ui-monospace, monospace', fontSize: 12, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Read the docs <Arrow size={12} />
-            </a>
-          </div>
+    <section style={{ position: 'relative', borderBottom: '1px solid var(--line)' }}>
+      <div className="p-hero-grid">
+        <div className="p-hero-left">
+          <Reveal i={0}><Mono>FIG_00 · ON_DEVICE_TTS</Mono></Reveal>
+          <Reveal as="h1" i={1} className="p-hero-h1">
+            Any voice<br />you can<br /><span className="p-serif">describe</span>, clone,<br />or imagine.
+          </Reveal>
+          <Reveal as="p" i={2} className="p-hero-lede">
+            PolyJuiceVoice runs Qwen3-TTS natively on your Mac. Speak text in preset voices,
+            design new ones from a description, or clone yours from a few seconds of audio.
+            It all runs on Metal; none of it leaves the device.
+          </Reveal>
+          <Reveal i={3} className="p-hero-cta">
+            <a className="p-btn" href={RELEASE}>Download for macOS <Arrow /></a>
+            <a className="p-link" href={`${REPO}/tree/main/docs`}>Read the docs <Arrow /></a>
+            <Mono dim className="p-hero-meta">8.5 MB · macOS 26+ · Apple silicon · MIT</Mono>
+          </Reveal>
         </div>
-        <div style={{ position: 'relative', padding: isMobile ? '28px 24px' : '32px 32px 32px 0', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: isMobile ? 240 : 'auto' }}>
-          {!isMobile && (
-            <div style={{ position: 'absolute', top: 24, left: 24 }}>
-              <Mono dim>FIG_01 · NOW_SPEAKING</Mono>
+        <div ref={ref} className="p-hero-illus">
+          <div className="p-hero-tag"><Mono dim>FIG_01 · NOW_SPEAKING</Mono></div>
+          <IllusMicHero accent={accent} on={on} head={head} />
+          <div className="p-np">
+            <p className="p-np-title">{HERO_LINE.slice(0, typed)}{phase === 'type' || phase === 'idle' ? <span className="p-caret" aria-hidden="true" /> : null}{typed === 0 && <span style={{ color: 'var(--fg-4)' }}>Text to speak</span>}</p>
+            <div className="p-np-row">
+              <span><span className={`p-np-dot${streaming ? ' is-busy' : ''}`} aria-hidden="true" />{status}</span>
+              <span>{phase === 'done' || phase === 'play' ? `${formatTime(t)} / ${formatTime(HERO_LEN)}` : '24 kHz · mono'}</span>
             </div>
-          )}
-          <IllusMicHero accent={accent} />
-          {!isMobile && (
-            <div style={{ position: 'absolute', bottom: 24, right: 32 }}>
-              <Mono dim>00:02 / 00:08 · 24 KHZ · MONO</Mono>
-            </div>
-          )}
+            <div className="p-np-bar"><i style={{ '--p': bar }} /></div>
+          </div>
         </div>
       </div>
     </section>
@@ -171,225 +137,148 @@ function Hero({ accent }) {
 
 // =================== Marquee ===================
 function Marquee() {
-  const items = ['QWEN3-TTS', 'METAL ACCELERATED', '100% ON-DEVICE', 'OPEN SOURCE', 'VOICE CLONING', 'VOICE DESIGN', 'macOS · iOS', 'Q4 → bf16', 'STYLE INSTRUCTIONS', 'PRESET VOICES'];
+  const items = ['QWEN3-TTS', 'MLX ON METAL', '100% ON-DEVICE', 'OPEN SOURCE · MIT', 'VOICE CLONING', 'VOICE DESIGN', 'MACOS · IOS', '4-BIT → BF16', 'STYLE INSTRUCTIONS', 'PRESET VOICES'];
   return (
-    <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden', padding: '20px 0' }}>
-      <div style={{ display: 'flex', gap: 48, animation: 'cantis-marquee 40s linear infinite', whiteSpace: 'nowrap' }}>
-        {[...items, ...items, ...items].map((it, i) => (
-          <span key={i} style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.4)' }}>
-            {it} <span style={{ marginLeft: 48, color: 'rgba(255,255,255,0.15)' }}>◆</span>
-          </span>
-        ))}
+    <Fig className="p-marquee" aria-hidden="true">
+      <div className="p-marquee-track">
+        {[...items, ...items, ...items].map((it, i) => <span key={i}>{it}<b>◆</b></span>)}
       </div>
-    </div>
+    </Fig>
   );
 }
 
 // =================== Feature Grid ===================
-function FeatureGrid({ accent }) {
-  const { isMobile, isTablet } = useBreakpoint();
-  const P = isMobile ? '28px 20px' : 48;
-  const col2 = isMobile ? '1fr' : '1fr 1fr';
-  const col3 = isMobile ? '1fr' : (isTablet ? '1fr 1fr' : '1fr 1fr 1fr');
-  const br = isMobile ? 'none' : '1px solid rgba(255,255,255,0.06)';
-
+function FeatureCell({ i, fig, title, children, art, sep = true, artStyle }) {
   return (
-    <section id="voices" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+    <Reveal i={i} className={`p-cell p-pad${sep ? ' p-sep' : ''}`}>
+      <Mono>{fig}</Mono>
+      <div className="p-figbox" style={artStyle}>{art}</div>
+      <h3 className="p-h3">{title}</h3>
+      <p className="p-body">{children}</p>
+    </Reveal>
+  );
+}
 
-        {/* Row 1 — Native to the metal */}
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.6fr', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ padding: P, borderRight: br }}>
+function FeatureGrid({ accent }) {
+  return (
+    <section id="voices" style={{ borderBottom: '1px solid var(--line)' }}>
+      <div className="p-wrap">
+
+        {/* Row 1: native */}
+        <div className="p-row p-fg-r1">
+          <Reveal className="p-sep p-pad">
             <Mono>FIG_02</Mono>
-            <h2 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: isMobile ? 32 : 44, lineHeight: 1, letterSpacing: '-0.025em', fontWeight: 500, margin: '32px 0 0', color: '#fff' }}>
-              Native to<br />the metal.
-            </h2>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.6)', margin: '28px 0 0', maxWidth: 320 }}>
-              Built in Swift, accelerated by MLX. Real-time speech on M-series silicon.
-              No Python, no Docker, no GPU required — and the iOS Simulator
-              is not invited (Metal hardware only).
+            <h2 className="p-fg-h2">Native to the metal.</h2>
+            <p className="p-body" style={{ marginTop: 28, maxWidth: 380 }}>
+              Built in Swift and accelerated by MLX on Metal. No Python, no Docker, no server.
+              Apple silicon only: MLX needs a real Metal device, so the iOS Simulator can't run it.
             </p>
-            <div style={{ marginTop: isMobile ? 28 : 56 }}>
-              <a href="https://github.com/Team-AER/PolyJuiceVoice/blob/main/docs/BUILD_AND_RUN.md" style={{ color: '#fff', fontFamily: 'ui-monospace, monospace', fontSize: 12, letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: 4, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                Build and run <Arrow size={12} />
-              </a>
+            <div style={{ marginTop: 40 }}>
+              <a className="p-link p-link--under" href={`${REPO}/blob/main/docs/BUILD_AND_RUN.md`}>Build and run <Arrow /></a>
             </div>
-          </div>
-          <div style={{ position: 'relative', padding: P, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: isMobile ? 200 : 'auto' }}>
-            {!isMobile && <div style={{ position: 'absolute', top: 24, left: 24 }}><Mono dim>SILICON_M1 / M2 / M3 / M4</Mono></div>}
-            <IllusChip accent={accent} />
-          </div>
+          </Reveal>
+          <Reveal i={1} className="p-pad p-chip-cell">
+            <Mono dim>APPLE SILICON · METAL · MLX</Mono>
+            <Fig style={{ width: '100%', display: 'flex', justifyContent: 'center' }}><IllusChip accent={accent} /></Fig>
+          </Reveal>
         </div>
 
-        {/* Row 2 — three columns: Wave / Modes / Style */}
-        <div style={{ display: 'grid', gridTemplateColumns: col3 }}>
-          <div style={{ padding: P, borderRight: br, display: 'flex', flexDirection: 'column' }}>
-            <Mono>FIG_03</Mono>
-            <div style={{ height: isMobile ? 160 : 220, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '24px 0 32px' }}>
-              <IllusWave accent={accent} />
-            </div>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: 0, color: '#fff' }}>Live waveform & scrubber</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '12px 0 0' }}>
-              Render plays back as it streams. Scrub the timeline, replay phrases,
-              and export the rendered audio in a single click.
-            </p>
-          </div>
-
-          <div style={{ padding: P, borderRight: br, display: 'flex', flexDirection: 'column' }}>
-            <Mono>FIG_04</Mono>
-            <div style={{ height: isMobile ? 160 : 220, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '24px 0 32px' }}>
-              <IllusModes accent={accent} />
-            </div>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: 0, color: '#fff' }}>Four working modes</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '12px 0 0' }}>
-              Speak, Design, Clone, Library. Each mode pairs the right model with
-              the right task — and your library bridges all of them.
-            </p>
-            <div style={{ marginTop: 16, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {['speak', 'design', 'clone', 'library'].map((m) => (
-                <span key={m} style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, padding: '3px 8px', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 4, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.05em' }}>{m}</span>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ padding: P, display: 'flex', flexDirection: 'column' }}>
-            <Mono>FIG_05</Mono>
-            <div style={{ height: isMobile ? 160 : 220, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', margin: '24px 0 32px', flexDirection: 'column', gap: 14 }}>
-              {/* Style instruction block */}
-              <div style={{ width: '100%', background: '#0c0c10', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 6, padding: 14, fontFamily: 'ui-monospace, monospace', fontSize: 11, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }}>
-                <div style={{ color: accent }}>style:</div>
-                <div>"calm and warm, slow"</div>
-                <div style={{ color: accent, marginTop: 6 }}>style:</div>
-                <div>"excited, fast pace"</div>
-                <div style={{ color: 'rgba(255,255,255,0.3)', marginTop: 6 }}>style: &lt;preset voices only&gt;</div>
+        {/* Row 2: wave / modes / style */}
+        <div className="p-row p-row3">
+          <FeatureCell i={0} fig="FIG_03" title="Live waveform and scrubber" art={<IllusWave accent={accent} />}>
+            Audio starts playing while it is still being generated. Scrub the waveform,
+            skip back or forward ten seconds, and export the result.
+          </FeatureCell>
+          <FeatureCell i={1} fig="FIG_04" title="Four working modes" art={<IllusModes />}>
+            Speak, Design, Clone and Library. Each mode uses the model suited to its
+            job, and the library feeds every voice picker.
+          </FeatureCell>
+          <FeatureCell i={2} sep={false} fig="FIG_05" title="Style in plain English" art={
+            <div style={{ width: '100%' }}>
+              <div className="p-styleblk">
+                <div className="t">style instruction</div><div>calm and warm</div>
+                <div className="t" style={{ marginTop: 6 }}>style instruction</div><div>excited, fast pace</div>
+                <div className="n">preset voices only</div>
               </div>
-              {/* Tone chips */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                {[
-                  { t: 'tone · warm',    c: accent },
-                  { t: 'pace · slow',    c: '#7af0a8' },
-                  { t: 'mood · friendly', c: '#ff5b9c' },
-                ].map((x) => (
-                  <span key={x.t} style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, padding: '3px 8px', borderRadius: 4, background: 'rgba(255,255,255,0.04)', color: x.c, border: `1px solid ${x.c}33`, letterSpacing: '0.04em' }}>{x.t}</span>
+              <div className="p-tags">
+                {[{ t: 'tone · warm', c: '#1da7ff' }, { t: 'pace · slow', c: '#7af0a8' }, { t: 'mood · friendly', c: '#ff5b9c' }].map((x, k) => (
+                  <Reveal as="span" key={x.t} i={k + 2} className="p-tag" style={{ color: x.c, border: `1px solid ${x.c}40` }}>{x.t}</Reveal>
                 ))}
               </div>
             </div>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: 0, color: '#fff' }}>Style in plain English</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '12px 0 0' }}>
-              For preset voices, type a short instruction like "calm and warm" —
-              the model uses it to color the delivery.
-            </p>
-          </div>
+          }>
+            With a preset voice, add a short instruction like "calm and warm" and the
+            model colours the delivery. Saved voices keep their own character.
+          </FeatureCell>
         </div>
 
-        {/* Row 3 — Voice library card preview */}
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.4fr', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ padding: P, borderRight: br }}>
+        {/* Row 3: library */}
+        <div className="p-row p-fg-lib">
+          <Reveal className="p-sep p-pad">
             <Mono>FIG_06</Mono>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: isMobile ? 26 : 32, fontWeight: 500, letterSpacing: '-0.02em', margin: '24px 0 0', color: '#fff' }}>
-              One library<br />for every voice<br />you keep.
-            </h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '20px 0 32px', maxWidth: 360 }}>
-              Designed and cloned voices land in the same place. Search by name,
-              filter by type, rename, delete. Anywhere a voice picker exists,
-              your library is right there.
+            <h3 className="p-fg-h3-lg">One library for every voice you keep.</h3>
+            <p className="p-body" style={{ margin: '20px 0 32px', maxWidth: 400 }}>
+              Designed and cloned voices land in the same place. Search by name, filter
+              by type, rename, delete. Pick one and it is ready in Speak.
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, maxWidth: 360 }}>
-              {[
-                { name: 'Cloned',   detail: 'from your audio',   accent: true },
-                { name: 'Designed', detail: 'from a description' },
-              ].map((m) => (
-                <div key={m.name} style={{ border: `1px solid ${m.accent ? accent : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, padding: 14, background: m.accent ? `${accent}10` : 'transparent' }}>
-                  <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 15, fontWeight: 500, color: '#fff' }}>{m.name}</div>
-                  <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, color: m.accent ? accent : 'rgba(255,255,255,0.55)', marginTop: 6, letterSpacing: '0.06em' }}>{m.detail}</div>
-                </div>
-              ))}
+            <div className="p-kinds">
+              <Reveal i={1} className="p-kind"><b><span className="p-dot" style={{ background: '#b77cf9' }} />Cloned</b><span>from your recording</span></Reveal>
+              <Reveal i={2} className="p-kind"><b><span className="p-dot" style={{ background: '#7af0a8' }} />Designed</b><span>from a description</span></Reveal>
             </div>
-          </div>
-          <div style={{ padding: P, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: isMobile ? 200 : 'auto' }}>
-            <IllusVoiceCards accent={accent} />
-          </div>
+          </Reveal>
+          <Reveal i={1} className="p-pad p-lib-cell"><IllusVoiceLibrary /></Reveal>
         </div>
 
-        {/* Row 4 — Design / Clone walkthroughs */}
-        <div style={{ display: 'grid', gridTemplateColumns: col2, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ padding: P, borderRight: br, display: 'flex', flexDirection: 'column' }}>
+        {/* Row 4: design / clone */}
+        <div className="p-row p-row2">
+          <Reveal className="p-cell p-pad p-sep">
             <Mono>FIG_07</Mono>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: isMobile ? 22 : 28, fontWeight: 500, letterSpacing: '-0.02em', margin: '20px 0 0', color: '#fff' }}>Design a voice from words.</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '14px 0 24px', maxWidth: 460 }}>
-              Describe what you want — "gravelly older man, slow cadence" — and
-              the model reads your text back in that voice. Iterate until it
-              clicks. Save it to the library.
+            <h3 className="p-fg-h3-lg" style={{ fontSize: 28 }}>Design a voice from words.</h3>
+            <p className="p-body" style={{ margin: '14px 0 28px', maxWidth: 460 }}>
+              Describe what you want, such as "gravelly older man, slow cadence", and the
+              model reads your text back in that voice. Iterate until it fits, then save it.
             </p>
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: isMobile ? 160 : 'auto' }}>
-              <IllusDesign accent={accent} />
-            </div>
-          </div>
-          <div style={{ padding: P, display: 'flex', flexDirection: 'column' }}>
+            <IllusDesign />
+          </Reveal>
+          <Reveal i={1} className="p-cell p-pad">
             <Mono>FIG_08</Mono>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: isMobile ? 22 : 28, fontWeight: 500, letterSpacing: '-0.02em', margin: '20px 0 0', color: '#fff' }}>Clone from a few seconds.</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '14px 0 24px', maxWidth: 460 }}>
-              Record a short reference (⌘R), type its transcript word-for-word,
-              then write whatever you want said next. Same voice, new words —
-              everything stays on your Mac.
+            <h3 className="p-fg-h3-lg" style={{ fontSize: 28 }}>Clone from a few seconds.</h3>
+            <p className="p-body" style={{ margin: '14px 0 28px', maxWidth: 460 }}>
+              Record a short reference (⌘R), type what you said word for word, then write
+              what the voice should say next. Same voice, new words, all on your Mac.
             </p>
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: isMobile ? 160 : 'auto' }}>
-              <IllusClone accent={accent} />
-            </div>
-          </div>
+            <IllusClone />
+          </Reveal>
         </div>
 
-        {/* Row 5 — Reference upload / Phonemes / Export */}
-        <div style={{ display: 'grid', gridTemplateColumns: col3, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ padding: P, borderRight: br, display: 'flex', flexDirection: 'column' }}>
-            <Mono>FIG_09</Mono>
-            <div style={{ height: isMobile ? 140 : 200, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '24px 0 32px' }}>
-              <IllusDropzone accent={accent} />
-            </div>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: 0, color: '#fff' }}>Drop or record</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '12px 0 0' }}>
-              Use the built-in recorder or drag an existing clip. A few seconds
-              of clean speech is enough — longer is fine but not required.
-            </p>
-          </div>
-
-          <div style={{ padding: P, borderRight: br, display: 'flex', flexDirection: 'column' }}>
-            <Mono>FIG_10</Mono>
-            <div style={{ height: isMobile ? 140 : 200, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '24px 0 32px' }}>
-              <IllusPhonemes accent={accent} />
-            </div>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: 0, color: '#fff' }}>Built on Qwen3-TTS</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '12px 0 0' }}>
-              Two model families (0.6B & 1.7B) across precisions from 4-bit to
-              bf16. Pick the trade-off that fits your machine.
-            </p>
-          </div>
-
-          <div style={{ padding: P, display: 'flex', flexDirection: 'column' }}>
-            <Mono>FIG_11</Mono>
-            <div style={{ height: isMobile ? 140 : 200, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '24px 0 32px' }}>
-              <ExportIllus accent={accent} />
-            </div>
-            <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: 0, color: '#fff' }}>Export & share</h3>
-            <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '12px 0 0' }}>
-              Render anything to WAV, AAC, or ALAC. Drag straight into Logic,
-              Final Cut, or your podcast editor of choice.
-            </p>
-          </div>
+        {/* Row 5: record / models / export */}
+        <div className="p-row p-row3">
+          <FeatureCell i={0} fig="FIG_09" title="Record in the app" artStyle={{ height: 200 }} art={<IllusRecorder />}>
+            The Clone tab has its own recorder; microphone access is asked for once.
+            A few seconds of clean speech is enough. Longer is fine, not required.
+          </FeatureCell>
+          <FeatureCell i={1} fig="FIG_10" title="Built on Qwen3-TTS" artStyle={{ height: 200 }} art={<IllusModelMatrix />}>
+            Two model families, 0.6B and 1.7B, in every precision Hugging Face publishes,
+            from 4-bit to bf16. Pick the trade-off that fits your Mac.
+          </FeatureCell>
+          <FeatureCell i={2} sep={false} fig="FIG_11" title="Export and share" artStyle={{ height: 200 }} art={<IllusExport accent={accent} />}>
+            Every render is a 24 kHz WAV. Export it or hand it to the share sheet, then
+            drop it into Logic, Final Cut or your podcast editor.
+          </FeatureCell>
         </div>
 
-        {/* Row 6 — Trust strip */}
-        <div style={{ display: 'grid', gridTemplateColumns: col3, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        {/* Row 6: trust */}
+        <div className="p-row p-row3 p-trust">
           {[
-            { fig: 'FIG_12', title: 'Sandboxed', body: 'App Sandbox enabled. Microphone access is granted explicitly for Clone and stays scoped to the app.' },
-            { fig: 'FIG_13', title: 'Pure Swift / MLX', body: 'On-device inference via mlx-swift. First launch downloads weights; everything after is fully offline.' },
-            { fig: 'FIG_14', title: 'Debug log', body: 'Built-in log viewer for monitoring renders and downloads — no Console.app spelunking needed.' },
-          ].map((it, i) => (
-            <div key={it.fig} style={{ padding: P, borderRight: (!isMobile && i < 2) ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+            { fig: 'FIG_12', title: 'Sandboxed', body: 'App Sandbox on. Microphone access is granted explicitly for Clone and stays scoped to the app.' },
+            { fig: 'FIG_13', title: 'Pure Swift and MLX', body: 'Inference runs through mlx-swift. First launch downloads the weights; after that, everything works offline.' },
+            { fig: 'FIG_14', title: 'Debug log', body: 'A built-in log viewer for watching renders and downloads, without digging through Console.app.' },
+          ].map((it, k, arr) => (
+            <Reveal key={it.fig} i={k} className={`p-cell p-pad${k < arr.length - 1 ? ' p-sep' : ''}`}>
               <Mono>{it.fig}</Mono>
-              <h3 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 22, fontWeight: 500, letterSpacing: '-0.01em', margin: '20px 0 0', color: '#fff' }}>{it.title}</h3>
-              <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '12px 0 0' }}>{it.body}</p>
-            </div>
+              <h3 className="p-h3" style={{ marginTop: 20 }}>{it.title}</h3>
+              <p className="p-body">{it.body}</p>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -397,75 +286,59 @@ function FeatureGrid({ accent }) {
   );
 }
 
-// Small SVG export icon for FIG_11
-function ExportIllus({ accent }) {
-  return (
-    <svg viewBox="0 0 600 380" width="100%" preserveAspectRatio="xMidYMid meet">
-      <rect x="60" y="80" width="480" height="220" rx="6" fill="#0a0a0d" stroke="rgba(255,255,255,0.85)" strokeWidth="1.2" />
-      {/* file rows */}
-      {['voice_clone_aurora.wav', 'narration_take_03.m4a', 'audiobook_ch01.m4a (alac)'].map((name, i) => (
-        <g key={i}>
-          <rect x="80" y={110 + i * 60} width="440" height="44" rx="4" fill="#0c0c10" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-          <rect x="80" y={110 + i * 60} width="3" height="44" fill={i === 0 ? accent : i === 1 ? '#7af0a8' : '#ff5b9c'} />
-          <text x="100" y={132 + i * 60} fontFamily="ui-monospace, monospace" fontSize="11" fill="#fff" letterSpacing="0.04em">{name}</text>
-          {/* mini wave */}
-          <g transform={`translate(380 ${132 + i * 60})`}>
-            {Array.from({ length: 14 }).map((_, j) => {
-              const h = 4 + Math.abs(Math.sin(j * 0.7 + i) * 14);
-              return <rect key={j} x={j * 6} y={-h / 2} width="2.5" height={h} rx="1" fill="rgba(255,255,255,0.5)" />;
-            })}
-          </g>
-          <text x="492" y={140 + i * 60} fontFamily="ui-monospace, monospace" fontSize="9" fill="rgba(255,255,255,0.4)">⇣</text>
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-// =================== Studio Demo (mirrors real PolyJuiceVoice app) ===================
+// =================== Studio Demo (mirrors the real Speak tab) ===================
 const PRESET_VOICES = [
-  { id: 'ryan',    label: 'Ryan',    sub: 'preset · neutral male',     type: 'preset' },
-  { id: 'vivian',  label: 'Vivian',  sub: 'preset · warm female',      type: 'preset' },
-  { id: 'aiden',   label: 'Aiden',   sub: 'preset · bright male',      type: 'preset' },
-  { id: 'serena',  label: 'Serena',  sub: 'preset · narrator',         type: 'preset' },
+  { id: 'ryan', label: 'Ryan', type: 'preset' },
+  { id: 'vivian', label: 'Vivian', type: 'preset' },
+  { id: 'aiden', label: 'Aiden', type: 'preset' },
+  { id: 'serena', label: 'Serena', type: 'preset' },
 ];
+const YOUR_VOICES = [{ id: 'prakhar', label: 'Prakhar', type: 'cloned' }];
+const LANGS = ['English', 'Chinese', 'Japanese', 'Korean', 'Spanish', 'French', 'German'];
+const CLIP = 14;
 
-const YOUR_VOICES = [
-  { id: 'prakhar', label: 'Prakhar', sub: 'cloned · 12s sample',       type: 'cloned' },
-];
+const SIDE = {
+  Speak: <g stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 7 L2 7 M4.5 4.5 L4.5 9.5 M7 2 L7 12 M9.5 4.5 L9.5 9.5 M12 6 L12 8" /></g>,
+  Design: <path d="M7 1 L8.2 5.5 L12.5 7 L8.2 8.5 L7 13 L5.8 8.5 L1.5 7 L5.8 5.5 Z" stroke="currentColor" strokeWidth="1.2" fill="none" />,
+  Clone: <g stroke="currentColor" strokeWidth="1.2" fill="none"><rect x="5" y="1.5" width="4" height="7" rx="2" /><path d="M3 7 Q3 11 7 11 Q11 11 11 7 M7 11 L7 13" /></g>,
+  Library: <g stroke="currentColor" strokeWidth="1.2" fill="none"><rect x="2" y="2" width="2.5" height="10" /><rect x="5.5" y="2" width="2.5" height="10" /><rect x="9" y="3" width="2.5" height="9" transform="rotate(-12 10.25 7.5)" /></g>,
+  Settings: <g stroke="currentColor" strokeWidth="1.2" fill="none"><circle cx="7" cy="7" r="2" /><path d="M7 1.5 L7 3 M7 11 L7 12.5 M1.5 7 L3 7 M11 7 L12.5 7 M3 3 L4 4 M10 10 L11 11 M3 11 L4 10 M10 4 L11 3" strokeLinecap="round" /></g>,
+};
 
 function StudioDemo({ accent }) {
   const { isMobile } = useBreakpoint();
+  const [winRef, winSeen] = useInView({ threshold: 0.3 });
   const [tab, setTab] = React.useState('Speak');
   const [voice, setVoice] = React.useState(YOUR_VOICES[0]);
-  const [prompt, setPrompt] = React.useState("Hello World! PolyJuiceVoice is an on-device text-to-speech for macOS (and iOS) with voice cloning and voice design, powered by Apple's MLX and the Qwen3-TTS family of models. Everything runs locally over Metal — no audio, transcripts, or recordings ever leave the device.");
-  const [language, setLanguage] = React.useState('English');
-  const [generating, setGenerating] = React.useState(false);
-  const [genFrac, setGenFrac] = React.useState(1);
-  const [playing, setPlaying] = React.useState(true);
+  const [style, setStyle] = React.useState('calm and warm');
+  const [prompt, setPrompt] = React.useState('Hello world! PolyJuiceVoice is on-device text-to-speech for macOS, with voice cloning and voice design. Everything runs locally over Metal.');
+  const [lang, setLang] = React.useState(0);
+  const [gen, setGen] = React.useState(REDUCED ? 1 : 0); // 0..1 streamed
+  const [streaming, setStreaming] = React.useState(false);
+  const [playing, setPlaying] = React.useState(false);
   const [playhead, setPlayhead] = React.useState(0);
 
-  // generation tick
-  React.useEffect(() => {
-    if (!generating) return;
-    const id = setInterval(() => {
-      setGenFrac((f) => {
-        if (f >= 1) { setGenerating(false); return 1; }
-        return Math.min(1, f + 0.02);
-      });
-    }, 80);
-    return () => clearInterval(id);
-  }, [generating]);
+  const speak = () => { setPlaying(false); setPlayhead(0); setGen(0); setStreaming(true); };
 
-  // playhead — 14s clip
+  // First Speak happens when the window scrolls into view; the clip plays once, then the screen settles.
+  React.useEffect(() => { if (winSeen && !REDUCED) speak(); }, [winSeen]);
+
   React.useEffect(() => {
-    if (!playing) return;
+    if (!streaming) return undefined;
+    const id = setInterval(() => setGen((g) => {
+      if (g >= 1) { setStreaming(false); setPlaying(true); return 1; }
+      return Math.min(1, g + 0.04);
+    }), 60);
+    return () => clearInterval(id);
+  }, [streaming]);
+
+  React.useEffect(() => {
+    if (!playing) return undefined;
     let raf;
-    const dur = 14000;
-    const start = performance.now() - playhead * dur;
+    const start = performance.now() - playhead * CLIP * 1000;
     const tick = () => {
-      let t = ((performance.now() - start) / dur);
-      if (t >= 1) { t = 0; }
+      const t = (performance.now() - start) / (CLIP * 1000);
+      if (t >= 1) { setPlayhead(1); setPlaying(false); return; }
       setPlayhead(t);
       raf = requestAnimationFrame(tick);
     };
@@ -473,360 +346,214 @@ function StudioDemo({ accent }) {
     return () => cancelAnimationFrame(raf);
   }, [playing]);
 
-  // waveform bars — speech-shaped (sentence envelope)
-  const bars = React.useMemo(() => {
-    const N = 110;
-    return Array.from({ length: N }).map((_, i) => {
-      const t = i / (N - 1);
-      const env = Math.max(0.08, Math.sin(t * Math.PI * 1.3) * 0.5 + Math.sin(t * Math.PI * 4.2) * 0.4 + 0.2);
-      const noise = Math.abs(Math.sin(i * 0.7 + voice.id.length) * 0.55 + Math.cos(i * 0.31) * 0.4);
-      return 0.1 + Math.max(0, env) * noise;
-    });
-  }, [voice]);
-
+  const bars = React.useMemo(() => speechBars(isMobile ? 64 : 110, voice.id.length), [voice, isMobile]);
   const isPreset = voice.type === 'preset';
+  const skip = (d) => setPlayhead((p) => Math.max(0, Math.min(1, p + d / CLIP)));
+
+  const chip = (active, color) => ({
+    background: active ? (color === 'p' ? '#9333ea' : 'rgba(29,167,255,0.2)') : (color === 'p' ? 'rgba(168,85,247,0.12)' : '#222226'),
+    border: `1px solid ${active ? (color === 'p' ? '#9333ea' : 'rgba(29,167,255,0.7)') : (color === 'p' ? 'rgba(168,85,247,0.45)' : 'rgba(255,255,255,0.1)')}`,
+    color: '#fff', padding: '7px 14px', borderRadius: 999, font: `${active ? 500 : 400} 13px/1 var(--sans)`, cursor: 'pointer',
+  });
+  const ctl = { background: 'rgba(255,255,255,0.06)', border: 'none', color: 'rgba(255,255,255,0.8)', cursor: 'pointer', width: isMobile ? 36 : 40, height: 32, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' };
 
   return (
-    <section id="speak" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: isMobile ? '48px 20px' : '88px 32px' }}>
-        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'flex-end', marginBottom: isMobile ? 28 : 48, gap: isMobile ? 12 : 0 }}>
-          <div>
+    <section id="speak" style={{ borderBottom: '1px solid var(--line)' }}>
+      <div className="p-studio-pad">
+        <div className="p-studio-hdr">
+          <Reveal>
             <Mono>FIG_15 · POLYJUICEVOICE_APP</Mono>
-            <h2 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: isMobile ? 36 : 56, lineHeight: 1, letterSpacing: '-0.03em', fontWeight: 500, margin: '20px 0 0', color: '#fff', maxWidth: 700 }}>
-              Four modes,<br />
-              one <span style={{ fontStyle: 'italic', fontFamily: 'Instrument Serif, Georgia, serif', fontWeight: 400 }}>quiet</span> window.
-            </h2>
-          </div>
-          {!isMobile && (
-            <div style={{ textAlign: 'right' }}>
-              <Mono dim>FROM_THE_REAL_APP · v1.0</Mono>
-            </div>
-          )}
+            <h2 className="p-studio-h2">Four modes, one <span className="p-serif">quiet</span> window.</h2>
+          </Reveal>
+          <Reveal as="p" i={1} className="p-studio-hint">
+            A working copy of the Speak tab. Pick a voice, edit the text, press Speak.
+          </Reveal>
         </div>
 
-        {/* App window */}
-        <div style={{ borderRadius: 14, background: '#0f0f10', overflow: 'hidden', boxShadow: '0 80px 160px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04)' }}>
-          {/* Title bar */}
-          <div style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', background: '#0f0f10', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#ff5f57' }} />
-              <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#febc2e' }} />
-              <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#28c840' }} />
+        <Reveal className="p-app" i={1}>
+          <div ref={winRef} style={{ background: '#0f0f10' }}>
+            {/* Title bar */}
+            <div style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ display: 'flex', gap: 8 }} aria-hidden="true">
+                <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#ff5f57' }} />
+                <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#febc2e' }} />
+                <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#28c840' }} />
+              </div>
+              <div style={{ marginLeft: 18, color: 'rgba(255,255,255,0.45)', display: 'flex' }} aria-hidden="true">
+                <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><rect x="0.5" y="0.5" width="17" height="13" rx="2" stroke="currentColor" /><line x1="6" y1="0" x2="6" y2="14" stroke="currentColor" /></svg>
+              </div>
+              <div style={{ flex: 1 }} />
+              <div style={{ display: 'flex', gap: 6 }}>
+                <button title="Debug log" aria-label="Debug log" style={{ ...ctl, width: 32, height: 28 }}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><ellipse cx="7" cy="8" rx="3" ry="4" stroke="currentColor" strokeWidth="1.2" /><path d="M5 3.5 L4 2 M9 3.5 L10 2 M1.5 7 L4 7 M10 7 L12.5 7 M2 11 L4.2 10 M12 11 L9.8 10 M7 4 L7 12" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" /></svg>
+                </button>
+                <button title="Models" aria-label="Models" style={{ ...ctl, width: 32, height: 28 }}>
+                  <svg width="15" height="13" viewBox="0 0 16 13" fill="none" aria-hidden="true"><path d="M2 7 L4 2 H12 L14 7 V11 H2 Z M2 7 H14" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" /><circle cx="11.5" cy="9" r="0.8" fill="currentColor" /></svg>
+                </button>
+              </div>
             </div>
-            <div style={{ marginLeft: 18, color: 'rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center' }}>
-              <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><rect x="0.5" y="0.5" width="17" height="13" rx="2" stroke="currentColor" /><line x1="6" y1="0" x2="6" y2="14" stroke="currentColor" /></svg>
-            </div>
-            <div style={{ flex: 1 }} />
-            <div style={{ display: 'flex', gap: 6 }}>
-              <button style={{ width: 28, height: 24, borderRadius: 6, background: 'rgba(255,255,255,0.06)', border: 'none', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Debug">
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7.5" r="3" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="2" x2="7" y2="4.5" stroke="currentColor" strokeWidth="1.2" /><line x1="3.5" y1="3.5" x2="5" y2="5" stroke="currentColor" strokeWidth="1.2" /><line x1="10.5" y1="3.5" x2="9" y2="5" stroke="currentColor" strokeWidth="1.2" /><line x1="2" y1="7.5" x2="4" y2="7.5" stroke="currentColor" strokeWidth="1.2" /><line x1="10" y1="7.5" x2="12" y2="7.5" stroke="currentColor" strokeWidth="1.2" /></svg>
-              </button>
-              <button style={{ width: 28, height: 24, borderRadius: 6, background: 'rgba(255,255,255,0.06)', border: 'none', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Appearance">
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4" stroke="currentColor" strokeWidth="1.2" /><path d="M7 3 A4 4 0 0 1 7 11 Z" fill="currentColor" /></svg>
-              </button>
-            </div>
-          </div>
 
-          {/* Body */}
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', minHeight: isMobile ? 'auto' : 640, background: '#0f0f10' }}>
-            {/* Sidebar — hidden on mobile */}
-            {!isMobile && (
-              <div style={{ background: '#0f0f10', borderRight: '1px solid rgba(255,255,255,0.04)', padding: '12px 10px' }}>
-                {[
-                  { name: 'Speak',    icon: <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="2" y1="7" x2="2" y2="7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /><line x1="4.5" y1="4.5" x2="4.5" y2="9.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /><line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /><line x1="9.5" y1="4.5" x2="9.5" y2="9.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /><line x1="12" y1="6" x2="12" y2="8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg> },
-                  { name: 'Design',   icon: <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1 L8.2 5.5 L12.5 7 L8.2 8.5 L7 13 L5.8 8.5 L1.5 7 L5.8 5.5 Z" stroke="currentColor" strokeWidth="1.2" /></svg> },
-                  { name: 'Clone',    icon: <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="5" y="2" width="4" height="6" rx="2" stroke="currentColor" strokeWidth="1.2" /><path d="M3 7 Q3 11 7 11 Q11 11 11 7 M7 11 L7 13" stroke="currentColor" strokeWidth="1.2" /></svg> },
-                  { name: 'Library',  icon: <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="2.5" height="10" stroke="currentColor" strokeWidth="1.2" /><rect x="5.5" y="2" width="2.5" height="10" stroke="currentColor" strokeWidth="1.2" /><rect x="9" y="3" width="2.5" height="9" stroke="currentColor" strokeWidth="1.2" transform="rotate(-12 10.25 7.5)" /></svg> },
-                  { name: 'Settings', icon: <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" stroke="currentColor" strokeWidth="1.2" /><path d="M7 1.5 L7 3 M7 11 L7 12.5 M1.5 7 L3 7 M11 7 L12.5 7 M3 3 L4 4 M10 10 L11 11 M3 11 L4 10 M10 4 L11 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /></svg> },
-                ].map((it) => {
-                  const active = tab === it.name;
+            <div className="p-app-body">
+              {/* Sidebar */}
+              <div className="p-app-side" style={{ borderRight: '1px solid rgba(255,255,255,0.05)', padding: '12px 10px' }}>
+                {Object.keys(SIDE).map((name) => {
+                  const active = tab === name;
                   return (
-                    <button
-                      key={it.name}
-                      onClick={() => setTab(it.name)}
-                      style={{
-                        width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10,
-                        padding: '8px 10px', marginBottom: 2, borderRadius: 6,
-                        background: active ? 'rgba(255,255,255,0.07)' : 'transparent',
-                        color: active ? '#fff' : 'rgba(255,255,255,0.7)',
-                        border: 'none', fontFamily: 'Geist, ui-sans-serif', fontSize: 13, cursor: 'pointer',
-                      }}
-                    >
-                      <span style={{ width: 14, height: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: active ? 1 : 0.7 }}>{it.icon}</span>
-                      {it.name}
+                    <button key={name} className={active ? '' : 'p-side-btn'} onClick={() => setTab(name)} aria-pressed={active}
+                      style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', marginBottom: 2, borderRadius: 6, background: active ? 'rgba(255,255,255,0.1)' : 'transparent', color: active ? '#fff' : 'rgba(255,255,255,0.75)', border: 'none', font: '13px/1.2 var(--sans)', cursor: 'pointer' }}>
+                      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style={{ flexShrink: 0 }}>{SIDE[name]}</svg>
+                      {name}
                     </button>
                   );
                 })}
               </div>
-            )}
 
-            {/* Main column */}
-            <div style={{ display: 'flex', flexDirection: 'column', background: '#161618', position: 'relative' }}>
-              {/* Mode title */}
-              <div style={{ padding: '14px 28px 0' }}>
-                <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 17, fontWeight: 600, color: '#fff' }}>{tab}</div>
-              </div>
-
-              <div style={{ padding: isMobile ? '20px 20px 100px' : '20px 28px 100px', overflow: 'auto', flex: 1 }}>
-                {/* Voice */}
-                <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.55)', marginBottom: 12 }}>Voice</div>
-
-                {/* Presets row */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#1da7ff' }} />
-                  <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, letterSpacing: '0.14em', color: '#1da7ff', fontWeight: 600 }}>PRESETS</div>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
-                  {PRESET_VOICES.map((v) => {
-                    const active = voice.id === v.id;
-                    return (
-                      <button
-                        key={v.id}
-                        onClick={() => setVoice(v)}
-                        style={{
-                          background: active ? 'rgba(29,167,255,0.18)' : '#1c1c1f',
-                          border: `1px solid ${active ? 'rgba(29,167,255,0.6)' : 'rgba(255,255,255,0.08)'}`,
-                          color: '#fff', padding: '5px 14px', borderRadius: 999,
-                          fontFamily: 'Geist, ui-sans-serif', fontSize: 13, cursor: 'pointer',
-                        }}
-                      >
-                        {v.label}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Your voices row */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#a855f7' }} />
-                  <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, letterSpacing: '0.14em', color: '#a855f7', fontWeight: 600 }}>YOUR VOICES</div>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
-                  {YOUR_VOICES.map((v) => {
-                    const active = voice.id === v.id;
-                    return (
-                      <button
-                        key={v.id}
-                        onClick={() => setVoice(v)}
-                        style={{
-                          background: active ? '#a855f7' : 'rgba(168,85,247,0.12)',
-                          border: `1px solid ${active ? '#a855f7' : 'rgba(168,85,247,0.4)'}`,
-                          color: '#fff', padding: '5px 14px', borderRadius: 999,
-                          fontFamily: 'Geist, ui-sans-serif', fontSize: 13,
-                          fontWeight: active ? 500 : 400, cursor: 'pointer',
-                        }}
-                      >
-                        {v.label}
-                      </button>
-                    );
-                  })}
-                  <button
-                    style={{
-                      background: 'transparent', border: '1px dashed rgba(255,255,255,0.15)',
-                      color: 'rgba(255,255,255,0.5)', padding: '5px 14px', borderRadius: 999,
-                      fontFamily: 'Geist, ui-sans-serif', fontSize: 13, cursor: 'pointer',
-                    }}
-                  >
-                    + Clone or design
-                  </button>
-                </div>
-
-                {/* Text to speak */}
-                <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Text to speak</div>
-                <textarea
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  rows="4"
-                  style={{
-                    width: '100%', background: '#0f0f10', border: '1px solid rgba(255,255,255,0.06)',
-                    borderRadius: 8, padding: '14px 16px', color: '#fff',
-                    fontFamily: 'Geist, ui-sans-serif', fontSize: 14, lineHeight: 1.55,
-                    outline: 'none', resize: 'vertical',
-                  }}
-                />
-
-                {/* Language */}
-                <div style={{ marginTop: 22, display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>Language</div>
-                  <button
-                    onClick={() => setLanguage((l) => l === 'English' ? 'Spanish' : l === 'Spanish' ? 'Mandarin' : 'English')}
-                    style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 8,
-                      background: 'rgba(255,255,255,0.06)', border: 'none', color: '#fff',
-                      padding: '6px 10px 6px 12px', borderRadius: 6,
-                      fontFamily: 'Geist, ui-sans-serif', fontSize: 13, cursor: 'pointer',
-                    }}
-                  >
-                    {language}
-                    <svg width="9" height="11" viewBox="0 0 9 11" fill="none"><path d="M2 4 L4.5 1.5 L7 4 M2 7 L4.5 9.5 L7 7" stroke="currentColor" strokeWidth="1.2" /></svg>
-                  </button>
-                </div>
-
-                {/* Waveform card */}
-                <div style={{ marginTop: 22, background: '#0f0f10', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, padding: 16 }}>
-                  <div style={{ height: 110, display: 'flex', alignItems: 'center', gap: 1.5, position: 'relative' }}>
-                    {bars.map((b, i) => {
-                      const t = i / bars.length;
-                      const past = t <= playhead;
-                      return (
-                        <div key={i} style={{
-                          flex: 1, height: `${b * 100}%`,
-                          background: past ? '#1da7ff' : '#1976d2',
-                          opacity: past ? 1 : 0.55, borderRadius: 0,
-                        }} />
-                      );
-                    })}
+              {/* Main */}
+              <div style={{ display: 'flex', flexDirection: 'column', background: '#161618', minWidth: 0 }}>
+                <div style={{ padding: isMobile ? '16px 16px 0' : '16px 28px 0', font: '600 17px/1.2 var(--sans)' }}>{tab}</div>
+                <div style={{ padding: isMobile ? '16px' : '18px 28px 24px' }}>
+                  <div style={{ font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.6)', marginBottom: 12 }}>Voice</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                    <span className="p-dot" style={{ background: '#1da7ff', width: 6, height: 6 }} />
+                    <span style={{ font: '600 11px/1 var(--mono)', letterSpacing: '0.12em', color: '#1da7ff' }}>PRESETS</span>
                   </div>
-                  {/* Transport */}
-                  <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 16 }}>
-                    <button style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', padding: 4, display: 'flex' }} title="Skip back 10s">
-                      <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 4 A7 7 0 1 1 4 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><path d="M4 4 L4 8 L8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><text x="11" y="14" textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="7" fill="currentColor">10</text></svg>
-                    </button>
-                    <button
-                      onClick={() => setPlaying((p) => !p)}
-                      style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', padding: 4, display: 'flex' }}
-                    >
-                      {playing ? (
-                        <svg width="20" height="20" viewBox="0 0 22 22"><rect x="6" y="4" width="3.5" height="14" fill="currentColor" /><rect x="12.5" y="4" width="3.5" height="14" fill="currentColor" /></svg>
-                      ) : (
-                        <svg width="20" height="20" viewBox="0 0 22 22"><path d="M6 4 L17 11 L6 18 Z" fill="currentColor" /></svg>
-                      )}
-                    </button>
-                    <button style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', padding: 4, display: 'flex' }} title="Skip forward 10s">
-                      <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M11 4 A7 7 0 1 0 18 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><path d="M18 4 L18 8 L14 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><text x="11" y="14" textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="7" fill="currentColor">10</text></svg>
-                    </button>
-                    <div style={{ flex: 1 }} />
-                    <button style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', padding: 4, fontFamily: 'Geist, ui-sans-serif', fontSize: 13 }}>
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2 L8 10 M5 7 L8 10 L11 7 M3 13 L13 13" stroke="currentColor" strokeWidth="1.4" /></svg>
-                      Export
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                    {PRESET_VOICES.map((v) => <button key={v.id} onClick={() => setVoice(v)} aria-pressed={voice.id === v.id} style={chip(voice.id === v.id, 'b')}>{v.label}</button>)}
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                    <span className="p-dot" style={{ background: '#b77cf9', width: 6, height: 6 }} />
+                    <span style={{ font: '600 11px/1 var(--mono)', letterSpacing: '0.12em', color: '#b77cf9' }}>YOUR VOICES</span>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
+                    {YOUR_VOICES.map((v) => <button key={v.id} onClick={() => setVoice(v)} aria-pressed={voice.id === v.id} style={chip(voice.id === v.id, 'p')}>{v.label}</button>)}
+                  </div>
+
+                  {isPreset && (
+                    <div style={{ marginBottom: 16 }}>
+                      <div style={{ font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Style instruction</div>
+                      <input aria-label="Style instruction" value={style} onChange={(e) => setStyle(e.target.value)} placeholder="e.g. calm and warm"
+                        style={{ width: '100%', background: '#0f0f10', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '10px 14px', color: '#fff', font: '14px/1.3 var(--sans)', outline: 'none' }} />
+                    </div>
+                  )}
+
+                  <div style={{ font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Text to speak</div>
+                  <textarea aria-label="Text to speak" value={prompt} onChange={(e) => setPrompt(e.target.value)} rows={isMobile ? 5 : 3}
+                    style={{ width: '100%', background: '#0f0f10', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: '12px 14px', color: '#fff', font: '14px/1.55 var(--sans)', outline: 'none', resize: 'vertical' }} />
+
+                  <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.6)' }}>Language</div>
+                    <button onClick={() => setLang((l) => (l + 1) % LANGS.length)} aria-label={`Language: ${LANGS[lang]}. Click to change.`}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.08)', border: 'none', color: '#fff', padding: '7px 10px 7px 12px', borderRadius: 6, font: '13px/1 var(--sans)', cursor: 'pointer' }}>
+                      {LANGS[lang]}
+                      <svg width="9" height="11" viewBox="0 0 9 11" fill="none" aria-hidden="true"><path d="M2 4 L4.5 1.5 L7 4 M2 7 L4.5 9.5 L7 7" stroke="currentColor" strokeWidth="1.2" /></svg>
                     </button>
                   </div>
-                </div>
-              </div>
 
-              {/* Bottom Speak CTA */}
-              <div style={{ position: 'absolute', left: isMobile ? 12 : 24, right: isMobile ? 12 : 24, bottom: 24 }}>
-                <button
-                  onClick={() => { setGenFrac(1); setPlaying(true); setPlayhead(0); }}
-                  style={{
-                    width: '100%', background: accent, color: '#fff', border: 'none',
-                    borderRadius: 10, padding: '14px 0',
-                    fontFamily: 'Geist, ui-sans-serif', fontSize: 15, fontWeight: 500,
-                    cursor: 'pointer', boxShadow: `0 12px 28px ${accent}33`,
-                  }}
-                >
-                  Speak
-                </button>
+                  {/* Playback card */}
+                  <div style={{ marginTop: 18, background: '#0f0f10', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: 14 }}>
+                    <div style={{ height: isMobile ? 80 : 100, display: 'flex', alignItems: 'center', gap: 1.5, position: 'relative' }} aria-hidden="true">
+                      {bars.map((b, i) => {
+                        const t = i / bars.length;
+                        const made = t < gen;
+                        const past = t <= playhead && gen >= 1;
+                        return <div key={i} className="p-wave-bar" style={{ height: `${b * 100}%`, transform: made ? 'none' : 'scaleY(0.04)', background: past ? '#1da7ff' : '#2f6fa8' }} />;
+                      })}
+                      {gen >= 1 && <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${playhead * 100}%`, width: 1.5, background: '#fff' }} />}
+                    </div>
+                    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <button onClick={() => skip(-10)} aria-label="Skip back 10 seconds" style={ctl}>
+                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4 A7 7 0 1 1 4 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><path d="M4 4 L4 8 L8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
+                      </button>
+                      <button onClick={() => { if (gen < 1) return; if (playhead >= 1) setPlayhead(0); setPlaying((p) => !p); }} aria-label={playing ? 'Pause' : 'Play'} style={ctl}>
+                        {playing
+                          ? <svg width="14" height="14" viewBox="0 0 22 22" aria-hidden="true"><rect x="6" y="4" width="3.5" height="14" fill="currentColor" /><rect x="12.5" y="4" width="3.5" height="14" fill="currentColor" /></svg>
+                          : <svg width="14" height="14" viewBox="0 0 22 22" aria-hidden="true"><path d="M6 4 L17 11 L6 18 Z" fill="currentColor" /></svg>}
+                      </button>
+                      <button onClick={() => skip(10)} aria-label="Skip forward 10 seconds" style={ctl}>
+                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4 A7 7 0 1 0 18 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><path d="M18 4 L18 8 L14 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
+                      </button>
+                      <span style={{ marginLeft: 4, font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.6)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
+                        {streaming ? 'Speaking…' : `${formatTime(playhead * CLIP)} / ${formatTime(CLIP)}`}
+                      </span>
+                      <div style={{ flex: 1 }} />
+                      <button aria-label="Export" style={{ ...ctl, width: 'auto', padding: isMobile ? '0 10px' : '0 12px', gap: 6, font: '13px/1 var(--sans)' }}>
+                        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 10 V2 M5 5 L8 2 L11 5 M3 9 V14 H13 V9" stroke="currentColor" strokeWidth="1.4" /></svg>
+                        {!isMobile && 'Export'}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button onClick={speak} className="p-speak" style={{ marginTop: 18, width: '100%', background: 'var(--speak)', color: '#fff', border: 'none', borderRadius: 10, minHeight: 48, font: '500 15px/1 var(--sans)', cursor: 'pointer' }}>
+                    {streaming ? 'Speaking…' : 'Speak'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* Caption row */}
-        <div style={{ marginTop: 18, display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: isMobile ? 20 : 24 }}>
+        <div className="p-captions">
           {[
-            ['VOICE', voice.label + (isPreset ? ' · preset' : ' · cloned'), 'Cloned voices have their character baked in. Style instructions only apply to presets.'],
-            ['MODEL', 'Qwen3-TTS 1.7B · q4', 'Models load on first run; switch precision in Settings.'],
-            ['PRIVACY', 'On-device · Metal', 'No audio, transcripts, or recordings ever leave the device.'],
-          ].map(([k, v, sub]) => (
-            <div key={k}>
+            ['VOICE', `${voice.label} · ${isPreset ? 'preset' : 'cloned'}`, isPreset ? 'Preset voices take a style instruction.' : 'Cloned voices keep their own character; style instructions apply to presets.'],
+            ['MODEL', 'Qwen3-TTS · bf16 on Mac', 'Models download on first run. Pick a precision per model in Settings.'],
+            ['PRIVACY', 'On-device · Metal', 'No audio, transcripts or recordings leave the device.'],
+          ].map(([k, v, sub], i) => (
+            <Reveal key={k} i={i}>
               <Mono dim>{k}</Mono>
-              <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 14, color: '#fff', marginTop: 6 }}>{v}</div>
-              <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11, color: 'rgba(255,255,255,0.45)', marginTop: 4, lineHeight: 1.6 }}>{sub}</div>
-            </div>
+              <div style={{ font: '15px/1.3 var(--sans)', color: '#fff', marginTop: 8 }}>{v}</div>
+              <p className="p-body" style={{ marginTop: 6 }}>{sub}</p>
+            </Reveal>
           ))}
         </div>
       </div>
     </section>
   );
-}
-
-const FieldLabel = ({ children, style = {} }) => (
-  <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.55)', marginBottom: 8, ...style }}>{children}</div>
-);
-
-const fieldStyle = {
-  width: '100%', background: '#1c1c1f', border: '1px solid rgba(255,255,255,0.06)',
-  borderRadius: 6, padding: '10px 12px', color: '#fff',
-  fontFamily: 'Geist, ui-sans-serif', fontSize: 13, outline: 'none', resize: 'vertical',
-};
-
-function formatTime(s) {
-  const m = Math.floor(s / 60);
-  const r = Math.floor(s % 60);
-  return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
 }
 
 // =================== Specs ===================
-function Specs({ accent }) {
-  const { isMobile } = useBreakpoint();
+function Specs() {
   return (
-    <section id="models" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.4fr' }}>
-        <div style={{ padding: isMobile ? '32px 24px' : 56, borderRight: isMobile ? 'none' : '1px solid rgba(255,255,255,0.06)', borderBottom: isMobile ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+    <section id="models" style={{ borderBottom: '1px solid var(--line)' }}>
+      <div className="p-specs-outer">
+        <Reveal className="p-specs-left">
           <Mono>FIG_16</Mono>
-          <h2 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: isMobile ? 32 : 44, lineHeight: 1, letterSpacing: '-0.025em', fontWeight: 500, margin: '24px 0 0', color: '#fff' }}>Specs.</h2>
-          <p style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: '24px 0 0', maxWidth: 320 }}>
-            What you need to run PolyJuiceVoice. What you get when you do.
-          </p>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr' }}>
-          <SpecBlock label="REQUIRES" isMobile={isMobile} rows={[
-            ['macOS', '26+ (primary)'],
-            ['iOS', '26+ (device only)'],
-            ['chip', 'Apple Silicon'],
-            ['xcode', '17+ to build'],
-            ['simulator', 'not supported'],
-          ]} />
-          <SpecBlock label="DELIVERS" accent={accent} isMobile={isMobile} rows={[
-            ['models', 'Qwen3-TTS 0.6B / 1.7B'],
-            ['precisions', 'q4 · q6 · q8 · bf16'],
-            ['inference', 'mlx-swift on Metal'],
-            ['modes', 'speak · design · clone · library'],
-            ['format', 'WAV · AAC · ALAC'],
-          ]} />
+          <h2 className="p-specs-h2">Specs.</h2>
+          <p className="p-body" style={{ marginTop: 24, maxWidth: 320 }}>What you need to run PolyJuiceVoice, and what you get when you do.</p>
+        </Reveal>
+        <div className="p-specs-inner">
+          <SpecBlock label="REQUIRES" rows={[['macOS', '26+ (primary)'], ['iOS', '26+ (device only)'], ['chip', 'Apple silicon'], ['Xcode', '17+ to build'], ['simulator', 'not supported']]} />
+          <SpecBlock label="DELIVERS" accent rows={[['models', 'Qwen3-TTS 0.6B / 1.7B'], ['precisions', '4 · 5 · 6 · 8-bit · bf16'], ['inference', 'mlx-swift on Metal'], ['audio', '24 kHz mono WAV'], ['modes', 'speak · design · clone · library']]} />
         </div>
       </div>
     </section>
   );
 }
 
-function SpecBlock({ label, rows, accent, isMobile }) {
+function SpecBlock({ label, rows, accent }) {
   return (
-    <div style={{ padding: isMobile ? '28px 24px' : 56, borderRight: '1px solid rgba(255,255,255,0.06)', borderBottom: isMobile ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
-      <Mono style={{ color: accent || 'rgba(255,255,255,0.7)' }}>{label}</Mono>
-      <table style={{ marginTop: 24, width: '100%', fontFamily: 'ui-monospace, monospace', fontSize: 13, borderCollapse: 'collapse' }}>
-        <tbody>
-          {rows.map(([k, v]) => (
-            <tr key={k} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <td style={{ padding: '14px 0', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.06em' }}>{k}</td>
-              <td style={{ padding: '14px 0', textAlign: 'right', color: '#fff' }}>{v}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="p-spec-block">
+      <Mono style={accent ? { color: 'var(--accent)' } : undefined}>{label}</Mono>
+      <dl style={{ margin: '20px 0 0' }}>
+        {rows.map(([k, v], i) => <Reveal key={k} i={i} className="p-spec"><dt>{k}</dt><dd>{v}</dd></Reveal>)}
+      </dl>
     </div>
   );
 }
 
 // =================== CTA ===================
-function Cta({ accent }) {
-  const { isMobile } = useBreakpoint();
+function Cta() {
   return (
-    <section style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', padding: isMobile ? '72px 24px' : '120px 32px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', position: 'relative' }}>
-        <Mono>FIG_17 · BEGIN</Mono>
-        <h2 style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: isMobile ? 52 : 96, lineHeight: isMobile ? 1.05 : 0.95, letterSpacing: '-0.04em', fontWeight: 500, margin: '32px 0 0', color: '#fff' }}>
-          Speak in any<br />
-          <span style={{ fontStyle: 'italic', fontFamily: 'Instrument Serif, Georgia, serif', fontWeight: 400 }}>voice</span> — without<br />
-          ever leaving your Mac.
-        </h2>
-        <div style={{ marginTop: isMobile ? 40 : 56, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: isMobile ? '100%' : 'auto' }}>
-          <a href="https://github.com/Team-AER/PolyJuiceVoice/releases/latest" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center',  background: '#fff', border: 'none', color: '#000', fontFamily: 'Geist, ui-sans-serif', fontSize: 15, fontWeight: 500, padding: '14px 28px', borderRadius: 4, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, width: isMobile ? '100%' : 'auto', justifyContent: 'center' }}>
-            ⌘ Download PolyJuiceVoice · Apple Silicon
-          </a>
-          <Mono dim>8.5 MB · macOS 26+ · MIT-LICENSED</Mono>
-        </div>
+    <section className="p-cta">
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <Reveal><Mono>FIG_17 · BEGIN</Mono></Reveal>
+        <Reveal as="h2" i={1} className="p-cta-h2">
+          Speak in any <span className="p-serif">voice</span> without leaving your Mac.
+        </Reveal>
+        <Reveal i={2} className="p-cta-act">
+          <a className="p-btn p-btn--lg" href={RELEASE}>Download PolyJuiceVoice <Arrow /></a>
+          <Mono dim>8.5 MB · macOS 26+ · MIT licensed</Mono>
+        </Reveal>
       </div>
     </section>
   );
@@ -834,41 +561,32 @@ function Cta({ accent }) {
 
 // =================== Footer ===================
 function Footer() {
-  const { isMobile, isTablet } = useBreakpoint();
-  const cols = isMobile ? '1fr 1fr' : (isTablet ? '1fr 1fr 1fr' : '2fr 1fr 1fr 1fr 1fr');
+  const cols = [
+    ['Product', [['Download', RELEASE], ['Source code', REPO], ['Licence (MIT)', `${REPO}/blob/main/LICENSE`]]],
+    ['Docs', [['Build and run', `${REPO}/blob/main/docs/BUILD_AND_RUN.md`], ['Privacy policy', `${REPO}/blob/main/docs/PRIVACY_POLICY.md`], ['Issues', `${REPO}/issues`]]],
+    ['Team AER', [['aer.app', '/'], ['All apps', '/#projects'], ['hello@aer.app', 'mailto:hello@aer.app']]],
+    ['Other apps', [['Cantis', '/cantis/'], ['Subtly', '/subtly/'], ['Quill', '/quill/']]],
+  ];
   return (
-    <footer style={{ padding: isMobile ? '40px 20px 24px' : '48px 32px 32px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: cols, gap: isMobile ? 28 : 32, alignItems: 'start' }}>
-        <div style={{ gridColumn: isMobile ? '1 / -1' : 'auto' }}>
-          <div style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 14, color: '#fff', fontWeight: 500 }}>PolyJuiceVoice</div>
-          <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 8, lineHeight: 1.6 }}>
-            Built by Team AER.<br />On-device speech, end to end.
-          </div>
-        </div>
-        {[
-          ['Product', [['Download', 'https://github.com/Team-AER/PolyJuiceVoice/releases/latest'], ['Source code', 'https://github.com/Team-AER/PolyJuiceVoice'], ['Licence (MIT)', 'https://github.com/Team-AER/PolyJuiceVoice/blob/main/LICENSE']]],
-          ['Docs', [['Build and run', 'https://github.com/Team-AER/PolyJuiceVoice/blob/main/docs/BUILD_AND_RUN.md'], ['Privacy policy', 'https://github.com/Team-AER/PolyJuiceVoice/blob/main/docs/PRIVACY_POLICY.md'], ['Issues', 'https://github.com/Team-AER/PolyJuiceVoice/issues']]],
-          ['Team AER', [['aer.app', '/'], ['All apps', '/#projects'], ['hello@aer.app', 'mailto:hello@aer.app']]],
-          ['Other apps', [['Cantis', '/cantis/'], ['Subtly', '/subtly/'], ['Quill', '/quill/']]],
-        ].map(([h, items]) => (
-          <div key={h}>
+    <footer className="p-footer">
+      <div className="p-footer-grid">
+        <Reveal className="p-footer-brand">
+          <a className="p-brand" href="/polyjuicevoice/" style={{ minHeight: 0 }}><Logo /><span className="p-brand-name">PolyJuiceVoice</span></a>
+          <p>On-device speech for the Mac. Made by Prakhar Shukla for Team AER.</p>
+        </Reveal>
+        {cols.map(([h, items], k) => (
+          <Reveal key={h} i={k + 1}>
             <Mono dim>{h}</Mono>
-            <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {items.map(([it, href]) => (
-                <a key={it} href={href} style={{ fontFamily: 'Geist, ui-sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>{it}</a>
-              ))}
-            </div>
-          </div>
+            <div className="p-footer-col">{items.map(([it, href]) => <a key={it} className="p-flink" href={href}>{it}</a>)}</div>
+          </Reveal>
         ))}
       </div>
-      <div style={{ maxWidth: 1280, margin: '48px auto 0', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, fontFamily: 'ui-monospace, monospace', fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em' }}>
-        <div>© 2026 TEAM AER · ALL ON-DEVICE, ALL THE TIME</div>
-        <div>v1.0 · QWEN3-TTS · MLX-SWIFT</div>
+      <div className="p-footer-base">
+        <span>© 2026 Prakhar Shukla. PolyJuiceVoice is MIT licensed.</span>
+        <span>No cookies, no analytics on this page.</span>
       </div>
     </footer>
   );
 }
 
-Object.assign(window, {
-  TopNav, Hero, Marquee, FeatureGrid, StudioDemo, Specs, Cta, Footer,
-});
+Object.assign(window, { TopNav, Hero, Marquee, FeatureGrid, StudioDemo, Specs, Cta, Footer });

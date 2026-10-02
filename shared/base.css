@@ -70,5 +70,5 @@ ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 
 /* ---- Motion: honour the OS preference everywhere. ---- */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-delay: 0s !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
 }

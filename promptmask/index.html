@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PromptMask — Team AER</title>
+<meta name="description" content="PromptMask is a Chrome extension that swaps names, emails, IDs and keys in your AI prompts for placeholders like [NAME 1], using Gemma running on your own device. You review the result, then send.">
+<meta property="og:title" content="PromptMask: redact your prompt before the AI reads it">
+<meta property="og:description" content="A Chrome extension that masks personal details in prompts for ChatGPT, Gemini, Claude, Perplexity and Grok, with Gemma 4 E2B running locally on WebGPU.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/promptmask/">
+<meta property="og:image" content="https://aer.app/promptmask/assets/logo-512.png">
+<meta property="og:site_name" content="Team AER">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" type="image/png" sizes="32x32" href="/promptmask/assets/icon-32.png">
+<link rel="icon" type="image/png" sizes="128x128" href="/promptmask/assets/icon-128.png">
+<link rel="apple-touch-icon" href="/promptmask/assets/icon-128.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css?v=20261004">
+<link rel="stylesheet" href="/promptmask/style.css?v=20261004">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="pagenav">
+  <div class="wrap">
+    <a class="pagenav__brand" href="/promptmask/">
+      <img class="pagenav__mark" src="/promptmask/assets/logo-96.png" width="30" height="30" alt="">
+      <span>PromptMask</span>
+    </a>
+    <nav id="pm-menu" class="pagenav__menu" hidden aria-label="Page sections">
+      <a href="#masks">What it masks</a>
+      <a href="#how">How it works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#access">Access</a>
+    </nav>
+    <div class="pagenav__actions">
+      <a class="pagenav__cta" href="mailto:hello@aer.app?subject=PromptMask">Ask for access</a>
+      <button class="pagenav__toggle" type="button" data-nav-toggle aria-controls="pm-menu" aria-expanded="false" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title">Redact your prompt before the AI reads it.</h1>
+        <p class="hero__lede">PromptMask is a Chrome extension that swaps names, emails, IDs and keys for placeholders like <span class="ph">[NAME&nbsp;1]</span>, using Gemma on your own device. You check the result, then send.</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="mailto:hello@aer.app?subject=PromptMask">Ask for access</a>
+          <a class="btn btn--ghost" href="#how">How it works</a>
+        </div>
+        <ul class="hero__facts" role="list">
+          <li>Works on ChatGPT, Gemini, Claude, Perplexity and Grok.</li>
+          <li>Version 0.2.1, in private development. Not on the Chrome Web Store yet.</li>
+        </ul>
+      </div>
+
+      <div class="hero__stage">
+        <figure class="demo" id="demo" data-demo>
+          <div class="demo__frame" role="img" aria-label="A chat composer with PromptMask installed. The prompt reads: Draft a reply to Priya Nair about case TCK-556201 and copy Neha Kulkarni; Priya Nair's email and phone number follow. On Enter, PromptMask redacts it on the device, and the message that is finally sent reads: Draft a reply to [NAME 1] about case [CASE_ID 1] and copy [NAME 2]. [NAME 1]'s email is [EMAIL 1], phone [PHONE 1].">
+            <div class="demo__bar" aria-hidden="true">
+              <span class="demo__title">New chat</span>
+              <span class="demo__ext"><img src="/promptmask/assets/logo-96.png" width="22" height="22" alt="">PromptMask</span>
+            </div>
+            <div class="demo__thread" aria-hidden="true">
+              <div class="bubble" data-bubble>Draft a reply to <span class="ph">[NAME 1]</span> about case <span class="ph">[CASE_ID 1]</span> and copy <span class="ph">[NAME 2]</span>. <span class="ph">[NAME 1]</span>’s email is <span class="ph">[EMAIL 1]</span>, phone <span class="ph">[PHONE 1]</span>.</div>
+              <p class="demo__sent" data-sent>Sent. The chat site got placeholders, not the details.</p>
+              <span class="spinner" data-spinner></span>
+              <div class="toast" data-toast>
+                <svg class="toast__ok" data-toast-ok viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><rect width="16" height="16" rx="3.5" fill="#2DA44E"></rect><path d="M4.2 8.3 6.8 10.8 11.8 5.4" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span data-toast-text>Redacted — press Enter to send</span>
+              </div>
+            </div>
+            <div class="composer" data-composer aria-hidden="true">
+              <div class="composer__text" data-text><span class="composer__ph">Message</span></div>
+              <span class="composer__send" data-send>
+                <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 15.5V4.8M5.2 9.4 10 4.6l4.8 4.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+            </div>
+          </div>
+          <figcaption class="demo__steps">
+            <ol class="steps" role="list">
+              <li class="steps__i is-done" data-step="1"><span class="steps__n" aria-hidden="true">1</span>Type as usual</li>
+              <li class="steps__i is-done" data-step="2"><span class="steps__n" aria-hidden="true">2</span><span><kbd>Enter</kbd> redacts on your device</span></li>
+              <li class="steps__i is-done" data-step="3"><span class="steps__n" aria-hidden="true">3</span><span><kbd>Enter</kbd> again sends</span></li>
+            </ol>
+            <button class="demo__replay" type="button" data-replay hidden>
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.8v2.8h2.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              Replay
+            </button>
+          </figcaption>
+        </figure>
+        <p class="demo__note">Sample data. Placeholders are tinted here for clarity; in the real composer they are plain text, and the whole message is replaced at once.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="masks" class="band band--masks">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">Seven kinds of detail, each with its own switch</h2>
+        <p class="band__lede">Turn a category off and the model is never told it exists, so those values stay as you wrote them. Try the switches: they are the extension’s own popup, rebuilt.</p>
+      </div>
+
+      <div class="masks">
+        <div class="popup" data-popup>
+          <div class="popup__head">
+            <p class="popup__title">PromptMask</p>
+            <span class="popup__pill" data-pill>Active</span>
+          </div>
+          <fieldset class="pcard">
+            <legend class="pcard__title">Sites</legend>
+            <label class="prow"><span>ChatGPT</span><input type="checkbox" role="switch" data-site checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Gemini</span><input type="checkbox" role="switch" data-site checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Claude</span><input type="checkbox" role="switch" data-site checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Perplexity</span><input type="checkbox" role="switch" data-site checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Grok</span><input type="checkbox" role="switch" data-site checked><span class="slider" aria-hidden="true"></span></label>
+          </fieldset>
+          <fieldset class="pcard">
+            <legend class="pcard__title">PII Categories</legend>
+            <label class="prow"><span>Identity &amp; Contact</span><input type="checkbox" role="switch" data-cat="identityContact" checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Government &amp; Legal IDs</span><input type="checkbox" role="switch" data-cat="governmentLegal" checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Financial &amp; Payment</span><input type="checkbox" role="switch" data-cat="financialPayment" checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Medical</span><input type="checkbox" role="switch" data-cat="medical" checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Credentials &amp; Secrets</span><input type="checkbox" role="switch" data-cat="credentialsSecrets" checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Network &amp; Device</span><input type="checkbox" role="switch" data-cat="networkDevice" checked><span class="slider" aria-hidden="true"></span></label>
+            <label class="prow"><span>Business &amp; Case References</span><input type="checkbox" role="switch" data-cat="businessCase" checked><span class="slider" aria-hidden="true"></span></label>
+          </fieldset>
+          <p class="popup__note">Everything starts on. A site switched off is left completely alone.</p>
+        </div>
+
+        <div class="masks__side">
+          <div class="sample" data-sample>
+            <div class="sample__head">
+              <span>What gets sent</span>
+              <span class="sample__count" data-count aria-live="polite">8 details masked</span>
+            </div>
+            <p class="sample__text">Summarise this for the client file. Patient <span class="m" data-k="identityContact" data-o="Priya Nair">[NAME 1]</span>, MRN <span class="m" data-k="medical" data-o="00123">[MRN 1]</span>, wrote from <span class="m" data-k="identityContact" data-o="priya.nair17@example.com">[EMAIL 1]</span> on <span class="m" data-k="networkDevice" data-o="192.168.1.5">[IP_ADDRESS 1]</span>. She paid invoice <span class="m" data-k="businessCase" data-o="INV-2026-00173">[INVOICE_ID 1]</span> with card <span class="m" data-k="financialPayment" data-o="4111 1111 1111 1111">[CREDIT_CARD 1]</span>, PAN <span class="m" data-k="governmentLegal" data-o="ABCPK1234D">[PAN 1]</span>. Our billing script uses key <span class="m" data-k="credentialsSecrets" data-o="sk-demo-0000">[API_KEY 1]</span>.</p>
+            <p class="sample__foot">Sample data. Illustrative output: a small model can miss or mislabel a value, which is why you review it before it sends.</p>
+          </div>
+
+          <div class="keys">
+            <h3 class="keys__h">The placeholders it may use</h3>
+            <dl class="keys__list" data-reveal>
+              <div class="keys__row" data-k="identityContact"><dt>Identity &amp; Contact</dt><dd><span>NAME</span> <span>PHONE</span> <span>EMAIL</span> <span>USERNAME</span> <span>ADDRESS</span> <span>DATE_OF_BIRTH</span></dd></div>
+              <div class="keys__row" data-k="governmentLegal"><dt>Government &amp; Legal IDs</dt><dd><span>SSN</span> <span>PAN</span> <span>GST</span> <span>DRIVER_LICENSE</span></dd></div>
+              <div class="keys__row" data-k="financialPayment"><dt>Financial &amp; Payment</dt><dd><span>BANK_ACCOUNT</span> <span>CREDIT_CARD</span> <span>CARD_EXPIRY</span> <span>CARD_CVV</span> <span>PAYPAL</span></dd></div>
+              <div class="keys__row" data-k="medical"><dt>Medical</dt><dd><span>INSURANCE_ID</span> <span>MRN</span></dd></div>
+              <div class="keys__row" data-k="credentialsSecrets"><dt>Credentials &amp; Secrets</dt><dd><span>API_KEY</span> <span>ACCESS_TOKEN</span></dd></div>
+              <div class="keys__row" data-k="networkDevice"><dt>Network &amp; Device</dt><dd><span>IP_ADDRESS</span> <span>DEVICE_ID</span></dd></div>
+              <div class="keys__row" data-k="businessCase"><dt>Business &amp; Case References</dt><dd><span>ORDER_ID</span> <span>INVOICE_ID</span> <span>CASE_ID</span></dd></div>
+            </dl>
+            <p class="keys__foot">Numbers count up per kind, and a repeated value keeps its number: the second time Priya Nair appears, she is still <span class="ph">[NAME&nbsp;1]</span>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="band band--how">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">Four hops, all inside your browser</h2>
+        <p class="band__lede">Chrome splits an extension into separate parts, and only a hidden offscreen document can keep a model loaded on the GPU. So your prompt takes a short walk, and never leaves the device.</p>
+      </div>
+
+      <ol class="path" role="list" data-path data-reveal>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">1</span>
+          <h3 class="hop__h">Your chat tab</h3>
+          <p class="hop__file">content_script.js</p>
+          <p class="hop__p">Catches Enter or the Send click before the site’s own handler does, and holds it.</p>
+          <p class="hop__msg"><code>LLM_PROMPT</code> + your switches</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">2</span>
+          <h3 class="hop__h">Service worker</h3>
+          <p class="hop__file">service_worker.js</p>
+          <p class="hop__p">Tags the request with an id and passes it on. It keeps nothing, because Chrome can stop it at any moment.</p>
+          <p class="hop__msg"><code>LLM_PROMPT</code> + request id</p>
+        </li>
+        <li class="hop hop--gpu">
+          <span class="hop__n" aria-hidden="true">3</span>
+          <h3 class="hop__h">Offscreen document</h3>
+          <p class="hop__file">offscreen.js, on MediaPipe and WebGPU</p>
+          <p class="hop__p">Builds a prompt that names only your enabled categories, and runs Gemma&nbsp;4&nbsp;E2B on your GPU.</p>
+          <p class="hop__msg"><code>LLM_RESULT</code> back the same way</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">4</span>
+          <h3 class="hop__h">Back in your composer</h3>
+          <p class="hop__file">content_script.js</p>
+          <p class="hop__p">Checks the output, writes it into the composer, and waits for your second Enter to let the site send it.</p>
+          <p class="hop__msg">You review, then send</p>
+        </li>
+      </ol>
+
+      <ul class="guards" role="list" data-reveal>
+        <li class="guard">
+          <h3 class="guard__h">Same prompt, same result</h3>
+          <p>Decoding is fixed: temperature 0, top-k 1 and a set seed, so a prompt redacts the same way every time.</p>
+        </li>
+        <li class="guard">
+          <h3 class="guard__h">One correction round</h3>
+          <p>If the model uses a tag you switched off, it is asked once more without it. A second miss is reported, not sent.</p>
+        </li>
+        <li class="guard">
+          <h3 class="guard__h">Your text is never lost</h3>
+          <p>If anything fails, from a download error to output that looks cut short, your original text goes back in the composer with a note saying why.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="model" class="band band--model">
+    <div class="wrap model">
+      <div class="model__copy">
+        <h2 class="h2">A 2&nbsp;GB model, downloaded once</h2>
+        <p class="band__lede">The first time you send with PromptMask on, it fetches Gemma from Hugging Face and keeps it in your browser. After that it loads from disk.</p>
+        <dl class="specs" data-reveal>
+          <div><dt>Model</dt><dd>Gemma 4 E2B, instruction-tuned, as a WebGPU <code>.task</code> file from <code>litert-community</code> on Hugging Face</dd></div>
+          <div><dt>Runtime</dt><dd>MediaPipe LLM Inference, its WebAssembly files bundled with the extension, running on WebGPU</dd></div>
+          <div><dt>Storage</dt><dd>The browser’s Cache API, with persistent storage requested so the browser doesn’t clear it</dd></div>
+          <div><dt>First prompt</dt><dd>The download is split as it streams: one copy fills the cache, the other loads straight into the model</dd></div>
+        </dl>
+        <p class="model__terms">Gemma is provided under and subject to the <a href="https://ai.google.dev/gemma/terms">Gemma Terms of Use</a> and the <a href="https://ai.google.dev/gemma/prohibited_use_policy">Prohibited Use Policy</a>.</p>
+      </div>
+
+      <div class="model__states" data-reveal>
+        <div class="state">
+          <p class="state__label">The first time</p>
+          <div class="state__stage" aria-hidden="true">
+            <div class="banner">Downloading Redaction Model for first use...</div>
+          </div>
+        </div>
+        <div class="state">
+          <p class="state__label">Every time after</p>
+          <div class="state__stage state__stage--row" aria-hidden="true">
+            <span class="spinner spinner--static"></span>
+            <div class="toast toast--static">Redacting...</div>
+          </div>
+        </div>
+        <p class="state__note">These are the extension’s own notices, word for word. They sit in the bottom-right corner of the chat page.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy" class="band band--privacy">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">The details stay on your device</h2>
+        <p class="band__lede">PromptMask changes what is in your message. What you then send goes to the chat site as usual, with placeholders where the details were.</p>
+      </div>
+      <ul class="facts" role="list" data-reveal>
+        <li class="fact">
+          <h3 class="fact__h">No cloud model</h3>
+          <p>Redaction runs in a hidden offscreen document on your GPU. No prompt text is sent to any inference service.</p>
+        </li>
+        <li class="fact">
+          <h3 class="fact__h">One download, and that’s it</h3>
+          <p>The extension’s own pages are locked by their content security policy to connect only to Hugging Face, for the model.</p>
+        </li>
+        <li class="fact">
+          <h3 class="fact__h">Nothing about you in storage</h3>
+          <p>The browser keeps your switches, the model’s download status and the model itself. No prompt text, personal information or browsing history is stored.</p>
+        </li>
+        <li class="fact">
+          <h3 class="fact__h">Three permissions</h3>
+          <p><code>offscreen</code>, <code>storage</code> and <code>unlimitedStorage</code>, plus access to the five chat sites and to Hugging Face. Nothing else.</p>
+        </li>
+      </ul>
+      <p class="privacy__links"><a href="https://github.com/Team-AER/PromptMask-legal/blob/main/privacy.html">Read the privacy policy</a> <span class="privacy__meta">Updated 6 April 2026. Questions go to <a href="mailto:nidhi@aer.app">nidhi@aer.app</a>.</span></p>
+    </div>
+  </section>
+
+  <section id="limits" class="band band--limits">
+    <div class="wrap limits">
+      <h2 class="h2">A helper, not a guarantee</h2>
+      <ul class="limits__list" role="list" data-reveal>
+        <li>
+          <h3 class="limits__h">It’s a small model</h3>
+          <p>Gemma&nbsp;4&nbsp;E2B is small enough to run in a browser tab, and it can miss a detail or pick the wrong label. That’s why PromptMask shows you the result and waits for you.</p>
+        </li>
+        <li>
+          <h3 class="limits__h">It isn’t legal advice</h3>
+          <p>It is a redaction helper, not a substitute for legal, medical, financial or other professional services. Review what it gives you before relying on it.</p>
+        </li>
+        <li>
+          <h3 class="limits__h">What you need</h3>
+          <p>Chrome or another Chromium browser with WebGPU, and about 2&nbsp;GB of disk for the model.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="access" class="band band--access">
+    <div class="wrap access">
+      <div class="access__copy">
+        <h2 class="h2">Try it before it reaches the store</h2>
+        <p class="access__lede">PromptMask is built by Nidhi Bharani for Team AER. The repository is private and the extension isn’t on the Chrome Web Store yet, so ask and tell us where you’d use it.</p>
+      </div>
+      <div class="access__cta">
+        <a class="btn btn--ink" href="mailto:hello@aer.app?subject=PromptMask">Ask for access</a>
+        <a class="btn btn--line" href="https://github.com/Team-AER/PromptMask-legal/blob/main/privacy.html">Privacy policy</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>PromptMask</h2>
+      <p>A Chrome extension that redacts personal details from AI prompts on your device. Built by <a class="aer-footer__author" href="https://github.com/nidhibharani">Nidhi Bharani</a>. Private repository.</p>
+      <ul role="list">
+        <li><a href="mailto:hello@aer.app?subject=PromptMask">Ask for access</a></li>
+        <li><a href="https://github.com/Team-AER/PromptMask-legal/blob/main/privacy.html">Privacy policy</a></li>
+        <li><a href="https://ai.google.dev/gemma/terms">Gemma Terms of Use</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/subtly/">Subtly</a></li>
+        <li><a href="/hedwig/">Hedwig</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/athena/">Athena Sandbox</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Gemma is provided under and subject to the Gemma Terms of Use.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js?v=20261004" defer></script>
+<script src="/promptmask/page.js?v=20261004" defer></script>
+</body>
+</html>

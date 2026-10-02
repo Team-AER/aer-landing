@@ -4,6 +4,8 @@
 // toggle and the copy button are shell.js.
 (function () {
   'use strict';
+  // html.js lets style.css hold section children back until shell.js reveals them; without JS nothing hides.
+  document.documentElement.classList.add('js');
   // Honour the OS motion preference: a row leaving Needs you jumps to its final state instead of
   // fading and collapsing. (The hero's composition is CSS and stops itself under the same query.)
   var reduce = Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -93,6 +95,15 @@
   });
 
   document.addEventListener('click', function () { if (openBtn) closeAll(); });
+
+  // The hero's one short sync: once the rows have landed (style.css), the rail's status ticks to "now".
+  var sync = document.querySelector('[data-sync]');
+  if (sync && !reduce) {
+    setTimeout(function () {
+      sync.textContent = 'Up to date · now';
+      if (sync.parentNode) sync.parentNode.classList.add('is-tick');
+    }, 1500);
+  }
 
   // On phones the nav's Open Hedwig shows only while neither the hero's nor the closing section's own
   // Open Hedwig is on screen, so no screen shows the same call to action twice. (CSS keeps it hidden

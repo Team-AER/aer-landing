@@ -5,8 +5,11 @@
 //    Reduced motion: ranked order at once. No JS: style.css settles it without movement.
 //    On phones the last story fully inside the frame is then swiped right once and marked read, as in the app.
 // 3. On phones the page nav slides away while reading down and returns on the way up, as the app's bars do.
+// 4. html.js: lets style.css hold section children back until shell.js reveals them (no JS, nothing hidden).
 (function () {
   'use strict';
+  document.documentElement.classList.add('js');
+  var t0 = Date.now();
 
   var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   var small = window.matchMedia ? window.matchMedia('(max-width: 899.98px)') : { matches: false };
@@ -63,15 +66,37 @@
     }
     if (control) control.hidden = false;
 
+    // While the bars fill, each "N% match" counts up to its figure (from 10, so the width never changes).
+    var countUp = function () {
+      Array.prototype.forEach.call(list.querySelectorAll('.r-match'), function (m) {
+        var bar = m.querySelector('.r-aff i'), n = m.querySelector('.r-aff-n');
+        if (!bar || !n || !window.requestAnimationFrame) return;
+        var target = Math.round(parseFloat(bar.style.getPropertyValue('--m')) * 100);
+        if (!(target >= 10)) return;
+        var start = null;
+        var step = function (t) {
+          if (start === null) start = t;
+          var k = Math.min(1, (t - start) / 750);
+          if (userTook) k = 1;
+          n.textContent = Math.round(10 + (target - 10) * (1 - Math.pow(1 - k, 3))) + '% match';
+          if (k < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
+      });
+    };
+
     var play = function () {
       if (userTook) return;
+      // Let the rows finish landing (style.css, about 1.2s after load) before the bars start.
       later(function () {
         if (userTook) return;
         list.setAttribute('data-bars', 'full');
+        countUp();
         later(function () {
           if (userTook) return;
           press('ranked');
           reorder('ranked');
+          later(function () { if (!userTook) list.setAttribute('data-picked', ''); }, 1000);
           // Phones: the last story fully in the frame is then swiped right, the app's gesture for "mark read".
           later(function () {
             if (userTook || !small.matches) return;
@@ -79,7 +104,7 @@
             later(function () { list.setAttribute('data-swipe', 'done'); }, 1500);
           }, 1500);
         }, 1100);
-      }, 500);
+      }, Math.max(500, 1300 - (Date.now() - t0)));
     };
 
     // Desktop lists are short, so the first row in view is enough (a 1280x800 laptop shows about a quarter

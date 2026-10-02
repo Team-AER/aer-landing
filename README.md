@@ -2,7 +2,8 @@
 
 The Team AER site: the team page at `/` and a landing page for each app
 (`/pensieve/`, `/hedwig/`, `/quill/`, `/accio/`, `/erised/`, `/cantis/`,
-`/polyjuicevoice/`, `/subtly/`, `/avifors/`, `/athena/`, `/omniocular/`).
+`/polyjuicevoice/`, `/subtly/`, `/avifors/`, `/athena/`, `/omniocular/`,
+`/promptmask/`).
 This repo is the only home for Team AER landing pages. Plain static files, no
 build step.
 
@@ -14,7 +15,7 @@ build step.
 | `styles/tokens.css`, `styles/site.css` | Team page design tokens and styles (Gumroad-style hard shadows). |
 | `styles/apps.css` | The app catalogue: tiles, each app's mini window in its own palette, tablet and phone layouts, reduced motion. |
 | `<app>/index.html`, `style.css`, `page.js`, `assets/` | One self-contained landing page per app, themed in that app's own colours. Plain HTML, first-party scripts only. |
-| `cantis/`, `polyjuicevoice/` | React + Babel pages (`index.html`, `sections.jsx`, `illustrations.jsx`), formerly the separate cantis-landing and polyjuicevoice-landing repos. They get the team page's CSP. |
+| `cantis/`, `polyjuicevoice/` | React + Babel pages (`index.html`, `app.jsx`, `sections.jsx`, `illustrations.jsx`, `motion.jsx`), formerly the separate cantis-landing and polyjuicevoice-landing repos. They get the team page's CSP. |
 | `shared/base.css`, `shared/shell.js` | Shell shared by every app page: Team AER strip, footer, skip link, nav toggle, copy buttons, reveal on scroll. |
 | `404.html` | Not-found page for any unknown path. |
 | `docs/APP-PAGES-DESIGN.md` | Design direction and quality floor for the app pages. Not served. |
