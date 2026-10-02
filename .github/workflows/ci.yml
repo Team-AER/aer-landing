@@ -43,7 +43,9 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/docs/APP-PAGES-DESIGN.md)" = 404
           # App pages get the strict CSP; only the team page may eval.
           curl -sI http://127.0.0.1:8080/pensieve/ | grep -i '^content-security-policy' | grep -vq "unsafe-eval"
-          curl -sI http://127.0.0.1:8080/ | grep -i '^content-security-policy' | grep -q "unsafe-eval"
+          for p in / /cantis/ /polyjuicevoice/; do
+            curl -sI "http://127.0.0.1:8080$p" | grep -i '^content-security-policy' | grep -q "unsafe-eval"
+          done
 
       - name: Tear down
         if: always()

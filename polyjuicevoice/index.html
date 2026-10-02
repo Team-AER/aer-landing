@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PolyJuiceVoice — On-device TTS for macOS</title>
+<meta name="description" content="PolyJuiceVoice runs Qwen3-TTS on your Mac: speak text in preset voices, design new ones or clone your own, all on-device. By Team AER." />
+<meta property="og:title" content="PolyJuiceVoice — On-device TTS for macOS" />
+<meta property="og:description" content="PolyJuiceVoice runs Qwen3-TTS on your Mac: speak text in preset voices, design new ones or clone your own, all on-device. By Team AER." />
+<meta property="og:url" content="https://aer.app/polyjuicevoice/" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#08080a" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23FF90E8'/%3E%3Crect width='100' height='100' rx='18' fill='none' stroke='black' stroke-width='6'/%3E%3Ctext x='50' y='66' font-family='sans-serif' font-size='54' font-weight='800' text-anchor='middle' fill='black'%3EA%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { color-scheme: dark; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; background: #08080a; color: #fff; font-family: Geist, ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  section[id] { scroll-margin-top: 56px; }
+  * { box-sizing: border-box; }
+  body { background-color: #08080a; background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 24px 24px; background-position: 0 0; }
+  ::selection { background: #1da7ff; color: #fff; }
+  button { font-family: inherit; }
+  input { font-family: inherit; }
+  input[type="range"] { -webkit-appearance: none; appearance: none; height: 2px; background: rgba(255,255,255,0.15); }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; }
+  @keyframes cantis-marquee { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }
+
+  /* ===== Responsive Layout ===== */
+  .lp-nav-links { display: flex; }
+  .lp-nav-ctas { display: flex; align-items: center; gap: 12px; }
+  .lp-nav-hamburger { display: none; background: transparent; border: none; color: rgba(255,255,255,0.7); cursor: pointer; padding: 4px; align-items: center; justify-content: center; }
+  .lp-mobile-menu { display: none; }
+
+  @media (max-width: 900px) {
+    /* Navigation */
+    .lp-nav-links { display: none !important; }
+    .lp-nav-ctas { display: none !important; }
+    .lp-nav-hamburger { display: flex !important; margin-left: auto; }
+    .lp-mobile-menu.open {
+      display: flex; flex-direction: column;
+      background: rgba(8,8,10,0.98); backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 8px 24px 16px; gap: 2px;
+    }
+
+    /* Grids collapse to single column */
+    .lp-grid-2 { grid-template-columns: 1fr !important; }
+    .lp-grid-3 { grid-template-columns: 1fr !important; }
+    .lp-specs-inner { grid-template-columns: 1fr !important; }
+
+    /* Remove border-right when stacked */
+    .lp-grid-2 > div, .lp-grid-3 > div, .lp-specs-inner > div { border-right: none !important; }
+    .lp-specs-inner > div { padding: 28px 24px !important; }
+
+    /* Typography */
+    .lp-hero-title { font-size: 52px !important; }
+    .lp-cta-title { font-size: 58px !important; line-height: 1 !important; }
+    .lp-title-56 { font-size: 36px !important; }
+    .lp-title-44 { font-size: 30px !important; }
+
+    /* Padding */
+    .lp-hero-left-pad { padding: 44px 24px 40px !important; }
+    .lp-hero-right { padding: 24px 20px !important; }
+    .lp-feat-cell { padding: 28px 20px !important; }
+    .lp-spec-left { padding: 32px 24px !important; }
+    .lp-studio-padding { padding: 48px 20px !important; }
+    .lp-cta-section { padding: 72px 24px !important; }
+
+    /* Studio demo app window */
+    .lp-studio-header { flex-direction: column !important; align-items: flex-start !important; gap: 16px !important; margin-bottom: 28px !important; }
+    .lp-app-cols { grid-template-columns: 1fr !important; min-height: auto !important; }
+    .lp-app-sidebar { display: none !important; }
+    .lp-caption-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+
+    /* Footer */
+    .lp-footer-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+
+  @media (max-width: 480px) {
+    .lp-hero-title { font-size: 40px !important; }
+    .lp-cta-title { font-size: 44px !important; }
+    .lp-footer-grid { grid-template-columns: 1fr !important; }
+  }
+
+  /* Team AER strip: the same "part of aer.app" bar as every other app page (shared/base.css). */
+  .aer-strip { background: #000; color: #fff; font: 500 12px/1 system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: 0.01em; position: relative; z-index: 60; }
+  .aer-strip .wrap { width: min(100% - 2 * clamp(16px, 4vw, 48px), 1280px); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; }
+  .aer-strip a { color: inherit; text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 2px; }
+  .aer-strip a:hover { opacity: 1; }
+  .aer-strip a:focus-visible { outline: 2px solid #1da7ff; outline-offset: 2px; }
+  .aer-strip__mark { width: 16px; height: 16px; border-radius: 4px; background: #FF90E8; color: #000; display: grid; place-items: center; font: 800 10px/1 system-ui, sans-serif; }
+  .aer-strip__links { display: flex; gap: 18px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="illustrations.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
+<script type="text/babel">
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "accent": "#1da7ff",
+    "showGrid": true
+  }/*EDITMODE-END*/;
+
+  function App() {
+    const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+    const accent = tweaks.accent;
+
+    React.useEffect(() => {
+      document.body.style.backgroundImage = tweaks.showGrid
+        ? 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)'
+        : 'none';
+    }, [tweaks.showGrid]);
+
+    return (
+      <div style={{ minHeight: '100vh' }}>
+        <TopNav accent={accent} />
+        <Hero accent={accent} />
+        <Marquee />
+        <FeatureGrid accent={accent} />
+        <StudioDemo accent={accent} />
+        <Specs accent={accent} />
+        <Cta accent={accent} />
+        <Footer />
+
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Accent">
+            <TweakColor label="Hue" value={tweaks.accent} onChange={(v) => setTweak('accent', v)} />
+            <TweakRadio
+              label="Presets"
+              value={tweaks.accent}
+              onChange={(v) => setTweak('accent', v)}
+              options={[
+                { value: '#1da7ff', label: 'Sky' },
+                { value: '#a855f7', label: 'Violet' },
+                { value: '#ff5b2c', label: 'Ember' },
+                { value: '#7af0a8', label: 'Mint' },
+              ]}
+            />
+          </TweakSection>
+          <TweakSection label="Background">
+            <TweakToggle label="Dot grid" value={tweaks.showGrid} onChange={(v) => setTweak('showGrid', v)} />
+          </TweakSection>
+        </TweaksPanel>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

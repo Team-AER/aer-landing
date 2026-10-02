@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cantis — On-device music for macOS</title>
+<meta name="description" content="Cantis is a native macOS app that generates music on-device with ACE-Step on Apple Silicon. No Python, no cloud. By Team AER." />
+<meta property="og:title" content="Cantis — On-device music for macOS" />
+<meta property="og:description" content="Cantis is a native macOS app that generates music on-device with ACE-Step on Apple Silicon. No Python, no cloud. By Team AER." />
+<meta property="og:url" content="https://aer.app/cantis/" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#08080a" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23FF90E8'/%3E%3Crect width='100' height='100' rx='18' fill='none' stroke='black' stroke-width='6'/%3E%3Ctext x='50' y='66' font-family='sans-serif' font-size='54' font-weight='800' text-anchor='middle' fill='black'%3EA%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; padding: 0; background: #08080a; color: #fff; font-family: Geist, ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  body { background-color: #08080a; background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 24px 24px; background-position: 0 0; }
+  ::selection { background: #1f5cff; color: #fff; }
+  button { font-family: inherit; }
+  input { font-family: inherit; }
+  input[type="range"] { -webkit-appearance: none; appearance: none; height: 2px; background: rgba(255,255,255,0.15); }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; }
+  @keyframes cantis-marquee { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }
+
+  /* ===== Responsive layout — CSS media queries override React inline styles ===== */
+  .c-nav-inner   { max-width:1280px; margin:0 auto; padding:14px 32px; display:flex; align-items:center; gap:32px; }
+  .c-nav-links   { display:flex; gap:24px; margin-left:auto; }
+
+  .c-hero-grid   { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 1.4fr; min-height:620px; }
+  .c-hero-left   { padding:88px 56px 56px; border-right:1px solid rgba(255,255,255,0.06); display:flex; flex-direction:column; }
+  .c-hero-h1     { font-size:76px; line-height:.96; letter-spacing:-.035em; font-weight:500; margin:36px 0 0; color:#fff; }
+  .c-hero-cta    { margin-top:auto; padding-top:56px; display:flex; align-items:center; gap:28px; flex-wrap:wrap; }
+
+  .c-fg-r1 { display:grid; grid-template-columns:1fr 1.6fr; }
+  .c-fg-r2 { display:grid; grid-template-columns:1fr 1fr 1fr; }
+  .c-fg-r3 { display:grid; grid-template-columns:1.4fr 1fr; }
+  .c-fg-r4 { display:grid; grid-template-columns:1fr 1fr 1fr; }
+  .c-fg-r5 { display:grid; grid-template-columns:1fr 1fr 1fr; }
+  .c-fg-h2    { font-size:44px; line-height:1; letter-spacing:-.025em; font-weight:500; margin:32px 0 0; color:#fff; }
+  .c-fg-h3-lg { font-size:32px; font-weight:500; letter-spacing:-.02em; margin:24px 0 0; color:#fff; }
+  .c-pad { padding:48px; }
+  .c-sep { border-right:1px solid rgba(255,255,255,0.06); }
+
+  .c-studio-pad  { padding:88px 32px; }
+  .c-studio-hdr  { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; }
+  .c-studio-h2   { font-size:56px; line-height:1; letter-spacing:-.03em; font-weight:500; margin:20px 0 0; color:#fff; max-width:700px; }
+
+  .c-specs-outer { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 1.4fr; }
+  .c-specs-left  { padding:56px; border-right:1px solid rgba(255,255,255,0.06); }
+  .c-specs-inner { display:grid; grid-template-columns:1fr 1fr; }
+  .c-specs-h2    { font-size:44px; line-height:1; letter-spacing:-.025em; font-weight:500; margin:24px 0 0; color:#fff; }
+  .c-spec-block  { padding:56px; border-right:1px solid rgba(255,255,255,0.06); }
+
+  .c-cta         { padding:120px 32px; }
+  .c-cta-h2      { font-size:96px; line-height:.95; letter-spacing:-.04em; font-weight:500; margin:32px 0 0; color:#fff; }
+
+  .c-footer      { padding:48px 32px 32px; }
+  .c-footer-grid { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:32px; align-items:start; }
+
+  @media (max-width:1024px) {
+    .c-nav-inner    { padding:12px 20px !important; gap:12px !important; }
+    .c-nav-meta     { display:none !important; }
+    .c-nav-links    { display:none !important; }
+    .c-nav-download { display:none !important; }
+    .c-nav-github   { margin-left:auto !important; }
+
+    .c-hero-grid { grid-template-columns:1fr !important; min-height:auto !important; }
+    .c-hero-left { padding:48px 24px 40px !important; border-right:none !important; }
+    .c-hero-h1   { font-size:52px !important; }
+    .c-hero-illus { display:none !important; }
+    .c-hero-cta  { margin-top:40px !important; padding-top:0 !important; }
+
+    .c-fg-r1,.c-fg-r2,.c-fg-r3,.c-fg-r4,.c-fg-r5 { grid-template-columns:1fr !important; }
+    .c-fg-h2    { font-size:36px !important; }
+    .c-fg-h3-lg { font-size:26px !important; }
+    .c-pad { padding:32px 24px !important; }
+    .c-sep { border-right:none !important; border-bottom:1px solid rgba(255,255,255,0.06) !important; }
+
+    .c-studio-pad { padding:56px 20px !important; }
+    .c-studio-hdr { flex-direction:column !important; align-items:flex-start !important; gap:16px !important; }
+    .c-studio-h2  { font-size:36px !important; }
+    .c-studio-hint { display:none !important; }
+
+    .c-specs-outer { grid-template-columns:1fr !important; }
+    .c-specs-left  { padding:40px 24px !important; border-right:none !important; border-bottom:1px solid rgba(255,255,255,0.06) !important; }
+    .c-specs-inner { grid-template-columns:1fr !important; }
+    .c-specs-h2    { font-size:36px !important; }
+    .c-spec-block  { padding:32px 24px !important; border-right:none !important; }
+    .c-spec-sep    { border-bottom:1px solid rgba(255,255,255,0.06) !important; }
+
+    .c-cta    { padding:80px 24px !important; }
+    .c-cta-h2 { font-size:52px !important; }
+
+    .c-footer      { padding:40px 24px 24px !important; }
+    .c-footer-grid { grid-template-columns:1fr 1fr !important; gap:24px !important; }
+    .c-footer-brand { grid-column:1 / -1 !important; }
+  }
+
+  /* Team AER strip: the same "part of aer.app" bar as every other app page (shared/base.css). */
+  .aer-strip { background: #000; color: #fff; font: 500 12px/1 system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: 0.01em; position: relative; z-index: 60; }
+  .aer-strip .wrap { width: min(100% - 2 * clamp(16px, 4vw, 48px), 1280px); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; }
+  .aer-strip a { color: inherit; text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 2px; }
+  .aer-strip a:hover { opacity: 1; }
+  .aer-strip a:focus-visible { outline: 2px solid #1f5cff; outline-offset: 2px; }
+  .aer-strip__mark { width: 16px; height: 16px; border-radius: 4px; background: #FF90E8; color: #000; display: grid; place-items: center; font: 800 10px/1 system-ui, sans-serif; }
+  .aer-strip__links { display: flex; gap: 18px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><span class="aer-strip__mark" aria-hidden="true">A</span>Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="illustrations.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
+<script type="text/babel">
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "accent": "#1f5cff",
+    "showGrid": true
+  }/*EDITMODE-END*/;
+
+  function App() {
+    const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+    const accent = tweaks.accent;
+
+    React.useEffect(() => {
+      document.body.style.backgroundImage = tweaks.showGrid
+        ? 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)'
+        : 'none';
+    }, [tweaks.showGrid]);
+
+    return (
+      <div style={{ minHeight: '100vh' }}>
+        <TopNav accent={accent} />
+        <Hero accent={accent} />
+        <Marquee />
+        <FeatureGrid accent={accent} />
+        <StudioDemo accent={accent} />
+        <Specs accent={accent} />
+        <Cta accent={accent} />
+        <Footer />
+
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Accent">
+            <TweakColor label="Hue" value={tweaks.accent} onChange={(v) => setTweak('accent', v)} />
+            <TweakRadio
+              label="Presets"
+              value={tweaks.accent}
+              onChange={(v) => setTweak('accent', v)}
+              options={[
+                { value: '#1f5cff', label: 'Blue' },
+                { value: '#ff5b2c', label: 'Ember' },
+                { value: '#7af0a8', label: 'Mint' },
+                { value: '#c8a4ff', label: 'Lilac' },
+              ]}
+            />
+          </TweakSection>
+          <TweakSection label="Background">
+            <TweakToggle label="Dot grid" value={tweaks.showGrid} onChange={(v) => setTweak('showGrid', v)} />
+          </TweakSection>
+        </TweaksPanel>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
