@@ -178,7 +178,7 @@
     <div class="wrap">
       <div class="band__head">
         <h2 class="h2">Four hops, all inside your browser</h2>
-        <p class="band__lede">Chrome splits an extension into separate parts, and only a hidden offscreen document can keep a model loaded on the GPU. So your prompt takes a short walk, and never leaves the device.</p>
+        <p class="band__lede">Chrome splits an extension into separate parts. A hidden offscreen document runs redaction locally on your GPU. The chat page can already read its composer, so this is a send-time review tool, not draft isolation from the host site.</p>
       </div>
 
       <ol class="path" role="list" data-path data-reveal>
@@ -237,7 +237,7 @@
         <dl class="specs" data-reveal>
           <div><dt>Model</dt><dd>Gemma 4 E2B, instruction-tuned, as a WebGPU <code>.task</code> file from <code>litert-community</code> on Hugging Face</dd></div>
           <div><dt>Runtime</dt><dd>MediaPipe LLM Inference, its WebAssembly files bundled with the extension, running on WebGPU</dd></div>
-          <div><dt>Storage</dt><dd>The browser’s Cache API, with persistent storage requested so the browser doesn’t clear it</dd></div>
+          <div><dt>Storage</dt><dd>The browser’s Cache API, with persistent storage requested. The browser can deny persistence or remove the cache, requiring a new download</dd></div>
           <div><dt>First prompt</dt><dd>The download is split as it streams: one copy fills the cache, the other loads straight into the model</dd></div>
         </dl>
         <p class="model__terms">Gemma is provided under and subject to the <a href="https://ai.google.dev/gemma/terms">Gemma Terms of Use</a> and the <a href="https://ai.google.dev/gemma/prohibited_use_policy">Prohibited Use Policy</a>.</p>
@@ -265,28 +265,28 @@
   <section id="privacy" class="band band--privacy">
     <div class="wrap">
       <div class="band__head">
-        <h2 class="h2">The details stay on your device</h2>
-        <p class="band__lede">PromptMask changes what is in your message. What you then send goes to the chat site as usual, with placeholders where the details were.</p>
+        <h2 class="h2">Local redaction, reviewed before sending</h2>
+        <p class="band__lede">PromptMask changes what is in your message. Review the result: disabled categories and missed details remain. What you then send goes to the chat site as usual. Its page can access text in the composer before redaction.</p>
       </div>
       <ul class="facts" role="list" data-reveal>
         <li class="fact">
           <h3 class="fact__h">No cloud model</h3>
-          <p>Redaction runs in a hidden offscreen document on your GPU. No prompt text is sent to any inference service.</p>
+          <p>The extension runs redaction in a hidden offscreen document on your GPU; it does not send that inference request to a cloud model. Your chosen chat site receives the message you submit.</p>
         </li>
         <li class="fact">
           <h3 class="fact__h">One download, and that’s it</h3>
           <p>The extension’s own pages are locked by their content security policy to connect only to Hugging Face, for the model.</p>
         </li>
         <li class="fact">
-          <h3 class="fact__h">Nothing about you in storage</h3>
-          <p>The browser keeps your switches, the model’s download status and the model itself. No prompt text, personal information or browsing history is stored.</p>
+          <h3 class="fact__h">Local cache and diagnostic logs</h3>
+          <p>The extension stores switches, model status and model files, rather than a prompt-history database. The current development build logs framed prompts and model outputs to extension DevTools; those logs can contain sensitive text.</p>
         </li>
         <li class="fact">
           <h3 class="fact__h">Three permissions</h3>
           <p><code>offscreen</code>, <code>storage</code> and <code>unlimitedStorage</code>, plus access to the five chat sites and to Hugging Face. Nothing else.</p>
         </li>
       </ul>
-      <p class="privacy__links"><a href="https://github.com/Team-AER/PromptMask-legal/blob/main/privacy.html">Read the privacy policy</a> <span class="privacy__meta">Updated 6 April 2026. Questions go to <a href="mailto:nidhi@aer.app">nidhi@aer.app</a>.</span></p>
+      <p class="privacy__links"><a href="https://github.com/Team-AER/PromptMask-legal/blob/main/privacy.html">Read the privacy policy</a> <span class="privacy__meta">Check the policy’s revision date. Questions go to <a href="mailto:nidhi@aer.app">nidhi@aer.app</a>.</span></p>
     </div>
   </section>
 
