@@ -540,13 +540,13 @@ Cancel any time. Full refund within 14 days.</pre>
 cd quill
 # one unprivileged Proxmox container, CPU only
 deploy/provision-lxc.sh root@pve &lt;CTID&gt;
-# tests, build, release; rolls back on failure
-deploy/deploy-lxc.sh root@pve &lt;CTID&gt;
+# Docker-first release with rollback on failure
+deploy/deploy-docker.sh root@pve &lt;CTID&gt;
 # then set QUILL_GATEWAY_URL and QUILL_PUBLIC_URL
-# in /etc/quill/quill.env, restart quill-api and
-# quill-worker, and put a TLS reverse proxy in front</code></pre>
+# in /etc/quill/quill.env, recreate api and worker
+# with Docker Compose, and add a TLS reverse proxy</code></pre>
       </div>
-      <p class="host__note">The scripts target a Proxmox LXC and install everything inside the container: systemd units for the API and the worker, nginx for the static build, nightly SQLite backups, and releases that roll back on their own if a check fails. <a href="https://github.com/Team-AER/quill/tree/main/deploy">deploy/README.md</a> has the layout, the reverse-proxy settings uploads need, and recovery for a locked-out admin.</p>
+      <p class="host__note">The recommended scripts target a Proxmox LXC and run the API, CPU diarizer worker and nginx frontend in Docker containers. They preserve persistent data, take a pre-deploy SQLite snapshot and roll back a failed release. Nightly backups use a systemd timer inside the LXC; native deployment remains available. <a href="https://github.com/Team-AER/quill/tree/main/deploy">deploy/README.md</a> has the layout, the reverse-proxy settings uploads need, and recovery for a locked-out admin.</p>
       <div class="code code--second">
         <div class="code__bar"><span>Try the reader without a gateway (mock API)</span><button type="button" class="code__copy" data-copy="#install-mock">Copy</button></div>
 <pre id="install-mock" tabindex="0"><code>git clone https://github.com/Team-AER/quill.git

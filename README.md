@@ -1,11 +1,61 @@
-# aer.app
+# Team AER landing pages — aer.app
 
-The Team AER site: the team page at `/` and a landing page for each app
-(`/pensieve/`, `/hedwig/`, `/quill/`, `/accio/`, `/erised/`, `/cantis/`,
-`/polyjuicevoice/`, `/subtly/`, `/avifors/`, `/athena/`, `/omniocular/`,
-`/promptmask/`).
-This repo is the only home for Team AER landing pages. Plain static files, no
-build step.
+The public project catalogue and product landing pages for **Team AER**. Visitors can
+meet the team, browse projects by purpose, explore product features through interactive
+previews, and follow links to applications, source code, documentation or access invitations.
+This repository serves the website; each application's own repository implements the product.
+
+[Visit aer.app](https://aer.app/) · [Team AER on GitHub](https://github.com/Team-AER) · [Page design guide](docs/APP-PAGES-DESIGN.md)
+
+This is the canonical home for Team AER landing pages. The earlier `cantis-landing` and
+`polyjuicevoice-landing` repositories are legacy snapshots; update the corresponding folders
+here. Plain static files need no compiled build step. The team hub, Cantis and PolyJuiceVoice
+use React and Babel in the browser; other app pages use HTML, CSS and vanilla JavaScript.
+
+## What the site includes
+
+- A grouped catalogue with product palettes, miniature interfaces, team authorship and upstream credits.
+- Individual pages explaining product workflows, features, requirements and ways to get started.
+- Interactive product illustrations and demos. These previews do not run the underlying AI models.
+- Shared navigation, skip links, copy buttons, mobile menus and reduced-motion behavior.
+- Page-specific metadata and icons, clean URLs and a custom not-found page.
+- A non-root nginx container, response headers and a CI image smoke test.
+
+| Page | Project purpose |
+| --- | --- |
+| `/` | Team introduction and project catalogue |
+| `/pensieve/` | Feed reader, personalized daily paper and reading memory |
+| `/hedwig/` | Unified self-hosted webmail; built on MailFlow |
+| `/quill/` | Meeting transcription, speaker separation, slides and grounded notes |
+| `/accio/` | Research across documents and the web with cited reports |
+| `/erised/` | Illustrated solo and cooperative adventures |
+| `/cantis/` | On-device music generation on Apple Silicon |
+| `/polyjuicevoice/` | On-device speech generation, voice design and cloning |
+| `/subtly/` | Desktop subtitles generated with Whisper |
+| `/avifors/` | Demand-loaded GPU inference workers with bounded leases |
+| `/athena/` | Self-hosted malware-analysis portal |
+| `/omniocular/` | Pocket wireless-audit device and controller |
+| `/promptmask/` | On-device prompt masking in a browser extension |
+
+## How it works
+
+```mermaid
+flowchart LR
+    Visitor[Visitor] --> Proxy[TLS reverse proxy]
+    Proxy --> Nginx[Non-root nginx on port 8080]
+    Nginx --> Hub[Team hub and catalogue]
+    Nginx --> Pages[Per-project landing pages]
+    Hub --> React[React and Babel from unpkg]
+    Pages --> Assets[Product assets and shared shell]
+    Pages --> Links[Application, repository and docs links]
+    CI[GitHub Actions] --> Image[Build and smoke-test image]
+    Image --> Nginx
+```
+
+The hub, Cantis and PolyJuiceVoice require external React/Babel scripts; Google Fonts
+are used across the site. Local static serving does not make every page fully offline.
+The production nginx configuration supplies routing, CSP and cache headers that a simple
+Python file server does not reproduce.
 
 ## Layout
 
@@ -64,12 +114,23 @@ docker compose down
 2. Add it to `PROJECT_GROUPS` in `app.jsx` with its palette and a mini window
    (add a `case` to `Mini` and its styles to `styles/apps.css`).
 3. Add it to the footer app list on the other app pages.
+4. Set the page title, description, canonical product URL and product favicon. Use the
+   source repository's current app icon; keep the Team AER mark for the shared strip.
+5. Check feature claims against implemented source and current project documentation.
+   Separate model download requirements from app size, and demos from measured performance.
+6. Verify all page assets, links, keyboard behavior and narrow-screen layouts before opening a PR.
+
+Preserve concise upstream attribution where relevant and retain any required license or
+copyright notices when copying assets. Hedwig credits [MailFlow by @maathimself](https://github.com/maathimself/mailflow).
+The Cantis and PolyJuiceVoice favicons are copied from their respective Team AER app icon sets;
+their MIT notices are retained in [Cantis assets](cantis/assets/LICENSE) and
+[PolyJuiceVoice assets](polyjuicevoice/assets/LICENSE).
+Project licenses apply to their own code and assets; this repository has no root license file.
 
 ## Deploy
 
-aer.app runs this repo's container on the aer.app host (`~/aer-landing`, a git
-checkout of `main`, published on 127.0.0.1:8080 behind the host's nginx, which
-terminates TLS):
+For an authorized deployment, pull the approved revision in the deployment checkout and
+rebuild the container behind the TLS proxy. The existing host command is:
 
 ```sh
 ssh ubuntu@aer.app 'cd ~/aer-landing && git pull --ff-only && docker compose up -d --build && docker image prune -f'
@@ -79,9 +140,8 @@ Pages load their own CSS/JS with a `?v=YYYYMMDD` stamp and HTML is served
 `no-cache`, so visitors pick up a deploy on their next visit. When you change
 a stylesheet or script, bump the stamp:
 
-```sh
-grep -rl '?v=' --include='*.html' . | xargs sed -i '' "s/?v=[0-9]*/?v=$(date +%Y%m%d)/g"
-```
+Update the affected page's `?v=` values when its CSS or scripts change. Avoid changing
+unrelated page stamps in a documentation-only PR.
 
 ## CI
 

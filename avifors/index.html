@@ -500,9 +500,9 @@
   <section id="workers" class="sec" aria-labelledby="workers-title">
     <div class="wrap">
       <header class="sec__head">
-        <h2 id="workers-title">Chat, images, speech</h2>
-        <p class="sec__key"><code>kind: openai</code><br><code>kind: sdapi</code><br><code>kind: stt</code></p>
-        <p class="sec__lead">Three worker kinds share one scheduler. Each keeps its own engine and runtime; Avifors decides only when it runs.</p>
+        <h2 id="workers-title">Chat, images, speech and decisions</h2>
+        <p class="sec__key"><code>kind: openai</code><br><code>kind: sdapi</code><br><code>kind: stt</code><br><code>kind: decision</code></p>
+        <p class="sec__lead">HTTP, image, speech and decision workers share a scheduler. Each keeps its own runtime; configured lanes can keep CPU decisions separate from GPU inference.</p>
       </header>
 
       <div class="kinds">
@@ -598,8 +598,8 @@
     <div class="wrap">
       <header class="sec__head">
         <h2 id="install-title">Install and check a config</h2>
-        <p class="sec__key"><code>requires-python &gt;=3.11</code></p>
-        <p class="sec__lead">Linux is recommended for production. The broker needs aiohttp, PyYAML and Pillow; engines, weights and drivers come from you. Adapt the example’s model ids, paths and worker commands before the first run.</p>
+        <p class="sec__key"><code>requires-python &gt;=3.14</code></p>
+        <p class="sec__lead">Linux is recommended for production. The broker requires Python 3.14+, aiohttp, PyYAML and Pillow; the isolated Omnilingual speech worker uses Python 3.12. Engines, weights and drivers come from you. Adapt the example’s model ids, paths and worker commands before the first run.</p>
       </header>
 
       <div class="track install">
@@ -608,7 +608,7 @@
             <div class="code__bar"><span>shell</span><button class="copy" type="button" data-copy="#code-install">Copy</button></div>
 <pre><code id="code-install">git clone https://github.com/Team-AER/avifors.git
 cd avifors
-python3 -m venv .venv
+python3.14 -m venv .venv
 .venv/bin/pip install .
 export AVIFORS_USER_KEY='replace-with-a-long-secret'
 export AVIFORS_ADMIN_KEY='replace-with-another-secret'
@@ -618,12 +618,12 @@ export AVIFORS_ADMIN_KEY='replace-with-another-secret'
           <p class="small"><code>--check</code> validates the file and prints the model count and policy, for example <code>Valid configuration: 2 models, policy=latency</code>.</p>
 
           <div class="code">
-            <div class="code__bar"><span>systemd</span><button class="copy" type="button" data-copy="#code-systemd">Copy</button></div>
+            <div class="code__bar"><span>Optional native systemd deployment</span><button class="copy" type="button" data-copy="#code-systemd">Copy</button></div>
 <pre><code id="code-systemd">sudo cp deploy/avifors.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now avifors.service</code></pre>
           </div>
-          <p class="small">The unit expects the broker in <code>/opt/avifors/.venv</code> and the config at <code>/etc/avifors/config.yaml</code>, runs as a dedicated <code>avifors</code> user and reads keys from <code>/etc/avifors/secrets.env</code>. Give workers <code>Restart=no</code> and no boot enablement: only the broker starts at boot, with models unloaded. <a href="https://github.com/Team-AER/avifors/blob/main/deploy/README.md">Read the deployment notes</a></p>
+          <p class="small">Production also supports Docker Compose with an unprivileged broker and a controller sidecar. Create workers without starting them; the broker owns their lifecycle. See <a href="https://github.com/Team-AER/avifors/blob/main/deploy/README.md">Docker deployment notes</a> for configuration and startup. The optional native unit expects the broker in <code>/opt/avifors/.venv</code> and the config at <code>/etc/avifors/config.yaml</code>, runs as a dedicated <code>avifors</code> user and reads keys from <code>/etc/avifors/secrets.env</code>. Give workers <code>Restart=no</code> and no boot enablement: only the broker starts at boot, with models unloaded. <a href="https://github.com/Team-AER/avifors/blob/main/deploy/README.md">Read the deployment notes</a></p>
         </div>
 
         <div class="code install__config">

@@ -273,7 +273,7 @@
               <ul role="list"><li>Brass lamp, unlit</li><li>A letter, unopened</li><li>Three coins</li></ul>
             </div>
           </div>
-          <figcaption class="replica__caption">The character sheet drawer. No portrait: an arched monogram, as in the app.</figcaption>
+          <figcaption class="replica__caption">The character sheet drawer, shown with its monogram fallback. Private portraits are also supported.</figcaption>
         </figure>
       </div>
     </div>
@@ -283,14 +283,14 @@
     <div class="wrap">
       <div class="section__head">
         <h2 id="painted-title">Painted while you play</h2>
-        <p class="section__lede">Scenes are illustrated by a local image backend after the prose is written, so reading never waits on a picture. Portraits are never generated.</p>
+        <p class="section__lede">Scenes are illustrated asynchronously after the prose is written, so reading never waits on a picture. Administrators configure local or supported hosted image providers.</p>
       </div>
       <div class="section__grid">
         <ul class="features" role="list">
           <li><strong>Backdrop first, painting later</strong><p>A shared scenic backdrop appears at once; the scene’s own painting fades in over it when it is ready. That can take several minutes, and the page says so rather than pretending.</p></li>
           <li><strong>Eight moods</strong><p>A helper model names one of eight fixed atmospheres for each scene. They are fixed themes, never model-written styles, and the whole effect has an off switch.</p></li>
-          <li><strong>Never a portrait</strong><p>Paintings show unpeopled places: terrain, architecture, weather and light. Faces are never generated; you and your party stay as arched monograms.</p></li>
-          <li><strong>Sharpened on the server</strong><p>Paintings are made at 512 by 768 and super-resolved to 2560 pixels on the CPU with a bundled network. You see the original first and the sharp copy when it arrives.</p></li>
+          <li><strong>Places and portraits</strong><p>Shared scenery shows terrain, architecture, weather and light. Private character portraits and character-focused illustrations are supported separately.</p></li>
+          <li><strong>Sharpened on the server</strong><p>The server supports optional super-resolution for stored paintings. You see the original first and a sharper copy when processing completes.</p></li>
         </ul>
         <div>
           <figure class="replica mirror mirror--pending" data-base="frost">
@@ -400,7 +400,7 @@
     <div class="access__inner">
       <svg class="access__icon" viewBox="0 0 192 192" role="img" aria-label="The Erised app icon: a silver star inside a gold-rimmed arch on midnight blue"><rect width="192" height="192" rx="40" fill="#111d2d"/><path d="M48 153V76a48 48 0 0 1 96 0v77z" fill="#1e3349" stroke="#c9b78a" stroke-width="5"/><path d="M59 143V76a37 37 0 0 1 74 0v67z" fill="none" stroke="#acbfce" stroke-width="1"/><path d="m96 55 6 20 20 6-20 6-6 20-6-20-20-6 20-6z" fill="#dce6ed"/><path d="M73 126h46" stroke="#c9b78a" stroke-width="2"/></svg>
       <h2 id="access-title">Invite-only, on purpose</h2>
-      <p class="access__lede">Erised runs on Team AER’s own machines against local models; there is no external inference dependency, no billing and no public sign-up. The repository is private. If you would like to play, ask, and an administrator sends a single-use access invitation that expires in seven days.</p>
+      <p class="access__lede">Erised is self-hosted with administrator-configured local or supported hosted inference providers. Hosted providers may charge for usage; there is no in-app billing or public sign-up. The repository is private. If you would like to play, ask, and an administrator sends a single-use access invitation that expires in seven days.</p>
       <div class="access__ctas">
         <a class="btn btn--primary" href="https://erised.brainfc.uk">Open Erised</a>
         <a class="btn btn--quiet" href="mailto:hello@aer.app?subject=Erised%20invitation">Ask for access</a>
