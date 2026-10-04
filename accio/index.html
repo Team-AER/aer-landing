@@ -6,7 +6,7 @@
 <title>Accio — Team AER</title>
 <meta name="description" content="Accio is a local-first deep-research agent. Seven agents plan, search your files and the web, quote every claim and write a cited report on your machine, against your own model.">
 <meta property="og:title" content="Accio — ask one question, get a cited report">
-<meta property="og:description" content="A local-first deep-research agent from Team AER. Seven agents, verbatim quotes, six downloadable files. Nothing calls a hosted model.">
+<meta property="og:description" content="A local-first deep-research agent from Team AER. Seven agents, verbatim quotes, six downloadable files. You choose where inference runs.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aer.app/accio/">
 <meta property="og:site_name" content="Team AER apps">
@@ -68,7 +68,7 @@
       <div class="hero__head">
         <div class="hero__copy">
           <h1 id="hero-title" class="hero__title"><span>Ask one question.</span> <span>Get a cited report.</span></h1>
-          <p class="hero__sub">Seven agents plan the work, search your files and the web, quote every claim and write the report, all on your own machine.</p>
+          <p class="hero__sub">Seven agents plan the work, search your files and the web, quote source passages and write the report on infrastructure you control, using the model endpoint you choose.</p>
           <div class="hero__ctas">
             <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Accio%20access">Ask for access</a>
             <a class="btn btn--ghost" href="#machine">How it runs on your machine</a>
@@ -76,8 +76,8 @@
           <p class="hero__access">Private repository, MIT licence. There is no hosted version.</p>
         </div>
         <div class="promise">
-          <p class="promise__line">Nothing calls a hosted model.</p>
-          <p class="promise__body">Accio ships no model and calls none of its own. It talks to the OpenAI-compatible endpoint you run, and your library, notes and reports stay on your disk.</p>
+          <p class="promise__line">You choose where inference runs.</p>
+          <p class="promise__body">Accio ships no model server. It calls your configured OpenAI-compatible endpoint, local or remote. Storage is self-hosted; inference receives research context, and web search sends queries to configured providers.</p>
         </div>
       </div>
 
@@ -375,7 +375,7 @@
       </div>
       <div class="section__body">
         <h2 id="machine-title" class="section__title">Your machine, your model</h2>
-        <p class="lede lede--strong">Nothing calls a hosted model. Point Accio at any OpenAI-compatible endpoint you run, such as a local proxy or a vLLM server, pick a default model and give individual agents a different one if you like.</p>
+        <p class="lede lede--strong">You choose where inference runs. Point Accio at a configured OpenAI-compatible endpoint, local or remote, pick a default model and give individual agents a different one if you like. Research context is sent to that endpoint; web queries go to your configured search providers.</p>
         <dl class="facts facts--tight">
           <div class="fact">
             <dt>Models</dt>
@@ -383,7 +383,7 @@
           </div>
           <div class="fact">
             <dt>Embeddings</dt>
-            <dd>Computed locally, in process with fastembed or by an embeddings server you run.</dd>
+            <dd>Computed in process with fastembed or by your configured embeddings endpoint, which may be local or remote.</dd>
           </div>
           <div class="fact">
             <dt>Stack</dt>

@@ -234,20 +234,20 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   CTA "Request access" mailto:hello@aer.app; defensive, authorized analysis only).
 - **Avoid:** skulls, hex rain, hacker green; claiming ANY.RUN parity or arbitrary-sample execution.
 
-### Omniocular — `/omniocular/`  (BLE-controlled wireless assessment device on a Pi Zero 2 W)
+### Omniocular — `/omniocular/`  (BLE-controlled wireless assessment device on a original Pi Zero W)
 - **Mood:** a field kit. Hardware you can hold, a phone app that drives it, an ethics gate that is
   part of the product. Tactile and rugged. No brand exists; invent it.
 - **Palette:** bone `#EFEDE6`, case orange `#FF6A00`, slate `#2B2F33`, ink `#15171A`, BLE blue
   `#0082FC` (the link only).
 - **Type:** Barlow Condensed (display) + Barlow (body) from Google Fonts; `ui-monospace` only for
   the CBOR/HMAC spec lines.
-- **Hero concept:** the device as a flat SVG (Pi Zero 2 W outline) on the left, a BLE arc, and the
+- **Hero concept:** the device as a flat SVG (original Pi Zero W outline) on the left, a BLE arc, and the
   Flutter app in a phone frame on the right: AP survey list filling in, capture controls, the
   long-press transmit confirmation. Headline idea: "A pocket Wi-Fi auditor you talk to over Bluetooth."
 - **The one memorable thing:** the authorized-use gate rendered as a physical switch in the hero —
   flip it and the transmit controls unlock (user-triggered motion).
 - **Must mirror:** `apps/omniocular/mobile/lib` (Flutter screens) and `docs/architecture.md`.
-- **Sections:** hero → "Built for the Pi Zero 2 W" (Nexmon monitor/injection driver, power overlays,
+- **Sections:** hero → "Built for the original Pi Zero W" (Nexmon monitor/injection driver, power overlays,
   BLE LE-only, per-device images with verified base digest) → "Authenticated control" (CBOR v1,
   HMAC-SHA256, replay protection, bonded-peer admission, unprivileged gateway + capability-bounded
   root RF worker) → "Every aireplay-ng mode, typed and bounded" → "Survey and capture" (AP
