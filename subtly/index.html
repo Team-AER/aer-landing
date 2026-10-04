@@ -492,7 +492,7 @@
             <ul class="dl" role="list">
               <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/Subtly_2.0.0_aarch64.dmg"><span class="dl__os">macOS, Apple Silicon</span><span class="dl__file">Subtly_2.0.0_aarch64.dmg</span><span class="dl__size">9.4 MB</span></a></li>
               <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/subtly_2.0.0_x64-setup.exe"><span class="dl__os">Windows 10 and 11, x64</span><span class="dl__file">subtly_2.0.0_x64-setup.exe</span><span class="dl__size">14.6 MB</span></a></li>
-              <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/subtly_2.0.0_x86_64.AppImage"><span class="dl__os">Linux, any distribution</span><span class="dl__file">subtly_2.0.0_x86_64.AppImage</span><span class="dl__size">20.3 MB</span></a></li>
+              <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/subtly_2.0.0_x86_64.AppImage"><span class="dl__os">Linux x64, AppImage</span><span class="dl__file">subtly_2.0.0_x86_64.AppImage</span><span class="dl__size">20.3 MB</span></a></li>
               <li><a class="dl__link" href="https://github.com/Team-AER/Subtly/releases/download/v2.0/subtly_2.0.0_amd64.deb"><span class="dl__os">Debian and Ubuntu</span><span class="dl__file">subtly_2.0.0_amd64.deb</span><span class="dl__size">23.8 MB</span></a></li>
             </ul>
           </div>
@@ -508,11 +508,11 @@
           </li>
           <li>
             <h3>Windows</h3>
-            <p>Windows 10 (version 1809 or later) or 11, 64-bit. A GPU driver with Vulkan support is recommended; without one, Subtly uses the CPU. The Visual C++ runtime is included. Windows on ARM is not supported.</p>
+            <p>Windows 10 or 11, 64-bit. The Vulkan loader and runtime libraries must be available. If GPU context creation fails, Whisper retries on the CPU. Packaging stages the Visual C++ runtime; Windows on ARM is not configured.</p>
           </li>
           <li>
             <h3>Linux</h3>
-            <p>x86-64 with glibc 2.31 or newer (Ubuntu 20.04 and later) and the Vulkan loader, <code>libvulkan1</code>. The AppImage runs anywhere; the .deb suits Debian and Ubuntu.</p>
+            <p>Linux x64; CI packages on Ubuntu 22.04. The Vulkan loader and GL libraries are required; Debian packaging declares <code>libvulkan1</code> and <code>libgl1</code>. Older distributions are not qualified by the current build matrix.</p>
           </li>
         </ul>
 
@@ -537,11 +537,12 @@
 
         <div class="build">
           <h3>Build it yourself</h3>
-          <p>You need Rust 1.75 or newer, a C/C++ toolchain and CMake 3.10 or newer, plus the Vulkan headers on Windows and Linux.</p>
+          <p>Use current stable Rust, a C/C++ toolchain and CMake, plus Vulkan headers on Windows and Linux. The workspace declares no minimum Rust version; Windows CI pins CMake 3.30.8.</p>
           <div class="code">
             <pre><code id="build-cmd">git clone https://github.com/Team-AER/Subtly.git
 cd Subtly
 cargo run -p xtask -- download-assets
+cargo run -p xtask -- sync-assets
 cargo run -p subtly-ui</code></pre>
             <button class="code__copy" type="button" data-copy="#build-cmd">Copy</button>
           </div>
@@ -570,7 +571,7 @@ cargo run -p subtly-ui</code></pre>
           <li><strong>It is new code.</strong> In May 2026, v2.0 replaced the Electron app and its whisper-cli and ffmpeg helpers with one Rust program. Expect rough edges, and please report them.</li>
           <li><strong>Mac builds are Apple Silicon only.</strong> The current release has no Intel .dmg, and there is no Windows on ARM build.</li>
           <li><strong>Models are a separate download.</strong> The default, Large V2, is 3.1 GB. Tiny is 78 MB if you only want to try it.</li>
-          <li><strong>No GPU means slow.</strong> Without a working Metal or Vulkan backend, transcription runs on the CPU and takes much longer.</li>
+          <li><strong>No GPU means slow.</strong> When GPU context creation fails, Whisper retries on the CPU and takes much longer. Required platform runtime libraries must still be installed.</li>
           <li><strong>The words are Whisper’s.</strong> Subtly cleans up timing, not meaning. Check names and numbers before you publish.</li>
         </ul>
         <p class="scene__aside"><a class="textlink" href="https://github.com/Team-AER/Subtly/issues">Report a bug on GitHub</a></p>

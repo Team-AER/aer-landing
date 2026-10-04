@@ -1,7 +1,9 @@
 # Team AER apps — design direction
 
-Working notes for the per-project landing pages under `app.aer.app`. The hub (`/`) and each
-project page (`/<slug>/`) are static HTML + CSS + a little vanilla JS. No framework, no build.
+Working direction for the canonical Team AER landing pages at `https://aer.app`. Most
+project pages use static HTML, CSS and vanilla JS. The hub, Cantis and PolyJuiceVoice use
+React and Babel in the browser; there is no compiled build step. These notes describe design
+intent, not a guarantee that every existing page satisfies each target below.
 
 ## What every page must do (quality floor)
 
@@ -21,12 +23,13 @@ project page (`/<slug>/`) are static HTML + CSS + a little vanilla JS. No framew
 - **Accessible:** semantic landmarks, skip link, visible focus (`:focus-visible` from base.css),
   WCAG AA contrast, `prefers-reduced-motion` respected, alt text on meaningful SVG (`role="img"` +
   `aria-label`), decorative SVG `aria-hidden="true"`.
-- **Performance:** no third-party scripts, Google Fonts only (preconnect, `display=swap`,
+- **Performance target for vanilla pages:** no third-party scripts, Google Fonts only (preconnect, `display=swap`,
   ≤ 2 families, subsetted weights), inline SVG, total page ≤ 300 KB.
 - **Dark/light:** each page picks ONE native scheme from its product and commits to it; declare
   `color-scheme` on `:root`.
-- **CSP:** nginx allows `script-src 'self'` only — no inline `<script>` handlers; put behaviour in
-  `/<slug>/page.js` + `/shared/shell.js`. Inline `<style>` is allowed.
+- **CSP for vanilla pages:** nginx allows `script-src 'self'` only — no inline `<script>` handlers; put behaviour in
+  `/<slug>/page.js` + `/shared/shell.js`. Inline `<style>` is allowed. The hub, Cantis and
+  PolyJuiceVoice have a separate CSP allowing pinned React/Babel from unpkg and runtime JSX.
 
 ## What every page must avoid (generic-AI tells)
 
@@ -149,11 +152,11 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
 - **The one memorable thing:** the mirror reflects — slow pointer/scroll parallax on the scene inside
   the arch (off under reduced motion). Everything else is still.
 - **Must mirror:** the journey screen (scene, narration, suggested choices + freeform action, dice
-  card, character sheet drawer, journal). Backdrops are shared; portraits are never generated — say so.
+  card, character sheet drawer, journal). Generic backdrops are shared; private portraits and character-focused illustrations are supported separately.
 - **Sections:** hero → "Play alone or with four" (invites, rotating turns, shared campaigns) → "Your
   kind of story" (Journey vs Dice & destiny; original worlds and fan-fiction presets with era/place/
   canon) → "A world that remembers" (journal, lore, recaps, Markdown export, pause/resume) → "Painted
-  while you play" (async illustrations, eight moods, local image backend, no portraits) → "8-bit
+  while you play" (async illustrations, eight moods, administrator-configured local or hosted image providers) → "8-bit
   interludes" (Platformer / Explorer, Silkscreen) → "The private mirror" (six-category reflection,
   evidence-linked, not clinical) → access (invite-only; CTA = live site + "Ask for an invitation"
   mailto:hello@aer.app). Private repo: no "Get the code".
@@ -203,8 +206,9 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   300 s default, hard cancellation, streamed timeouts emit an error never a fake finish) → "Chat,
   images, speech" (vLLM text, sdapi images, STT jobs, FLUX.2 Klein profiles, HTTP workers) →
   "Drop-in behind your gateway" (OpenAI-compatible routes; keeps your engines; does not download
-  models) → install (Python 3.11+, YAML workers, systemd) → CTA (GitHub).
-- **Avoid:** GPU-render-farm imagery; the decision-model / System One feature (branch only).
+  models) → install (Python 3.14+ broker, YAML workers, Docker or native systemd) → CTA (GitHub).
+- **Avoid:** GPU-render-farm imagery. Decision/System One workers are implemented; describe their
+  separate CPU lane when including them.
 
 ### Athena Sandbox — `/athena/`  (local malware-analysis portal and auditable AI harness)
 - **Mood:** an evidence workbench. Clear, not dramatic; the AI is bounded and the guests are
@@ -230,20 +234,20 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   CTA "Request access" mailto:hello@aer.app; defensive, authorized analysis only).
 - **Avoid:** skulls, hex rain, hacker green; claiming ANY.RUN parity or arbitrary-sample execution.
 
-### Omniocular — `/omniocular/`  (BLE-controlled wireless assessment device on a Pi Zero 2 W)
+### Omniocular — `/omniocular/`  (BLE-controlled wireless assessment device on a original Pi Zero W)
 - **Mood:** a field kit. Hardware you can hold, a phone app that drives it, an ethics gate that is
   part of the product. Tactile and rugged. No brand exists; invent it.
 - **Palette:** bone `#EFEDE6`, case orange `#FF6A00`, slate `#2B2F33`, ink `#15171A`, BLE blue
   `#0082FC` (the link only).
 - **Type:** Barlow Condensed (display) + Barlow (body) from Google Fonts; `ui-monospace` only for
   the CBOR/HMAC spec lines.
-- **Hero concept:** the device as a flat SVG (Pi Zero 2 W outline) on the left, a BLE arc, and the
+- **Hero concept:** the device as a flat SVG (original Pi Zero W outline) on the left, a BLE arc, and the
   Flutter app in a phone frame on the right: AP survey list filling in, capture controls, the
   long-press transmit confirmation. Headline idea: "A pocket Wi-Fi auditor you talk to over Bluetooth."
 - **The one memorable thing:** the authorized-use gate rendered as a physical switch in the hero —
   flip it and the transmit controls unlock (user-triggered motion).
 - **Must mirror:** `apps/omniocular/mobile/lib` (Flutter screens) and `docs/architecture.md`.
-- **Sections:** hero → "Built for the Pi Zero 2 W" (Nexmon monitor/injection driver, power overlays,
+- **Sections:** hero → "Built for the original Pi Zero W" (Nexmon monitor/injection driver, power overlays,
   BLE LE-only, per-device images with verified base digest) → "Authenticated control" (CBOR v1,
   HMAC-SHA256, replay protection, bonded-peer admission, unprivileged gateway + capability-bounded
   root RF worker) → "Every aireplay-ng mode, typed and bounded" → "Survey and capture" (AP

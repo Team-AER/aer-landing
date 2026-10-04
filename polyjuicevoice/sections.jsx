@@ -110,7 +110,7 @@ function Hero({ accent }) {
           <Reveal as="p" i={2} className="p-hero-lede">
             PolyJuiceVoice runs Qwen3-TTS natively on your Mac. Speak text in preset voices,
             design new ones from a description, or clone yours from a few seconds of audio.
-            It all runs on Metal; none of it leaves the device.
+            Synthesis runs locally on Metal. Optional iCloud sync shares saved voices with your private iCloud storage.
           </Reveal>
           <Reveal i={3} className="p-hero-cta">
             <a className="p-btn" href={RELEASE}>Download for macOS <Arrow /></a>
@@ -497,7 +497,7 @@ function StudioDemo({ accent }) {
           {[
             ['VOICE', `${voice.label} · ${isPreset ? 'preset' : 'cloned'}`, isPreset ? 'Preset voices take a style instruction.' : 'Cloned voices keep their own character; style instructions apply to presets.'],
             ['MODEL', 'Qwen3-TTS · bf16 on Mac', 'Models download on first run. Pick a precision per model in Settings.'],
-            ['PRIVACY', 'On-device · Metal', 'No audio, transcripts or recordings leave the device.'],
+            ['PRIVACY', 'On-device · optional sync', 'Synthesis stays local. Opt-in iCloud sync uploads saved voice metadata, recordings and embeddings; export/share sends audio where you choose.'],
           ].map(([k, v, sub], i) => (
             <Reveal key={k} i={i}>
               <Mono dim>{k}</Mono>
@@ -522,7 +522,7 @@ function Specs() {
           <p className="p-body" style={{ marginTop: 24, maxWidth: 320 }}>What you need to run PolyJuiceVoice, and what you get when you do.</p>
         </Reveal>
         <div className="p-specs-inner">
-          <SpecBlock label="REQUIRES" rows={[['macOS', '26+ (primary)'], ['iOS', '26+ (device only)'], ['chip', 'Apple silicon'], ['Xcode', '17+ to build'], ['simulator', 'not supported']]} />
+          <SpecBlock label="REQUIRES" rows={[['macOS', '26+ (primary)'], ['iOS', '26+ (device only)'], ['chip', 'Apple silicon'], ['Xcode', '26+ to build'], ['simulator', 'not supported']]} />
           <SpecBlock label="DELIVERS" accent rows={[['models', 'Qwen3-TTS 0.6B / 1.7B'], ['precisions', '4 · 5 · 6 · 8-bit · bf16'], ['inference', 'mlx-swift on Metal'], ['audio', '24 kHz mono WAV'], ['modes', 'speak · design · clone · library']]} />
         </div>
       </div>

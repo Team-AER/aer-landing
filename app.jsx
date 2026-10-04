@@ -49,7 +49,7 @@ const MEMBERS = [
 const MEMBER_BY_ID = Object.fromEntries(MEMBERS.map(m => [m.id, m]));
 
 // Every app Team AER ships. `page` is the app's own landing page (same origin
-// for the newer apps, its own subdomain for Cantis and PolyJuiceVoice);
+// for every project, including Cantis and PolyJuiceVoice);
 // `code` is the public repo, absent for private ones. `authors` are MEMBERS
 // ids in commit-authorship order. `credit` names upstream work a project is
 // built on. `pal` is the app's own palette and drives its mini window: bg,
@@ -67,7 +67,7 @@ const PROJECT_GROUPS = [
         meta: ["Self-hosted", "IMAP, Gmail, M365", "AGPL-3.0"], pal: ["#EEF0F3", "#1D1D1F", "#007AFF", "#E0561A"], mini: "hedwig" },
       { key: "quill", title: "Quill", page: "/quill/", code: "https://github.com/Team-AER/quill", authors: ["prakhar"],
         line: "Meeting transcription for small teams: speakers told apart on CPU, key slides, grounded notes.",
-        meta: ["Self-hosted", "CPU only", "MIT"], pal: ["#0D1218", "#E9EEF5", "#007AFF", "#ff9a5c"], mini: "quill", dark: true },
+        meta: ["Self-hosted", "CPU diarization", "MIT"], pal: ["#0D1218", "#E9EEF5", "#007AFF", "#ff9a5c"], mini: "quill", dark: true },
       { key: "accio", title: "Accio", page: "/accio/", private: true, authors: ["prakhar"],
         line: "A local-first deep-research agent. Seven agents read your files and the web and write a cited report.",
         meta: ["Local-first", "Your own LLM endpoint", "MIT"], pal: ["#050505", "#F2F2F2", "#00F0FF", "#ED1E79"], mini: "accio", dark: true }
@@ -78,7 +78,7 @@ const PROJECT_GROUPS = [
     items: [
       { key: "erised", title: "Erised", page: "/erised/", private: true, authors: ["prakhar"],
         line: "An illustrated, AI-led adventure for phones and desktops. Tell the mirror what you want.",
-        meta: ["Solo or party of four", "Local models"], pal: ["#111D2D", "#DCE6ED", "#C9B78A", "#17283A"], mini: "erised", dark: true },
+        meta: ["Solo or party of four", "Self-hosted"], pal: ["#111D2D", "#DCE6ED", "#C9B78A", "#17283A"], mini: "erised", dark: true },
       { key: "cantis", title: "Cantis", page: "/cantis/", code: "https://github.com/Team-AER/Cantis", authors: ["prakhar"],
         line: "AI music generation as a native macOS app. ACE-Step on Apple Silicon, no Python, no cloud.",
         meta: ["macOS", "On-device", "MIT"], pal: ["#08080A", "#FFFFFF", "#1F5CFF", "#FF5B9C"], mini: "cantis", dark: true },

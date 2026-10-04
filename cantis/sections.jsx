@@ -109,7 +109,7 @@ function Hero({ accent }) {
               Get it on the Mac App Store <Arrow />
             </a>
             <a className="c-link" href={`${REPO}/tree/main/docs`} target="_blank" rel="noopener">Read the docs <Arrow /></a>
-            <Mono dim className="c-hero-meta">6.7 MB · macOS 26+ · Apple Silicon · MIT</Mono>
+            <Mono dim className="c-hero-meta">macOS 26+ · Apple Silicon · ~6.6 GB model files · MIT</Mono>
           </Reveal>
         </div>
         <div ref={ref} className="c-hero-illus">
@@ -632,7 +632,7 @@ function Specs() {
           <p className="c-body" style={{ marginTop: 24, maxWidth: 320 }}>What you need to run Cantis, and what you get when you do.</p>
         </Reveal>
         <div className="c-specs-inner">
-          <SpecBlock label="REQUIRES" rows={[['macOS', '26 or later'], ['chip', 'Apple Silicon (M1+)'], ['memory', '16 GB recommended'], ['storage', '~6 GB for Turbo'], ['internet', 'first model download']]} />
+          <SpecBlock label="REQUIRES" rows={[['macOS', '26 or later'], ['chip', 'Apple Silicon (M1+)'], ['memory', '16 GB recommended'], ['storage', '~6.6 GB for Turbo'], ['internet', 'first model download']]} />
           <SpecBlock label="DELIVERS" accent rows={[['format', 'WAV · AAC · ALAC'], ['sample rate', '48 kHz'], ['inference', 'mlx-swift'], ['models', 'Turbo · SFT · Base'], ['modes', 'text2music · cover · repaint · extract']]} />
         </div>
       </div>
@@ -666,7 +666,7 @@ function Cta() {
           <a className="c-btn c-btn--lg" href={APP_STORE} target="_blank" rel="noopener">
             Get Cantis on the Mac App Store <Arrow />
           </a>
-          <Mono dim>6.7 MB · macOS 26+ · MIT licensed</Mono>
+          <Mono dim>macOS 26+ · ~6.6 GB Turbo model files · MIT licensed</Mono>
         </Reveal>
       </div>
     </section>
