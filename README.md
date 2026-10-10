@@ -70,6 +70,17 @@ Python file server does not reproduce.
 | `404.html` | Not-found page for any unknown path. |
 | `docs/APP-PAGES-DESIGN.md` | Design direction and quality floor for the app pages. Not served. |
 
+## Team branding
+
+The square pink “a” and yellow spark is the Team AER logo. Versioned assets live in
+`assets/brand/`: the transparent source, 192/512px icons, 32/64px favicons,
+180px Apple touch icon, and a 1200×630 cream-background sharing thumbnail.
+The homepage registers Open Graph and Twitter preview metadata; `favicon.ico`
+also supports browsers that request the conventional root icon URL.
+The shared Team AER strips use the team logo, while product favicons retain
+their own identities. The local `.thumbnail` uses the square team icon and is
+excluded from the deployed image.
+
 ## Run locally
 
 Any static file server works; the team page is `aer.app.html`.

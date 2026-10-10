@@ -274,7 +274,7 @@ function Nav() {
   return (
     <nav className="nav" aria-label="Main">
       <a href="#top" className="nav__logo">
-        <span className="nav__badge">A</span>
+        <img className="nav__badge" src="/assets/brand/icon-192-20261010.png" width="44" height="44" alt="" />
         <span className="nav__wordmark-aer">aer</span>
         <span className="nav__wordmark-dot">.</span>
         <span className="nav__wordmark-app">app</span>

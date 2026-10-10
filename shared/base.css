@@ -40,7 +40,7 @@ ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 :is(.aer-strip, .aer-footer) a[href] { color: inherit; }
 .aer-strip a { text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 2px; }
 .aer-strip a:hover { opacity: 1; }
-.aer-strip__mark { width: 16px; height: 16px; border-radius: 4px; background: #FF90E8; color: #000; display: grid; place-items: center; font: 800 10px/1 system-ui, sans-serif; }
+.aer-strip__mark { width: 28px; height: 28px; object-fit: contain; display: block; flex: 0 0 auto; }
 .aer-strip__links { display: flex; gap: 18px; }
 
 /* ---- AER footer (project pages share one footer so every page ends the same way). ---- */
