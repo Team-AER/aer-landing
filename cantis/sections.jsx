@@ -30,15 +30,34 @@ function formatTime(s) {
 
 // =================== Top Nav ===================
 function TopNav({ accent }) {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const navRef = React.useRef(null);
+  const toggleRef = React.useRef(null);
+  React.useEffect(() => {
+    if (!menuOpen) return undefined;
+    const close = (event) => {
+      if (event.type === 'keydown' && event.key !== 'Escape') return;
+      if (event.type === 'pointerdown' && navRef.current?.contains(event.target)) return;
+      setMenuOpen(false);
+      if (event.type === 'keydown') { event.preventDefault(); toggleRef.current?.focus(); }
+    };
+    document.addEventListener('keydown', close);
+    document.addEventListener('pointerdown', close);
+    return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); };
+  }, [menuOpen]);
   return (
-    <header className="c-nav">
+    <header ref={navRef} className="c-nav" onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setMenuOpen(false); }}>
       <div className="c-nav-inner">
         <a className="c-brand" href="/cantis/" aria-label="Cantis home">
           <Logo accent="#6b95ff" />
           <span className="c-brand-name">Cantis</span>
           <Mono dim className="c-nav-meta" style={{ marginLeft: 4 }}>v1.0</Mono>
         </a>
-        <nav className="c-nav-links" aria-label="Cantis">
+
+        <a className="c-link c-nav-gh" href={REPO}>GitHub <Arrow /></a>
+        <a className="c-btn" href={APP_STORE} target="_blank" rel="noopener"><span>Download<span className="c-long"> for macOS</span></span></a>
+        <button ref={toggleRef} className="c-nav-toggle" type="button" aria-label="Sections menu" aria-expanded={menuOpen} aria-controls="c-sections" onClick={() => setMenuOpen((open) => !open)}><span /><span /></button>
+        <nav id="c-sections" className="c-nav-links" aria-label="Cantis" hidden={!menuOpen} onClick={() => setMenuOpen(false)}>
           {[
             { label: 'Features', href: '#models' },
             { label: 'Studio', href: '#studio' },
@@ -47,9 +66,8 @@ function TopNav({ accent }) {
           ].map(({ label, href }) => (
             <a key={label} className="c-navlink" href={href}>{label}</a>
           ))}
+          <a className="c-navlink c-nav-download" href={APP_STORE}>Download for macOS</a>
         </nav>
-        <a className="c-link c-nav-gh" href={REPO}>GitHub <Arrow /></a>
-        <a className="c-btn" href={APP_STORE} target="_blank" rel="noopener"><span>Download<span className="c-long"> for macOS</span></span></a>
       </div>
       <div className="c-progress" aria-hidden="true" />
     </header>
@@ -558,7 +576,7 @@ function StudioDemo({ accent }) {
                   )}
                 </div>
 
-                <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div className="c-player-controls" style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{ position: 'relative', display: 'inline-flex' }}>
                     {!ready && <span className="c-play-ring" style={{ '--p': progressFrac }} aria-hidden="true" />}
                     <button onClick={() => ready && setPlaying((p) => !p)} aria-label={playing ? 'Pause' : ready ? 'Play' : 'Play (available when the render finishes)'}
@@ -613,7 +631,7 @@ const chipStyle = (filled) => ({
 
 function ParamRow({ label, value, children, cols }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'center', gap: 12, padding: '9px 0' }}>
+    <div className="c-param-row" style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'center', gap: 12, padding: '9px 0' }}>
       <div style={{ font: '12px/1.2 var(--sans)', color: 'rgba(255,255,255,0.75)' }}>{label}</div>
       <div style={{ minWidth: 0 }}>{children}</div>
       <div style={{ font: '12px/1.2 var(--sans)', color: 'rgba(255,255,255,0.6)', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{value !== undefined ? value : ''}</div>

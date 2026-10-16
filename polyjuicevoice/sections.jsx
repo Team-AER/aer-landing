@@ -30,24 +30,42 @@ function formatTime(s) {
 
 // =================== Top Nav ===================
 function TopNav() {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const navRef = React.useRef(null);
+  const toggleRef = React.useRef(null);
+  React.useEffect(() => {
+    if (!menuOpen) return undefined;
+    const close = (event) => {
+      if (event.type === 'keydown' && event.key !== 'Escape') return;
+      if (event.type === 'pointerdown' && navRef.current?.contains(event.target)) return;
+      setMenuOpen(false);
+      if (event.type === 'keydown') { event.preventDefault(); toggleRef.current?.focus(); }
+    };
+    document.addEventListener('keydown', close);
+    document.addEventListener('pointerdown', close);
+    return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); };
+  }, [menuOpen]);
   return (
-    <header className="p-nav">
+    <header ref={navRef} className="p-nav" onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setMenuOpen(false); }}>
       <div className="p-nav-inner">
         <a className="p-brand" href="/polyjuicevoice/" aria-label="PolyJuiceVoice home">
           <Logo />
           <span className="p-brand-name">PolyJuiceVoice</span>
           <Mono dim className="p-nav-meta" style={{ marginLeft: 4 }}>v1.0</Mono>
         </a>
-        <nav className="p-nav-links" aria-label="PolyJuiceVoice">
+
+        <a className="p-link p-nav-gh" href={REPO}>GitHub <Arrow /></a>
+        <a className="p-btn" href={RELEASE}><span>Download<span className="p-long"> for macOS</span></span></a>
+        <button ref={toggleRef} className="p-nav-toggle" type="button" aria-label="Sections menu" aria-expanded={menuOpen} aria-controls="p-sections" onClick={() => setMenuOpen((open) => !open)}><span /><span /></button>
+        <nav id="p-sections" className="p-nav-links" aria-label="PolyJuiceVoice" hidden={!menuOpen} onClick={() => setMenuOpen(false)}>
           {[
             { label: 'Voices', href: '#voices' },
             { label: 'Speak', href: '#speak' },
             { label: 'Models', href: '#models' },
             { label: 'Docs', href: `${REPO}/tree/main/docs` },
           ].map(({ label, href }) => <a key={label} className="p-navlink" href={href}>{label}</a>)}
+          <a className="p-navlink p-nav-download" href={RELEASE}>Download for macOS</a>
         </nav>
-        <a className="p-link p-nav-gh" href={REPO}>GitHub <Arrow /></a>
-        <a className="p-btn" href={RELEASE}><span>Download<span className="p-long"> for macOS</span></span></a>
       </div>
       <div className="p-progress" aria-hidden="true" />
     </header>
@@ -460,7 +478,7 @@ function StudioDemo({ accent }) {
                       })}
                       {gen >= 1 && <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${playhead * 100}%`, width: 1.5, background: '#fff' }} />}
                     </div>
-                    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div className="p-player-controls" style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
                       <button onClick={() => skip(-10)} aria-label="Skip back 10 seconds" style={ctl}>
                         <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4 A7 7 0 1 1 4 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><path d="M4 4 L4 8 L8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
                       </button>

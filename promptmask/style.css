@@ -90,6 +90,10 @@ main a:not([class]):hover { background-size: 100% 100%; }
   .pagenav__cta { padding: 6px 12px; font-size: 0.9rem; }
 }
 :where([id]) { scroll-margin-top: 76px; }
+@media (max-width: 374px) {
+  .pagenav__brand { flex-shrink: 0; }
+  .pagenav__cta { display: none; }
+}
 
 /* ---------- shared idioms ---------- */
 .band { padding: clamp(64px, 9vw, 120px) 0; }
