@@ -353,6 +353,7 @@ h1, h2 { text-wrap: balance; }
 .moods[role="list"] { padding-top: 16px; } /* base.css zeroes list padding at higher specificity */
 .moods li { display: inline-flex; align-items: center; gap: 8px; font: 400 15px/1 var(--serif); color: var(--silver); }
 .moods i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); }
+@media (max-width: 360px) { .moods { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* 8-bit: Silkscreen only here */
 /* Silkscreen is drawn on an 8px grid: 24px and 32px keep every pixel whole. Uppercase so the mono fallback reads as a title too. */
@@ -399,6 +400,7 @@ h1, h2 { text-wrap: balance; }
   .arcade__back { padding-right: 10px; }
   .arcade__back span, .arcade__name span { display: none; }
   .arcade__hud { padding-bottom: 18px; }
+  .arcade__hud { flex-wrap: wrap; gap: 6px 10px; }
   .arcade__stage { display: none; }
   .arcade__message { position: static; max-width: none; margin-top: 8px; padding: 6px 10px; }
   .arcade__keys { display: none; }

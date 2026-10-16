@@ -623,6 +623,9 @@ button.q-ghost[data-copied] { background: var(--blue-tint); color: var(--blue-in
   /* controls sit under the picture, so they no longer cover the slide */
   .q-vc { position: static; border-radius: 0; background: #161618; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
   .q-ctl__chapter { display: none; }
+  .q-ctl { flex-wrap: wrap; }
+  .q-chip { min-height: 44px; }
+  .q-mt--chapters, .q-ml--head:first-child { height: 44px; }
   /* the meeting map keeps full chapter labels and scrolls sideways under its sticky labels */
   .q-map { padding: 10px 0; gap: 0; grid-template-columns: 78px 460px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent); }
   .q-map::-webkit-scrollbar { display: none; }

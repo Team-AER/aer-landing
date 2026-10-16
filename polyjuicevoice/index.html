@@ -388,6 +388,34 @@
   .aer-strip__links { display: flex; gap: 18px; }
   .p-noscript { max-width: 640px; margin: 0 auto; padding: 72px 20px; font: 15px/1.6 var(--sans); color: var(--fg-2); }
   .p-noscript a { color: #fff; }
+
+  /* Phone navigation follows the same section links as the desktop. */
+  .p-nav-inner { position: relative; }
+  .p-nav-links { order: 1; }
+  .p-nav-gh { order: 2; }
+  .p-nav .p-btn { order: 3; }
+  .p-nav-toggle { display: none; order: 4; flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid var(--line-2); border-radius: 6px; background: var(--panel); color: var(--fg); cursor: pointer; align-items: center; justify-content: center; flex-direction: column; gap: 6px; }
+  .p-nav-toggle span { width: 18px; height: 2px; background: currentColor; }
+  .p-nav-download { display: none; }
+  @media (min-width: 901px) { .p-nav-links[hidden] { display: flex; } }
+  @media (max-width: 900px) {
+    .p-nav-toggle { display: flex; }
+    .p-nav-links { display: flex; position: absolute; top: 100%; left: 0; right: 0; margin: 0; padding: 12px 20px; background: var(--bg); border-bottom: 1px solid var(--line-2); flex-direction: column; gap: 0; max-height: calc(100dvh - 108px); overflow-y: auto; overscroll-behavior-y: contain; }
+    .p-nav-links[hidden] { display: none; }
+    .p-navlink { min-height: 48px; }
+    .p-nav-download { display: inline-flex; }
+    .p-nav .p-btn { min-height: 44px; }
+    .p-app button { min-height: 44px; min-width: 44px; }
+    .p-player-controls { flex-wrap: wrap; }
+    .p-player-controls > button { flex-shrink: 0; }
+    .p-player-controls > div:empty { display: none; }
+    .p-player-controls > span { flex-basis: 100%; order: 1; margin-left: 0 !important; }
+    .p-app input:not([type="range"]), .p-app textarea { font-size: 16px !important; min-height: 44px; }
+    .p-app input[type="range"] { height: 44px; background: linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.15)) center / 100% 2px no-repeat; }
+    .p-app input[type="range"]::-webkit-slider-thumb { width: 24px; height: 24px; }
+    .p-flink { min-height: 44px; }
+  }
+  @media (max-width: 420px) { .p-nav .p-btn { display: none; } .p-nav-toggle { margin-left: auto; } }
 </style>
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
@@ -413,7 +441,7 @@
 
 <script type="text/babel" src="motion.jsx?v=20261004"></script>
 <script type="text/babel" src="illustrations.jsx?v=20261004"></script>
-<script type="text/babel" src="sections.jsx?v=20261004"></script>
+<script type="text/babel" src="sections.jsx?v=20261017"></script>
 <script type="text/babel" src="app.jsx?v=20261004"></script>
 </body>
 </html>

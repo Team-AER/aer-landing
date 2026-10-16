@@ -43,6 +43,9 @@ ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 .aer-strip__mark { width: 28px; height: 28px; object-fit: contain; display: block; flex: 0 0 auto; }
 .aer-strip__links { display: flex; gap: 18px; }
 
+/* Long section menus remain reachable in a short phone viewport or landscape. */
+.nav-open .aer-nav-menu { max-height: calc(100dvh - var(--nav-menu-top, 104px) - 12px); overflow-y: auto; overscroll-behavior-y: contain; }
+
 /* ---- AER footer (project pages share one footer so every page ends the same way). ---- */
 .aer-footer {
   --_bg: var(--footer-bg, #000);

@@ -14,4 +14,6 @@ docs/
 .thumbnail
 uploads/
 screenshots/
+output/
+.playwright-cli/
 **/.DS_Store

@@ -320,6 +320,7 @@
   .hero__sub { margin-top: 24px; gap: 8px; }
   .hero__cta-row { margin-top: 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px; }
   .hero__cta-row .btn { justify-content: center; padding-inline: 12px; }
+  .hero__cta-row .btn { white-space: normal; text-align: center; }
   .hero__cta-row .btn:first-child { grid-column: 1 / -1; }
   .values-grid { margin-top: 36px; }
   .cast { padding: 40px 0 44px; }
@@ -368,6 +369,13 @@
 @media (max-width: 480px) {
   .hero__title.mega { font-size: 13vw; }
   .pill--extra { display: none; }
+}
+
+@media (max-width: 360px) {
+  .nav { padding-inline: 16px; gap: 12px; }
+  .nav__badge { width: 36px; height: 36px; margin-right: 4px; }
+  .nav__links { gap: 12px; }
+  .nav__link { font-size: 11px; letter-spacing: 0.04em; }
 }
 
 /* ---------- Reduced motion: final states, no loops ---------- */

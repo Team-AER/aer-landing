@@ -4,3 +4,7 @@
 
 # Local editor thumbnail artifact (not part of the site)
 .thumbnail
+
+# Local browser audit evidence.
+output/
+.playwright-cli/
