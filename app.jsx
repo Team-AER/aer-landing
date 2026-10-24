@@ -341,14 +341,12 @@ function Hero({ tweaks }) {
         </ul>
 
         <p className="lede rise" style={{ marginTop: 24, "--d": "620ms" }}>
-          We're <strong>Nidhi</strong> &amp; <strong>Prakhar</strong> — we have day jobs and an itch.
-          AER is where we ship the things our day jobs won't let us.
-          Feed readers, mail, meeting notes, AI music on Apple Silicon, voice clones, a GPU scheduler, a malware lab. No roadmap, no investors, no slack channels named #growth.
+          We're <strong>Nidhi</strong> &amp; <strong>Prakhar</strong>. In our spare time, we build feed readers, mail, music, voice and the tools behind them.
         </p>
 
         <div className="hero__cta-row rise" style={{ "--d": "720ms" }}>
-          <a className="btn" href="#team" data-cursor="meet us">Meet the team →</a>
-          <a className="btn btn--ghost" href="#projects" data-cursor="see code">See the projects</a>
+          <a className="btn" href="#projects" data-cursor="see code">See the projects →</a>
+          <a className="btn btn--ghost" href="#team" data-cursor="meet us">Meet the team</a>
           <a className="btn btn--black" href="https://github.com/Team-AER" target="_blank" rel="noreferrer" data-cursor="↗">GitHub</a>
         </div>
       </div>
@@ -702,6 +700,15 @@ function AERTweaks({ tweaks, setTweak }) {
 // ---------- App ----------
 function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [motionPaused, setMotionPaused] = useState(false);
+  const [motionReduced, setMotionReduced] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
+  useEffect(() => {
+    const query = matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setMotionReduced(query.matches);
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+  useEffect(() => { document.documentElement.classList.toggle('motion-paused', motionPaused || motionReduced); }, [motionPaused, motionReduced]);
   useReveal();
   // The page renders after the browser has already tried to jump to the URL
   // hash (app pages link back to /#projects), so honour it once we exist.
@@ -718,6 +725,11 @@ function App() {
       <Nav />
       <main>
         <Hero tweaks={tweaks} />
+        <div className="motion-control wrap">
+          <button type="button" disabled={motionReduced} aria-pressed={motionPaused || motionReduced} onClick={() => setMotionPaused((value) => !value)}>
+            {motionReduced ? 'Motion reduced by device' : motionPaused ? 'Resume background motion' : 'Pause background motion'}
+          </button>
+        </div>
 
         {tweaks.showMarquee && (
           <Marquee
@@ -769,7 +781,7 @@ function App() {
 
       <Footer />
 
-      <CursorSticker enabled={tweaks.showCursorSticker} />
+      <CursorSticker enabled={tweaks.showCursorSticker && !motionPaused && !motionReduced} />
       <AERTweaks tweaks={tweaks} setTweak={setTweak} />
     </>
   );

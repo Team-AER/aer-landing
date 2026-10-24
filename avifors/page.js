@@ -185,53 +185,70 @@
   });
   window.addEventListener('resize', function () { edges.forEach(markEdge); });
 
-  // ---- playback ----
-  var raf = 0, elapsed = 0, last = null;
+  // ---- playback: one clock for marks, readouts and automatic follow ----
+  var raf = 0, elapsed = 0, last = null, startTimer = 0, playback = 'done';
+  function syncControl() {
+    svg.setAttribute('data-play', playback);
+    if (replayBtn) {
+      replayBtn.disabled = false;
+      replayBtn.textContent = playback === 'running' ? 'Pause trace' : playback === 'paused' ? 'Resume trace' : 'Replay trace';
+    }
+  }
+  function stopClock() {
+    window.cancelAnimationFrame(raf);
+    window.clearTimeout(startTimer);
+    raf = 0; startTimer = 0; last = null;
+  }
   function frame(ts) {
+    if (playback !== 'running') return;
     if (last === null) last = ts;
-    elapsed += Math.min(ts - last, 64); // a hidden tab pauses the trace instead of skipping it
+    elapsed += Math.min(ts - last, 64);
     last = ts;
     var T = traceAt(elapsed);
     render(T);
     if (following) follow(T);
-    if (elapsed < DURATION) { raf = window.requestAnimationFrame(frame); }
-    else { svg.setAttribute('data-play', 'done'); if (replayBtn) replayBtn.disabled = false; }
+    if (elapsed < DURATION) raf = window.requestAnimationFrame(frame);
+    else { playback = 'done'; syncControl(); }
   }
   function play() {
-    window.cancelAnimationFrame(raf);
-    elapsed = 0; last = null; following = true;
+    stopClock();
+    elapsed = 0; following = true;
     render(0);
-    svg.setAttribute('data-play', 'running');
-    if (replayBtn) replayBtn.disabled = true;
-    window.setTimeout(function () { raf = window.requestAnimationFrame(frame); }, 450);
+    playback = 'running'; syncControl();
+    startTimer = window.setTimeout(function () { startTimer = 0; if (playback === 'running') raf = window.requestAnimationFrame(frame); }, 450);
   }
-
+  function togglePlayback() {
+    if (reduce) return;
+    if (playback === 'running') { stopClock(); playback = 'paused'; syncControl(); }
+    else if (playback === 'paused') { playback = 'running'; last = null; syncControl(); raf = window.requestAnimationFrame(frame); }
+    else play();
+  }
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  motionQuery.addEventListener('change', function (event) {
+    reduce = event.matches;
+    if (reduce) { stopClock(); elapsed = DURATION; render(NOW); playback = 'done'; syncControl(); if (replayBtn) replayBtn.hidden = true; }
+    else if (replayBtn) { replayBtn.hidden = false; syncControl(); }
+  });
+  if (replayBtn) replayBtn.addEventListener('click', togglePlayback);
   if (reduce) {
-    render(NOW);
-    svg.setAttribute('data-play', 'done');
+    render(NOW); playback = 'done'; syncControl();
+    if (replayBtn) replayBtn.hidden = true;
     if (overflowing()) viewFrom(X(PARK_T));
     return;
   }
+  if (replayBtn) replayBtn.hidden = false;
 
-  if (replayBtn) {
-    replayBtn.hidden = false;
-    replayBtn.addEventListener('click', play);
-  }
-
-  // Start once the panel is on screen (a deep link to #install should not burn the one play).
-  render(0);
-  svg.setAttribute('data-play', 'running');
+  // Start once when actually visible; an interaction then owns pause/resume.
+  render(0); svg.setAttribute('data-play', 'pending');
   var box = svg.getBoundingClientRect();
-  if (box.top < window.innerHeight && box.bottom > 0) {
-    play();
-  } else if ('IntersectionObserver' in window) {
+  if (box.top < window.innerHeight && box.bottom > 0) play();
+  else if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
-      if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); play(); }
+      if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); if (!reduce) play(); }
     }, { threshold: 0.25 });
     io.observe(svg);
-  } else {
-    play();
-  }
+  } else play();
+
 })();
 
 // Staggered section entrances (pass 2): children rise in sequence once their group scrolls in.

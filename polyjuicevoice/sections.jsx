@@ -1,3 +1,33 @@
+// Local website previews never run inference or create audio files.
+function usePreviewReducedMotion() {
+  const query = '(prefers-reduced-motion: reduce)';
+  const [reduced, setReduced] = React.useState(() => window.matchMedia(query).matches);
+  React.useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setReduced(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  return reduced;
+}
+function useBackgroundMotionPaused() {
+  const [paused, setPaused] = React.useState(() => document.documentElement.hasAttribute('data-background-motion-paused'));
+  React.useEffect(() => {
+    const update = () => setPaused(document.documentElement.hasAttribute('data-background-motion-paused'));
+    window.addEventListener('aer:background-motion', update);
+    return () => window.removeEventListener('aer:background-motion', update);
+  }, []);
+  return paused;
+}
+function BackgroundMotionControl() {
+  const reduced = usePreviewReducedMotion();
+  const paused = useBackgroundMotionPaused();
+  return <div className="preview-motion-control"><button type="button" disabled={reduced} aria-pressed={paused || reduced} onClick={() => {
+    document.documentElement.toggleAttribute('data-background-motion-paused', !paused);
+    window.dispatchEvent(new Event('aer:background-motion'));
+  }}>{reduced ? 'Background motion reduced by device' : paused ? 'Resume background motion' : 'Pause background motion'}</button></div>;
+}
+
 // PolyJuiceVoice landing page sections. The studio mirrors the real Speak tab
 // (apps/PolyJuiceVoice docs/screenshots/speak.png and Features/Synthesis/Views/SynthesisView.swift).
 
@@ -78,38 +108,42 @@ const HERO_LINE = 'Hello! This voice was made on a Mac, offline.';
 const HERO_LEN = 8;
 
 function Hero({ accent }) {
+  const reduced = usePreviewReducedMotion();
+  const backgroundPaused = useBackgroundMotionPaused();
   const [ref, visible] = useInView({ once: false, threshold: 0.2 });
-  const [typed, setTyped] = React.useState(REDUCED ? HERO_LINE.length : 0);
-  const [phase, setPhase] = React.useState(REDUCED ? 'done' : 'idle'); // idle → type → stream → play → done
-  const [t, setT] = React.useState(REDUCED ? HERO_LEN : 0);
+  const [typed, setTyped] = React.useState(reduced ? HERO_LINE.length : 0);
+  const [phase, setPhase] = React.useState(reduced ? 'done' : 'idle'); // idle → type → stream → play → done
+  const [t, setT] = React.useState(reduced ? HERO_LEN : 0);
+
+  React.useEffect(() => { if (reduced) { setTyped(HERO_LINE.length); setT(HERO_LEN); setPhase('done'); } }, [reduced]);
 
   React.useEffect(() => {
-    if (REDUCED || !visible || phase !== 'idle') return undefined;
+    if (reduced || backgroundPaused || !visible || phase !== 'idle') return undefined;
     const id = setTimeout(() => setPhase('type'), 400);
     return () => clearTimeout(id);
-  }, [visible, phase]);
+  }, [visible, phase, reduced, backgroundPaused]);
 
   React.useEffect(() => {
-    if (phase !== 'type') return undefined;
+    if (reduced || backgroundPaused || phase !== 'type') return undefined;
     if (typed >= HERO_LINE.length) { const id = setTimeout(() => setPhase('stream'), 300); return () => clearTimeout(id); }
     const id = setTimeout(() => setTyped((n) => n + 1), 38);
     return () => clearTimeout(id);
-  }, [phase, typed]);
+  }, [phase, typed, reduced, backgroundPaused]);
 
   React.useEffect(() => {
-    if (phase !== 'stream') return undefined;
+    if (reduced || backgroundPaused || phase !== 'stream') return undefined;
     const id = setTimeout(() => setPhase('play'), 2200);
     return () => clearTimeout(id);
-  }, [phase]);
+  }, [phase, reduced, backgroundPaused]);
 
   React.useEffect(() => {
-    if (phase !== 'play' || !visible) return undefined;
+    if (reduced || backgroundPaused || phase !== 'play' || !visible) return undefined;
     const id = setInterval(() => setT((x) => {
       if (x + 0.1 >= HERO_LEN) { setPhase('done'); return HERO_LEN; }
       return x + 0.1;
     }), 100);
     return () => clearInterval(id);
-  }, [phase, visible]);
+  }, [phase, visible, reduced, backgroundPaused]);
 
   const streaming = phase === 'stream';
   const on = phase === 'stream' || phase === 'play' || phase === 'done';
@@ -157,11 +191,14 @@ function Hero({ accent }) {
 function Marquee() {
   const items = ['QWEN3-TTS', 'MLX ON METAL', '100% ON-DEVICE', 'OPEN SOURCE · MIT', 'VOICE CLONING', 'VOICE DESIGN', 'MACOS · IOS', '4-BIT → BF16', 'STYLE INSTRUCTIONS', 'PRESET VOICES'];
   return (
+    <>
+    <BackgroundMotionControl />
     <Fig className="p-marquee" aria-hidden="true">
       <div className="p-marquee-track">
         {[...items, ...items, ...items].map((it, i) => <span key={i}>{it}<b>◆</b></span>)}
       </div>
     </Fig>
+    </>
   );
 }
 
@@ -325,33 +362,33 @@ const SIDE = {
 
 function StudioDemo({ accent }) {
   const { isMobile } = useBreakpoint();
-  const [winRef, winSeen] = useInView({ threshold: 0.3 });
-  const [tab, setTab] = React.useState('Speak');
+  const reduced = usePreviewReducedMotion();
+  const [notice, setNotice] = React.useState('Ready to preview. This page generates no audio; export is available in the Mac app.');
+  const tab = 'Speak';
   const [voice, setVoice] = React.useState(YOUR_VOICES[0]);
   const [style, setStyle] = React.useState('calm and warm');
   const [prompt, setPrompt] = React.useState('Hello world! PolyJuiceVoice is on-device text-to-speech for macOS, with voice cloning and voice design. Everything runs locally over Metal.');
   const [lang, setLang] = React.useState(0);
-  const [gen, setGen] = React.useState(REDUCED ? 1 : 0); // 0..1 streamed
+  const [gen, setGen] = React.useState(0); // 0..1 streamed
   const [streaming, setStreaming] = React.useState(false);
   const [playing, setPlaying] = React.useState(false);
   const [playhead, setPlayhead] = React.useState(0);
 
-  const speak = () => { setPlaying(false); setPlayhead(0); setGen(0); setStreaming(true); };
+  const speak = () => { setPlaying(false); setPlayhead(0); setGen(reduced ? 1 : 0); setStreaming(!reduced); setNotice(reduced ? 'Preview complete · no audio created. Export is available in the Mac app.' : 'Previewing speech with illustrative timing. No audio is generated.'); };
 
-  // First Speak happens when the window scrolls into view; the clip plays once, then the screen settles.
-  React.useEffect(() => { if (winSeen && !REDUCED) speak(); }, [winSeen]);
+  React.useEffect(() => { if (reduced) { setPlaying(false); if (streaming) { setGen(1); setStreaming(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); } } }, [reduced, streaming]);
 
   React.useEffect(() => {
     if (!streaming) return undefined;
     const id = setInterval(() => setGen((g) => {
-      if (g >= 1) { setStreaming(false); setPlaying(true); return 1; }
+      if (g >= 1) { setStreaming(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); return 1; }
       return Math.min(1, g + 0.04);
     }), 60);
     return () => clearInterval(id);
   }, [streaming]);
 
   React.useEffect(() => {
-    if (!playing) return undefined;
+    if (!playing || reduced) return undefined;
     let raf;
     const start = performance.now() - playhead * CLIP * 1000;
     const tick = () => {
@@ -362,11 +399,11 @@ function StudioDemo({ accent }) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [playing]);
+  }, [playing, reduced]);
 
   const bars = React.useMemo(() => speechBars(isMobile ? 64 : 110, voice.id.length), [voice, isMobile]);
   const isPreset = voice.type === 'preset';
-  const skip = (d) => setPlayhead((p) => Math.max(0, Math.min(1, p + d / CLIP)));
+  const skip = (d) => { setPlaying(false); setPlayhead((p) => Math.max(0, Math.min(1, p + d / CLIP))); };
 
   const chip = (active, color) => ({
     background: active ? (color === 'p' ? '#9333ea' : 'rgba(29,167,255,0.2)') : (color === 'p' ? 'rgba(168,85,247,0.12)' : '#222226'),
@@ -378,18 +415,19 @@ function StudioDemo({ accent }) {
   return (
     <section id="speak" style={{ borderBottom: '1px solid var(--line)' }}>
       <div className="p-studio-pad">
+        <div className="preview-badge">Interactive preview · no audio generated</div>
         <div className="p-studio-hdr">
           <Reveal>
             <Mono>FIG_15 · POLYJUICEVOICE_APP</Mono>
             <h2 className="p-studio-h2">Four modes, one <span className="p-serif">quiet</span> window.</h2>
           </Reveal>
           <Reveal as="p" i={1} className="p-studio-hint">
-            A working copy of the Speak tab. Pick a voice, edit the text, press Speak.
+            Pick a voice and edit the text to explore the Speak screen. This preview illustrates the workflow; audio synthesis and export run in the Mac app.
           </Reveal>
         </div>
 
         <Reveal className="p-app" i={1}>
-          <div ref={winRef} style={{ background: '#0f0f10' }}>
+          <div style={{ background: '#0f0f10' }}>
             {/* Title bar */}
             <div style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
               <div style={{ display: 'flex', gap: 8 }} aria-hidden="true">
@@ -402,10 +440,10 @@ function StudioDemo({ accent }) {
               </div>
               <div style={{ flex: 1 }} />
               <div style={{ display: 'flex', gap: 6 }}>
-                <button title="Debug log" aria-label="Debug log" style={{ ...ctl, width: 32, height: 28 }}>
+                <button disabled data-native-only title="Debug log is available in the Mac app" aria-label="Debug log" style={{ ...ctl, width: 32, height: 28 }}>
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><ellipse cx="7" cy="8" rx="3" ry="4" stroke="currentColor" strokeWidth="1.2" /><path d="M5 3.5 L4 2 M9 3.5 L10 2 M1.5 7 L4 7 M10 7 L12.5 7 M2 11 L4.2 10 M12 11 L9.8 10 M7 4 L7 12" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" /></svg>
                 </button>
-                <button title="Models" aria-label="Models" style={{ ...ctl, width: 32, height: 28 }}>
+                <button disabled data-native-only title="Models are available in the Mac app" aria-label="Models" style={{ ...ctl, width: 32, height: 28 }}>
                   <svg width="15" height="13" viewBox="0 0 16 13" fill="none" aria-hidden="true"><path d="M2 7 L4 2 H12 L14 7 V11 H2 Z M2 7 H14" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" /><circle cx="11.5" cy="9" r="0.8" fill="currentColor" /></svg>
                 </button>
               </div>
@@ -417,7 +455,7 @@ function StudioDemo({ accent }) {
                 {Object.keys(SIDE).map((name) => {
                   const active = tab === name;
                   return (
-                    <button key={name} className={active ? '' : 'p-side-btn'} onClick={() => setTab(name)} aria-pressed={active}
+                    <button key={name} className={active ? '' : 'p-side-btn'} disabled={name !== 'Speak'} data-native-only={name !== 'Speak' || undefined} title={name !== 'Speak' ? 'Available in the Mac app' : undefined} aria-pressed={active}
                       style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', marginBottom: 2, borderRadius: 6, background: active ? 'rgba(255,255,255,0.1)' : 'transparent', color: active ? '#fff' : 'rgba(255,255,255,0.75)', border: 'none', font: '13px/1.2 var(--sans)', cursor: 'pointer' }}>
                       <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style={{ flexShrink: 0 }}>{SIDE[name]}</svg>
                       {name}
@@ -482,7 +520,7 @@ function StudioDemo({ accent }) {
                       <button onClick={() => skip(-10)} aria-label="Skip back 10 seconds" style={ctl}>
                         <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4 A7 7 0 1 1 4 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><path d="M4 4 L4 8 L8 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
                       </button>
-                      <button onClick={() => { if (gen < 1) return; if (playhead >= 1) setPlayhead(0); setPlaying((p) => !p); }} aria-label={playing ? 'Pause' : 'Play'} style={ctl}>
+                      <button disabled={gen < 1} onClick={() => { if (reduced) setPlayhead(1); else { if (playhead >= 1) setPlayhead(0); setPlaying((p) => !p); } }} aria-label={playing ? 'Pause preview animation' : 'Play preview animation'} style={ctl}>
                         {playing
                           ? <svg width="14" height="14" viewBox="0 0 22 22" aria-hidden="true"><rect x="6" y="4" width="3.5" height="14" fill="currentColor" /><rect x="12.5" y="4" width="3.5" height="14" fill="currentColor" /></svg>
                           : <svg width="14" height="14" viewBox="0 0 22 22" aria-hidden="true"><path d="M6 4 L17 11 L6 18 Z" fill="currentColor" /></svg>}
@@ -491,19 +529,20 @@ function StudioDemo({ accent }) {
                         <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4 A7 7 0 1 0 18 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /><path d="M18 4 L18 8 L14 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
                       </button>
                       <span style={{ marginLeft: 4, font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.6)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
-                        {streaming ? 'Speaking…' : `${formatTime(playhead * CLIP)} / ${formatTime(CLIP)}`}
+                        {streaming ? 'Illustrative progress…' : `${formatTime(playhead * CLIP)} / ${formatTime(CLIP)}`}
                       </span>
                       <div style={{ flex: 1 }} />
-                      <button aria-label="Export" style={{ ...ctl, width: 'auto', padding: isMobile ? '0 10px' : '0 12px', gap: 6, font: '13px/1 var(--sans)' }}>
+                      <button disabled data-native-only title="Audio export is available in the Mac app" aria-label="Export audio in the Mac app" style={{ ...ctl, width: 'auto', padding: isMobile ? '0 10px' : '0 12px', gap: 6, font: '13px/1 var(--sans)' }}>
                         <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 10 V2 M5 5 L8 2 L11 5 M3 9 V14 H13 V9" stroke="currentColor" strokeWidth="1.4" /></svg>
-                        {!isMobile && 'Export'}
+                        {!isMobile && 'Export in app'}
                       </button>
                     </div>
                   </div>
 
-                  <button onClick={speak} className="p-speak" style={{ marginTop: 18, width: '100%', background: 'var(--speak)', color: '#fff', border: 'none', borderRadius: 10, minHeight: 48, font: '500 15px/1 var(--sans)', cursor: 'pointer' }}>
-                    {streaming ? 'Speaking…' : 'Speak'}
+                  <button disabled={streaming} aria-describedby="p-preview-status" onClick={speak} className="p-speak" style={{ marginTop: 18, width: '100%', background: 'var(--speak)', color: '#fff', border: 'none', borderRadius: 10, minHeight: 48, font: '500 15px/1 var(--sans)', cursor: 'pointer' }}>
+                    {streaming ? 'Previewing…' : 'Preview speech workflow'}
                   </button>
+                  <p className="preview-status" id="p-preview-status" role="status">{notice}</p>
                 </div>
               </div>
             </div>

@@ -379,6 +379,23 @@
     .c-param-row > :last-child { grid-column: 2; grid-row: 1; }
   }
   @media (max-width: 420px) { .c-nav .c-btn { display: none; } .c-nav-toggle { margin-left: auto; } }
+
+#studio :focus-visible, #speak :focus-visible { outline:2px solid var(--accent-ink, #fff)!important; outline-offset:3px; }
+.c-preview-paused svg, .c-preview-paused svg * { animation-play-state:paused!important; }
+.c-preview-feedback { padding-inline:24px; }
+@media(max-width:767px) { .c-preview-feedback { padding-inline:16px; } }
+/* Preview feedback uses the existing neutral surfaces, mono captions and accent. */
+.preview-note { font: 12px/1.6 ui-monospace, monospace; color: rgba(255,255,255,.78); margin: 14px 0; }
+.preview-badge { display:inline-flex; border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:6px 10px; font:11px/1.4 ui-monospace,monospace; color:rgba(255,255,255,.85); margin-bottom:14px; }
+.preview-status { min-height:3.2em; font:12px/1.6 ui-monospace,monospace; color:rgba(255,255,255,.82); margin:12px 0 0; }
+[data-native-only]:disabled { opacity:.45; cursor:default!important; }
+.preview-motion-control { display:flex; justify-content:flex-end; padding:8px clamp(16px,4vw,48px); border-bottom:1px solid rgba(255,255,255,.08); }
+.preview-motion-control button { background:none; border:1px solid rgba(255,255,255,.22); color:rgba(255,255,255,.8); border-radius:6px; min-height:36px; padding:6px 12px; font:12px/1.5 ui-monospace,monospace; cursor:pointer; }
+.preview-motion-control button:disabled { opacity:.7; cursor:default; }
+button.preview-note { background:none; border:1px solid rgba(255,255,255,.22); border-radius:6px; padding:8px 12px; min-height:36px; cursor:pointer; }
+html[data-background-motion-paused] .c-np-dot, html[data-background-motion-paused] .p-np-dot, html[data-background-motion-paused] svg, html[data-background-motion-paused] svg *, html[data-background-motion-paused] .p-caret, html[data-background-motion-paused] .p-rec i, html[data-background-motion-paused] .c-marquee-track, html[data-background-motion-paused] .p-marquee-track, html[data-background-motion-paused] [data-background-track] { animation-play-state:paused!important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+
 </style>
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
@@ -404,7 +421,7 @@
 
 <script type="text/babel" src="motion.jsx?v=20261004"></script>
 <script type="text/babel" src="illustrations.jsx?v=20261004"></script>
-<script type="text/babel" src="sections.jsx?v=20261017"></script>
+<script type="text/babel" src="sections.jsx?v=20261024"></script>
 <script type="text/babel" src="app.jsx?v=20261004"></script>
 </body>
 </html>

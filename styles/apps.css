@@ -384,3 +384,10 @@
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   .app-tile, .app-tile__arrow, .btn, .hero__title .word, .avstack__av, .cast__av, .app-dots i { transition: none !important; }
 }
+
+/* Preserve the expressive arrivals; stop background movement when requested. */
+.motion-control { display:flex; justify-content:flex-end; padding-block:10px; }
+.motion-control button { min-height:36px; padding:6px 12px; color:var(--fg); background:var(--gr-light-body); border:1.5px solid var(--gr-black); border-radius:4px; font:12px/1.4 var(--font-mono); cursor:pointer; }
+.motion-control button:disabled { cursor:default; }
+html.motion-paused .marquee__track { animation-play-state:paused!important; }
+html.motion-paused .float-sticker, html.motion-paused .avatar-blob, html.motion-paused .hero__live { animation:none!important; }

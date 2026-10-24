@@ -1,3 +1,33 @@
+// Local website previews never run inference or create audio files.
+function usePreviewReducedMotion() {
+  const query = '(prefers-reduced-motion: reduce)';
+  const [reduced, setReduced] = React.useState(() => window.matchMedia(query).matches);
+  React.useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setReduced(media.matches);
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  return reduced;
+}
+function useBackgroundMotionPaused() {
+  const [paused, setPaused] = React.useState(() => document.documentElement.hasAttribute('data-background-motion-paused'));
+  React.useEffect(() => {
+    const update = () => setPaused(document.documentElement.hasAttribute('data-background-motion-paused'));
+    window.addEventListener('aer:background-motion', update);
+    return () => window.removeEventListener('aer:background-motion', update);
+  }, []);
+  return paused;
+}
+function BackgroundMotionControl() {
+  const reduced = usePreviewReducedMotion();
+  const paused = useBackgroundMotionPaused();
+  return <div className="preview-motion-control"><button type="button" disabled={reduced} aria-pressed={paused || reduced} onClick={() => {
+    document.documentElement.toggleAttribute('data-background-motion-paused', !paused);
+    window.dispatchEvent(new Event('aer:background-motion'));
+  }}>{reduced ? 'Background motion reduced by device' : paused ? 'Resume background motion' : 'Pause background motion'}</button></div>;
+}
+
 // Cantis landing page sections. The studio mirrors the real app's Generate screen
 // (apps/Cantis/Cantis/Views): sidebar Workspace/Presets/Recent, centre parameters, right player.
 
@@ -80,32 +110,37 @@ const HERO_STEPS = 8;
 const HERO_LEN = 30;
 
 function Hero({ accent }) {
+  const reduced = usePreviewReducedMotion();
+  const backgroundPaused = useBackgroundMotionPaused();
+  const [paused, setPaused] = React.useState(false);
   const [ref, visible] = useInView({ once: false, threshold: 0.2 });
-  const [phase, setPhase] = React.useState(REDUCED ? 'play' : 'idle');
-  const [step, setStep] = React.useState(REDUCED ? HERO_STEPS : 0);
+  const [phase, setPhase] = React.useState(reduced ? 'play' : 'idle');
+  const [step, setStep] = React.useState(reduced ? HERO_STEPS : 0);
   const [t, setT] = React.useState(0);
 
-  React.useEffect(() => {
-    if (REDUCED || !visible || phase !== 'idle') return undefined;
-    const id = setTimeout(() => setPhase('gen'), 500);
-    return () => clearTimeout(id);
-  }, [visible, phase]);
+  React.useEffect(() => { if (reduced) { setStep(HERO_STEPS); setT(HERO_LEN); setPhase('done'); } }, [reduced]);
 
   React.useEffect(() => {
-    if (phase !== 'gen') return undefined;
+    if (reduced || paused || backgroundPaused || !visible || phase !== 'idle') return undefined;
+    const id = setTimeout(() => setPhase('gen'), 500);
+    return () => clearTimeout(id);
+  }, [visible, phase, paused, backgroundPaused, reduced]);
+
+  React.useEffect(() => {
+    if (phase !== 'gen' || paused || backgroundPaused || reduced) return undefined;
     if (step >= HERO_STEPS) {
       const done = setTimeout(() => setPhase('play'), 350);
       return () => clearTimeout(done);
     }
     const id = setTimeout(() => setStep((s) => s + 1), 260);
     return () => clearTimeout(id);
-  }, [phase, step]);
+  }, [phase, step, paused, backgroundPaused, reduced]);
 
   React.useEffect(() => {
-    if (REDUCED || phase !== 'play' || !visible) return undefined;
-    const id = setInterval(() => setT((x) => (x >= HERO_LEN ? 0 : x + 0.25)), 250);
+    if (reduced || paused || backgroundPaused || phase !== 'play' || !visible) return undefined;
+    const id = setInterval(() => setT((x) => { if (x + 0.25 >= HERO_LEN) { setPhase('done'); return HERO_LEN; } return x + 0.25; }), 250);
     return () => clearInterval(id);
-  }, [phase, visible]);
+  }, [phase, visible, paused, backgroundPaused, reduced]);
 
   const generating = phase === 'gen' || phase === 'idle';
   const p = generating ? step / HERO_STEPS : t / HERO_LEN;
@@ -130,7 +165,7 @@ function Hero({ accent }) {
             <Mono dim className="c-hero-meta">macOS 26+ · Apple Silicon · ~6.6 GB model files · MIT</Mono>
           </Reveal>
         </div>
-        <div ref={ref} className="c-hero-illus">
+        <div ref={ref} className={`c-hero-illus${paused || backgroundPaused ? ' c-preview-paused' : ''}`}>
           <div className="c-hero-tag"><Mono dim>FIG_01 · NOW_PLAYING</Mono></div>
           <Fig style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <IllusVinylHero accent={accent} phase={phase} />
@@ -140,12 +175,16 @@ function Hero({ accent }) {
             <div className="c-np-row">
               <span>
                 <span className={`c-np-dot${generating ? ' is-busy' : ''}`} aria-hidden="true" />
-                {generating ? `Generating · step ${step} / ${HERO_STEPS}` : (REDUCED ? 'Ready' : 'Playing')}
+                {generating ? `Previewing · step ${step} / ${HERO_STEPS}` : (phase === 'done' || reduced ? 'Preview complete · no audio' : paused || backgroundPaused ? 'Preview paused' : 'Preview playback · no audio')}
               </span>
-              <span>{generating ? 'Turbo' : `${formatTime(REDUCED ? HERO_LEN : t)} / ${formatTime(HERO_LEN)}`}</span>
+              <span>{generating ? 'Turbo' : `${formatTime(reduced ? HERO_LEN : t)} / ${formatTime(HERO_LEN)}`}</span>
             </div>
-            <div className="c-np-bar"><i style={{ '--p': REDUCED ? 1 : p, background: generating ? '#ffb547' : 'var(--accent)' }} /></div>
+            <div className="c-np-bar"><i style={{ '--p': reduced ? 1 : p, background: generating ? '#ffb547' : 'var(--accent)' }} /></div>
           </div>
+          {!reduced && <button type="button" className="preview-note" disabled={backgroundPaused} title={backgroundPaused ? 'Resume background motion to continue this preview' : undefined} onClick={() => {
+            if (phase === 'done') { setStep(0); setT(0); setPhase('gen'); setPaused(false); }
+            else setPaused((value) => !value);
+          }}>{phase === 'done' ? 'Replay preview' : paused ? 'Resume preview' : 'Pause preview'}</button>}
         </div>
       </div>
     </section>
@@ -156,6 +195,8 @@ function Hero({ accent }) {
 function Marquee() {
   const items = ['ACE-STEP v1.5', 'MLX ON METAL', '100% ON-DEVICE', 'OPEN SOURCE · MIT', 'LYRICS + TAGS', 'TEXT → MUSIC', 'COVER · REPAINT · EXTRACT', '48 KHZ', 'WAV · AAC · ALAC'];
   return (
+    <>
+    <BackgroundMotionControl />
     <Fig className="c-marquee" aria-hidden="true">
       <div className="c-marquee-track">
         {[...items, ...items, ...items].map((it, i) => (
@@ -163,6 +204,7 @@ function Marquee() {
         ))}
       </div>
     </Fig>
+    </>
   );
 }
 
@@ -338,8 +380,9 @@ const SIDE_ICONS = {
 
 function StudioDemo({ accent }) {
   const { isMobile } = useBreakpoint();
-  const [winRef, winSeen] = useInView({ threshold: 0.25 });
-  const [tab, setTab] = React.useState('Generate');
+  const reduced = usePreviewReducedMotion();
+  const [notice, setNotice] = React.useState('Ready to preview. This page generates no audio; export is available in the Mac app.');
+  const tab = 'Generate';
   const [prompt, setPrompt] = React.useState(APP_PRESETS[2].prompt);
   const [tags, setTags] = React.useState(APP_PRESETS[2].tags);
   const [draft, setDraft] = React.useState('');
@@ -350,20 +393,25 @@ function StudioDemo({ accent }) {
   const [cfg, setCfg] = React.useState(15);
   const [seed, setSeed] = React.useState('3506387122');
   const [generating, setGenerating] = React.useState(false);
-  const [genStep, setGenStep] = React.useState(REDUCED ? 60 : 0);
+  const [genStep, setGenStep] = React.useState(0);
   const [playing, setPlaying] = React.useState(false);
   const [playhead, setPlayhead] = React.useState(0);
-  const [loop, setLoop] = React.useState(true);
+  const [loop, setLoop] = React.useState(false);
   const draftRef = React.useRef(null);
 
-  // The first render starts when the window scrolls into view, then the screen settles on "ready".
-  React.useEffect(() => { if (winSeen && !REDUCED) setGenerating(true); }, [winSeen]);
+  // A changed OS preference settles the illustrative work without hiding its result.
+  React.useEffect(() => {
+    if (reduced) {
+      setPlaying(false);
+      if (generating) { setGenStep(steps); setGenerating(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); }
+    }
+  }, [reduced, generating, steps]);
 
   React.useEffect(() => {
     if (!generating) return undefined;
     const id = setInterval(() => {
       setGenStep((s) => {
-        if (s >= steps) { setGenerating(false); return steps; }
+        if (s >= steps) { setGenerating(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); return steps; }
         return s + 1;
       });
     }, 70);
@@ -371,22 +419,22 @@ function StudioDemo({ accent }) {
   }, [generating, steps]);
 
   React.useEffect(() => {
-    if (!playing) return undefined;
+    if (!playing || reduced) return undefined;
     let raf;
     const len = duration * 1000;
     const start = performance.now() - playhead * len;
     const tick = () => {
       let t = (performance.now() - start) / len;
-      if (t >= 1) { if (loop) t = 0; else { setPlaying(false); setPlayhead(1); return; } }
+      if (t >= 1) { if (loop) t %= 1; else { setPlaying(false); setPlayhead(1); return; } }
       setPlayhead(t);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [playing, loop, duration]);
+  }, [playing, loop, duration, reduced]);
 
-  const startGenerate = () => { setGenStep(0); setGenerating(true); setPlaying(false); setPlayhead(0); };
-  const cancel = () => setGenerating(false);
+  const startGenerate = () => { setGenStep(reduced ? steps : 0); setGenerating(!reduced); setPlaying(false); setPlayhead(0); setNotice(reduced ? 'Preview complete · no audio created. Export is available in the Mac app.' : 'Previewing generation with illustrative timing. No audio is generated.'); };
+  const cancel = () => { setGenerating(false); setNotice('Preview cancelled. Your prompt and settings are kept; no audio was created.'); };
   const removeTag = (t) => setTags((tt) => tt.filter((x) => x !== t));
   const addTag = () => {
     const v = draft.trim().toLowerCase();
@@ -408,18 +456,19 @@ function StudioDemo({ accent }) {
   return (
     <section id="studio" style={{ borderBottom: '1px solid var(--line)' }}>
       <div className="c-studio-pad">
+        <div className="preview-badge">Interactive preview · no audio generated</div>
         <div className="c-studio-hdr">
           <Reveal>
             <Mono>FIG_14 · CANTIS_APP</Mono>
             <h2 className="c-studio-h2">The studio, in <span className="c-serif">one window</span>.</h2>
           </Reveal>
           <Reveal as="p" i={1} className="c-studio-hint">
-            A working copy of the Generate screen. Change the prompt, tags or steps, pick a preset, then press Generate.
+            Explore the Generate screen: edit a prompt, choose tags or a preset, then preview the workflow. Other modes and audio export are available in the Mac app.
           </Reveal>
         </div>
 
         <Reveal className="c-app" i={1}>
-          <div ref={winRef}>
+          <div>
             {/* Title bar */}
             <div style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
               <div style={{ display: 'flex', gap: 8 }} aria-hidden="true">
@@ -440,7 +489,7 @@ function StudioDemo({ accent }) {
                 {Object.keys(SIDE_ICONS).map((name) => {
                   const active = tab === name;
                   return (
-                    <button key={name} className={active ? '' : 'c-side-btn'} onClick={() => setTab(name)}
+                    <button key={name} className={active ? '' : 'c-side-btn'} disabled={name !== 'Generate'} data-native-only={name !== 'Generate' || undefined} title={name !== 'Generate' ? 'Available in the Mac app' : undefined} aria-pressed={active}
                       style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px', marginBottom: 2, borderRadius: 6, background: active ? accent : 'transparent', color: active ? '#fff' : 'rgba(255,255,255,0.78)', border: 'none', font: '13px/1.2 var(--sans)', cursor: 'pointer' }}>
                       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style={{ flexShrink: 0, opacity: active ? 1 : 0.7 }}>{SIDE_ICONS[name]}</svg>
                       {name}
@@ -482,11 +531,13 @@ function StudioDemo({ accent }) {
                       <div style={{ font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.7)', fontVariantNumeric: 'tabular-nums' }}>Step {genStep} / {steps}</div>
                     </React.Fragment>
                   ) : (
-                    <button onClick={startGenerate} style={{ background: accent, color: '#fff', border: 'none', borderRadius: 16, padding: '8px 16px', font: '500 12px/1 var(--sans)', cursor: 'pointer' }}>
-                      Generate
+                    <button aria-describedby="c-preview-status" onClick={startGenerate} style={{ background: accent, color: '#fff', border: 'none', borderRadius: 16, padding: '8px 16px', font: '500 12px/1 var(--sans)', cursor: 'pointer' }}>
+                      Preview generation
                     </button>
                   )}
                 </div>
+
+        <p className="preview-status c-preview-feedback" id="c-preview-status" role="status">{notice}</p>
 
                 <div style={{ padding: isMobile ? '18px 16px 22px' : '20px 24px' }}>
                   <FieldLabel>Prompt</FieldLabel>
@@ -557,7 +608,7 @@ function StudioDemo({ accent }) {
               {/* Player */}
               <div className="c-app-player" style={{ background: '#1c1c1f', borderLeft: '1px solid rgba(255,255,255,0.05)', padding: isMobile ? '18px 16px' : 20, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                 <div style={{ font: '500 14px/1.4 var(--sans)', color: '#fff', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{prompt || 'Untitled'}</div>
-                <div style={{ font: '11px/1 var(--sans)', color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>{ready ? 'Oct 2, 2026 at 9:41 PM' : 'Rendering on this Mac…'}</div>
+                <div style={{ font: '11px/1 var(--sans)', color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>{generating ? 'Illustrative generation · no audio' : ready ? 'Preview complete · no audio' : 'Illustrative waveform · no audio'}</div>
 
                 <div style={{ marginTop: 16, height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}>
                   <div style={{ height: '100%', width: '100%', background: accent, transformOrigin: '0 50%', transform: `scaleX(${progressFrac})`, transition: 'transform 0.2s linear' }} />
@@ -579,14 +630,14 @@ function StudioDemo({ accent }) {
                 <div className="c-player-controls" style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{ position: 'relative', display: 'inline-flex' }}>
                     {!ready && <span className="c-play-ring" style={{ '--p': progressFrac }} aria-hidden="true" />}
-                    <button onClick={() => ready && setPlaying((p) => !p)} aria-label={playing ? 'Pause' : ready ? 'Play' : 'Play (available when the render finishes)'}
+                    <button disabled={!ready} onClick={() => { if (reduced) setPlayhead(1); else { if (playhead >= 1) setPlayhead(0); setPlaying((p) => !p); } }} aria-label={playing ? 'Pause preview animation' : 'Play preview animation'}
                       style={{ width: 34, height: 34, borderRadius: '50%', background: ready ? '#fff' : '#2c2c30', color: ready ? '#000' : 'rgba(255,255,255,0.7)', border: 'none', cursor: ready ? 'pointer' : 'progress', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {playing
                         ? <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><rect x="2" y="1" width="2" height="8" fill="currentColor" /><rect x="6" y="1" width="2" height="8" fill="currentColor" /></svg>
                         : <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z" fill="currentColor" /></svg>}
                     </button>
                   </span>
-                  <button aria-label="Export" title="Export" style={{ background: 'transparent', color: 'rgba(255,255,255,0.75)', border: 'none', cursor: 'pointer', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button disabled data-native-only aria-label="Export audio in the Mac app" title="Audio export is available in the Mac app" style={{ background: 'transparent', color: 'rgba(255,255,255,0.75)', border: 'none', cursor: 'pointer', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2 L8 10 M5 7 L8 10 L11 7 M3 13 L13 13" stroke="currentColor" strokeWidth="1.4" /></svg>
                   </button>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, font: '12px/1 var(--sans)', color: 'rgba(255,255,255,0.7)' }}>
@@ -603,7 +654,7 @@ function StudioDemo({ accent }) {
 
                 <div style={{ flex: 1 }} />
                 <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.06)', font: '11px/1.4 var(--mono)', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em' }}>
-                  ON-DEVICE · NOTHING LEAVES YOUR MAC
+                  ILLUSTRATIVE PREVIEW · NO AUDIO GENERATED
                 </div>
               </div>
             </div>
