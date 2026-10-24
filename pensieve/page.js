@@ -77,6 +77,11 @@
       if (!userTook) { list.setAttribute('data-order', 'ranked'); press('ranked'); }
       list.setAttribute('data-picked', '');
     };
+    // A scheduled frame may observe the preference before its change event is delivered.
+    var shouldStop = function () {
+      if (reduce.matches) settle();
+      return userTook || settled;
+    };
     if (reduce.addEventListener) reduce.addEventListener('change', function (event) {
       if (event.matches) settle();
     });
@@ -102,7 +107,7 @@
         var step = function (t) {
           if (start === null) start = t;
           var k = Math.min(1, (t - start) / 750);
-          if (userTook || settled || reduce.matches) k = 1;
+          if (shouldStop()) return;
           n.textContent = Math.round(10 + (target - 10) * (1 - Math.pow(1 - k, 3))) + '% match';
           if (k < 1) frames.push(window.requestAnimationFrame(step));
         };
@@ -111,20 +116,20 @@
     };
 
     var play = function () {
-      if (userTook || settled || reduce.matches) return;
+      if (shouldStop()) return;
       // Let the rows finish landing (style.css, about 1.2s after load) before the bars start.
       later(function () {
-        if (userTook || settled || reduce.matches) return;
+        if (shouldStop()) return;
         list.setAttribute('data-bars', 'full');
         countUp();
         later(function () {
-          if (userTook || settled || reduce.matches) return;
+          if (shouldStop()) return;
           press('ranked');
           reorder('ranked');
-          later(function () { if (!userTook && !settled && !reduce.matches) list.setAttribute('data-picked', ''); }, 1000);
+          later(function () { if (!shouldStop()) list.setAttribute('data-picked', ''); }, 1000);
           // Phones: the last story fully in the frame is then swiped right, the app's gesture for "mark read".
           later(function () {
-            if (userTook || settled || reduce.matches || !small.matches) return;
+            if (shouldStop() || !small.matches) return;
             list.setAttribute('data-swipe', 'play');
             later(function () { list.setAttribute('data-swipe', 'done'); }, 1500);
           }, 1500);
