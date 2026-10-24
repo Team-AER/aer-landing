@@ -1,7 +1,8 @@
 // AER landing — main React app
 const { useState, useEffect, useRef } = React;
 
-// Motion is opt-in: the hidden "before" states only apply under html.motion,
+// Full motion is the default unless the device requests reduction. Hidden
+// "before" states only apply under html.motion,
 // so reduced-motion visitors (and anything that fails before this line) get
 // every final state immediately.
 const MOTION = !window.matchMedia || !matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -299,68 +300,8 @@ function Nav() {
 }
 
 // ---------- Hero ----------
-function Hero({ tweaks }) {
-  const heroBg = {
-    cream: "var(--gr-light-body)",
-    pink: "var(--gr-pink-200)",
-    yellow: "var(--gr-gold-200)",
-    white: "var(--gr-white)"
-  }[tweaks.heroBg] || "var(--gr-light-body)";
-
-  const stickers = tweaks.stickerDensity;
-  let w = 0; // word index for the headline stagger
-  const word = (children) => <span className="word" style={{ "--i": w++ }}>{children}</span>;
-
-  return (
-    <section className="hero" id="top" style={{ background: heroBg }}>
-      <div className="wrap hero__stickers" aria-hidden="true">
-      {stickers !== "none" && (
-        <>
-          <FloatSticker top="30%" right="32px" rot={8} color="yellow" size={14} anim="anim2" className="float-sticker--hero">made for fun</FloatSticker>
-          {stickers === "high" && <>
-            <FloatSticker top="58%" right="14%" rot={-6} color="coral" size={13}>shipping</FloatSticker>
-            <FloatSticker bottom="8%" right="6%" rot={-12} color="periwinkle" size={13} anim="anim2">{plural(PUBLIC_COUNT, "repo")}</FloatSticker>
-          </>}
-        </>
-      )}
-        <div className="hero__counter">
-          <i className="hero__live" /> uptime: 100% · pings: 0
-        </div>
-      </div>
-
-      <div className="wrap">
-        <div className="kicker hero__kicker rise" style={{ "--d": "0ms" }}>
-          ✦ Team AER · est. 2025 · open source on the side
-        </div>
-        <h1 className="mega hero__title" data-cursor="hover :)">
-          {word("Two")}{" "}
-          {word("humans,")}
-          <br/>
-          {word(<span className="hero__pinkbar">passion</span>)}{" "}
-          {word("projects,")}
-          <br/>
-          {word("one")}{" "}
-          {word(<><span className="hero__yellowbar">domain</span>.</>)}
-        </h1>
-
-        <ul className="hero__sub rise" aria-label="At a glance" style={{ "--d": "520ms" }}>
-          <li className="pill" style={{ "--i": 0 }}><i className="pill__dot" style={{ background: "var(--gr-pink-500)" }} />{plural(ALL_PROJECTS.length, "project")}</li>
-          <li className="pill" style={{ "--i": 1 }}><i className="pill__dot" style={{ background: "var(--gr-gold-500)" }} />{PUBLIC_COUNT} public repos</li>
-          <li className="pill pill--extra" style={{ "--i": 2 }}><i className="pill__dot" style={{ background: "var(--gr-green-500)" }} />building in public</li>
-        </ul>
-
-        <p className="lede rise" style={{ marginTop: 24, "--d": "620ms" }}>
-          We're <strong>Nidhi</strong> &amp; <strong>Prakhar</strong>. In our spare time, we build feed readers, mail, music, voice and the tools behind them.
-        </p>
-
-        <div className="hero__cta-row rise" style={{ "--d": "720ms" }}>
-          <a className="btn" href="#projects" data-cursor="see code">See the projects →</a>
-          <a className="btn btn--ghost" href="#team" data-cursor="meet us">Meet the team</a>
-          <a className="btn btn--black" href="https://github.com/Team-AER" target="_blank" rel="noreferrer" data-cursor="↗">GitHub</a>
-        </div>
-      </div>
-    </section>
-  );
+function Hero({ tweaks, motionEnabled }) {
+  return <Workshop motionEnabled={motionEnabled} projectCount={ALL_PROJECTS.length} heroBg={({cream:"var(--gr-light-body)",pink:"var(--gr-pink-200)",yellow:"var(--gr-gold-200)",white:"var(--gr-white)"})[tweaks.heroBg]} stickerDensity={tweaks.stickerDensity} />;
 }
 
 // ---------- About / values ----------
@@ -741,7 +682,7 @@ function App() {
     <>
       <Nav />
       <main>
-        <Hero tweaks={tweaks} />
+        <Hero tweaks={tweaks} motionEnabled={!motionPaused && !motionReduced} />
         <div className="motion-control wrap">
           <button type="button" disabled={motionReduced} aria-pressed={motionPaused || motionReduced} onClick={() => setMotionPaused((value) => !value)}>
             {motionReduced ? 'Motion reduced by device' : motionPaused ? 'Resume background motion' : 'Pause background motion'}

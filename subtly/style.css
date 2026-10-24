@@ -347,7 +347,7 @@ h3, .feats dt { text-wrap: balance; }
 .rt__check.is-on { background: var(--plasma); border-color: var(--plasma); }
 .rt__log { padding: 8px 10px; border: 1px dashed var(--a-border); border-radius: 6px; background: var(--a-bg); font: 400 11.5px/1.4 var(--font-mono); color: var(--a-muted); overflow-wrap: anywhere; }
 .rt__note { font-size: 13px; color: var(--dim); }
-.rt__list li { animation: rt-in 220ms ease-out both; }
+.rt__list li.rt-is-entering { animation: rt-in 220ms ease-out both; }
 @keyframes rt-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 .facts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px 40px; margin-top: 36px; }
@@ -491,3 +491,10 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
   .nav__cta { transition: opacity 220ms ease, transform 220ms var(--ease-out), visibility 0s linear 0s; }
   .nav__cta.is-tucked { opacity: 0; transform: translateY(-6px); visibility: hidden; pointer-events: none; transition: opacity 220ms ease, transform 220ms var(--ease-out), visibility 0s linear 220ms; }
 }
+
+/* Once explicitly settled, restoring motion never replays this entrance.
+   Deliberate scene/preview interactions retain their normal transitions. */
+html.subtly-motion-settled .hero__title,
+html.subtly-motion-settled .hero__copy > *,
+html.subtly-motion-settled .hero__stage,
+html.subtly-motion-settled .hero__app { animation: none!important; }

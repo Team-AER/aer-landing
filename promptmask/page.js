@@ -10,8 +10,23 @@
 //    for the scroll-linked rail in "How it works", and key rows that light their placeholders.
 (function () {
   'use strict';
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.documentElement.classList.add('pm-js');
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reduce = motionQuery.matches;
+  if (reduce) document.documentElement.classList.add('pm-motion-settled');
+  var settleHero = function () {};
+  motionQuery.addEventListener('change', function () {
+    reduce = motionQuery.matches;
+    if (reduce) {
+      document.documentElement.classList.add('pm-motion-settled');
+      settleHero();
+      document.documentElement.classList.remove('pm-js');
+      document.querySelectorAll('.is-flip').forEach(function (el) { el.classList.remove('is-flip'); });
+      if (pio) pio.disconnect();
+      if (path) { path.classList.remove('is-armed'); path.style.setProperty('--fill', '1'); }
+    }
+    if (replay) replay.disabled = reduce;
+  });
+  if (!reduce) document.documentElement.classList.add('pm-js');
 
   // Stagger indexes for the shell's reveal contract.
   document.querySelectorAll('[data-reveal]').forEach(function (group) {
@@ -28,7 +43,7 @@
   var ORIGINAL = SEG.map(function (s) { return s[0]; }).join('');
 
   var demo = document.querySelector('[data-demo]');
-  if (demo && !reduce) {
+  if (demo) {
     var textEl = demo.querySelector('[data-text]');
     var composer = demo.querySelector('[data-composer]');
     var send = demo.querySelector('[data-send]');
@@ -98,6 +113,7 @@
       var tick = function (now) {
         var k = Math.min(1, (now - t0) / dur);
         node.data = ORIGINAL.slice(0, Math.round(k * ORIGINAL.length));
+        if (reduce) { settleHero(); return; }
         if (k < 1) raf = requestAnimationFrame(tick); else done();
       };
       raf = requestAnimationFrame(tick);
@@ -116,7 +132,17 @@
       });
     };
 
+    settleHero = function () {
+      stop(); if (io) io.disconnect();
+      demo.classList.remove('is-armed');
+      composer.classList.remove('is-busy');
+      spinner.classList.remove('is-on'); toast.classList.remove('is-on');
+      bubble.classList.add('is-on'); sent.classList.add('is-on');
+      placeholder(); setStep(4); replay.hidden = false; replay.disabled = reduce;
+      demo.querySelectorAll('.is-press, .is-new').forEach(function (el) { el.classList.remove('is-press', 'is-new'); });
+    };
     var play = function () {
+      if (reduce) { settleHero(); return; }
       arm();
       later(350, function () {
         setStep(1);
@@ -159,15 +185,16 @@
 
     // Arm now (the script is deferred, so this lands before the hero's fade-in finishes) and play
     // the first time the demo is properly in view.
-    arm();
-    if ('IntersectionObserver' in window) {
+    if (reduce) settleHero();
+    else arm();
+    if (!reduce && 'IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
-          if (en.isIntersecting) { io.disconnect(); play(); }
+          if (en.isIntersecting && !reduce) { io.disconnect(); play(); }
         });
       }, { threshold: 0.45 });
       io.observe(demo);
-    } else {
+    } else if (!reduce) {
       play();
     }
   }

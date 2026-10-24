@@ -379,3 +379,6 @@ main a:not([class]):hover { background-size: 100% 100%; }
 }
 
 @media (max-width: 380px) { .demo__frame { --demo-h: 366px; } }
+
+/* A canceled decorative model-state loop stays settled on preference restoration. */
+html.pm-motion-settled .model__states .spinner--static { animation: none!important; }
