@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-24",
+  "environment": "Local Chromium / Playwright; synthetic prompts; no model inference or audio generation",
+  "checks": [
+    {
+      "name": "canonical-cantis",
+      "viewports": [
+        {
+          "width": 1440,
+          "scrollWidth": 1440
+        },
+        {
+          "width": 390,
+          "scrollWidth": 390
+        },
+        {
+          "width": 320,
+          "scrollWidth": 320
+        }
+      ],
+      "complete": "Preview complete \u00b7 no audio created. Export is available in the Mac app.",
+      "nativeOnlyControls": 4,
+      "playPause": true,
+      "cancelKeepsPrompt": true,
+      "liveReducedComplete": true,
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      },
+      "backgroundPause": true,
+      "menuFocusAndReversal": true,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "canonical-voice",
+      "viewports": [
+        {
+          "width": 1440,
+          "scrollWidth": 1440
+        },
+        {
+          "width": 390,
+          "scrollWidth": 390
+        },
+        {
+          "width": 320,
+          "scrollWidth": 320
+        }
+      ],
+      "complete": "Preview complete \u00b7 no audio created. Export is available in the Mac app.",
+      "nativeOnlyControls": 7,
+      "playPause": true,
+      "liveReducedComplete": true,
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      },
+      "backgroundPause": true,
+      "menuFocusAndReversal": true,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "avifors",
+      "held": {
+        "now": "2:26",
+        "readouts": [
+          "ready",
+          "embed",
+          "0",
+          "260"
+        ],
+        "scroll": 0
+      },
+      "reduced": true,
+      "replay": true,
+      "passed": true
+    },
+    {
+      "name": "hub",
+      "passed": true
+    }
+  ]
+}
