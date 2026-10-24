@@ -12,10 +12,12 @@
   'use strict';
   var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   var reduce = motionQuery.matches;
+  if (reduce) document.documentElement.classList.add('pm-motion-settled');
   var settleHero = function () {};
   motionQuery.addEventListener('change', function () {
     reduce = motionQuery.matches;
     if (reduce) {
+      document.documentElement.classList.add('pm-motion-settled');
       settleHero();
       document.documentElement.classList.remove('pm-js');
       document.querySelectorAll('.is-flip').forEach(function (el) { el.classList.remove('is-flip'); });
