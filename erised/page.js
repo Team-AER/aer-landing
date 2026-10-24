@@ -9,7 +9,9 @@
 // All honour prefers-reduced-motion: the swap becomes instant (base.css kills the transition), drift and preview are off.
 (function () {
   'use strict';
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reduce = motionQuery.matches;
+  if (reduce) document.documentElement.classList.add('erised-motion-settled');
   var mirror = document.querySelector('.hero [data-mirror]');
   if (!mirror) return;
 
@@ -30,6 +32,17 @@
       if (on) img.removeAttribute('aria-hidden'); else img.setAttribute('aria-hidden', 'true');
     });
   }
+
+  var cancelPreview = function () {};
+  motionQuery.addEventListener('change', function () {
+    reduce = motionQuery.matches;
+    if (reduce) {
+      document.documentElement.classList.add('erised-motion-settled');
+      cancelPreview(); cancelAnimationFrame(raf); raf = 0;
+      px = py = tx = ty = pointerX = pointerY = scrollShift = 0;
+      if (pan) pan.style.transform = 'none';
+    }
+  });
 
   document.querySelectorAll('.choice[data-scene]').forEach(function (el) {
     var name = el.getAttribute('data-scene');
@@ -54,6 +67,7 @@
       if (restore === true) show(base);
     };
     var stop = function () { cancel(true); };
+    cancelPreview = function () { pio.disconnect(); cancel(true); };
     choiceRows.forEach(function (c) { c.addEventListener('pointerenter', cancel); c.addEventListener('focus', cancel); });
     window.addEventListener('pointerdown', stop, { once: true });
     window.addEventListener('keydown', stop, { once: true });
@@ -66,7 +80,7 @@
       var plan = [['frost', 1700], ['ember', 3900], [base, 6100]];
       plan.forEach(function (stepPair) {
         timers.push(setTimeout(function () {
-          if (cancelled) return;
+          if (cancelled || reduce) return;
           show(stepPair[0]);
           mark(stepPair[0] === base ? null : stepPair[0]);
         }, stepPair[1]));
@@ -75,7 +89,7 @@
     pio.observe(mirror);
   }
 
-  if (reduce || !pan) return;
+  if (!pan) return;
 
   // Parallax: a target the pointer and scroll set, eased toward with requestAnimationFrame.
   var hero = mirror.closest('.hero') || mirror;
@@ -87,12 +101,14 @@
 
   function frame() {
     raf = 0;
+    if (reduce) return;
     px += (tx - px) * 0.08;
     py += (ty - py) * 0.08;
     pan.style.transform = 'translate3d(' + snap(px) + 'px,' + snap(py) + 'px,0)';
     if (Math.abs(tx - px) > 0.05 || Math.abs(ty - py) > 0.05) raf = requestAnimationFrame(frame);
   }
   function retarget() {
+    if (reduce) return;
     tx = pointerX * 16;              // +-16px across
     ty = pointerY * 5 + scrollShift; // -5px up to +17px down
     if (!raf) raf = requestAnimationFrame(frame);
@@ -110,7 +126,7 @@
 
   var ticking = false;
   function onScroll() {
-    if (ticking) return;
+    if (reduce || ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
@@ -126,9 +142,26 @@
 // rolling once. Skipped entirely under reduced motion or without IntersectionObserver (final states stay).
 (function () {
   'use strict';
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reduce = motionQuery.matches;
   if (reduce || !('IntersectionObserver' in window)) return;
   document.documentElement.classList.add('ex');
+  var timers = [], intervals = [];
+  var typedFinal = new Map(), diceFinal = new Map();
+  document.querySelectorAll('.desire-replica__typed').forEach(function (el) { typedFinal.set(el, el.textContent); });
+  document.querySelectorAll('.dice__die b').forEach(function (el) { diceFinal.set(el, el.textContent); });
+  function later(fn, ms) { timers.push(window.setTimeout(function () { if (!reduce) fn(); }, ms)); }
+  function settle() {
+    reduce = true;
+    timers.forEach(clearTimeout); intervals.forEach(clearInterval); io.disconnect();
+    document.documentElement.classList.remove('ex');
+    typedFinal.forEach(function (text, el) { el.textContent = text; });
+    diceFinal.forEach(function (text, el) { el.textContent = text; });
+    document.querySelectorAll('.desire-replica').forEach(function (el) { el.classList.remove('is-locked', 'is-typing'); el.classList.add('is-ready'); });
+    document.querySelectorAll('.desire-replica__input').forEach(function (el) { el.classList.remove('is-empty'); });
+    document.querySelectorAll('.dice').forEach(function (el) { el.classList.remove('is-rolling'); });
+  }
+  motionQuery.addEventListener('change', function () { if (motionQuery.matches) settle(); });
 
   function each(sel, root, fn) { Array.prototype.forEach.call((root || document).querySelectorAll(sel), fn); }
   // Row order inside sheets and lists.
@@ -150,14 +183,14 @@
       i++;
       typed.textContent = text.slice(0, i);
       if (i === 1) field.classList.remove('is-empty');
-      if (i < text.length) setTimeout(tick, text.charAt(i - 1) === '.' ? 260 : 58);
-      else setTimeout(function () {
+      if (i < text.length) later(tick, text.charAt(i - 1) === '.' ? 260 : 58);
+      else later(function () {
         fig.classList.remove('is-locked');
         fig.classList.add('is-ready');
-        setTimeout(function () { fig.classList.remove('is-typing'); }, 1600);
+        later(function () { fig.classList.remove('is-typing'); }, 1600);
       }, 380);
     };
-    setTimeout(tick, 1100);
+    later(tick, 1100);
   }
 
   // The die face tumbles through random values, then lands on the roll the note reports.
@@ -165,7 +198,7 @@
     var face = row.querySelector('.dice__die b');
     if (!face) return;
     var final = face.textContent, n = 0;
-    setTimeout(function () {
+    later(function () {
       row.classList.add('is-rolling');
       var t = setInterval(function () {
         face.textContent = String(1 + Math.floor(Math.random() * 20));
@@ -176,6 +209,7 @@
           row.classList.add('is-landed');
         }
       }, 65);
+      intervals.push(t);
     }, delay);
   }
 
@@ -188,7 +222,7 @@
   var io = new IntersectionObserver(function (entries) {
     var d = 0;
     entries.forEach(function (en) {
-      if (!en.isIntersecting) return;
+      if (reduce || !en.isIntersecting) return;
       var el = en.target;
       var k = Math.min(d++, 8);
       el.style.setProperty('--d', String(k));

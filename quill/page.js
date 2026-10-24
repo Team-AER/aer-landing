@@ -5,8 +5,20 @@
 (function () {
   'use strict';
   // html.js lets style.css hold section children back until shell.js reveals them; without JS nothing hides.
-  document.documentElement.classList.add('js');
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reduce = motionQuery.matches;
+  document.documentElement.classList.toggle('js', !reduce);
+  var landingTimers = [], landingObservers = [], playTimer = 0, playStopTimer = 0;
+  motionQuery.addEventListener('change', function () {
+    reduce = motionQuery.matches;
+    if (!reduce) return;
+    landingTimers.forEach(clearTimeout); landingObservers.forEach(function (observer) { observer.disconnect(); });
+    clearInterval(playTimer); clearTimeout(playStopTimer);
+    document.documentElement.classList.remove('js');
+    if (txs) { txs.classList.remove('is-waiting', 'is-late'); txs.classList.add('is-static'); txs.scrollTo({ top: txs.scrollTop, behavior: 'instant' }); }
+    if (bar) { bar.classList.remove('is-waiting', 'is-late'); bar.classList.add('is-static'); }
+    setPlaying(false);
+  });
 
   // Action items: the heading counts what is ticked, as the app does ("· 1 of 4 done").
   document.querySelectorAll('[data-done-count]').forEach(function (count) {
@@ -70,10 +82,11 @@
   // once played it settles to a static final frame. Reduced motion: final frame at once (style.css).
   var afterLanding = [];
   function settle(el, ms) {
-    setTimeout(function () {
+    landingTimers.push(setTimeout(function () {
+      if (reduce) return;
       el.classList.add('is-static');
       if (el === txs) afterLanding.forEach(function (fn) { fn(); });
-    }, ms);
+    }, ms));
   }
   // [element that animates, element to watch (the bar's card: the bar itself is clipped while it fills), settle after ms]
   [[txs, txs, 1800 + 9 * 120], [bar, bar && bar.parentNode, 2100]].forEach(function (g) {
@@ -83,13 +96,13 @@
     if (!('IntersectionObserver' in window) || el.getBoundingClientRect().top < window.innerHeight) { settle(el, ms); return; }
     el.classList.add('is-waiting');
     var io = new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting) return;
+      if (reduce || !entries[0].isIntersecting) return;
       io.disconnect();
       el.classList.remove('is-waiting');
       el.classList.add('is-late');
       settle(el, ms);
     }, { threshold: 0.3 });
-    io.observe(watch);
+    io.observe(watch); landingObservers.push(io);
   });
 
   var DUR = parseFloat(reader.getAttribute('data-duration')) || 1;
@@ -231,12 +244,12 @@
     var t = Math.round(currentTime()), stop = 764;
     if (t >= stop) return;
     setPlaying(true);
-    var tick = setInterval(function () {
-      if (touched || !onScreen) { clearInterval(tick); setPlaying(false); return; }
+    playTimer = setInterval(function () {
+      if (reduce || touched || !onScreen) { clearInterval(playTimer); setPlaying(false); return; }
       t += 1;
       seek(t, true);
-      if (t >= stop) { clearInterval(tick); setTimeout(function () { setPlaying(false); }, 400); }
+      if (t >= stop) { clearInterval(playTimer); playStopTimer = setTimeout(function () { setPlaying(false); }, 400); }
     }, 800);
   }
-  afterLanding.push(function () { setTimeout(playDemo, 700); });
+  afterLanding.push(function () { if (!reduce) landingTimers.push(setTimeout(playDemo, 700)); });
 })();

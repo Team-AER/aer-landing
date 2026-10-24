@@ -35,3 +35,14 @@ output/
 /docs/design-refinement-*/**/*.svg
 /docs/design-refinement-*/**/*.mp4
 /docs/design-refinement-*/**/*.webm
+
+# Generated expression-review media stays in external task output.
+/docs/design-expression-*/**/*.png
+/docs/design-expression-*/**/*.jpg
+/docs/design-expression-*/**/*.jpeg
+/docs/design-expression-*/**/*.webp
+/docs/design-expression-*/**/*.gif
+/docs/design-expression-*/**/*.avif
+/docs/design-expression-*/**/*.svg
+/docs/design-expression-*/**/*.mp4
+/docs/design-expression-*/**/*.webm

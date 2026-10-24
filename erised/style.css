@@ -517,3 +517,11 @@ h1, h2 { text-wrap: balance; }
   .ex .dice.is-landed .dice__die { animation: ex-pop 420ms var(--ease-settle) both; }
   .ex .dice.is-landed strong span { animation: ex-pop 420ms var(--ease-settle) 120ms both; }
 }
+
+/* Once explicitly settled, restoring motion never replays this entrance.
+   Deliberate scene/preview interactions retain their normal transitions. */
+html.erised-motion-settled .hero .mirror__glass,
+html.erised-motion-settled .scene > *,
+html.erised-motion-settled .hero__title span,
+html.erised-motion-settled .hero__lede,
+html.erised-motion-settled .scene__hairline { animation: none!important; }

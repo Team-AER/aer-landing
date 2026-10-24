@@ -8,7 +8,20 @@
 //    the pipeline track lighting node by node. Skipped under reduced motion (final states stay).
 (function () {
   'use strict';
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reduce = motionQuery.matches;
+  if (reduce) document.documentElement.classList.add('subtly-motion-settled');
+  var settleHero = function () {};
+  motionQuery.addEventListener('change', function () {
+    reduce = motionQuery.matches;
+    if (reduce) {
+      document.documentElement.classList.add('subtly-motion-settled');
+      settleHero();
+      document.querySelectorAll('.rt-is-entering').forEach(function (row) { row.classList.remove('rt-is-entering'); });
+      if (io) io.disconnect();
+      document.documentElement.classList.remove('sx');
+    }
+  });
 
   /* ---------------- hero ---------------- */
   var CUES = [
@@ -38,7 +51,7 @@
     var detEl = document.querySelector('[data-detected]');
     var appEl = document.querySelector('[data-app]');
     var W = 920, barDur = TOTAL / bars.length;
-    var state = 'done', media = TOTAL, t0 = 0, raf = 0;
+    var state = 'done', media = TOTAL, t0 = 0, raf = 0, startTimer = 0;
     var lastPlayed = -1, lastText = null, lastPct = -1, lastTc = '';
 
     var pad = function (n, w) { n = String(n); while (n.length < w) n = '0' + n; return n; };
@@ -96,7 +109,9 @@
       wave.classList.remove('is-playing');
       ctl.textContent = 'Replay';
     };
+    settleHero = function () { clearTimeout(startTimer); cancelAnimationFrame(raf); render(TOTAL); finish(); };
     var tick = function (now) {
+      if (reduce) { settleHero(); return; }
       if (state !== 'play') return;
       var m = Math.max(0, (now - t0) / 1000 / PACE);
       if (m >= TOTAL) { render(TOTAL); finish(); return; }
@@ -105,6 +120,7 @@
       raf = requestAnimationFrame(tick);
     };
     var play = function (from) {
+      if (reduce) { settleHero(); return; }
       state = 'play';
       wave.classList.add('is-playing');
       ctl.textContent = 'Pause';
@@ -130,7 +146,7 @@
       ctl.textContent = 'Pause';
       state = 'play';
       // Let the page settle (fonts, layout) before the one moment starts.
-      window.setTimeout(function () { if (state === 'play') play(0); }, 600);
+      startTimer = window.setTimeout(function () { if (!reduce && state === 'play') play(0); }, 600);
     }
   }
 
@@ -181,6 +197,12 @@
       }
       return devs[0];
     };
+    var enterRow = function (row) {
+      if (reduce) return;
+      row.classList.add('rt-is-entering');
+      row.addEventListener('animationend', function () { row.classList.remove('rt-is-entering'); }, { once: true });
+    };
+    listEl.querySelectorAll('li').forEach(enterRow);
     var show = function (key) {
       var p = PLATFORMS[key];
       if (!p) return;
@@ -196,6 +218,7 @@
         li.appendChild(el('span', 'rt__tag' + (GPU_BACKENDS.indexOf(d[1].toLowerCase()) !== -1 ? ' rt__tag--gpu' : ''), d[1]));
         li.appendChild(el('span', 'rt__tag', d[2]));
         listEl.appendChild(li);
+        enterRow(li);
       });
       rt.querySelector('[data-rt-flash]').textContent = p.flash;
       rt.querySelector('[data-rt-check]').classList.toggle('is-on', p.flashOn);
@@ -244,7 +267,7 @@
   var io = new IntersectionObserver(function (entries) {
     var d = 0;
     entries.forEach(function (en) {
-      if (!en.isIntersecting) return;
+      if (reduce || !en.isIntersecting) return;
       if (en.target.classList.contains('rv')) en.target.style.setProperty('--d', String(Math.min(d++, 8)));
       en.target.classList.add('is-in');
       io.unobserve(en.target);
