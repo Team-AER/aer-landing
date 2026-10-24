@@ -27,7 +27,9 @@
   if (list) {
     var buttons = control ? Array.prototype.slice.call(control.querySelectorAll('[data-order]')) : [];
     var timers = [];
+    var frames = [];
     var userTook = false;
+    var settled = false;
 
     var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
     var press = function (order) {
@@ -53,12 +55,35 @@
       });
     };
 
-    // Take over from the CSS fallback in the same state it shows: arrival order, empty bars.
-    if (reduce.matches) {
-      list.setAttribute('data-order', 'ranked');
+    var finishMatches = function () {
+      list.querySelectorAll('.r-match').forEach(function (m) {
+        var bar = m.querySelector('.r-aff i'), n = m.querySelector('.r-aff-n');
+        if (!bar || !n) return;
+        var target = Math.round(parseFloat(bar.style.getPropertyValue('--m')) * 100);
+        if (target >= 10) n.textContent = target + '% match';
+      });
+    };
+    var stopWork = function () {
+      timers.forEach(clearTimeout); timers = [];
+      frames.forEach(function (id) { window.cancelAnimationFrame(id); }); frames = [];
       list.setAttribute('data-bars', 'full');
       list.setAttribute('data-swipe', 'done');
-      press('ranked');
+      finishMatches();
+    };
+    var settle = function () {
+      settled = true;
+      list.setAttribute('data-motion-settled', '');
+      stopWork();
+      if (!userTook) { list.setAttribute('data-order', 'ranked'); press('ranked'); }
+      list.setAttribute('data-picked', '');
+    };
+    if (reduce.addEventListener) reduce.addEventListener('change', function (event) {
+      if (event.matches) settle();
+    });
+
+    // Take over from the CSS fallback in the same state it shows: arrival order, empty bars.
+    if (reduce.matches) {
+      settle();
     } else {
       list.setAttribute('data-order', 'newest');
       list.setAttribute('data-bars', 'empty');
@@ -77,29 +102,29 @@
         var step = function (t) {
           if (start === null) start = t;
           var k = Math.min(1, (t - start) / 750);
-          if (userTook) k = 1;
+          if (userTook || settled || reduce.matches) k = 1;
           n.textContent = Math.round(10 + (target - 10) * (1 - Math.pow(1 - k, 3))) + '% match';
-          if (k < 1) window.requestAnimationFrame(step);
+          if (k < 1) frames.push(window.requestAnimationFrame(step));
         };
-        window.requestAnimationFrame(step);
+        frames.push(window.requestAnimationFrame(step));
       });
     };
 
     var play = function () {
-      if (userTook) return;
+      if (userTook || settled || reduce.matches) return;
       // Let the rows finish landing (style.css, about 1.2s after load) before the bars start.
       later(function () {
-        if (userTook) return;
+        if (userTook || settled || reduce.matches) return;
         list.setAttribute('data-bars', 'full');
         countUp();
         later(function () {
-          if (userTook) return;
+          if (userTook || settled || reduce.matches) return;
           press('ranked');
           reorder('ranked');
-          later(function () { if (!userTook) list.setAttribute('data-picked', ''); }, 1000);
+          later(function () { if (!userTook && !settled && !reduce.matches) list.setAttribute('data-picked', ''); }, 1000);
           // Phones: the last story fully in the frame is then swiped right, the app's gesture for "mark read".
           later(function () {
-            if (userTook || !small.matches) return;
+            if (userTook || settled || reduce.matches || !small.matches) return;
             list.setAttribute('data-swipe', 'play');
             later(function () { list.setAttribute('data-swipe', 'done'); }, 1500);
           }, 1500);
@@ -136,10 +161,7 @@
       b.addEventListener('click', function () {
         var order = b.getAttribute('data-order');
         userTook = true;
-        timers.forEach(clearTimeout);
-        timers = [];
-        list.setAttribute('data-bars', 'full');
-        if (list.getAttribute('data-swipe') === 'play') list.setAttribute('data-swipe', 'done');
+        stopWork();
         press(order);
         if (list.getAttribute('data-order') !== order) reorder(order);
       });

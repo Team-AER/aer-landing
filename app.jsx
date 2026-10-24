@@ -127,7 +127,7 @@ const fullNames = (ms) => ms.length <= 1 ? (ms[0] ? ms[0].name : "") : ms.slice(
 function useReveal() {
   useEffect(() => {
     const els = [...document.querySelectorAll(".rise:not(.is-in), .reveal:not(.is-in)")];
-    if (!MOTION || !("IntersectionObserver" in window)) {
+    if (!document.documentElement.classList.contains("motion") || !("IntersectionObserver" in window)) {
       els.forEach(el => el.classList.add("is-in"));
       return;
     }
@@ -151,11 +151,12 @@ function CountUp({ to }) {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
-    if (!MOTION || !el || !("IntersectionObserver" in window) || to < 2) return;
+    if (!document.documentElement.classList.contains("motion") || !el || !("IntersectionObserver" in window) || to < 2) return;
     let raf = 0;
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return;
       io.disconnect();
+      if (!document.documentElement.classList.contains("motion")) { el.textContent = to; return; }
       const t0 = performance.now(), dur = 700;
       const tick = (t) => {
         const k = Math.min(1, (t - t0) / dur);
@@ -165,8 +166,16 @@ function CountUp({ to }) {
       el.textContent = "0";
       raf = requestAnimationFrame(tick);
     }, { threshold: 0.6 });
+    const query = matchMedia('(prefers-reduced-motion: reduce)');
+    const settle = () => {
+      if (!query.matches) return;
+      io.disconnect();
+      cancelAnimationFrame(raf);
+      el.textContent = to;
+    };
+    query.addEventListener('change', settle);
     io.observe(el);
-    return () => { io.disconnect(); cancelAnimationFrame(raf); el.textContent = to; };
+    return () => { query.removeEventListener('change', settle); io.disconnect(); cancelAnimationFrame(raf); el.textContent = to; };
   }, [to]);
   return <strong ref={ref}>{to}</strong>;
 }
@@ -704,7 +713,15 @@ function App() {
   const [motionReduced, setMotionReduced] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => {
     const query = matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setMotionReduced(query.matches);
+    const update = () => {
+      if (query.matches) {
+        // Arrivals stay settled for this visit; restoring the preference must not replay content.
+        document.documentElement.classList.remove('motion');
+        document.querySelectorAll('.rise, .reveal').forEach((el) => el.classList.add('is-in'));
+      }
+      setMotionReduced(query.matches);
+    };
+    update();
     query.addEventListener('change', update);
     return () => query.removeEventListener('change', update);
   }, []);

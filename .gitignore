@@ -24,3 +24,14 @@ output/
 /docs/design-implementation-*/**/*.gif
 /docs/design-implementation-*/**/*.avif
 /docs/design-implementation-*/**/*.svg
+
+# Generated refinement evidence stays in the external task output.
+/docs/design-refinement-*/**/*.png
+/docs/design-refinement-*/**/*.jpg
+/docs/design-refinement-*/**/*.jpeg
+/docs/design-refinement-*/**/*.webp
+/docs/design-refinement-*/**/*.gif
+/docs/design-refinement-*/**/*.avif
+/docs/design-refinement-*/**/*.svg
+/docs/design-refinement-*/**/*.mp4
+/docs/design-refinement-*/**/*.webm

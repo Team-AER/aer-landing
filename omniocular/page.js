@@ -9,13 +9,15 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var reduce = motionQuery.matches;
+  if (motionQuery.addEventListener) motionQuery.addEventListener('change', function (event) { reduce = event.matches; });
 
   // ----- survey demo -----
   var phone = document.querySelector('[data-phone]');
   var stage = phone && phone.closest('.hero__stage');
   (function demo() {
-    if (!phone || reduce) { if (stage) stage.classList.add('is-done'); return; }
+    if (!phone) return;
     var rows = phone.querySelectorAll('.aplist .ap');
     var plab = phone.querySelector('[data-plab]');
     var count = phone.querySelector('[data-ap-count]');
@@ -24,10 +26,30 @@
     var PLAB = plab.textContent;
     var COUNT = count ? count.textContent : '';
     var timers = [];
+    var settled = false;
+    var io = null;
+    function settle() {
+      settled = true;
+      phone.setAttribute('data-motion-settled', '');
+      timers.forEach(clearTimeout); timers = [];
+      if (io) io.disconnect();
+      phone.classList.remove('is-playing', 'is-connecting');
+      phone.classList.add('is-connected', 'is-done');
+      if (stage) stage.classList.add('is-done');
+      rows.forEach(function (r) { r.classList.add('is-in'); });
+      if (link) link.textContent = 'Connected';
+      if (count) count.textContent = COUNT;
+      plab.textContent = PLAB;
+    }
+    if (motionQuery.addEventListener) motionQuery.addEventListener('change', function (event) {
+      if (event.matches) settle();
+    });
+    if (reduce) { settle(); return; }
     function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
     function hop(ch) { plab.innerHTML = 'Surveying <span class="plab__ch">ch ' + ch + '</span>'; }
 
     function play() {
+      if (reduce || settled) return;
       timers.forEach(clearTimeout); timers = [];
       phone.classList.remove('is-connected', 'is-done');
       if (stage) stage.classList.remove('is-done');
@@ -45,7 +67,7 @@
       at(2300, function () { rows[2] && rows[2].classList.add('is-in'); if (count) count.textContent = '3 access points'; });
       at(2600, function () { hop(11); });
       at(2900, function () { rows[3] && rows[3].classList.add('is-in'); if (count) count.textContent = COUNT; });
-      at(3500, function () { plab.textContent = PLAB; phone.classList.remove('is-playing'); phone.classList.add('is-done'); if (stage) stage.classList.add('is-done'); });
+      at(3500, settle);
     }
 
     // Hide the rows before first paint (this script is deferred, so the DOM is parsed), but
@@ -56,7 +78,7 @@
     if (box.top < window.innerHeight * 0.85 && box.bottom > 0) {
       play();
     } else if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
+      io = new IntersectionObserver(function (entries) {
         if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); play(); }
       }, { threshold: 0.3 });
       io.observe(phone);
@@ -133,6 +155,10 @@
       reset();
     }
 
+    if (motionQuery.addEventListener) motionQuery.addEventListener('change', function (event) {
+      HOLD_MS = event.matches ? 200 : 900;
+      if (event.matches && raf && !done) reset();
+    });
     hold.addEventListener('pointerdown', begin);
     hold.addEventListener('pointerup', end);
     hold.addEventListener('pointerleave', end);
