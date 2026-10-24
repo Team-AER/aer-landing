@@ -381,7 +381,7 @@ const SIDE_ICONS = {
 function StudioDemo({ accent }) {
   const { isMobile } = useBreakpoint();
   const reduced = usePreviewReducedMotion();
-  const [notice, setNotice] = React.useState('Ready to preview. This page generates no audio; export is available in the Mac app.');
+  const [notice, setNotice] = React.useState('Ready to preview.');
   const tab = 'Generate';
   const [prompt, setPrompt] = React.useState(APP_PRESETS[2].prompt);
   const [tags, setTags] = React.useState(APP_PRESETS[2].tags);
@@ -403,7 +403,7 @@ function StudioDemo({ accent }) {
   React.useEffect(() => {
     if (reduced) {
       setPlaying(false);
-      if (generating) { setGenStep(steps); setGenerating(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); }
+      if (generating) { setGenStep(steps); setGenerating(false); setNotice('Preview complete · no audio created.'); }
     }
   }, [reduced, generating, steps]);
 
@@ -411,7 +411,7 @@ function StudioDemo({ accent }) {
     if (!generating) return undefined;
     const id = setInterval(() => {
       setGenStep((s) => {
-        if (s >= steps) { setGenerating(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); return steps; }
+        if (s >= steps) { setGenerating(false); setNotice('Preview complete · no audio created.'); return steps; }
         return s + 1;
       });
     }, 70);
@@ -433,8 +433,8 @@ function StudioDemo({ accent }) {
     return () => cancelAnimationFrame(raf);
   }, [playing, loop, duration, reduced]);
 
-  const startGenerate = () => { setGenStep(reduced ? steps : 0); setGenerating(!reduced); setPlaying(false); setPlayhead(0); setNotice(reduced ? 'Preview complete · no audio created. Export is available in the Mac app.' : 'Previewing generation with illustrative timing. No audio is generated.'); };
-  const cancel = () => { setGenerating(false); setNotice('Preview cancelled. Your prompt and settings are kept; no audio was created.'); };
+  const startGenerate = () => { setGenStep(reduced ? steps : 0); setGenerating(!reduced); setPlaying(false); setPlayhead(0); setNotice(reduced ? 'Preview complete · no audio created.' : 'Previewing generation · illustrative timing.'); };
+  const cancel = () => { setGenerating(false); setNotice('Preview cancelled. Inputs kept.'); };
   const removeTag = (t) => setTags((tt) => tt.filter((x) => x !== t));
   const addTag = () => {
     const v = draft.trim().toLowerCase();
@@ -456,14 +456,14 @@ function StudioDemo({ accent }) {
   return (
     <section id="studio" style={{ borderBottom: '1px solid var(--line)' }}>
       <div className="c-studio-pad">
-        <div className="preview-badge">Interactive preview · no audio generated</div>
+        <div className="preview-badge">Interactive preview · no audio</div>
         <div className="c-studio-hdr">
           <Reveal>
             <Mono>FIG_14 · CANTIS_APP</Mono>
             <h2 className="c-studio-h2">The studio, in <span className="c-serif">one window</span>.</h2>
           </Reveal>
           <Reveal as="p" i={1} className="c-studio-hint">
-            Explore the Generate screen: edit a prompt, choose tags or a preset, then preview the workflow. Other modes and audio export are available in the Mac app.
+            Edit a prompt, then preview Generate. Audio and other modes need the Mac app.
           </Reveal>
         </div>
 
@@ -608,7 +608,7 @@ function StudioDemo({ accent }) {
               {/* Player */}
               <div className="c-app-player" style={{ background: '#1c1c1f', borderLeft: '1px solid rgba(255,255,255,0.05)', padding: isMobile ? '18px 16px' : 20, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                 <div style={{ font: '500 14px/1.4 var(--sans)', color: '#fff', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{prompt || 'Untitled'}</div>
-                <div style={{ font: '11px/1 var(--sans)', color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>{generating ? 'Illustrative generation · no audio' : ready ? 'Preview complete · no audio' : 'Illustrative waveform · no audio'}</div>
+                <div style={{ font: '11px/1 var(--sans)', color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>{generating ? 'Generation preview' : ready ? 'Preview complete · no audio' : 'Waveform preview'}</div>
 
                 <div style={{ marginTop: 16, height: 3, background: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}>
                   <div style={{ height: '100%', width: '100%', background: accent, transformOrigin: '0 50%', transform: `scaleX(${progressFrac})`, transition: 'transform 0.2s linear' }} />
@@ -654,7 +654,7 @@ function StudioDemo({ accent }) {
 
                 <div style={{ flex: 1 }} />
                 <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.06)', font: '11px/1.4 var(--mono)', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em' }}>
-                  ILLUSTRATIVE PREVIEW · NO AUDIO GENERATED
+                  AUDIO AND EXPORT IN THE MAC APP
                 </div>
               </div>
             </div>

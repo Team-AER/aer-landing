@@ -586,3 +586,7 @@ kbd { font: 500 11px/1.4 var(--font-body); padding: 1px 5px; border: 1px solid v
   .js [data-reveal] > *, .js .sec__show .iso__ok, .js .sec__show .iso__net { opacity: 1 !important; animation: none !important; }
   .r-storyrow, .r-skip, .r-storyrow::after { animation: none !important; }
 }
+
+/* A changed preference settles this visit's paper arrival, without replay on reversal. */
+.r-stories[data-motion-settled] .r-storyrow,
+.r-stories[data-motion-settled] .r-storyrow::after { animation: none !important; }

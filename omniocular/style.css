@@ -404,3 +404,6 @@ html.js .archwrap.is-in .archsvg line[marker-end] { stroke-dashoffset: 0; }
   .link-arc g path { animation: none !important; }
   .pagenav::after { display: none; }
 }
+
+/* Restoring motion must not repeat the completed connection acknowledgement. */
+.phone[data-motion-settled] .appbar__link .dot::after { display: none; }

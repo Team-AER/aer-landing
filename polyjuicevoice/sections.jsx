@@ -363,7 +363,7 @@ const SIDE = {
 function StudioDemo({ accent }) {
   const { isMobile } = useBreakpoint();
   const reduced = usePreviewReducedMotion();
-  const [notice, setNotice] = React.useState('Ready to preview. This page generates no audio; export is available in the Mac app.');
+  const [notice, setNotice] = React.useState('Ready to preview.');
   const tab = 'Speak';
   const [voice, setVoice] = React.useState(YOUR_VOICES[0]);
   const [style, setStyle] = React.useState('calm and warm');
@@ -374,14 +374,14 @@ function StudioDemo({ accent }) {
   const [playing, setPlaying] = React.useState(false);
   const [playhead, setPlayhead] = React.useState(0);
 
-  const speak = () => { setPlaying(false); setPlayhead(0); setGen(reduced ? 1 : 0); setStreaming(!reduced); setNotice(reduced ? 'Preview complete · no audio created. Export is available in the Mac app.' : 'Previewing speech with illustrative timing. No audio is generated.'); };
+  const speak = () => { setPlaying(false); setPlayhead(0); setGen(reduced ? 1 : 0); setStreaming(!reduced); setNotice(reduced ? 'Preview complete · no audio created.' : 'Previewing speech · illustrative timing.'); };
 
-  React.useEffect(() => { if (reduced) { setPlaying(false); if (streaming) { setGen(1); setStreaming(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); } } }, [reduced, streaming]);
+  React.useEffect(() => { if (reduced) { setPlaying(false); if (streaming) { setGen(1); setStreaming(false); setNotice('Preview complete · no audio created.'); } } }, [reduced, streaming]);
 
   React.useEffect(() => {
     if (!streaming) return undefined;
     const id = setInterval(() => setGen((g) => {
-      if (g >= 1) { setStreaming(false); setNotice('Preview complete · no audio created. Export is available in the Mac app.'); return 1; }
+      if (g >= 1) { setStreaming(false); setNotice('Preview complete · no audio created.'); return 1; }
       return Math.min(1, g + 0.04);
     }), 60);
     return () => clearInterval(id);
@@ -415,14 +415,14 @@ function StudioDemo({ accent }) {
   return (
     <section id="speak" style={{ borderBottom: '1px solid var(--line)' }}>
       <div className="p-studio-pad">
-        <div className="preview-badge">Interactive preview · no audio generated</div>
+        <div className="preview-badge">Interactive preview · no audio</div>
         <div className="p-studio-hdr">
           <Reveal>
             <Mono>FIG_15 · POLYJUICEVOICE_APP</Mono>
             <h2 className="p-studio-h2">Four modes, one <span className="p-serif">quiet</span> window.</h2>
           </Reveal>
           <Reveal as="p" i={1} className="p-studio-hint">
-            Pick a voice and edit the text to explore the Speak screen. This preview illustrates the workflow; audio synthesis and export run in the Mac app.
+            Pick a voice and edit the text. Audio and export need the Mac app.
           </Reveal>
         </div>
 
