@@ -391,3 +391,8 @@
 .motion-control button:disabled { cursor:default; }
 html.motion-paused .marquee__track { animation-play-state:paused!important; }
 html.motion-paused .float-sticker, html.motion-paused .avatar-blob, html.motion-paused .hero__live { animation:none!important; }
+
+/* Research illustration: no implied transcript or success score. */
+.mini--suppression { flex-direction: column; justify-content: center; gap: 1em; padding: 1.5em; color: var(--t-acc); }
+.mini--suppression svg { width: 100%; height: 100px; }
+.mini--suppression span { font: 600 10px/1.4 system-ui, sans-serif; color: var(--t-ink); }

@@ -35,6 +35,7 @@ use React and Babel in the browser; other app pages use HTML, CSS and vanilla Ja
 | `/avifors/` | Demand-loaded GPU inference workers with bounded leases |
 | `/athena/` | Self-hosted malware-analysis portal |
 | `/omniocular/` | Pocket wireless-audit device and controller |
+| `/parakeet-suppression/` | Experimental audio privacy and speech-recognition suppression research |
 | `/promptmask/` | On-device prompt masking in a browser extension |
 
 ## How it works

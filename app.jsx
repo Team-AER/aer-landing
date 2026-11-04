@@ -103,6 +103,9 @@ const PROJECT_GROUPS = [
       { key: "omniocular", title: "Omniocular", page: "/omniocular/", private: true, authors: ["prakhar"],
         line: "A pocket Wi-Fi auditor on a Pi Zero 2 W, driven over authenticated Bluetooth. Authorized testing only.",
         meta: ["Pi Zero 2 W", "Flutter app", "MIT"], pal: ["#EFEDE6", "#15171A", "#FF6A00", "#0082FC"], mini: "omni" },
+      { key: "parakeet-suppression", title: "Parakeet Suppression", page: "/parakeet-suppression/", private: true, authors: ["nidhi"],
+        line: "Audio privacy research: exploring learned changes to speech and their effect on automated transcription.",
+        meta: ["Research preview", "Audio privacy", "Experimental"], pal: ["#EDF3FF", "#14254A", "#2457E6", "#8EAEFF"], mini: "suppression" },
       { key: "promptmask", title: "PromptMask", page: "/promptmask/", private: true, authors: ["nidhi"],
         line: "Masks names, emails and ID numbers in your prompt on-device, before ChatGPT, Claude or Gemini sees it.",
         meta: ["Chrome extension", "On-device Gemma 4", "5 chat sites"], pal: ["#FFFFFF", "#000000", "#23A094", "#D3F3F0"], mini: "mask" }
@@ -486,6 +489,11 @@ function Mini({ kind }) {
         <div className="m-board"><i /><i /></div>
         <div className="m-ble" />
         <div className="m-phone">{bars(4, [3])}</div>
+      </div>);
+    case "suppression": return (
+      <div className="mini mini--suppression">
+        <svg viewBox="0 0 300 100" aria-hidden="true"><path d="M0 50H28L34 36L40 64L46 22L52 78L58 12L64 88L70 28L76 72L82 40L88 60H108L114 34L120 66L126 18L132 82L138 42L144 58H166L172 30L178 70L184 16L190 84L196 38L202 62H224L230 32L236 68L242 22L248 78L254 42L260 58H300" fill="none" stroke="currentColor" strokeWidth="2" /><rect x="140" y="4" width="40" height="92" rx="4" fill="currentColor" opacity=".12" /></svg>
+        <span>Audio privacy · Research preview</span>
       </div>);
     case "mask": return (
       <div className="mini mini--mask">
