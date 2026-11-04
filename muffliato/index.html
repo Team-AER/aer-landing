@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muffliato — Team AER</title>
+<meta name="description" content="Muffliato adds a quiet, bounded perturbation to recorded speech so people hear the same words and speech-recognition models return an empty transcript. A Team AER research prototype built against NVIDIA Parakeet; efficacy not yet measured.">
+<meta property="og:title" content="Muffliato: keep your words off the transcript">
+<meta property="og:description" content="A research prototype that perturbs recorded speech so listeners hear it unchanged and automatic speech recognition returns nothing. Built against NVIDIA Parakeet TDT 0.6B v3.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/muffliato/">
+<meta property="og:image" content="https://aer.app/assets/brand/social-preview-20261010.png">
+<meta property="og:site_name" content="Team AER">
+<meta name="theme-color" content="#F3F5F7">
+<link rel="icon" type="image/svg+xml" href="/muffliato/assets/icon.svg">
+<link rel="apple-touch-icon" href="/muffliato/assets/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css?v=20261017">
+<link rel="stylesheet" href="/muffliato/style.css?v=20261105">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><img class="aer-strip__mark" src="/assets/brand/icon-192-20261010.png" width="28" height="28" alt="">Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="pagenav">
+  <div class="wrap">
+    <a class="pagenav__brand" href="/muffliato/">
+      <img class="pagenav__mark" src="/muffliato/assets/icon.svg" width="30" height="30" alt="">
+      <span>Muffliato</span>
+    </a>
+    <nav id="mf-menu" class="pagenav__menu" hidden aria-label="Page sections">
+      <a href="#for">Who it’s for</a>
+      <a href="#how">How it works</a>
+      <a href="#limits">Limits</a>
+      <a href="#access">Access</a>
+    </nav>
+    <div class="pagenav__actions">
+      <a class="pagenav__cta" href="mailto:hello@aer.app?subject=Muffliato">Talk to us</a>
+      <button class="pagenav__toggle" type="button" data-nav-toggle aria-controls="mf-menu" aria-expanded="false" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title">Keep your words off the transcript.</h1>
+        <p class="hero__lede">Muffliato adds a quiet, bounded perturbation to recorded speech. People hear the same words. A speech-recognition model returns an empty transcript.</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="mailto:hello@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a>
+          <a class="btn btn--ghost" href="#how">How it works</a>
+        </div>
+        <ul class="hero__facts" role="list">
+          <li>Research prototype. The training pipeline is complete; the one-pass model has not been trained or measured against a real recogniser yet.</li>
+          <li>Built against NVIDIA Parakeet TDT 0.6B v3, the recogniser behind many meeting and media transcription products.</li>
+        </ul>
+      </div>
+
+      <div class="hero__stage">
+        <figure class="demo" id="demo" data-demo>
+          <div class="demo__frame" role="img" aria-label="Two panels. Left, a waveform labelled ‘What people hear’ with a faint perturbation drawn over it; the words stay the same. Right, a transcript panel labelled ‘What the model gets’: the recogniser’s three lines of text are wiped out one by one and the output reads: no tokens.">
+            <div class="panel panel--ear" aria-hidden="true">
+              <div class="panel__head">
+                <span class="panel__title">What people hear</span>
+                <span class="panel__tag" data-ear-tag>same words</span>
+              </div>
+              <svg class="wave" viewBox="0 0 320 120" preserveAspectRatio="none">
+                <path class="wave__clean" d="M0 60 L6 58 L12 64 L18 52 L24 70 L30 44 L36 78 L42 38 L48 84 L54 30 L60 88 L66 34 L72 82 L78 42 L84 76 L90 48 L96 70 L102 54 L108 64 L114 58 L120 62 L126 56 L132 68 L138 46 L144 76 L150 36 L156 86 L162 28 L168 92 L174 32 L180 84 L186 40 L192 78 L198 46 L204 72 L210 52 L216 66 L222 58 L228 62 L234 56 L240 66 L246 50 L252 72 L258 42 L264 80 L270 38 L276 82 L282 44 L288 74 L294 52 L300 66 L306 58 L312 62 L320 60" fill="none"/>
+                <path class="wave__delta" data-delta d="M0 60 L8 61 L16 59 L24 61 L32 59 L40 61 L48 58 L56 62 L64 59 L72 61 L80 59 L88 61 L96 60 L104 61 L112 59 L120 61 L128 59 L136 61 L144 58 L152 62 L160 59 L168 61 L176 59 L184 61 L192 60 L200 61 L208 59 L216 61 L224 59 L232 61 L240 60 L248 61 L256 59 L264 61 L272 59 L280 61 L288 60 L296 61 L304 59 L312 61 L320 60" fill="none"/>
+              </svg>
+              <dl class="panel__meter">
+                <div><dt>Budget (tau)</dt><dd>0.00025</dd></div>
+                <div><dt>Target PESQ</dt><dd>≥ 4.0</dd></div>
+                <div><dt>Target STOI</dt><dd>≥ 0.99</dd></div>
+              </dl>
+            </div>
+            <div class="panel panel--asr" aria-hidden="true">
+              <div class="panel__head">
+                <span class="panel__title">What the model gets</span>
+                <span class="panel__tag">parakeet-tdt-0.6b-v3</span>
+              </div>
+              <ol class="lines" data-lines>
+                <li class="line is-gone"><span class="line__t">the quarterly numbers were worse</span></li>
+                <li class="line is-gone"><span class="line__t">than what we told the board</span></li>
+                <li class="line is-gone"><span class="line__t">and legal wants that kept in this room</span></li>
+              </ol>
+              <p class="result is-on" data-result><span class="result__k">decoded</span><code class="result__v">""</code><span class="result__n">0 tokens</span></p>
+            </div>
+          </div>
+          <figcaption class="demo__steps">
+            <ol class="steps" role="list">
+              <li class="steps__i is-done" data-step="1"><span class="steps__n" aria-hidden="true">1</span>Speech in</li>
+              <li class="steps__i is-done" data-step="2"><span class="steps__n" aria-hidden="true">2</span>Perturbation added</li>
+              <li class="steps__i is-done" data-step="3"><span class="steps__n" aria-hidden="true">3</span>Recogniser decodes nothing</li>
+            </ol>
+            <button class="demo__replay" type="button" data-replay hidden>
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.8v2.8h2.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              Replay
+            </button>
+          </figcaption>
+        </figure>
+        <p class="demo__note">Illustration of the intended behaviour, drawn from sample text. The waveform and the perturbation are exaggerated for the page; the real budget is a fraction of one percent of full scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="status" class="band band--status">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">Where it stands, without rounding up</h2>
+        <p class="band__lede">Per-clip optimisation against Parakeet works. A model that does it in one pass, for speech it has never heard, is the open problem this project exists to solve.</p>
+      </div>
+      <ul class="stats" role="list" data-reveal>
+        <li class="stat">
+          <p class="stat__n">71<span class="stat__of">/90</span></p>
+          <h3 class="stat__h">Per-clip outcomes decoded empty</h3>
+          <p>The per-clip oracle, at the quiet budget, on 30 clips from 15 speakers with three restarts each. Fresh-model replay of the saved audio passed.</p>
+        </li>
+        <li class="stat">
+          <p class="stat__n">4.46<span class="stat__of"> PESQ</span></p>
+          <h3 class="stat__h">Quality at that budget</h3>
+          <p>Mean PESQ 4.46 and STOI 0.9993 on those outcomes. That is the provisional quality gate, not a listening test; nobody has yet confirmed the change is inaudible.</p>
+        </li>
+        <li class="stat">
+          <p class="stat__n">1.52<span class="stat__of">M</span></p>
+          <h3 class="stat__h">Parameters in the generator</h3>
+          <p>One deterministic forward pass, 16 kHz mono in, additive waveform out. No transcript, speaker ID or gradient is needed at inference time.</p>
+        </li>
+        <li class="stat stat--flag">
+          <p class="stat__n">0<span class="stat__of">/32</span></p>
+          <h3 class="stat__h">Clips the previous generator suppressed</h3>
+          <p>The earlier Wave-U-Net design trained to completion and emptied none of its own training clips. This architecture was built to answer that failure. Its own result is pending a GPU run.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="for" class="band band--for">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">Built for rooms where the recording isn’t yours to stop</h2>
+        <p class="band__lede">Blocking the bot and asking for consent cover most meetings. Muffliato is for the recording you cannot prevent: a counterparty who records anyway, a review copy that leaves the building, a voice that is already out there.</p>
+      </div>
+      <ul class="who" role="list" data-reveal>
+        <li class="who__card">
+          <p class="who__rank">First</p>
+          <h3 class="who__h">Confidential meetings in regulated organisations</h3>
+          <p>Law firms, clinics, boards and universities. Unconsented AI transcription is now live litigation risk, and the notetaker bans already in place stop the invited bot, not the other side’s recorder.</p>
+          <p class="who__buys">Who signs: security, general counsel, compliance. Fits beside Zoom and Teams bot blocking and SaaS governance.</p>
+        </li>
+        <li class="who__card">
+          <p class="who__rank">Second</p>
+          <h3 class="who__h">Voice talent, narrators and audiobook publishers</h3>
+          <p>The one adjacent market with published willingness to pay for voice protection. Delivered audio can carry the perturbation so the words are not lifted into training sets or quote farms.</p>
+          <p class="who__buys">Who signs: agencies and publishers, with unions as endorsers. Fits beside likeness and takedown subscriptions.</p>
+        </li>
+        <li class="who__card">
+          <p class="who__rank">Third</p>
+          <h3 class="who__h">Pre-release review copies</h3>
+          <p>Screeners and dailies already carry per-copy forensic watermarks. A review copy tolerates an audible-in-principle mark, and the studio controls the encode. No industry standard yet covers AI extraction from these files.</p>
+          <p class="who__buys">Who signs: screener and dailies platforms, studio post-production security.</p>
+        </li>
+        <li class="who__card">
+          <p class="who__rank">Fourth</p>
+          <h3 class="who__h">Confidential interviews and source material</h3>
+          <p>Documentary and investigative producers share raw interviews with freelancers and commissioners. Source protection is a legal exposure with a budget behind it.</p>
+          <p class="who__buys">Who signs: legal and standards teams at news organisations and commissioning broadcasters.</p>
+        </li>
+      </ul>
+      <p class="who__note">This order comes from Team AER’s own demand research: observed budget first, observed pain second. Podcast networks, archives and broadcasters were studied and left out; none objected to machine transcription, and several license their speech to AI buyers instead.</p>
+    </div>
+  </section>
+
+  <section id="why" class="band band--why">
+    <div class="wrap why">
+      <div class="why__copy">
+        <h2 class="h2">Why this, why now</h2>
+        <p class="band__lede">Thirty months of signals show buyers acting against machine transcription itself. Every answer they have today either blocks the bot or asks for consent. None acts on the audio.</p>
+      </div>
+      <ol class="signals" role="list" data-reveal>
+        <li class="signal"><span class="signal__d">Aug 2025</span><p>Four lawsuits against Otter.ai over recording and training on meeting audio. Chapman University blocks Read AI in Zoom and Teams; Harvard restricts assistants to contracted tools.</p></li>
+        <li class="signal"><span class="signal__d">Dec 2025</span><p>The New York City Bar requires client consent before AI recording. A patient sues Sharp HealthCare over an ambient scribe.</p></li>
+        <li class="signal"><span class="signal__d">Mar 2026</span><p>VCU moves Zoom to authorised SDKs only, with zero third-party notetakers approved. Granola raises $125M for a notetaker: the counter-market keeps growing.</p></li>
+        <li class="signal"><span class="signal__d">May 2026</span><p>Nine biometric-privacy class actions by Chicago journalists, podcasters and narrators against Adobe, Alphabet, Amazon, Apple, ElevenLabs, Meta, Microsoft, Nvidia and Samsung.</p></li>
+        <li class="signal"><span class="signal__d">Aug 2026</span><p>Wiretap, CIPA and BIPA claims against Otter.ai survive dismissal. Zoom ships an admin dashboard to block meeting bots.</p></li>
+        <li class="signal"><span class="signal__d">Oct 2026</span><p>Exa indexes 3.2 million podcast episodes with full transcripts. No publisher objects, which is why podcasts are not on the list above.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="how" class="band band--how">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">One pass through a phase-preserving generator</h2>
+        <p class="band__lede">The model predicts an additive signal in the complex spectral domain, keeps timing and phase, and bounds its output smoothly. It is trained against the recogniser’s exact empty-transcript loss, so the target is the outcome, not a proxy.</p>
+      </div>
+      <ol class="path" role="list" data-reveal>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">1</span>
+          <h3 class="hop__h">Analyse</h3>
+          <p class="hop__p">Each utterance is scaled by its own loudness and split into 512-point frames every 10 ms. Real and imaginary coefficients go in together, so nothing about timing is thrown away.</p>
+          <p class="hop__m">16 kHz mono · 257 bins · log RMS kept</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">2</span>
+          <h3 class="hop__h">Listen locally</h3>
+          <p class="hop__p">Six gated residual blocks with growing dilation see about 2.5 seconds around every frame: enough for a word and its neighbours.</p>
+          <p class="hop__m">dilations 1 to 32 · width 192</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">3</span>
+          <h3 class="hop__h">Listen to the whole clip</h3>
+          <p class="hop__p">A two-layer attention branch at 50 Hz lets the perturbation coordinate across the utterance, then is fused back into the local features.</p>
+          <p class="hop__m">4 heads · utterance-wide · offline</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">4</span>
+          <h3 class="hop__h">Synthesise</h3>
+          <p class="hop__p">The head emits an independent complex signal per frame, inverse-transformed and overlap-added. It can place energy where clean speech has none; no low-pass prior is imposed.</p>
+          <p class="hop__m">257 real + 255 imaginary per frame</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">5</span>
+          <h3 class="hop__h">Bound it</h3>
+          <p class="hop__p">A scalar bias is solved so the output has zero DC, then a tanh keeps every sample inside the budget. The bound is smooth, so gradients survive training.</p>
+          <p class="hop__m">tau 0.00025 quiet · 0.001 diagnostic</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">6</span>
+          <h3 class="hop__h">Train on the real target</h3>
+          <p class="hop__p">Loss is Parakeet’s exact zero-token TDT objective. Per-clip teachers, made on training clips only, bootstrap fitting, then direct fine-tuning takes over. Saved audio is replayed through a fresh model before any result counts.</p>
+          <p class="hop__m">teacher, self-distil, direct · replay enforced</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="fits" class="band band--fits">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">The empty quadrant</h2>
+        <p class="band__lede">Everything on the market today either acts after a copy exists or only governs web pages. Nothing governs audio delivered as a file, a stream or a screener.</p>
+      </div>
+      <div class="fits" data-reveal>
+        <table class="fits__table">
+          <thead><tr><th scope="col">What buyers use today</th><th scope="col">When it acts</th><th scope="col">What it covers</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Forensic watermarking, content ID</th><td>After a copy has left</td><td>Audio and video files</td></tr>
+            <tr><th scope="row">Crawler tolls, opt-out protocols</th><td>Before extraction</td><td>Web pages only</td></tr>
+            <tr><th scope="row">Bot blocking, SDK allow-lists</th><td>Before the meeting</td><td>The invited bot, not the audio</td></tr>
+            <tr><th scope="row">Likeness and voice detection</th><td>After a clone appears</td><td>The voice, not the words</td></tr>
+            <tr class="fits__us"><th scope="row">Muffliato</th><td>Before extraction</td><td>The audio itself, wherever it goes</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="limits" class="band band--limits">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">What it does not do yet</h2>
+        <p class="band__lede">These are the claims the evidence does not support. Each is a planned experiment or a known boundary, and we would rather you hear them from us.</p>
+      </div>
+      <ul class="limits__list" role="list" data-reveal>
+        <li>
+          <h3 class="limits__h">Not measured on a real recogniser</h3>
+          <p>CPU tests exercise the pipeline with synthetic audio and model doubles. The generator’s suppression rate, on training clips or unseen speakers, is unknown until the first GPU run.</p>
+        </li>
+        <li>
+          <h3 class="limits__h">One victim model</h3>
+          <p>The target is Parakeet TDT 0.6B v3 with frozen weights and full-context greedy decoding. Transfer to Whisper, streaming decoders or other recognisers is untested.</p>
+        </li>
+        <li>
+          <h3 class="limits__h">Offline, digital audio</h3>
+          <p>It operates on recorded files. Live calls that compress or denoise audio can strip the perturbation before it leaves your machine, and playback through a room and a microphone has not been tested.</p>
+        </li>
+        <li>
+          <h3 class="limits__h">Quiet, not proven inaudible</h3>
+          <p>The quality gate is PESQ and STOI thresholds. No listening study has been run. Review copies may tolerate an audible mark; delivered masters may not.</p>
+        </li>
+        <li>
+          <h3 class="limits__h">Machines, not people</h3>
+          <p>A human can still listen and type. The product narrows automated, bulk extraction; it is not secrecy.</p>
+        </li>
+        <li>
+          <h3 class="limits__h">Not a legal control</h3>
+          <p>It does not replace consent, policy or a recording ban, and it is not a substitute for legal advice on any of them.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="access" class="band band--access">
+    <div class="wrap access">
+      <div class="access__copy">
+        <h2 class="h2">Tell us about the recording you couldn’t stop</h2>
+        <p class="access__lede">Muffliato is built by Nidhi Bharani for Team AER. The repository is private and the first efficacy run is ahead of us, so right now we are looking for the people whose problem this is: a named incident, the budget line it sits in, and what you pay for the alternative today.</p>
+      </div>
+      <div class="access__cta">
+        <a class="btn btn--ink" href="mailto:hello@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a>
+        <a class="btn btn--line" href="mailto:hello@aer.app?subject=Muffliato%20research">Ask about the research</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Muffliato</h2>
+      <p>A research prototype that keeps recorded speech out of machine transcription. Built by <a class="aer-footer__author" href="https://github.com/nidhibharani">Nidhi Bharani</a>. Private repository.</p>
+      <ul role="list">
+        <li><a href="mailto:hello@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a></li>
+        <li><a href="https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3">Target model: NVIDIA Parakeet TDT 0.6B v3</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/promptmask/">PromptMask</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/subtly/">Subtly</a></li>
+        <li><a href="/polyjuicevoice/">PolyJuiceVoice</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Parakeet is a model published by NVIDIA; Team AER is not affiliated with NVIDIA.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js?v=20261017" defer></script>
+<script src="/muffliato/page.js?v=20261105" defer></script>
+</body>
+</html>

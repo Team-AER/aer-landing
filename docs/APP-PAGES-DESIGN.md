@@ -281,3 +281,30 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   it" (v0.1, what you bring: ffmpeg, whisper-cli, models — or the AIO bundle) → open source (MIT) →
   CTA (GitHub releases).
 - **Avoid:** film-reel kitsch; claiming it is turnkey; linking subtly.aer.app (not live).
+
+### Muffliato — `/muffliato/`  (anti-transcription perturbation for recorded speech)
+- **Mood:** a quiet room with the lights on. A research prototype that must not oversell: every
+  number on the page is from the project's evidence record, and the status band says what is
+  unmeasured. Light scheme; the product has no UI, so the page invents a lab-notebook idiom.
+- **Palette:** paper `#F3F5F7`, card `#FFFFFF`, ink `#0E1420`, indigo `#3F3BD6` (fills, rules,
+  the perturbation line; text uses `#2F2CB0`), indigo wash `#E6E5FB`, rose `#D6353B` only where a
+  transcript line is erased or a number is a failure.
+- **Type:** Sora (display) + system sans body; JetBrains Mono for budgets, model ids, metrics.
+- **Hero concept:** two panels in one frame. Left, "What people hear": a waveform with the
+  perturbation drawn faintly over it and the budget/quality gate beneath. Right, "What the model
+  gets": the recogniser's three transcript lines struck out one by one until the decoded result is
+  `""` (0 tokens). Headline: "Keep your words off the transcript."
+- **The one memorable thing:** the strike-through. The waveform never changes; only the transcript
+  does. Rose means erased, and appears nowhere else on the page except the one failed number.
+- **Must mirror:** `parakeet-suppression-nn/docs/parakeet-suppression-nn-design-2026-09-27.md`
+  (architecture, budget, gate) and `parakeet-suppression-evidence-2026-09-27.md` (every figure).
+  Positioning and the buyer order come from the Anti-ASR Demand Map research (4 Nov 2026).
+- **Sections:** hero → status (71/90 per-clip outcomes, PESQ/STOI gate, 1.52M parameters, the
+  0/32 prior-generator failure) → who it's for (regulated meetings, voice talent and publishers,
+  pre-release review copies, confidential interviews; in demand-research order) → why now (dated
+  signals) → how it works (six real stages: numbers allowed) → the empty quadrant (table against
+  watermarking, crawler tolls, bot blocking, voice detection) → limits (unmeasured, one victim,
+  offline only, not proven inaudible, not secrecy, not legal) → access (private repo; CTA
+  "Talk to us about a pilot" mailto:hello@aer.app).
+- **Avoid:** any claim of measured suppression by the one-pass model; "inaudible"; live-call or
+  Whisper transfer claims; podcast or archive buyers; spy or jamming imagery.
