@@ -622,7 +622,7 @@ function Footer() {
     ['Product', [['Download', RELEASE], ['Source code', REPO], ['Licence (MIT)', `${REPO}/blob/main/LICENSE`]]],
     ['Docs', [['Build and run', `${REPO}/blob/main/docs/BUILD_AND_RUN.md`], ['Privacy policy', `${REPO}/blob/main/docs/PRIVACY_POLICY.md`], ['Issues', `${REPO}/issues`]]],
     ['Team AER', [['aer.app', '/'], ['All apps', '/#projects'], ['hello@aer.app', 'mailto:hello@aer.app']]],
-    ['Other apps', [['Cantis', '/cantis/'], ['Subtly', '/subtly/'], ['Quill', '/quill/']]],
+    ['Other apps', [['Cantis', '/cantis/'], ['Subtly', '/subtly/'], ['Quill', '/quill/'], ['Muffliato', '/muffliato/']]],
   ];
   return (
     <footer className="p-footer">

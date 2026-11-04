@@ -105,7 +105,10 @@ const PROJECT_GROUPS = [
         meta: ["Pi Zero 2 W", "Flutter app", "MIT"], pal: ["#EFEDE6", "#15171A", "#FF6A00", "#0082FC"], mini: "omni" },
       { key: "promptmask", title: "PromptMask", page: "/promptmask/", private: true, authors: ["nidhi"],
         line: "Masks names, emails and ID numbers in your prompt on-device, before ChatGPT, Claude or Gemini sees it.",
-        meta: ["Chrome extension", "On-device Gemma 4", "5 chat sites"], pal: ["#FFFFFF", "#000000", "#23A094", "#D3F3F0"], mini: "mask" }
+        meta: ["Chrome extension", "On-device Gemma 4", "5 chat sites"], pal: ["#FFFFFF", "#000000", "#23A094", "#D3F3F0"], mini: "mask" },
+      { key: "muffliato", title: "Muffliato", page: "/muffliato/", code: "https://github.com/NidhiBharani/parakeet-suppression-nn", authors: ["nidhi"],
+        line: "Speech that people hear and machines can't transcribe: a bounded perturbation tuned against Parakeet TDT.",
+        meta: ["Python", "Research, efficacy untested", "Offline audio"], pal: ["#EEF1F4", "#0F1419", "#5D5BD6", "#1F8F6B"], mini: "muffliato" }
     ]
   }
 ];
@@ -490,6 +493,14 @@ function Mini({ kind }) {
     case "mask": return (
       <div className="mini mini--mask">
         <div className="m-prose"><b /><b className="m-redact" /><b /><b className="m-redact m-short" /></div>
+      </div>);
+    case "muffliato": return (
+      <div className="mini mini--muffliato">
+        <div className="m-wave m-wave--bound">{wave(18)}</div>
+        <div className="m-ears">
+          <div className="m-prose m-heard">{bars(3, [2])}</div>
+          <div className="m-asr"><span className="m-empty">empty</span></div>
+        </div>
       </div>);
     default: return null;
   }

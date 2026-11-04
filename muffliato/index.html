@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muffliato — Team AER</title>
+<meta name="description" content="Muffliato is a research implementation of a bounded, zero-DC perturbation for recorded speech, trained to make Parakeet TDT 0.6B return an empty transcript. Implementation complete; efficacy untested.">
+<meta property="og:title" content="Muffliato: speech people hear, machines can't transcribe">
+<meta property="og:description" content="A research generator that adds a bounded perturbation to recorded speech so the Parakeet TDT 0.6B speech recogniser returns nothing. Open code, honest status: efficacy untested.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/muffliato/">
+<meta property="og:image" content="https://aer.app/assets/brand/social-preview-20261010.png">
+<meta property="og:site_name" content="Team AER">
+<meta name="theme-color" content="#0F1419">
+<link rel="canonical" href="https://aer.app/muffliato/">
+<link rel="icon" type="image/svg+xml" href="/muffliato/assets/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css?v=20261017">
+<link rel="stylesheet" href="/muffliato/style.css?v=20261105">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><img class="aer-strip__mark" src="/assets/brand/icon-192-20261010.png" width="28" height="28" alt="">Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="pagenav">
+  <div class="wrap">
+    <a class="pagenav__brand" href="/muffliato/">
+      <img class="pagenav__mark" src="/muffliato/assets/icon.svg" width="30" height="30" alt="">
+      <span>Muffliato</span>
+    </a>
+    <nav id="mf-menu" class="pagenav__menu" hidden aria-label="Page sections">
+      <a href="#who">Who it’s for</a>
+      <a href="#how">How it works</a>
+      <a href="#status">Status</a>
+      <a href="#run">Run it</a>
+    </nav>
+    <div class="pagenav__actions">
+      <a class="pagenav__cta" href="https://github.com/NidhiBharani/parakeet-suppression-nn">Get the code</a>
+      <button class="pagenav__toggle" type="button" data-nav-toggle aria-controls="mf-menu" aria-expanded="false" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero__top">
+        <h1 id="hero-title" class="hero__title">Speech people hear. Machines can’t transcribe.</h1>
+        <div class="hero__aside">
+          <p class="hero__sub">Muffliato is designed to add a bounded perturbation to recorded speech so automatic transcription returns nothing, while listeners still hear every word.</p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="https://github.com/NidhiBharani/parakeet-suppression-nn">Get the code</a>
+            <a class="btn btn--quiet" href="mailto:hello@aer.app?subject=Muffliato">Talk to us</a>
+          </div>
+          <p class="hero__status"><span class="dot" aria-hidden="true"></span>Research implementation. Built and tested on CPU; efficacy against the real model is untested.</p>
+        </div>
+      </div>
+
+      <figure class="console" data-console data-state="protected" aria-labelledby="console-cap">
+        <div class="console__bar">
+          <p class="console__clip"><span class="console__file">board-call-0412.wav</span><span class="console__tag">16 kHz mono</span></p>
+          <button class="switch" type="button" role="switch" aria-checked="true" aria-label="Protected" data-switch>
+            <span class="switch__opt switch__opt--off" aria-hidden="true">Original</span>
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+            <span class="switch__opt switch__opt--on" aria-hidden="true">Protected</span>
+          </button>
+        </div>
+
+        <div class="console__wave">
+          <svg class="wave" viewBox="0 0 960 140" preserveAspectRatio="none" role="img" aria-label="Waveform of the clip. A thin violet band around the centre line marks the plus or minus tau bound of 0.00025 that the added signal must stay inside." data-wave>
+            <rect class="wave__band" x="0" y="67" width="960" height="6" data-band></rect>
+            <path class="wave__delta" d="" data-delta></path>
+            <line class="wave__axis" x1="0" y1="70" x2="960" y2="70"></line>
+            <path class="wave__speech" d="" data-speech></path>
+          </svg>
+          <p class="wave__label"><span class="wave__swatch" aria-hidden="true"></span>tau 0.00025</p>
+        </div>
+
+        <div class="listeners">
+          <div class="listener listener--human">
+            <div class="listener__head">
+              <p class="listener__name">
+                <svg class="listener__glyph" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><path d="M6 8a4 4 0 1 1 8 0c0 2.2-1.6 3-2.6 4.1-.8.9-.9 1.9-.9 2.6a2.3 2.3 0 0 1-4.3 1.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8.6 8a1.4 1.4 0 0 1 2.8 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Human listener
+              </p>
+              <span class="badge badge--human">hears it</span>
+            </div>
+            <p class="transcript transcript--human" data-human>The board approves the restructuring plan, subject to the audit committee’s review on Thursday.</p>
+          </div>
+          <div class="listener listener--machine">
+            <div class="listener__head">
+              <p class="listener__name">
+                <svg class="listener__glyph" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><rect x="3.5" y="5" width="13" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="7.8" cy="10.3" r="1.3" fill="currentColor"/><circle cx="12.2" cy="10.3" r="1.3" fill="currentColor"/><path d="M10 2.5V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Parakeet TDT 0.6B
+              </p>
+              <span class="badge badge--machine is-empty" data-badge>raw-empty</span>
+            </div>
+            <p class="transcript transcript--machine" data-machine><span class="transcript__empty">""<span class="sr-only"> (empty transcript)</span></span></p>
+          </div>
+        </div>
+        <p class="sr-only" aria-live="polite" data-live></p>
+        <figcaption id="console-cap" class="console__cap">Illustration of the goal, not a measured result: the clip and transcripts are a mock-up, and this network has not yet been run against Parakeet. The violet band is drawn far thicker than scale; at tau 0.00025 of full scale it would be under a pixel tall.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="who" class="sec" aria-labelledby="who-title">
+    <div class="wrap">
+      <div class="sec__head">
+        <h2 id="who-title" class="h2">Who needs this</h2>
+        <p class="sec__lede">People whose recordings leave their hands, and who need the words to stay with listeners rather than become searchable text.</p>
+      </div>
+      <ul class="who" role="list">
+        <li class="who__item">
+          <h3 class="who__h">Confidential meetings in regulated work</h3>
+          <p>Legal, healthcare, board and HR teams whose call audio ends up with a counterparty’s AI notetaker: wiretap, CIPA and BIPA claims against Otter.ai survived dismissal in August 2026, and New York City Bar opinions 2025-6 and 2026-2 address AI recording of clients.</p>
+        </li>
+        <li class="who__item">
+          <h3 class="who__h">Voice talent, narrators and audiobook publishers</h3>
+          <p>Nine BIPA class actions over AI use of voices came in May 2026, and the July 2025 SAG-AFTRA Interactive Media Agreement set AI voice-consent terms; Muffliato targets transcription of delivered masters and pre-release samples, not voice cloning.</p>
+        </li>
+        <li class="who__item">
+          <h3 class="who__h">Screeners and dailies</h3>
+          <p>Studios already pay per copy for forensic watermarking, yet TPN and MPA standards have no control for AI extraction, and a screener can tolerate a faint audible mark that a master cannot.</p>
+        </li>
+        <li class="who__item">
+          <h3 class="who__h">Confidential interviews and source material</h3>
+          <p>Documentary and investigative producers, and newsroom legal and standards teams, holding raw interview audio that should be heard by editors and never turned into a transcript by a tool they don’t control.</p>
+        </li>
+      </ul>
+      <p class="who__note">Today that means recorded files. The model reads a whole utterance before it writes, so it does not protect a live call.</p>
+    </div>
+  </section>
+
+  <section id="audio" class="sec sec--panel" aria-labelledby="audio-title">
+    <div class="wrap">
+      <div class="sec__head">
+        <h2 id="audio-title" class="h2">What it does to the audio</h2>
+        <p class="sec__lede">One forward pass of a generator writes a signal that is added to the clip. These are properties of that signal by construction; whether it suppresses transcription is still to be measured.</p>
+      </div>
+
+      <ul class="props props--key" role="list">
+        <li class="prop">
+          <svg class="prop__fig" viewBox="0 0 240 96" role="img" aria-label="A violet trace that wanders between two dashed lines labelled plus tau and minus tau and never crosses them.">
+            <rect x="0" y="0" width="240" height="96" rx="8" class="fig__plate"/>
+            <rect x="12" y="30" width="216" height="36" class="fig__band"/>
+            <line x1="12" y1="30" x2="228" y2="30" class="fig__bound"/>
+            <line x1="12" y1="66" x2="228" y2="66" class="fig__bound"/>
+            <polyline class="fig__trace" points="12,48 22,40 30,56 38,35 46,52 54,62 62,44 70,33 78,50 86,58 94,38 102,46 110,64 118,42 126,32 134,49 142,60 150,40 158,47 166,63 174,36 182,44 190,57 198,34 206,50 214,61 222,42 228,48"/>
+            <text x="16" y="24" class="fig__label">+tau</text>
+            <text x="16" y="82" class="fig__label">−tau</text>
+          </svg>
+          <h3 class="prop__h">Bounded on every sample</h3>
+          <p>A hard L∞ limit: the output is <code>tau · tanh(z)</code>, so no sample moves more than tau, with 0.00025 as the quiet target.</p>
+        </li>
+        <li class="prop">
+          <svg class="prop__fig" viewBox="0 0 240 96" role="img" aria-label="A trace whose shaded area above the centre line balances the shaded area below it, with the centre line labelled mean zero.">
+            <rect x="0" y="0" width="240" height="96" rx="8" class="fig__plate"/>
+            <path class="fig__pos" d="M12 48 C 28 20, 44 20, 60 48 Z M108 48 C 122 28, 136 28, 150 48 Z M190 48 C 200 32, 214 32, 228 48 Z"/>
+            <path class="fig__neg" d="M60 48 C 72 72, 96 72, 108 48 Z M150 48 C 160 76, 180 76, 190 48 Z"/>
+            <path class="fig__trace" d="M12 48 C 28 20, 44 20, 60 48 C 72 72, 96 72, 108 48 C 122 28, 136 28, 150 48 C 160 76, 180 76, 190 48 C 200 32, 214 32, 228 48"/>
+            <line x1="12" y1="48" x2="228" y2="48" class="fig__zero"/>
+            <text x="228" y="88" text-anchor="end" class="fig__label">mean 0</text>
+          </svg>
+          <h3 class="prop__h">Zero DC</h3>
+          <p>The generator solves for a centring bias inside the tanh, so the perturbation averages zero to numerical precision and no budget goes on a constant offset.</p>
+        </li>
+        <li class="prop">
+          <svg class="prop__fig" viewBox="0 0 240 96" role="img" aria-label="A complex-plane diagram: real and imaginary axes, a vector on the unit circle, and an arc marking its phase angle.">
+            <rect x="0" y="0" width="240" height="96" rx="8" class="fig__plate"/>
+            <line x1="70" y1="48" x2="170" y2="48" class="fig__axis"/>
+            <line x1="120" y1="8" x2="120" y2="88" class="fig__axis"/>
+            <circle cx="120" cy="48" r="34" class="fig__circle"/>
+            <path d="M136 48 A 16 16 0 0 0 130.3 35.7" class="fig__arc"/>
+            <line x1="120" y1="48" x2="146" y2="26.1" class="fig__vec"/>
+            <circle cx="146" cy="26.1" r="3.5" class="fig__tip"/>
+            <text x="174" y="52" class="fig__label">re</text>
+            <text x="126" y="14" class="fig__label">im</text>
+            <text x="140" y="44" class="fig__label fig__label--sm">φ</text>
+          </svg>
+          <h3 class="prop__h">Phase-preserving</h3>
+          <p>It reads and writes a complex STFT, FFT 512 and hop 160 on 16 kHz mono, predicting real and imaginary parts rather than a magnitude mask.</p>
+        </li>
+      </ul>
+
+      <ul class="props props--rest" role="list">
+        <li class="prop">
+          <h3 class="prop__h">Loudness-aware</h3>
+          <p>A log-RMS input feature keeps the clip’s absolute level, because a fixed tau weighs more on quiet speech than on loud.</p>
+        </li>
+        <li class="prop">
+          <h3 class="prop__h">Whole-utterance context</h3>
+          <p>Six dilated temporal blocks see about 2.55 s around each frame, and two Transformer layers attend across the whole clip.</p>
+        </li>
+        <li class="prop">
+          <h3 class="prop__h">Universal pattern plus a per-clip residual</h3>
+          <p>The hybrid preset adds a learned 16,000-sample pattern, noise channels and an optional gain head under the same bound: 1,535,297 parameters, against 1,518,720 for the default generator.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="how" class="sec sec--ink" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="sec__head">
+        <h2 id="how-title" class="h2">How it works</h2>
+        <p class="sec__lede">The training and evaluation pipeline is implemented end to end and covered by CPU tests. None of the steps that load the real model have been run yet.</p>
+      </div>
+      <ol class="steps" role="list">
+        <li class="step">
+          <span class="step__n" aria-hidden="true">1</span>
+          <h3 class="step__h">Prepare a manifest</h3>
+          <p>List native 16 kHz mono clips; the manifest freezes each file’s path, SHA-256, length, speaker and reference text, with no silent resampling or padding.</p>
+        </li>
+        <li class="step">
+          <span class="step__n" aria-hidden="true">2</span>
+          <h3 class="step__h">Predict a perturbation inside the bound</h3>
+          <p>The generator reads the clip’s complex spectrum and writes an additive signal that stays within ±tau on every sample and averages zero.</p>
+        </li>
+        <li class="step">
+          <span class="step__n" aria-hidden="true">3</span>
+          <h3 class="step__h">Train against the frozen victim</h3>
+          <p>The loss is the exact empty-transcript TDT loss of <code>nvidia/parakeet-tdt-0.6b-v3</code>, in stages <code>teacher</code>, <code>self_distill</code> and <code>direct</code>; PGD teachers come from training clips only.</p>
+        </li>
+        <li class="step">
+          <span class="step__n" aria-hidden="true">4</span>
+          <h3 class="step__h">Optionally refine at evaluation</h3>
+          <p>Amortised sign-PGD can take a few signed-gradient steps from the generator’s output, and that rate is always reported apart from the generator’s own.</p>
+        </li>
+        <li class="step">
+          <span class="step__n" aria-hidden="true">5</span>
+          <h3 class="step__h">Evaluate saved audio, then replay</h3>
+          <p>Saved float WAVs are scored for raw and normalized empty rate, WER, SNR and PESQ/STOI, then replayed on a freshly loaded model before any claim.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="fit" class="sec" aria-labelledby="fit-title">
+    <div class="wrap fit">
+      <div class="sec__head">
+        <h2 id="fit-title" class="h2">Where it fits</h2>
+        <p class="sec__lede">Most protections act after a copy exists, or guard the door rather than the file. Muffliato is meant to act before extraction, on the audio itself.</p>
+      </div>
+      <dl class="fit__list">
+        <div class="fit__row">
+          <dt>Watermarking</dt>
+          <dd>Traces a leaked copy back to its source. It acts after the copy exists and does not stop anyone transcribing it.</dd>
+        </div>
+        <div class="fit__row">
+          <dt>Content ID</dt>
+          <dd>Matches copies once they are uploaded. Also after the fact.</dd>
+        </div>
+        <div class="fit__row">
+          <dt>Crawler tolls and robots.txt</dt>
+          <dd>Govern how bots fetch web pages. An audio enclosure that has been downloaded or attached is outside their reach.</dd>
+        </div>
+        <div class="fit__row">
+          <dt>Bot blocking</dt>
+          <dd>Keeps a notetaker out of the meeting, as VCU, Chapman and Harvard do for third-party bots. It stops the bot, not the audio.</dd>
+        </div>
+        <div class="fit__row fit__row--us">
+          <dt>Muffliato</dt>
+          <dd>Changes the audio file before any extraction, so the protection travels with the file. Whether it works is not yet measured.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="status" class="sec sec--panel" aria-labelledby="status-title">
+    <div class="wrap">
+      <div class="sec__head">
+        <h2 id="status-title" class="h2">Early, and honest about it</h2>
+        <p class="sec__lede">Implementation complete; efficacy untested. This page quotes no suppression rate for Muffliato because there isn’t one yet.</p>
+      </div>
+      <div class="status">
+        <ul class="status__list" role="list">
+          <li><h3 class="status__h">Not trained on the real victim</h3><p>No pretrained Parakeet inference or GPU training has been run for this network.</p></li>
+          <li><h3 class="status__h">Efficacy untested</h3><p>Lower training loss or a finished checkpoint is not suppression; only decoded, replayed output counts, and there is none yet.</p></li>
+          <li><h3 class="status__h">Audibility not reviewed</h3><p>No listening test has been done. PESQ and STOI thresholds are study gates, not proof that nobody can hear it.</p></li>
+          <li><h3 class="status__h">Offline, not real-time</h3><p>The model is non-causal: it reads the whole utterance before writing, so it works on saved files, not live streams.</p></li>
+          <li><h3 class="status__h">One victim model</h3><p>It targets <code>nvidia/parakeet-tdt-0.6b-v3</code> with frozen weights and greedy decoding, and makes no claim about other speech recognisers.</p></li>
+          <li><h3 class="status__h">Digital audio only</h3><p>The signal is added to the file. Playback through a speaker into a microphone, compression and resampling are all untested.</p></li>
+        </ul>
+
+        <aside class="evidence" aria-labelledby="evidence-title">
+          <h3 id="evidence-title" class="evidence__h">What earlier experiments showed</h3>
+          <p class="evidence__tag">Sibling per-clip PGD experiment, not this network</p>
+          <p>At tau 0.00025, per-clip optimisation against the same victim emptied <strong>71 of 90</strong> outcomes: 30 clips from 15 speakers, three restarts each. Quality at that budget was PESQ mean 4.46 (p10 4.23) and STOI mean 0.9993 (p10 0.9986).</p>
+          <p>That shows quiet suppression is feasible when each clip is optimised on its own. It says nothing yet about a one-pass generator.</p>
+          <h3 class="evidence__h evidence__h--gate">The bar the project set itself</h3>
+          <p>A provisional quiet gate at tau 0.00025: at least 70% raw-empty transcripts, PESQ mean ≥ 4.0 (p10 ≥ 3.7) and STOI mean ≥ 0.99 (p10 ≥ 0.98). Passing it would still not be a perceptual guarantee.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="run" class="sec" aria-labelledby="run-title">
+    <div class="wrap run">
+      <div class="sec__head">
+        <h2 id="run-title" class="h2">Run it</h2>
+        <p class="sec__lede">The base install runs the CPU test suite with synthetic audio and model doubles. Nothing is downloaded and no GPU is touched.</p>
+      </div>
+      <div class="run__body">
+        <div class="code">
+          <div class="code__bar"><span>shell</span><button class="copy" type="button" data-copy="#code-install">Copy</button></div>
+<pre><code id="code-install">git clone https://github.com/NidhiBharani/parakeet-suppression-nn
+cd parakeet-suppression-nn &amp;&amp; python3.12 -m venv .venv &amp;&amp; .venv/bin/python -m pip install -e .
+CUDA_VISIBLE_DEVICES='' PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v</code></pre>
+        </div>
+        <dl class="specs">
+          <div><dt>Tests</dt><dd>98 CPU tests, using synthetic audio and model doubles.</dd></div>
+          <div><dt>Real victim work</dt><dd>Install <code>-e '.[parakeet,quality]'</code> for NeMo, torchaudio, PESQ and STOI.</dd></div>
+          <div><dt>Stack</dt><dd>Python 3.12 or later, Torch 2.11, NeMo 3.0. A clean install has not been tested yet.</dd></div>
+          <div><dt>Presets</dt><dd>11 research configs in <code>configs/</code>, from a one-clip fit to the hybrid tau-continuation run. All default to CPU.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--cta" aria-labelledby="cta-title">
+    <div class="wrap cta">
+      <div>
+        <h2 id="cta-title" class="h2">Help find out whether it works</h2>
+        <p class="sec__lede">The code is public. If you hold confidential meeting audio, voice catalogues or screeners and want to test Muffliato on your own material, write to us.</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--primary" href="https://github.com/NidhiBharani/parakeet-suppression-nn">Get the code</a>
+        <a class="btn btn--quiet" href="mailto:hello@aer.app?subject=Muffliato">Talk to us</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Muffliato</h2>
+      <p>A research implementation of a bounded speech perturbation against automatic transcription. Built by <a class="aer-footer__author" href="https://github.com/NidhiBharani">Nidhi Bharani</a>. No license file yet.</p>
+      <ul role="list">
+        <li><a href="https://github.com/NidhiBharani/parakeet-suppression-nn">Source on GitHub</a></li>
+        <li><a href="#status">Research status</a></li>
+        <li><a href="mailto:hello@aer.app?subject=Muffliato">Talk to us</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/promptmask/">PromptMask</a></li>
+        <li><a href="/polyjuicevoice/">PolyJuiceVoice</a></li>
+        <li><a href="/subtly/">Subtly</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER. Status: research implementation, efficacy untested.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js?v=20261017" defer></script>
+<script src="/muffliato/page.js?v=20261105" defer></script>
+</body>
+</html>

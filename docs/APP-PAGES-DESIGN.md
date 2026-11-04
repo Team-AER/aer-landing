@@ -281,3 +281,45 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   it" (v0.1, what you bring: ffmpeg, whisper-cli, models — or the AIO bundle) → open source (MIT) →
   CTA (GitHub releases).
 - **Avoid:** film-reel kitsch; claiming it is turnkey; linking subtly.aer.app (not live).
+
+### Muffliato — `/muffliato/`  (speech perturbation against automatic transcription; research implementation)
+- **Mood:** a sound booth with two listeners. Clinical, quiet, confident; light scheme
+  (`color-scheme: light`). Honest about being early, in its own section.
+- **Palette:** field `#EEF1F4`, panel `#FFFFFF`, ink `#0F1419`, muted `#5B6572`, line `#D5DBE2`;
+  three accents because there are three data series: human/speech green `#1F8F6B` (what people
+  hear), machine magenta `#C8326B` (the victim model's failing transcript; machine side and failure
+  states only), perturbation violet `#5D5BD6` (the added signal, the ±tau band, the CTA).
+- **Type:** Manrope (display 700/800 + body 400/500) + JetBrains Mono (transcripts, tau values,
+  commands) from Google Fonts; two families, `display=swap`.
+- **Hero concept:** a hand-built "two listeners" console. Top, the waveform of a short clip with a thin
+  violet band for the ±tau bound (`tau 0.00025`). Below, two columns: "Human listener" shows a neutral
+  board-meeting sentence in green; "Parakeet TDT 0.6B" shows the same transcript when unprotected and
+  an empty `""` with a `raw-empty` badge when protected. A real `<button role="switch">` flips
+  Original / Protected. Headline: "Speech people hear. Machines can't transcribe." Primary CTA
+  "Get the code" (GitHub), secondary "Talk to us" (mailto:hello@aer.app).
+- **The one memorable thing:** on load the console flips from Original to Protected once and the
+  machine column erases word by word while the human column does not change. Reduced motion shows
+  the Protected end state with no animation.
+- **Must mirror:** the product has no UI of its own; it is a Python research codebase. The hero is the
+  evaluation idea (human vs victim transcript) rendered as an instrument, not a fake app screen. Facts
+  come from the repo's README and docs (github.com/NidhiBharani/parakeet-suppression-nn): hard L∞
+  bound, zero-DC centered-tanh bias solve, complex STFT (FFT 512 / hop 160, 16 kHz mono), log-RMS
+  conditioning, 6 dilated temporal blocks + 2 Transformer layers, preset parameter counts
+  (hybrid 1,535,297; default 1,518,720), 98 CPU tests, 11 presets.
+- **Sections:** hero → "Who needs this" (confidential meetings in regulated organizations; voice
+  talent and audiobook publishers; pre-release screeners; confidential interview and source
+  material; each with its real trigger, named) → "What it does to the audio" (six outcomes, three
+  with small inline SVGs) → "How it works" (numbered: manifest of 16 kHz clips → generator inside the
+  bound → trained against frozen `nvidia/parakeet-tdt-0.6b-v3` with an exact empty-transcript TDT
+  loss, teacher → self_distill → direct → optional amortised sign-PGD refinement → evaluate saved
+  WAVs and replay on a freshly loaded model) → "Where it fits" (watermarking, content-ID, crawler
+  tolls, bot blocking act after a copy, on web pages only, or on the bot; Muffliato acts before
+  extraction, on the file) → "Early, and honest about it" (untrained on the real victim, efficacy
+  untested, audibility not reviewed, offline and non-causal, one victim model, digital audio only;
+  earlier per-clip PGD results labelled as sibling-experiment feasibility evidence, not this
+  network's result; the project's provisional quiet gate) → "Run it" (clone, venv, CPU test command
+  with copy button) → closing CTA + shared footer (repo, no license file yet, status "research
+  implementation").
+- **Avoid:** any efficacy or suppression number for this network; "inaudible"; "real-time"; "works on
+  all ASR" or any transfer claim beyond the one victim model; "over the air"; cloning resistance;
+  waveforms as decoration (the waveform is data, drawn once); gradient blobs; "seamless"/"powerful".

@@ -268,6 +268,17 @@
 .mini--mask .m-prose { gap: 0.7em; }
 .m-redact { background: #000 !important; height: 0.7em !important; }
 
+/* Muffliato: the clip with its violet ±tau band, then the two listeners. */
+.mini--muffliato { grid-template-rows: 34% 1fr; }
+.m-wave--bound { position: relative; }
+.mini--muffliato .m-wave i { background: color-mix(in srgb, var(--t-ink) 55%, transparent); }
+.m-wave--bound::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 0.6em; transform: translateY(-50%); background: color-mix(in srgb, var(--t-acc) 24%, transparent); border-block: 1px solid var(--t-acc); pointer-events: none; }
+.m-ears { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; min-height: 0; }
+.m-heard, .m-asr { background: #fff; border: 1px solid color-mix(in srgb, var(--t-ink) 14%, transparent); border-radius: 0.4em; padding: 0.6em; }
+.mini--muffliato .m-heard b { background: var(--t-2); }
+.m-asr { display: grid; align-content: start; justify-items: start; }
+.m-empty { font: 700 0.6em/1 var(--font-mono); letter-spacing: 0.02em; color: #fff; background: #C8326B; border-radius: 99.9em; padding: 0.35em 0.7em; }
+
 /* ---------- Mini demos: play once when the tile arrives, then hold ---------- */
 .mini :nth-child(1) { --k: 0; } .mini :nth-child(2) { --k: 1; } .mini :nth-child(3) { --k: 2; } .mini :nth-child(4) { --k: 3; }
 .mini :nth-child(5) { --k: 4; } .mini :nth-child(6) { --k: 5; } .mini :nth-child(7) { --k: 6; }
@@ -279,7 +290,7 @@
 .motion .app-tile.is-in .mini :is(.m-article b, .m-console b, .m-prose b, .m-gantt b, .m-ble, .m-wavebar, .m-redact) {
   animation: draw-x 560ms var(--ease-out) backwards; animation-delay: calc(var(--d, 0ms) + var(--o, 320ms) + var(--k, 0) * var(--step, 90ms));
 }
-.motion .app-tile.is-in .mini :is(.m-relay i, .m-slides b, .m-mic, .m-board), .motion .app-tile.is-in .mini .m-row--hot::before {
+.motion .app-tile.is-in .mini :is(.m-relay i, .m-slides b, .m-mic, .m-board, .m-empty), .motion .app-tile.is-in .mini .m-row--hot::before {
   animation: pop 460ms var(--ease-pop) backwards; animation-delay: calc(var(--d, 0ms) + var(--o, 320ms) + var(--k, 0) * var(--step, 90ms));
 }
 .motion .app-tile.is-in .mini .m-wave i { animation: mi-grow-y 520ms var(--ease-pop) backwards; animation-delay: calc(var(--d, 0ms) + var(--o, 320ms) + var(--k, 0) * var(--step, 35ms)); }
@@ -299,6 +310,7 @@
 .mini--omni .m-board { --o: 240ms; } .mini--omni .m-ble { --o: 560ms; } .mini--omni .m-phone { --o: 800ms; }
 .mini--mask .m-prose > b:not(.m-redact) { animation: none !important; }
 .mini--mask .m-redact { --o: 520ms; --step: 260ms; }
+.mini--muffliato .m-wave { --o: 200ms; --step: 30ms; } .mini--muffliato .m-heard { --o: 760ms; } .mini--muffliato .m-empty { --o: 1200ms; }
 @keyframes mi-up { from { opacity: 0; transform: translateY(0.8em); } }
 @keyframes mi-in-r { from { opacity: 0; transform: translateX(40%); } }
 @keyframes mi-grow-y { from { transform: scaleY(0.08); } }
