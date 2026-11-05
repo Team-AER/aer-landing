@@ -169,15 +169,6 @@ main a:not([class]), .aer-footer__author {
 .demo__note { margin-top: 14px; font-size: 0.86rem; color: var(--dim); max-width: 60ch; }
 @media (max-width: 560px) { .demo__frame { border-radius: 16px; box-shadow: 6px 6px 0 var(--accent); } }
 
-/* ---------- status ---------- */
-.band--status { background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.stats { margin-top: 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.stat { padding: 22px 22px 24px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); display: grid; gap: 8px; align-content: start; }
-.stat__h { font-size: 1.08rem; font-weight: 650; line-height: 1.3; }
-.stat p { font-size: 0.94rem; color: var(--dim); }
-.stat--flag { border-color: var(--erase); }
-.stat--flag .stat__h { color: var(--erase); }
-
 /* ---------- who it's for ---------- */
 .who { margin-top: 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 .who__card { background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; padding: 22px; display: grid; gap: 10px; align-content: start; }
@@ -217,12 +208,6 @@ main a:not([class]), .aer-footer__author {
 .fits__table tbody tr:last-child th, .fits__table tbody tr:last-child td { border-bottom: 0; }
 .fits__us th, .fits__us td { background: var(--accent-wash); }
 .fits__us th { color: var(--accent-ink); }
-
-/* ---------- limits ---------- */
-.band--limits { background: var(--card); border-top: 1px solid var(--line); }
-.limits__list { margin-top: 36px; display: grid; gap: 28px 32px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.limits__h { font-size: 1.05rem; font-weight: 650; margin-bottom: 6px; }
-.limits__list p { font-size: 0.95rem; color: var(--dim); }
 
 /* ---------- access ---------- */
 .band--access { background: var(--accent); color: #fff; border-top: 2px solid var(--ink); }

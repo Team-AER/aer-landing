@@ -284,8 +284,8 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
 
 ### Muffliato — `/muffliato/`  (keeps recorded speech out of machine transcription)
 - **Mood:** a quiet room with the lights on. A research prototype that must not oversell, written
-  for buyers, not researchers: no model names, budgets, metrics or architecture on the page. The
-  status band says in plain words what is and is not shown. Light scheme; the product has no UI.
+  for buyers, not researchers: no model names, budgets, metrics, architecture or research status
+  on the page. Light scheme; the product has no UI.
 - **Palette:** paper `#F3F5F7`, card `#FFFFFF`, ink `#0E1420`, indigo `#3F3BD6` (fills, rules,
   the added-layer line; text uses `#2F2CB0`), indigo wash `#E6E5FB`, rose `#D6353B` only where a
   transcript line is erased or a status card reports a failure.
@@ -298,11 +298,11 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
 - **Must mirror:** the project's evidence record for every status claim (keep the claims
   qualitative here; the numbers live in the repo). Positioning and the buyer order come from the
   Anti-ASR Demand Map research (4 Nov 2026).
-- **Sections:** hero → status in plain words (works by hand, not yet automatic, not yet heard by
-  people, an earlier attempt failed) → who it's for (regulated meetings, voice talent and
-  publishers, pre-release review copies, confidential interviews; in demand-research order) → why
-  now (dated signals) → what happens to a recording (four plain steps: numbers allowed) → the
-  empty quadrant (table against watermarking, crawler tolls, bot blocking, voice detection) →
-  limits → access (private repo; CTA "Talk to us about a pilot" mailto:hello@aer.app).
+- **Sections:** hero → who it's for (regulated meetings, voice talent and publishers, pre-release
+  review copies, confidential interviews; in demand-research order) → why now (dated signals) →
+  what happens to a recording (three plain steps: numbers allowed) → the empty quadrant (table
+  against watermarking, crawler tolls, bot blocking, voice detection) → access (private repo;
+  CTA "Talk to us about a pilot" mailto:hello@aer.app). No status or limits section (removed
+  2026-11-05 at the owner's request); keep research status in the repo.
 - **Avoid:** hyperparameters, metric names, model versions, architecture terms; any claim of a
   measured result; "inaudible"; live-call claims; podcast or archive buyers; spy or jamming imagery.

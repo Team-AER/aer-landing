@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/shared/base.css?v=20261017">
-<link rel="stylesheet" href="/muffliato/style.css?v=20261105b">
+<link rel="stylesheet" href="/muffliato/style.css?v=20261105c">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -42,7 +42,7 @@
     <nav id="mf-menu" class="pagenav__menu" hidden aria-label="Page sections">
       <a href="#for">Who it’s for</a>
       <a href="#how">How it works</a>
-      <a href="#limits">Limits</a>
+      <a href="#why">Why now</a>
       <a href="#access">Access</a>
     </nav>
     <div class="pagenav__actions">
@@ -66,7 +66,6 @@
           <a class="btn btn--ghost" href="#how">How it works</a>
         </div>
         <ul class="hero__facts" role="list">
-          <li>Research prototype. The results are not in yet, and this page says so wherever it matters.</li>
           <li>Works on recorded audio you control: a review copy, a delivered master, an interview file.</li>
         </ul>
       </div>
@@ -112,33 +111,6 @@
         </figure>
         <p class="demo__note">Illustration of the intended behaviour, drawn from sample text. The added layer is exaggerated here so you can see it; in practice it is far too small to show.</p>
       </div>
-    </div>
-  </section>
-
-  <section id="status" class="band band--status">
-    <div class="wrap">
-      <div class="band__head">
-        <h2 class="h2">Where it stands, without rounding up</h2>
-        <p class="band__lede">We can already protect a single recording when we tune it by hand. Doing it automatically, for any recording, is the problem this project exists to solve, and that result is not in yet.</p>
-      </div>
-      <ul class="stats" role="list" data-reveal>
-        <li class="stat">
-          <h3 class="stat__h">Shown to work, one recording at a time</h3>
-          <p>Hand-tuned on dozens of clips from many speakers, most came back from the recogniser with an empty transcript, and standard quality measures stayed near the clean original.</p>
-        </li>
-        <li class="stat">
-          <h3 class="stat__h">Not yet automatic</h3>
-          <p>The model that should do this in one pass, for recordings it has never heard, is built and tested end to end but has not been trained for real. Its first run is next.</p>
-        </li>
-        <li class="stat">
-          <h3 class="stat__h">Not yet heard by people</h3>
-          <p>Quality so far is measured by instruments, not by a listening panel. Nobody has yet confirmed the change is inaudible.</p>
-        </li>
-        <li class="stat stat--flag">
-          <h3 class="stat__h">An earlier attempt failed</h3>
-          <p>Our previous model trained to completion and protected nothing. This design was built to answer that failure, and we will publish its result either way.</p>
-        </li>
-      </ul>
     </div>
   </section>
 
@@ -217,11 +189,6 @@
           <h3 class="hop__h">You get the same recording back</h3>
           <p class="hop__p">Same length, same format, same words to a listener. Transcription software is given the file and returns nothing.</p>
         </li>
-        <li class="hop">
-          <span class="hop__n" aria-hidden="true">4</span>
-          <h3 class="hop__h">Every result is checked twice</h3>
-          <p class="hop__p">Before we call a recording protected, the saved file is played back through a fresh copy of the recogniser. A number from training is never the evidence.</p>
-        </li>
       </ol>
     </div>
   </section>
@@ -247,46 +214,11 @@
     </div>
   </section>
 
-  <section id="limits" class="band band--limits">
-    <div class="wrap">
-      <div class="band__head">
-        <h2 class="h2">What it does not do yet</h2>
-        <p class="band__lede">These are the claims we cannot make yet. Each is a planned test or a known boundary, and we would rather you hear them from us.</p>
-      </div>
-      <ul class="limits__list" role="list" data-reveal>
-        <li>
-          <h3 class="limits__h">Not measured yet</h3>
-          <p>The automatic model has been tested end to end but not trained for real. How often it protects a recording it has never heard is unknown until the first full run.</p>
-        </li>
-        <li>
-          <h3 class="limits__h">One recogniser so far</h3>
-          <p>Development targets a single widely used open-source speech recogniser. Whether protection carries over to other transcription software is untested.</p>
-        </li>
-        <li>
-          <h3 class="limits__h">Offline, digital audio</h3>
-          <p>It operates on recorded files. Live calls that compress or clean up audio can strip the layer before it leaves your machine, and playback through a room and a microphone has not been tested.</p>
-        </li>
-        <li>
-          <h3 class="limits__h">Quiet, not proven inaudible</h3>
-          <p>Quality is measured by instruments. No listening study has been run. Review copies may tolerate an audible mark; delivered masters may not.</p>
-        </li>
-        <li>
-          <h3 class="limits__h">Machines, not people</h3>
-          <p>A human can still listen and type. The product narrows automated, bulk extraction; it is not secrecy.</p>
-        </li>
-        <li>
-          <h3 class="limits__h">Not a legal control</h3>
-          <p>It does not replace consent, policy or a recording ban, and it is not a substitute for legal advice on any of them.</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
   <section id="access" class="band band--access">
     <div class="wrap access">
       <div class="access__copy">
         <h2 class="h2">Tell us about the recording you couldn’t stop</h2>
-        <p class="access__lede">Muffliato is built by Nidhi Bharani for Team AER. The repository is private and the first real results are ahead of us, so right now we are looking for the people whose problem this is: a named incident, the budget line it sits in, and what you pay for the alternative today.</p>
+        <p class="access__lede">Muffliato is built by Nidhi Bharani for Team AER. The repository is private, so right now we are looking for the people whose problem this is: a named incident, the budget line it sits in, and what you pay for the alternative today.</p>
       </div>
       <div class="access__cta">
         <a class="btn btn--ink" href="mailto:hello@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a>
@@ -325,7 +257,7 @@
       </ul>
     </div>
     <div class="aer-footer__meta">
-      <span>© 2026 Team AER. A research prototype; nothing on this page is a measured result.</span>
+      <span>© 2026 Team AER.</span>
       <span>No cookies, no analytics, no accounts on this page.</span>
     </div>
   </div>
