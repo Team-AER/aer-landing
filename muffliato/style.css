@@ -197,16 +197,6 @@ main a:not([class]), .aer-footer__author {
 .hop__h { font-size: 1.08rem; font-weight: 650; }
 .hop__p { font-size: 0.94rem; color: #C9D0DA; }
 
-/* ---------- fits ---------- */
-.fits { margin-top: 36px; overflow-x: auto; background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; }
-.fits__table { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 560px; }
-.fits__table th, .fits__table td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
-.fits__table thead th { font-size: 0.78rem; font-weight: 600; color: var(--dim); }
-.fits__table tbody th { font-weight: 600; color: var(--ink); }
-.fits__table tbody tr:last-child th, .fits__table tbody tr:last-child td { border-bottom: 0; }
-.fits__us th, .fits__us td { background: var(--accent-wash); }
-.fits__us th { color: var(--accent-ink); }
-
 /* ---------- access ---------- */
 .band--access { background: var(--accent); color: #fff; border-top: 2px solid var(--ink); }
 .band--access .h2 { color: #fff; font-size: clamp(2rem, 4.6vw, 3.3rem); max-width: 16ch; }

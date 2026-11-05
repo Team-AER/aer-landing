@@ -300,8 +300,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   Anti-ASR Demand Map research (4 Nov 2026).
 - **Sections:** hero → who it's for (regulated meetings, voice talent and publishers, pre-release
   review copies, confidential interviews; in demand-research order) → why now (dated signals) →
-  what happens to a recording (three plain steps: numbers allowed) → the empty quadrant (table
-  against watermarking, crawler tolls, bot blocking, voice detection) → access (private repo;
+  what happens to a recording (three plain steps: numbers allowed) → access (private repo;
   CTA "Talk to us about a pilot" mailto:hello@aer.app). No status or limits section (removed
   2026-11-05 at the owner's request); keep research status in the repo.
 - **Avoid:** hyperparameters, metric names, model versions, architecture terms; any claim of a
