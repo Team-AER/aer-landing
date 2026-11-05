@@ -159,7 +159,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   while you play" (async illustrations, eight moods, administrator-configured local or hosted image providers) → "8-bit
   interludes" (Platformer / Explorer, Silkscreen) → "The private mirror" (six-category reflection,
   evidence-linked, not clinical) → access (invite-only; CTA = live site + "Ask for an invitation"
-  mailto:hello@aer.app). Private repo: no "Get the code".
+  mailto:nidhi@aer.app). Private repo: no "Get the code".
 - **Avoid:** fantasy-poster bombast, drop caps everywhere, fake dice physics.
 
 ### Accio — `/accio/`  (local-first deep-research agent)
@@ -183,7 +183,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   and the web" (library formats, hybrid retrieval, SearXNG/Tavily/Brave, trust lists) → "Every claim,
   quoted" (verbatim quotes, critic loops, modes Quick/Standard/Deep with their source counts) →
   report views + the six artifacts → "Your machine, your model" (any OpenAI-compatible endpoint,
-  nothing hosted) → access (private repo; CTA "Ask for access" mailto:hello@aer.app).
+  nothing hosted) → access (private repo; CTA "Ask for access" mailto:nidhi@aer.app).
 - **Avoid:** "AI magic" copy; a hosted-demo CTA (there is none).
 
 ### Avifors — `/avifors/`  (demand-loaded GPU inference with bounded leases)
@@ -253,7 +253,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   root RF worker) → "Every aireplay-ng mode, typed and bounded" → "Survey and capture" (AP
   snapshots, channel-hop schedules, validated .hc22000 artifacts) → authorized use + security docs →
   status: software complete, hardware qualification pending (say it plainly) → access (private repo;
-  CTA "Ask about Omniocular" mailto:hello@aer.app).
+  CTA "Ask about Omniocular" mailto:nidhi@aer.app).
 - **Avoid:** anything reading as "hack your neighbour"; radar-sweep clichés; claiming working RF.
 
 ### Subtly — `/subtly/`  (GPU-accelerated subtitles on your desktop)
@@ -301,7 +301,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
 - **Sections:** hero → who it's for (regulated meetings, voice talent and publishers, pre-release
   review copies, confidential interviews; in demand-research order) → why now (dated signals) →
   what happens to a recording (three plain steps: numbers allowed) → access (private repo;
-  CTA "Talk to us about a pilot" mailto:hello@aer.app). No status or limits section (removed
+  CTA "Talk to us about a pilot" mailto:nidhi@aer.app). No status or limits section (removed
   2026-11-05 at the owner's request); keep research status in the repo.
 - **Avoid:** hyperparameters, metric names, model versions, architecture terms; any claim of a
   measured result; "inaudible"; live-call claims; podcast or archive buyers; spy or jamming imagery.
