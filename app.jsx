@@ -108,7 +108,7 @@ const PROJECT_GROUPS = [
         meta: ["Chrome extension", "On-device Gemma 4", "5 chat sites"], pal: ["#FFFFFF", "#000000", "#23A094", "#D3F3F0"], mini: "mask" },
       { key: "muffliato", title: "Muffliato", page: "/muffliato/", private: true, authors: ["nidhi"],
         line: "Keeps recorded speech out of machine transcription: people hear the same words, the recogniser decodes nothing.",
-        meta: ["Research prototype", "Against Parakeet TDT", "Efficacy pending"], pal: ["#F3F5F7", "#0E1420", "#3F3BD6", "#D6353B"], mini: "muff" }
+        meta: ["Research prototype", "Recorded audio", "Results pending"], pal: ["#F3F5F7", "#0E1420", "#3F3BD6", "#D6353B"], mini: "muff" }
     ]
   }
 ];
