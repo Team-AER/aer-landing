@@ -176,7 +176,6 @@ main a:not([class]), .aer-footer__author {
 .who__rank { font-family: var(--mono); font-size: 0.74rem; color: var(--accent-ink); }
 .who__h { font-size: 1.12rem; font-weight: 650; line-height: 1.25; }
 .who__card p:not(.who__rank) { font-size: 0.95rem; }
-.who__buys { color: var(--dim); font-size: 0.88rem; border-top: 1px solid var(--line); padding-top: 10px; }
 
 /* ---------- why now ---------- */
 .band--why { background: var(--accent-wash); }
