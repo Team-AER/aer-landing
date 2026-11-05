@@ -159,7 +159,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   while you play" (async illustrations, eight moods, administrator-configured local or hosted image providers) → "8-bit
   interludes" (Platformer / Explorer, Silkscreen) → "The private mirror" (six-category reflection,
   evidence-linked, not clinical) → access (invite-only; CTA = live site + "Ask for an invitation"
-  mailto:hello@aer.app). Private repo: no "Get the code".
+  mailto:nidhi@aer.app). Private repo: no "Get the code".
 - **Avoid:** fantasy-poster bombast, drop caps everywhere, fake dice physics.
 
 ### Accio — `/accio/`  (local-first deep-research agent)
@@ -183,7 +183,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   and the web" (library formats, hybrid retrieval, SearXNG/Tavily/Brave, trust lists) → "Every claim,
   quoted" (verbatim quotes, critic loops, modes Quick/Standard/Deep with their source counts) →
   report views + the six artifacts → "Your machine, your model" (any OpenAI-compatible endpoint,
-  nothing hosted) → access (private repo; CTA "Ask for access" mailto:hello@aer.app).
+  nothing hosted) → access (private repo; CTA "Ask for access" mailto:nidhi@aer.app).
 - **Avoid:** "AI magic" copy; a hosted-demo CTA (there is none).
 
 ### Avifors — `/avifors/`  (demand-loaded GPU inference with bounded leases)
@@ -253,7 +253,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   root RF worker) → "Every aireplay-ng mode, typed and bounded" → "Survey and capture" (AP
   snapshots, channel-hop schedules, validated .hc22000 artifacts) → authorized use + security docs →
   status: software complete, hardware qualification pending (say it plainly) → access (private repo;
-  CTA "Ask about Omniocular" mailto:hello@aer.app).
+  CTA "Ask about Omniocular" mailto:nidhi@aer.app).
 - **Avoid:** anything reading as "hack your neighbour"; radar-sweep clichés; claiming working RF.
 
 ### Subtly — `/subtly/`  (GPU-accelerated subtitles on your desktop)
@@ -281,3 +281,27 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   it" (v0.1, what you bring: ffmpeg, whisper-cli, models — or the AIO bundle) → open source (MIT) →
   CTA (GitHub releases).
 - **Avoid:** film-reel kitsch; claiming it is turnkey; linking subtly.aer.app (not live).
+
+### Muffliato — `/muffliato/`  (keeps recorded speech out of machine transcription)
+- **Mood:** a quiet room with the lights on. A research prototype that must not oversell, written
+  for buyers, not researchers: no model names, budgets, metrics, architecture or research status
+  on the page. Light scheme; the product has no UI.
+- **Palette:** paper `#F3F5F7`, card `#FFFFFF`, ink `#0E1420`, indigo `#3F3BD6` (fills, rules,
+  the added-layer line; text uses `#2F2CB0`), indigo wash `#E6E5FB`, rose `#D6353B` only where a
+  transcript line is erased or a status card reports a failure.
+- **Type:** Sora (display) + system sans body; JetBrains Mono only for the transcript replica.
+- **Hero concept:** two panels in one frame. Left, "What people hear": a waveform with a faint
+  second line drawn over it. Right, "What the software gets": three transcript lines struck out
+  one by one until the result is `""`. Headline: "Keep your words off the transcript."
+- **The one memorable thing:** the strike-through. The waveform never changes; only the transcript
+  does. Rose means erased.
+- **Must mirror:** the project's evidence record for every status claim (keep the claims
+  qualitative here; the numbers live in the repo). Positioning and the buyer order come from the
+  Anti-ASR Demand Map research (4 Nov 2026).
+- **Sections:** hero → who it's for (regulated meetings, voice talent and publishers, pre-release
+  review copies, confidential interviews; in demand-research order) → why now (dated signals) →
+  what happens to a recording (three plain steps: numbers allowed) → access (private repo;
+  CTA "Talk to us about a pilot" mailto:nidhi@aer.app). No status or limits section (removed
+  2026-11-05 at the owner's request); keep research status in the repo.
+- **Avoid:** hyperparameters, metric names, model versions, architecture terms; any claim of a
+  measured result; "inaudible"; live-call claims; podcast or archive buyers; spy or jamming imagery.

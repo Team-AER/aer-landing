@@ -105,7 +105,10 @@ const PROJECT_GROUPS = [
         meta: ["Pi Zero 2 W", "Flutter app", "MIT"], pal: ["#EFEDE6", "#15171A", "#FF6A00", "#0082FC"], mini: "omni" },
       { key: "promptmask", title: "PromptMask", page: "/promptmask/", private: true, authors: ["nidhi"],
         line: "Masks names, emails and ID numbers in your prompt on-device, before ChatGPT, Claude or Gemini sees it.",
-        meta: ["Chrome extension", "On-device Gemma 4", "5 chat sites"], pal: ["#FFFFFF", "#000000", "#23A094", "#D3F3F0"], mini: "mask" }
+        meta: ["Chrome extension", "On-device Gemma 4", "5 chat sites"], pal: ["#FFFFFF", "#000000", "#23A094", "#D3F3F0"], mini: "mask" },
+      { key: "muffliato", title: "Muffliato", page: "/muffliato/", private: true, authors: ["nidhi"],
+        line: "Keeps recorded speech out of machine transcription: people hear the same words, the recogniser decodes nothing.",
+        meta: ["Research prototype", "Recorded audio", "Results pending"], pal: ["#F3F5F7", "#0E1420", "#3F3BD6", "#D6353B"], mini: "muff" }
     ]
   }
 ];
@@ -490,6 +493,11 @@ function Mini({ kind }) {
     case "mask": return (
       <div className="mini mini--mask">
         <div className="m-prose"><b /><b className="m-redact" /><b /><b className="m-redact m-short" /></div>
+      </div>);
+    case "muff": return (
+      <div className="mini mini--muff">
+        <b className="m-wavebar" />
+        <div className="m-prose"><b className="m-strike" /><b className="m-strike m-short" /><b className="m-strike" /></div>
       </div>);
     default: return null;
   }

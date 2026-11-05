@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muffliato — Team AER</title>
+<meta name="description" content="Muffliato adds a quiet layer to recorded speech so people hear the same words and speech-recognition software returns an empty transcript. A Team AER research prototype; results not yet measured.">
+<meta property="og:title" content="Muffliato: keep your words off the transcript">
+<meta property="og:description" content="A research prototype that treats recorded speech so listeners hear it unchanged and automatic transcription returns nothing.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aer.app/muffliato/">
+<meta property="og:image" content="https://aer.app/assets/brand/social-preview-20261010.png">
+<meta property="og:site_name" content="Team AER">
+<meta name="theme-color" content="#F3F5F7">
+<link rel="icon" type="image/svg+xml" href="/muffliato/assets/icon.svg">
+<link rel="apple-touch-icon" href="/muffliato/assets/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/base.css?v=20261017">
+<link rel="stylesheet" href="/muffliato/style.css?v=20261105c">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="aer-strip">
+  <div class="wrap">
+    <a href="/"><img class="aer-strip__mark" src="/assets/brand/icon-192-20261010.png" width="28" height="28" alt="">Team AER</a>
+    <nav class="aer-strip__links" aria-label="Team AER">
+      <a href="/#projects">All apps</a>
+      <a href="https://github.com/Team-AER">GitHub</a>
+    </nav>
+  </div>
+</div>
+
+<header class="pagenav">
+  <div class="wrap">
+    <a class="pagenav__brand" href="/muffliato/">
+      <img class="pagenav__mark" src="/muffliato/assets/icon.svg" width="30" height="30" alt="">
+      <span>Muffliato</span>
+    </a>
+    <nav id="mf-menu" class="pagenav__menu" hidden aria-label="Page sections">
+      <a href="#for">Who it’s for</a>
+      <a href="#how">How it works</a>
+      <a href="#why">Why now</a>
+      <a href="#access">Access</a>
+    </nav>
+    <div class="pagenav__actions">
+      <a class="pagenav__cta" href="mailto:nidhi@aer.app?subject=Muffliato">Talk to us</a>
+      <button class="pagenav__toggle" type="button" data-nav-toggle aria-controls="mf-menu" aria-expanded="false" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title">Keep your words off the transcript.</h1>
+        <p class="hero__lede">A quiet layer over your recording. People hear every word. Transcription software gets nothing.</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="mailto:nidhi@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a>
+          <a class="btn btn--ghost" href="#how">How it works</a>
+        </div>
+        <ul class="hero__facts" role="list">
+          <li>Works on any recording you control: review copies, masters, interviews.</li>
+        </ul>
+      </div>
+
+      <div class="hero__stage">
+        <figure class="demo" id="demo" data-demo>
+          <div class="demo__frame" role="img" aria-label="Two panels. Left, a waveform labelled ‘What people hear’ with a faint second line drawn over it; the words stay the same. Right, a transcript panel labelled ‘What the software gets’: three lines of transcript are struck out one by one and the result reads: nothing.">
+            <div class="panel panel--ear" aria-hidden="true">
+              <div class="panel__head">
+                <span class="panel__title">What people hear</span>
+                <span class="panel__tag" data-ear-tag>same words</span>
+              </div>
+              <svg class="wave" viewBox="0 0 320 120" preserveAspectRatio="none">
+                <path class="wave__clean" d="M0 60 L6 58 L12 64 L18 52 L24 70 L30 44 L36 78 L42 38 L48 84 L54 30 L60 88 L66 34 L72 82 L78 42 L84 76 L90 48 L96 70 L102 54 L108 64 L114 58 L120 62 L126 56 L132 68 L138 46 L144 76 L150 36 L156 86 L162 28 L168 92 L174 32 L180 84 L186 40 L192 78 L198 46 L204 72 L210 52 L216 66 L222 58 L228 62 L234 56 L240 66 L246 50 L252 72 L258 42 L264 80 L270 38 L276 82 L282 44 L288 74 L294 52 L300 66 L306 58 L312 62 L320 60" fill="none"/>
+                <path class="wave__delta" data-delta d="M0 60 L8 61 L16 59 L24 61 L32 59 L40 61 L48 58 L56 62 L64 59 L72 61 L80 59 L88 61 L96 60 L104 61 L112 59 L120 61 L128 59 L136 61 L144 58 L152 62 L160 59 L168 61 L176 59 L184 61 L192 60 L200 61 L208 59 L216 61 L224 59 L232 61 L240 60 L248 61 L256 59 L264 61 L272 59 L280 61 L288 60 L296 61 L304 59 L312 61 L320 60" fill="none"/>
+              </svg>
+              <p class="panel__foot">Every word, as spoken.</p>
+            </div>
+            <div class="panel panel--asr" aria-hidden="true">
+              <div class="panel__head">
+                <span class="panel__title">What the software gets</span>
+                <span class="panel__tag">transcript</span>
+              </div>
+              <ol class="lines" data-lines>
+                <li class="line is-gone"><span class="line__t">the quarterly numbers were worse</span></li>
+                <li class="line is-gone"><span class="line__t">than what we told the board</span></li>
+                <li class="line is-gone"><span class="line__t">and legal wants that kept in this room</span></li>
+              </ol>
+              <p class="result is-on" data-result><span class="result__k">result</span><code class="result__v">""</code><span class="result__n">nothing to transcribe</span></p>
+            </div>
+          </div>
+          <figcaption class="demo__steps">
+            <ol class="steps" role="list">
+              <li class="steps__i is-done" data-step="1"><span class="steps__n" aria-hidden="true">1</span>Speech in</li>
+              <li class="steps__i is-done" data-step="2"><span class="steps__n" aria-hidden="true">2</span>Muffliato applied</li>
+              <li class="steps__i is-done" data-step="3"><span class="steps__n" aria-hidden="true">3</span>Transcript comes back empty</li>
+            </ol>
+            <button class="demo__replay" type="button" data-replay hidden>
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.8v2.8h2.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              Replay
+            </button>
+          </figcaption>
+        </figure>
+        <p class="demo__note">Illustration with sample text. The layer is exaggerated so you can see it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="for" class="band band--for">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">For recordings you can’t stop</h2>
+        <p class="band__lede">Bot blocking and consent cover most meetings. Muffliato covers the rest.</p>
+      </div>
+      <ul class="who" role="list" data-reveal>
+        <li class="who__card">
+          <p class="who__rank">First</p>
+          <h3 class="who__h">Confidential meetings</h3>
+          <p>Law, health, boards, universities. The other side records anyway.</p>
+        </li>
+        <li class="who__card">
+          <p class="who__rank">Second</p>
+          <h3 class="who__h">Voice talent and publishers</h3>
+          <p>Narrators and podcasts. Keep published audio out of training sets.</p>
+        </li>
+        <li class="who__card">
+          <p class="who__rank">Third</p>
+          <h3 class="who__h">Pre-release review copies</h3>
+          <p>Screeners and dailies. Already watermarked; now unreadable to machines.</p>
+        </li>
+        <li class="who__card">
+          <p class="who__rank">Fourth</p>
+          <h3 class="who__h">Interviews and sources</h3>
+          <p>Raw footage shared with freelancers and funders. Protect the source.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="why" class="band band--why">
+    <div class="wrap why">
+      <div class="why__copy">
+        <h2 class="h2">Why this, why now</h2>
+        <p class="band__lede">Buyers are already fighting machine transcription. Nothing they have acts on the audio itself.</p>
+      </div>
+      <ol class="signals" role="list" data-reveal>
+        <li class="signal"><span class="signal__d">Aug 2025</span><p>Otter.ai sued over meeting audio. Universities start blocking AI notetakers.</p></li>
+        <li class="signal"><span class="signal__d">Dec 2025</span><p>NYC Bar requires client consent for AI recording. A patient sues over an ambient scribe.</p></li>
+        <li class="signal"><span class="signal__d">Mar 2026</span><p>VCU approves zero third-party notetakers. Granola raises $125M to build one.</p></li>
+        <li class="signal"><span class="signal__d">May 2026</span><p>Nine class actions by journalists and narrators over AI use of their voices.</p></li>
+        <li class="signal"><span class="signal__d">Oct 2026</span><p>3.2 million podcast episodes indexed with full transcripts. No one objects.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="how" class="band band--how">
+    <div class="wrap">
+      <div class="band__head">
+        <h2 class="h2">What happens to a recording</h2>
+        <p class="band__lede">It works on the audio itself, before the file leaves your hands.</p>
+      </div>
+      <ol class="path" role="list" data-reveal>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">1</span>
+          <h3 class="hop__h">You hand it a recording</h3>
+          <p class="hop__p">Any finished audio file. No transcript or speaker details needed.</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">2</span>
+          <h3 class="hop__h">It adds a quiet layer</h3>
+          <p class="hop__p">Far too quiet to notice, shaped to confuse transcription software and nothing else.</p>
+        </li>
+        <li class="hop">
+          <span class="hop__n" aria-hidden="true">3</span>
+          <h3 class="hop__h">You get the same recording back</h3>
+          <p class="hop__p">Same length, same format, same words. Transcription returns empty.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="access" class="band band--access">
+    <div class="wrap access">
+      <div class="access__copy">
+        <h2 class="h2">Tell us about the recording you couldn’t stop</h2>
+        <p class="access__lede">Built by Nidhi Bharani for Team AER. We want to hear from people with a real incident and a budget for it.</p>
+      </div>
+      <div class="access__cta">
+        <a class="btn btn--ink" href="mailto:nidhi@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a>
+        <a class="btn btn--line" href="mailto:nidhi@aer.app?subject=Muffliato%20research">Ask about the research</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aer-footer">
+  <div class="wrap">
+    <div>
+      <h2>Muffliato</h2>
+      <p>A research prototype that keeps recorded speech out of machine transcription. Built by <a class="aer-footer__author" href="https://github.com/nidhibharani">Nidhi Bharani</a>. Private repository.</p>
+      <ul role="list">
+        <li><a href="mailto:nidhi@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a></li>
+        <li><a href="mailto:nidhi@aer.app?subject=Muffliato%20research">Ask about the research</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Team AER</h2>
+      <ul role="list">
+        <li><a href="/">aer.app</a></li>
+        <li><a href="/#projects">All apps</a></li>
+        <li><a href="https://github.com/Team-AER">GitHub organisation</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Other apps</h2>
+      <ul role="list">
+        <li><a href="/promptmask/">PromptMask</a></li>
+        <li><a href="/quill/">Quill</a></li>
+        <li><a href="/subtly/">Subtly</a></li>
+        <li><a href="/polyjuicevoice/">PolyJuiceVoice</a></li>
+      </ul>
+    </div>
+    <div class="aer-footer__meta">
+      <span>© 2026 Team AER.</span>
+      <span>No cookies, no analytics, no accounts on this page.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/shared/shell.js?v=20261017" defer></script>
+<script src="/muffliato/page.js?v=20261105b" defer></script>
+</body>
+</html>
