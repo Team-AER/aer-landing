@@ -107,8 +107,8 @@ const PROJECT_GROUPS = [
         line: "Masks names, emails and ID numbers in your prompt on-device, before ChatGPT, Claude or Gemini sees it.",
         meta: ["Chrome extension", "On-device Gemma 4", "5 chat sites"], pal: ["#FFFFFF", "#000000", "#23A094", "#D3F3F0"], mini: "mask" },
       { key: "muffliato", title: "Muffliato", page: "/muffliato/", private: true, authors: ["nidhi"],
-        line: "Keeps recorded speech out of machine transcription: people hear the same words, the recogniser decodes nothing.",
-        meta: ["Research prototype", "Recorded audio", "Results pending"], pal: ["#F3F5F7", "#0E1420", "#3F3BD6", "#D6353B"], mini: "muff" }
+        line: "Keeps sensitive conversations out of AI transcription: people hear every word, the notetaker gets nothing usable.",
+        meta: ["Zoom and Teams", "Legal, advisory, boards", "Pilots open"], pal: ["#1E2248", "#F5F3EC", "#C6F232", "#FF7A5C"], mini: "muff", dark: true }
     ]
   }
 ];

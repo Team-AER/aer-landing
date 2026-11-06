@@ -36,7 +36,7 @@ use React and Babel in the browser; other app pages use HTML, CSS and vanilla Ja
 | `/athena/` | Self-hosted malware-analysis portal |
 | `/omniocular/` | Pocket wireless-audit device and controller |
 | `/promptmask/` | On-device prompt masking in a browser extension |
-| `/muffliato/` | Research prototype that keeps recorded speech out of machine transcription |
+| `/muffliato/` | Keeps sensitive conversations out of AI transcription; investor page at `/muffliato/investors/` |
 
 ## How it works
 
