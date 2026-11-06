@@ -3,22 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muffliato — Team AER</title>
-<meta name="description" content="Muffliato adds a quiet layer to recorded speech so people hear the same words and speech-recognition software returns an empty transcript. A Team AER research prototype; results not yet measured.">
-<meta property="og:title" content="Muffliato: keep your words off the transcript">
-<meta property="og:description" content="A research prototype that treats recorded speech so listeners hear it unchanged and automatic transcription returns nothing.">
+<title>Muffliato: sensitive conversations, kept out of AI transcription — Team AER</title>
+<meta name="description" content="Muffliato adds an imperceptible layer to the speech in a call. People hear every word; the notetaker, the phone on the table and the model the file ends up in get nothing usable.">
+<meta property="og:title" content="Muffliato: sensitive conversations, kept out of AI transcription">
+<meta property="og:description" content="People hear every word. Transcription models hear nothing usable. For legal, advisory and boardroom conversations.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aer.app/muffliato/">
 <meta property="og:image" content="https://aer.app/assets/brand/social-preview-20261010.png">
 <meta property="og:site_name" content="Team AER">
-<meta name="theme-color" content="#F3F5F7">
-<link rel="icon" type="image/svg+xml" href="/muffliato/assets/icon.svg">
-<link rel="apple-touch-icon" href="/muffliato/assets/icon.svg">
+<meta name="theme-color" content="#1e2248">
+<link rel="canonical" href="https://aer.app/muffliato/">
+<link rel="icon" type="image/svg+xml" href="/muffliato/assets/icon.svg?v=20261106">
+<link rel="apple-touch-icon" href="/muffliato/assets/icon-180.png?v=20261106">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/shared/base.css?v=20261017">
-<link rel="stylesheet" href="/muffliato/style.css?v=20261105c">
+<link rel="stylesheet" href="/muffliato/style.css?v=20261106">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -33,20 +34,22 @@
   </div>
 </div>
 
-<header class="pagenav">
+<header class="pagenav" data-stick>
   <div class="wrap">
-    <a class="pagenav__brand" href="/muffliato/">
-      <img class="pagenav__mark" src="/muffliato/assets/icon.svg" width="30" height="30" alt="">
+    <a class="brand" href="/muffliato/" aria-label="Muffliato home">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="10" width="4" height="8" rx="2"></rect><rect x="8" y="4" width="4" height="20" rx="2"></rect><rect x="14" y="8" width="4" height="12" rx="2"></rect><rect x="20" y="12" width="4" height="4" rx="2"></rect></svg>
       <span>Muffliato</span>
     </a>
-    <nav id="mf-menu" class="pagenav__menu" hidden aria-label="Page sections">
-      <a href="#for">Who it’s for</a>
+    <nav id="mf-menu" class="pagenav__menu" hidden aria-label="Page sections" data-spy>
+      <a href="#problem">Why</a>
       <a href="#how">How it works</a>
-      <a href="#why">Why now</a>
-      <a href="#access">Access</a>
+      <a href="#who">Who it is for</a>
+      <a href="#plans">Plans</a>
+      <a href="#faq">FAQ</a>
+      <a href="/muffliato/investors/">Investors</a>
     </nav>
     <div class="pagenav__actions">
-      <a class="pagenav__cta" href="mailto:nidhi@aer.app?subject=Muffliato">Talk to us</a>
+      <a class="btn btn--signal btn--sm" href="#pilot">Request a pilot</a>
       <button class="pagenav__toggle" type="button" data-nav-toggle aria-controls="mf-menu" aria-expanded="false" aria-label="Menu">
         <span></span><span></span>
       </button>
@@ -56,147 +59,285 @@
 
 <main id="main">
 
-  <section class="hero">
+  <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero__grid">
       <div class="hero__copy">
-        <h1 class="hero__title">Keep your words off the transcript.</h1>
-        <p class="hero__lede">A quiet layer over your recording. People hear every word. Transcription software gets nothing.</p>
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="mailto:nidhi@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a>
-          <a class="btn btn--ghost" href="#how">How it works</a>
+        <p class="hero__kicker" data-enter style="--e:0">For legal, advisory and boardroom conversations</p>
+        <h1 id="hero-title" class="hero__title" data-enter style="--e:1">Sensitive conversations, kept out of AI transcription.</h1>
+        <p class="hero__lede" data-enter style="--e:2">Muffliato adds an imperceptible layer to the speech in a call. People hear every word. The notetaker on the other side, the phone on the table and the model the file ends up in get nothing.</p>
+        <div class="cta-row" data-enter style="--e:3">
+          <a class="btn btn--signal" href="#pilot">Request a pilot <span class="btn__arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href="#how">See how it works</a>
         </div>
-        <ul class="hero__facts" role="list">
-          <li>Works on any recording you control: review copies, masters, interviews.</li>
-        </ul>
+        <p class="hero__note" data-enter style="--e:4">Works inside Zoom and Microsoft Teams. Nothing to install for anyone else on the call.</p>
       </div>
 
-      <div class="hero__stage">
-        <figure class="demo" id="demo" data-demo>
-          <div class="demo__frame" role="img" aria-label="Two panels. Left, a waveform labelled ‘What people hear’ with a faint second line drawn over it; the words stay the same. Right, a transcript panel labelled ‘What the software gets’: three lines of transcript are struck out one by one and the result reads: nothing.">
-            <div class="panel panel--ear" aria-hidden="true">
-              <div class="panel__head">
-                <span class="panel__title">What people hear</span>
-                <span class="panel__tag" data-ear-tag>same words</span>
-              </div>
-              <svg class="wave" viewBox="0 0 320 120" preserveAspectRatio="none">
-                <path class="wave__clean" d="M0 60 L6 58 L12 64 L18 52 L24 70 L30 44 L36 78 L42 38 L48 84 L54 30 L60 88 L66 34 L72 82 L78 42 L84 76 L90 48 L96 70 L102 54 L108 64 L114 58 L120 62 L126 56 L132 68 L138 46 L144 76 L150 36 L156 86 L162 28 L168 92 L174 32 L180 84 L186 40 L192 78 L198 46 L204 72 L210 52 L216 66 L222 58 L228 62 L234 56 L240 66 L246 50 L252 72 L258 42 L264 80 L270 38 L276 82 L282 44 L288 74 L294 52 L300 66 L306 58 L312 62 L320 60" fill="none"/>
-                <path class="wave__delta" data-delta d="M0 60 L8 61 L16 59 L24 61 L32 59 L40 61 L48 58 L56 62 L64 59 L72 61 L80 59 L88 61 L96 60 L104 61 L112 59 L120 61 L128 59 L136 61 L144 58 L152 62 L160 59 L168 61 L176 59 L184 61 L192 60 L200 61 L208 59 L216 61 L224 59 L232 61 L240 60 L248 61 L256 59 L264 61 L272 59 L280 61 L288 60 L296 61 L304 59 L312 61 L320 60" fill="none"/>
-              </svg>
-              <p class="panel__foot">Every word, as spoken.</p>
-            </div>
-            <div class="panel panel--asr" aria-hidden="true">
-              <div class="panel__head">
-                <span class="panel__title">What the software gets</span>
-                <span class="panel__tag">transcript</span>
-              </div>
-              <ol class="lines" data-lines>
-                <li class="line is-gone"><span class="line__t">the quarterly numbers were worse</span></li>
-                <li class="line is-gone"><span class="line__t">than what we told the board</span></li>
-                <li class="line is-gone"><span class="line__t">and legal wants that kept in this room</span></li>
-              </ol>
-              <p class="result is-on" data-result><span class="result__k">result</span><code class="result__v">""</code><span class="result__n">nothing to transcribe</span></p>
-            </div>
+      <figure class="demo" data-demo data-enter style="--e:3">
+        <div class="demo__body" role="img" aria-label="Two waveforms of the same sentence. A listener hears the full speech: “The board approved the acquisition at forty million, pending the audit.” A transcription model hears a flat line and returns: unintelligible.">
+          <div class="demo__row" aria-hidden="true">
+            <div class="demo__label"><span class="demo__who">A listener hears</span><span class="demo__tag">every word</span></div>
+            <div class="wave wave--listen"><i style="--h:25;--i:0"></i><i style="--h:60;--i:1"></i><i style="--h:85;--i:2"></i><i style="--h:40;--i:3"></i><i style="--h:70;--i:4"></i><i style="--h:25;--i:5"></i><i style="--h:80;--i:6"></i><i style="--h:50;--i:7"></i><i style="--h:15;--i:8"></i><i style="--h:60;--i:9"></i><i style="--h:90;--i:10"></i><i style="--h:35;--i:11"></i><i style="--h:65;--i:12"></i><i style="--h:20;--i:13"></i><i style="--h:75;--i:14"></i><i style="--h:45;--i:15"></i><i style="--h:80;--i:16"></i><i style="--h:30;--i:17"></i><i style="--h:55;--i:18"></i><i style="--h:85;--i:19"></i><i style="--h:35;--i:20"></i></div>
+            <p class="demo__quote">“The board approved the acquisition at forty million, pending the audit.”</p>
           </div>
-          <figcaption class="demo__steps">
-            <ol class="steps" role="list">
-              <li class="steps__i is-done" data-step="1"><span class="steps__n" aria-hidden="true">1</span>Speech in</li>
-              <li class="steps__i is-done" data-step="2"><span class="steps__n" aria-hidden="true">2</span>Muffliato applied</li>
-              <li class="steps__i is-done" data-step="3"><span class="steps__n" aria-hidden="true">3</span>Transcript comes back empty</li>
-            </ol>
-            <button class="demo__replay" type="button" data-replay hidden>
-              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.8v2.8h2.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              Replay
-            </button>
-          </figcaption>
-        </figure>
-        <p class="demo__note">Illustration with sample text. The layer is exaggerated so you can see it.</p>
+          <div class="demo__rule" aria-hidden="true"></div>
+          <div class="demo__row demo__row--model" aria-hidden="true">
+            <div class="demo__label"><span class="demo__who">A transcription model hears</span><span class="demo__tag" data-model-tag>nothing usable</span></div>
+            <div class="wave wave--model"><i style="--h:25;--f:8;--i:0"></i><i style="--h:60;--f:12;--i:1"></i><i style="--h:85;--f:8;--i:2"></i><i style="--h:40;--f:10;--i:3"></i><i style="--h:70;--f:8;--i:4"></i><i style="--h:25;--f:12;--i:5"></i><i style="--h:80;--f:8;--i:6"></i><i style="--h:50;--f:10;--i:7"></i><i style="--h:15;--f:8;--i:8"></i><i style="--h:60;--f:12;--i:9"></i><i style="--h:90;--f:8;--i:10"></i><i style="--h:35;--f:10;--i:11"></i><i style="--h:65;--f:8;--i:12"></i><i style="--h:20;--f:12;--i:13"></i><i style="--h:75;--f:8;--i:14"></i><i style="--h:45;--f:10;--i:15"></i><i style="--h:80;--f:8;--i:16"></i><i style="--h:30;--f:12;--i:17"></i><i style="--h:55;--f:8;--i:18"></i><i style="--h:85;--f:10;--i:19"></i><i style="--h:35;--f:8;--i:20"></i></div>
+            <p class="demo__quote" data-model-quote data-source="“The board approved the acquisition at forty million, pending the audit.”">“[unintelligible]”</p>
+          </div>
+        </div>
+        <div class="demo__foot">
+          <a class="demo__link" href="#pilot">Hear the live demo in a pilot call</a>
+          <button class="demo__replay" type="button" data-replay hidden>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4"></path><path d="M2.5 2.5v3h3"></path></svg>
+            Replay
+          </button>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="proof" aria-label="In numbers">
+    <div class="wrap grid grid--3" data-reveal>
+      <div class="stat">
+        <p class="stat__n stat__n--signal" data-count="97-99" data-suffix="%">97–99%</p>
+        <p class="stat__p">of protected utterances defeat OpenAI Whisper in our evaluation, with the audio still intelligible to listeners.</p>
+      </div>
+      <div class="stat">
+        <p class="stat__n" data-count="800">800</p>
+        <p class="stat__p">unapproved AI notetaker accounts one enterprise found in 90 days <span class="stat__src">(Nudge Security, 2025).</span></p>
+      </div>
+      <div class="stat">
+        <p class="stat__n">Aug 2026</p>
+        <p class="stat__p">Wiretap and biometric claims against an AI notetaker survive dismissal in a US federal court <span class="stat__src">(In re Otter.AI).</span></p>
       </div>
     </div>
   </section>
 
-  <section id="for" class="band band--for">
-    <div class="wrap">
-      <div class="band__head">
-        <h2 class="h2">For recordings you can’t stop</h2>
-        <p class="band__lede">Bot blocking and consent cover most meetings. Muffliato covers the rest.</p>
+  <section id="problem" class="band" aria-labelledby="problem-title">
+    <div class="wrap split">
+      <div class="head" data-reveal>
+        <div class="rule" data-grow></div>
+        <h2 id="problem-title" class="h2">Your tools are governed. The recorder on the other side of the call is not.</h2>
+        <p class="lede">Notetaker bans, allow-lists and consent banners work inside your own tenant. They do nothing about a client’s default-on notetaker, a counterparty that records, or a phone on the table. Once a recording exists, transcription is free and takes seconds.</p>
       </div>
-      <ul class="who" role="list" data-reveal>
-        <li class="who__card">
-          <p class="who__rank">First</p>
-          <h3 class="who__h">Confidential meetings</h3>
-          <p>Law, health, boards, universities. The other side records anyway.</p>
+      <ul class="cases" role="list" data-reveal>
+        <li class="case">
+          <span class="mono" aria-hidden="true">01</span>
+          <div>
+            <h3 class="h3">A privileged client call</h3>
+            <p class="body">The client joins with an AI notetaker running by default. The firm’s policy bans them; the client’s does not. The transcript now sits in a consumer app with no privilege attached.</p>
+          </div>
         </li>
-        <li class="who__card">
-          <p class="who__rank">Second</p>
-          <h3 class="who__h">Voice talent and publishers</h3>
-          <p>Narrators and podcasts. Keep published audio out of training sets.</p>
+        <li class="case">
+          <span class="mono" aria-hidden="true">02</span>
+          <div>
+            <h3 class="h3">A deal negotiation</h3>
+            <p class="body">Counterparty advisers record the call. Every number, concession and hesitation is searchable text by the time the meeting ends, ready to be run through a model for the weak points.</p>
+          </div>
         </li>
-        <li class="who__card">
-          <p class="who__rank">Third</p>
-          <h3 class="who__h">Pre-release review copies</h3>
-          <p>Screeners and dailies. Already watermarked; now unreadable to machines.</p>
-        </li>
-        <li class="who__card">
-          <p class="who__rank">Fourth</p>
-          <h3 class="who__h">Interviews and sources</h3>
-          <p>Raw footage shared with freelancers and funders. Protect the source.</p>
+        <li class="case">
+          <span class="mono" aria-hidden="true">03</span>
+          <div>
+            <h3 class="h3">A board or HR meeting</h3>
+            <p class="body">A phone on the table, a dial-in from a hotel, an investigation interview. One recording and the discussion is discoverable, leakable and, under wiretap and biometric laws, a claim.</p>
+          </div>
         </li>
       </ul>
     </div>
   </section>
 
-  <section id="why" class="band band--why">
-    <div class="wrap why">
-      <div class="why__copy">
-        <h2 class="h2">Why this, why now</h2>
-        <p class="band__lede">Buyers are already fighting machine transcription. Nothing they have acts on the audio itself.</p>
-      </div>
-      <ol class="signals" role="list" data-reveal>
-        <li class="signal"><span class="signal__d">Aug 2025</span><p>Otter.ai sued over meeting audio. Universities start blocking AI notetakers.</p></li>
-        <li class="signal"><span class="signal__d">Dec 2025</span><p>NYC Bar requires client consent for AI recording. A patient sues over an ambient scribe.</p></li>
-        <li class="signal"><span class="signal__d">Mar 2026</span><p>VCU approves zero third-party notetakers. Granola raises $125M to build one.</p></li>
-        <li class="signal"><span class="signal__d">May 2026</span><p>Nine class actions by journalists and narrators over AI use of their voices.</p></li>
-        <li class="signal"><span class="signal__d">Oct 2026</span><p>3.2 million podcast episodes indexed with full transcripts. No one objects.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="how" class="band band--how">
+  <section class="statement" aria-label="Statement">
     <div class="wrap">
-      <div class="band__head">
-        <h2 class="h2">What happens to a recording</h2>
-        <p class="band__lede">It works on the audio itself, before the file leaves your hands.</p>
+      <div class="decay" data-decay role="img" aria-label="A waveform that decays into flat noise from left to right"><i style="--h:60;--i:0"></i><i style="--h:87;--i:1"></i><i style="--h:40;--i:2"></i><i style="--h:93;--i:3"></i><i style="--h:53;--i:4"></i><i style="--h:73;--i:5"></i><i style="--h:33;--i:6"></i><i style="--h:80;--i:7"></i><i style="--h:47;--i:8"></i><i style="--h:67;--i:9"></i><i style="--h:27;--i:10"></i><i style="--h:60;--i:11"></i><i style="--h:40;--i:12"></i><i style="--h:53;--i:13"></i><i style="--h:27;--i:14"></i><i style="--h:40;--i:15"></i><i style="--h:20;--i:16"></i><i style="--h:33;--i:17"></i><i style="--h:17;--i:18"></i><i style="--h:23;--i:19"></i><i style="--h:13;--i:20"></i><i style="--h:17;--i:21"></i><i style="--h:10;--i:22"></i><i style="--h:13;--i:23"></i><i style="--h:10;--i:24"></i><i style="--h:10;--i:25"></i><i style="--h:7;--i:26"></i><i style="--h:10;--i:27"></i><i style="--h:7;--i:28"></i><i style="--h:7;--i:29"></i><i style="--h:7;--i:30"></i><i style="--h:7;--i:31"></i><i style="--h:7;--i:32"></i><i style="--h:7;--i:33"></i><i style="--h:7;--i:34"></i><i style="--h:7;--i:35"></i><i style="--h:7;--i:36"></i><i style="--h:7;--i:37"></i><i style="--h:7;--i:38"></i><i style="--h:7;--i:39"></i><i style="--h:7;--i:40"></i><i style="--h:7;--i:41"></i><i style="--h:7;--i:42"></i></div>
+      <p class="statement__text">People hear every word. Machines hear nothing.</p>
+    </div>
+  </section>
+
+  <section id="how" class="band band--sunken" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <div class="rule" data-grow></div>
+        <h2 id="how-title" class="h2">An audio layer people hear through and models cannot.</h2>
+        <p class="lede">The same toolbox as forensic watermarking, with the opposite goal: a watermark is built so a model still hears every word. Muffliato is built so it hears something else.</p>
       </div>
-      <ol class="path" role="list" data-reveal>
-        <li class="hop">
-          <span class="hop__n" aria-hidden="true">1</span>
-          <h3 class="hop__h">You hand it a recording</h3>
-          <p class="hop__p">Any finished audio file. No transcript or speaker details needed.</p>
+      <ol class="grid grid--3" role="list" data-reveal>
+        <li class="card card--hover">
+          <p class="mono">Step 1</p>
+          <h3 class="h3">Protect the call</h3>
+          <p class="body">Turn on protected-meeting mode in Zoom or Teams: by policy for matter types, deal rooms or committees, or per meeting. Nobody else installs anything.</p>
         </li>
-        <li class="hop">
-          <span class="hop__n" aria-hidden="true">2</span>
-          <h3 class="hop__h">It adds a quiet layer</h3>
-          <p class="hop__p">Far too quiet to notice, shaped to confuse transcription software and nothing else.</p>
+        <li class="card card--hover">
+          <p class="mono">Step 2</p>
+          <h3 class="h3">Speak normally</h3>
+          <p class="body">An adversarial perturbation shaped to the speech is added live, below what listeners notice. It survives compression, re-encoding and re-recording.</p>
         </li>
-        <li class="hop">
-          <span class="hop__n" aria-hidden="true">3</span>
-          <h3 class="hop__h">You get the same recording back</h3>
-          <p class="hop__p">Same length, same format, same words. Transcription returns empty.</p>
+        <li class="card card--mid card--hover">
+          <p class="mono">Step 3</p>
+          <h3 class="h3">Transcripts fail</h3>
+          <p class="body">Whoever records, and wherever the file goes, the model’s transcript comes out wrong or empty. Extraction stops before a copy exists, rather than being traced after.</p>
         </li>
       </ol>
     </div>
   </section>
 
-  <section id="access" class="band band--access">
-    <div class="wrap access">
-      <div class="access__copy">
-        <h2 class="h2">Tell us about the recording you couldn’t stop</h2>
-        <p class="access__lede">Built by Nidhi Bharani for Team AER. We want to hear from people with a real incident and a budget for it.</p>
+  <section id="who" class="band" aria-labelledby="who-title">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <div class="rule" data-grow></div>
+        <h2 id="who-title" class="h2">Built for the rooms where a transcript is a liability.</h2>
       </div>
-      <div class="access__cta">
-        <a class="btn btn--ink" href="mailto:nidhi@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a>
-        <a class="btn btn--line" href="mailto:nidhi@aer.app?subject=Muffliato%20research">Ask about the research</a>
+      <ul class="grid grid--4" role="list" data-reveal>
+        <li class="card card--hover">
+          <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+          <h3 class="h3">Legal</h3>
+          <p class="body">Privileged client calls, witness preparation, mediation, internal investigations.</p>
+          <p class="who__stake">At stake: privilege, bar-rule exposure, a transcript in discovery.</p>
+        </li>
+        <li class="card card--hover">
+          <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v10H8l-4 4z"></path></svg>
+          <h3 class="h3">Advisory and deals</h3>
+          <p class="body">M&amp;A and fundraising negotiations, due diligence, consulting and banking engagements under NDA.</p>
+          <p class="who__stake">At stake: positions and numbers in the counterparty’s hands.</p>
+        </li>
+        <li class="card card--hover">
+          <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 19c0-3 3-5 6-5s6 2 6 5"></path><path d="M15 15c2.5 0 5 1.5 5 4"></path></svg>
+          <h3 class="h3">Boardroom and HR</h3>
+          <p class="body">Board and audit-committee meetings, earnings preparation, restructuring, misconduct interviews.</p>
+          <p class="who__stake">At stake: leaks, insider information, wiretap and biometric claims.</p>
+        </li>
+        <li class="card card--hover">
+          <svg class="card__icon" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          <h3 class="h3">Regulated services</h3>
+          <p class="body">Clinical consultations and telehealth, wealth and insurance advice, public-sector briefings.</p>
+          <p class="who__stake">At stake: client data in a third-party model without consent.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="compare" class="band band--sunken" aria-labelledby="compare-title">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <div class="rule" data-grow></div>
+        <h2 id="compare-title" class="h2">Everything else acts on the bot or on the copy.</h2>
       </div>
+      <div class="tblwrap" tabindex="0" role="region" aria-labelledby="compare-title">
+        <table class="tbl">
+          <thead>
+            <tr><td style="width: 22%"></td><th scope="col">Bot blocking and consent</th><th scope="col">Forensic watermarking</th><th scope="col" class="is-us">Muffliato</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">What it stops</th><td>The recorder you can see, inside your own tenant</td><td>Nothing: it identifies the leaker after the leak</td><td class="is-us">The transcript itself, whoever records</td></tr>
+            <tr><th scope="row">When it acts</th><td>Before the meeting, by policy</td><td>After a copy exists</td><td class="is-us">On the audio, before extraction</td></tr>
+            <tr><th scope="row">Blind spot</th><td>Counterparties, contractors, phones on the table</td><td>The model still hears every word</td><td class="is-us">New model families need new tuning</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="plans" class="band" aria-labelledby="plans-title">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <div class="rule" data-grow></div>
+        <h2 id="plans-title" class="h2">Priced for the people whose conversations carry the risk, not every seat.</h2>
+        <p class="lede">Start with one group that has the exposure. Expand across the organisation when the policy is set.</p>
+      </div>
+      <ul class="grid grid--3" role="list" data-reveal>
+        <li class="card card--hover plan">
+          <h3 class="h3">Pilot</h3>
+          <p class="plan__price">Eight weeks</p>
+          <p class="body">One team, scoped and priced per engagement. A live demo, protected-meeting mode on your Zoom or Teams tenant, and a written report on what the transcripts looked like before and after.</p>
+          <a class="btn btn--line" href="#pilot">Request a pilot</a>
+        </li>
+        <li class="card card--mid card--hover plan plan--featured">
+          <h3 class="h3">Protected seats</h3>
+          <p class="plan__price">Per seat</p>
+          <p class="plan__per">monthly, for protected roles only</p>
+          <p class="body">For partners, deal teams, directors and investigators. Protected-meeting mode on demand, admin visibility of which calls were covered.</p>
+          <a class="btn btn--signal" href="#pilot">Talk to us</a>
+        </li>
+        <li class="card card--hover plan">
+          <h3 class="h3">Enterprise</h3>
+          <p class="plan__price">Annual licence</p>
+          <p class="body">Policy-driven protection across the organisation: on by default for matter types, deal rooms or committee meetings, with audit logs for compliance and procurement-ready paperwork.</p>
+          <a class="btn btn--line" href="#pilot">Talk to us</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="faq" class="band band--sunken" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <div class="rule" data-grow></div>
+        <h2 id="faq-title" class="h2">Questions we get asked first.</h2>
+      </div>
+      <div data-reveal>
+        <div class="faq">
+          <h3 class="h3">Can people on the call hear a difference?</h3>
+          <p class="body">No. The perturbation sits below what listeners notice; the call sounds like the call. The demo plays a protected clip first and asks you to spot it.</p>
+        </div>
+        <div class="faq">
+          <h3 class="h3">What about our own recordings and notetaker?</h3>
+          <p class="body">Protected mode is yours to switch on and off. Calls you want transcribed by your own approved tools stay unprotected; calls that must not become text are protected. Policy can decide per matter type or meeting kind.</p>
+        </div>
+        <div class="faq">
+          <h3 class="h3">Which transcription models does it defeat?</h3>
+          <p class="body">OpenAI Whisper, the model behind most consumer notetakers, at 97 to 99 percent attack success in our evaluation. Coverage of further model families is the current research agenda, and each pilot reports results against the tools its participants actually use.</p>
+        </div>
+        <div class="faq">
+          <h3 class="h3">Is it a watermark?</h3>
+          <p class="body">No. A watermark identifies who leaked a copy after the fact and leaves the speech fully readable to a model. Muffliato acts before extraction: the model never gets a usable transcript, so there is nothing to trace.</p>
+        </div>
+        <div class="faq">
+          <h3 class="h3">Does any audio leave our tenant?</h3>
+          <p class="body">No. The protection runs in the meeting pipeline on your side. Muffliato does not receive, store or process call audio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pilot" class="band band--mid on-mid" aria-labelledby="pilot-title">
+    <div class="wrap contact">
+      <div class="contact__copy" data-reveal>
+        <div class="rule" data-grow></div>
+        <h2 id="pilot-title" class="h2">Run a pilot on the conversations that worry you most.</h2>
+        <p>We are working with a small number of law firms, advisory teams and company secretariats on paid pilots. Tell us which rooms you want protected and we will come back within two working days.</p>
+        <ul class="ticks" role="list">
+          <li><svg viewBox="0 0 20 20" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg><span>Works inside your existing Zoom or Teams tenant</span></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg><span>Live demo: a protected clip run through Whisper in front of you</span></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg><span>No call audio leaves your meeting pipeline</span></li>
+        </ul>
+      </div>
+      <form class="form" data-mailto="nidhi@aer.app" data-subject="Muffliato pilot request" novalidate>
+        <div class="field">
+          <label for="pilot-name">Name</label>
+          <input id="pilot-name" name="Name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="pilot-email">Work email</label>
+          <input id="pilot-email" name="Email" type="email" autocomplete="email" placeholder="you@firm.com" required>
+        </div>
+        <div class="field">
+          <label for="pilot-org">Organisation type</label>
+          <select id="pilot-org" name="Organisation type">
+            <option>Law firm</option>
+            <option>Advisory, banking or consulting</option>
+            <option>Corporate: board, legal or HR</option>
+            <option>Healthcare or regulated services</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pilot-rooms">Which conversations would you protect first?</label>
+          <textarea id="pilot-rooms" name="Conversations to protect" rows="3" placeholder="Client calls, deal negotiations, board meetings…"></textarea>
+        </div>
+        <button class="btn btn--dark" type="submit">Request a pilot <span class="btn__arrow" aria-hidden="true">→</span></button>
+        <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+        <p class="form__note">Opens an email to us from your own mail app. We reply within two working days. No mailing list. Or write to <a href="mailto:nidhi@aer.app?subject=Muffliato%20pilot">nidhi@aer.app</a>.</p>
+      </form>
     </div>
   </section>
 
@@ -206,10 +347,10 @@
   <div class="wrap">
     <div>
       <h2>Muffliato</h2>
-      <p>A research prototype that keeps recorded speech out of machine transcription. Built by <a class="aer-footer__author" href="https://github.com/nidhibharani">Nidhi Bharani</a>. Private repository.</p>
+      <p>Keeps sensitive conversations out of AI transcription. Built by <a class="aer-footer__author" href="https://github.com/nidhibharani">Nidhi Bharani</a> for Team AER. Private repository.</p>
       <ul role="list">
-        <li><a href="mailto:nidhi@aer.app?subject=Muffliato%20pilot">Talk to us about a pilot</a></li>
-        <li><a href="mailto:nidhi@aer.app?subject=Muffliato%20research">Ask about the research</a></li>
+        <li><a href="#pilot">Request a pilot</a></li>
+        <li><a href="/muffliato/investors/">Investors and partners</a></li>
       </ul>
     </div>
     <div>
@@ -237,6 +378,6 @@
 </footer>
 
 <script src="/shared/shell.js?v=20261017" defer></script>
-<script src="/muffliato/page.js?v=20261105b" defer></script>
+<script src="/muffliato/page.js?v=20261106" defer></script>
 </body>
 </html>

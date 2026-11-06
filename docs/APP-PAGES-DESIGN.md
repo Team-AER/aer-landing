@@ -282,26 +282,30 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
   CTA (GitHub releases).
 - **Avoid:** film-reel kitsch; claiming it is turnkey; linking subtly.aer.app (not live).
 
-### Muffliato — `/muffliato/`  (keeps recorded speech out of machine transcription)
-- **Mood:** a quiet room with the lights on. A research prototype that must not oversell, written
-  for buyers, not researchers: no model names, budgets, metrics, architecture or research status
-  on the page. Light scheme; the product has no UI.
-- **Palette:** paper `#F3F5F7`, card `#FFFFFF`, ink `#0E1420`, indigo `#3F3BD6` (fills, rules,
-  the added-layer line; text uses `#2F2CB0`), indigo wash `#E6E5FB`, rose `#D6353B` only where a
-  transcript line is erased or a status card reports a failure.
-- **Type:** Sora (display) + system sans body; JetBrains Mono only for the transcript replica.
-- **Hero concept:** two panels in one frame. Left, "What people hear": a waveform with a faint
-  second line drawn over it. Right, "What the software gets": three transcript lines struck out
-  one by one until the result is `""`. Headline: "Keep your words off the transcript."
-- **The one memorable thing:** the strike-through. The waveform never changes; only the transcript
-  does. Rose means erased.
-- **Must mirror:** the project's evidence record for every status claim (keep the claims
-  qualitative here; the numbers live in the repo). Positioning and the buyer order come from the
-  Anti-ASR Demand Map research (4 Nov 2026).
-- **Sections:** hero → who it's for (regulated meetings, voice talent and publishers, pre-release
-  review copies, confidential interviews; in demand-research order) → why now (dated signals) →
-  what happens to a recording (three plain steps: numbers allowed) → access (private repo;
-  CTA "Talk to us about a pilot" mailto:nidhi@aer.app). No status or limits section (removed
-  2026-11-05 at the owner's request); keep research status in the repo.
-- **Avoid:** hyperparameters, metric names, model versions, architecture terms; any claim of a
-  measured result; "inaudible"; live-call claims; podcast or archive buyers; spy or jamming imagery.
+### Muffliato — `/muffliato/` and `/muffliato/investors/`  (keeps sensitive conversations out of AI transcription)
+- **Source:** the owner's "Muffliato landing page" design canvas (6 Nov 2026), two artboards: the
+  product page for buyers and an investors-and-partners page. Implemented as designed; copy, claims and
+  figures come from that canvas, which replaced the earlier research-prototype page (5 Nov 2026).
+- **Mood:** a quiet room after dark. Midnight bands carry the hero, proof strip and closing CTA; cream
+  surfaces carry the argument. Light `color-scheme`.
+- **Palette (Muffliato design system tokens):** surface `#F5F3EC`, raised `#FFFFFF`, sunken `#E9E6DC`,
+  line `#D3CFC2`, ink `#15172A`, muted `#5A5E73`, midnight `#1E2248` (+ `#2A2F66`, deep `#121420`),
+  signal lime `#C6F232` as the one accent (fills only; as text on cream use `#4F6A00`), ember
+  `#A8361E` on `#FBE3DC` only for the investor page's "what would make us change course" note.
+- **Type:** Bricolage Grotesque (display, sentence case), Inter (body), IBM Plex Mono (figures, steps,
+  dates, the transcript replica).
+- **Hero concept:** "A listener hears / A transcription model hears": the same sentence twice. The one
+  orchestrated moment: the model row starts with full bars, a lime layer sweeps across it, its bars
+  flatten and the transcript scrambles into "[unintelligible]"; the listener row keeps talking. Replay
+  button afterwards. The static HTML is the settled state.
+- **Motion elsewhere:** answers scroll or hover only: reveals with a short stagger, count-ups on the proof
+  figures, the statement band's waveform decaying left to right, meter bars and timeline dots on the
+  investor page, sticky nav shadow and scroll-spy. All of it is off under `prefers-reduced-motion`.
+- **Sections (product):** hero → proof strip → the recorder you don't control (three scenarios) →
+  statement band → how it works (three steps) → who it is for (four buyers) → comparison table → plans →
+  FAQ → pilot request. **(Investors):** hero → numbers → why now (dated timeline) → what we built
+  (+ measured results) → market (buyer table, land/expand/later) → twelve-month plan + change-of-course
+  test → team → contact.
+- **Forms:** the site has no backend and its CSP sets `form-action 'none'`; `page.js` composes an email to
+  nidhi@aer.app in the visitor's own mail app. A plain `mailto:` link sits under each form.
+- **Avoid:** spy or jamming imagery; gradient washes; claims beyond the canvas.
