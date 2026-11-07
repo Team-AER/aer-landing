@@ -9,7 +9,7 @@
 //
 // Hidden-initial states are gated on the `js` class added here, so nothing is hidden unless this ran.
 
-document.documentElement.classList.add('js');
+// Static content stays visible while the compiled interactions start.
 
 const reducedQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
 const REDUCED = !!(reducedQuery && reducedQuery.matches);

@@ -46,3 +46,7 @@ output/
 /docs/design-expression-*/**/*.svg
 /docs/design-expression-*/**/*.mp4
 /docs/design-expression-*/**/*.webm
+
+# Reproducible production output and build dependencies.
+node_modules/
+dist/

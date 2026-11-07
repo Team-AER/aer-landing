@@ -9,8 +9,9 @@ This repository serves the website; each application's own repository implements
 
 This is the canonical home for Team AER landing pages. The earlier `cantis-landing` and
 `polyjuicevoice-landing` repositories are legacy snapshots; update the corresponding folders
-here. Plain static files need no compiled build step. The team hub, Cantis and PolyJuiceVoice
-use React and Babel in the browser; other app pages use HTML, CSS and vanilla JavaScript.
+here. A reproducible Node build prerenders the hub, Cantis and PolyJuiceVoice and compiles their JSX.
+The hub uses small, first-party progressive scripts; the product studios use bundled React.
+Other app pages use HTML, CSS and vanilla JavaScript.
 
 ## What the site includes
 
@@ -46,15 +47,20 @@ flowchart LR
     Proxy --> Nginx[Non-root nginx on port 8080]
     Nginx --> Hub[Team hub and catalogue]
     Nginx --> Pages[Per-project landing pages]
-    Hub --> React[React and Babel from unpkg]
+    Hub --> HTML[Prerendered content]
+    Hub --> Scripts[Small first-party modules]
     Pages --> Assets[Product assets and shared shell]
     Pages --> Links[Application, repository and docs links]
     CI[GitHub Actions] --> Image[Build and smoke-test image]
     Image --> Nginx
 ```
 
-The hub, Cantis and PolyJuiceVoice require external React/Babel scripts; Google Fonts
-are used across the site. Local static serving does not make every page fully offline.
+The hub has no external scripts or font requests. Its navigation, hero, team and project
+catalogue arrive in the initial HTML, while the miniature workshop loads independently
+when near the viewport. A paper placeholder preserves its size; slow/error states and
+Retry never block project links. Motion settings apply live. Cantis and PolyJuiceVoice
+also receive prerendered HTML and first-party compiled scripts. Other product pages
+may still use Google Fonts. Local static serving does not make every page fully offline.
 The production nginx configuration supplies routing, CSP and cache headers that a simple
 Python file server does not reproduce.
 
@@ -62,12 +68,13 @@ Python file server does not reproduce.
 
 | Path | What it is |
 |---|---|
-| `aer.app.html`, `app.jsx`, `tweaks-panel.jsx` | Team page. React + Babel load from unpkg and JSX is transpiled in the browser. The app catalogue (`#projects`) is `PROJECT_GROUPS` in `app.jsx`. |
+| `aer.app.html`, `app.jsx`, `workshop.jsx` | Build-time React sources for the team page. No React or Babel ships to its visitors. The app catalogue (`#projects`) is `PROJECT_GROUPS` in `app.jsx`. |
 | `styles/tokens.css`, `styles/site.css` | Team page design tokens and styles (Gumroad-style hard shadows). |
 | `styles/apps.css` | The app catalogue: tiles, each app's mini window in its own palette, tablet and phone layouts, reduced motion. |
 | `<app>/index.html`, `style.css`, `page.js`, `assets/` | One self-contained landing page per app, themed in that app's own colours. Plain HTML, first-party scripts only. |
-| `cantis/`, `polyjuicevoice/` | React + Babel pages (`index.html`, `app.jsx`, `sections.jsx`, `illustrations.jsx`, `motion.jsx`), formerly the separate cantis-landing and polyjuicevoice-landing repos. They get the team page's CSP. |
+| `cantis/`, `polyjuicevoice/` | Prerendered React pages (`index.html`, `app.jsx`, `sections.jsx`, `illustrations.jsx`, `motion.jsx`), formerly the separate cantis-landing and polyjuicevoice-landing repos. All pages use the same first-party script CSP. |
 | `shared/base.css`, `shared/shell.js` | Shell shared by every app page: Team AER strip, footer, skip link, nav toggle, copy buttons, reveal on scroll. |
+| `scripts/build.mjs`, `scripts/home.js`, `scripts/workshop.js` | Static build and independent progressive homepage modules. |
 | `404.html` | Not-found page for any unknown path. |
 | `docs/APP-PAGES-DESIGN.md` | Design direction and quality floor for the app pages. Not served. |
 
@@ -84,10 +91,17 @@ excluded from the deployed image.
 
 ## Run locally
 
-Any static file server works; the team page is `aer.app.html`.
+Build the production files, then serve them (the team page is `aer.app.html`).
+Use Docker to reproduce clean URLs, gzip, cache headers and CSP.
 
 ```sh
-python3 -m http.server 8080
+npm ci
+npm run build
+npm test
+```
+
+```sh
+python3 -m http.server 8080 --directory dist
 # http://127.0.0.1:8080/aer.app.html and http://127.0.0.1:8080/pensieve/
 ```
 
@@ -106,10 +120,12 @@ Hardening in place:
 - `nginxinc/nginx-unprivileged` base — runs as uid 101, listens on 8080, no root.
 - Read-only root filesystem, `cap_drop: ALL`, `no-new-privileges`.
 - Published port bound to `127.0.0.1` only — not exposed on any external NIC.
-- GET/HEAD only, `server_tokens off`, security headers. Two CSPs (see
-  `nginx.conf`): the team page and the Cantis and PolyJuiceVoice pages may
-  load React/Babel from unpkg and eval; every other app page is limited to
-  first-party scripts. Both allow Google Fonts.
+- GET/HEAD only, `server_tokens off`, security headers. All pages allow only
+  first-party scripts; runtime eval and the unpkg dependency are removed.
+- The build stage ships only its static `dist/` output. Source JSX, dependencies,
+  build scripts and local artifacts are absent from the public image.
+- Content-hashed build assets cache for a year; HTML revalidates. Fonts and
+  existing versioned product assets retain bounded cache lifetimes.
 - Clean URLs (`/pensieve` → `/pensieve/`), custom 404, `docs/` not served.
 
 Tear down:
@@ -148,16 +164,16 @@ rebuild the container behind the TLS proxy. The existing host command is:
 ssh ubuntu@aer.app 'cd ~/aer-landing && git pull --ff-only && docker compose up -d --build && docker image prune -f'
 ```
 
-Pages load their own CSS/JS with a `?v=YYYYMMDD` stamp and HTML is served
-`no-cache`, so visitors pick up a deploy on their next visit. When you change
-a stylesheet or script, bump the stamp:
-
-Update the affected page's `?v=` values when its CSS or scripts change. Avoid changing
-unrelated page stamps in a documentation-only PR.
+The homepage stylesheet and compiled entry points have content-hashed URLs generated
+on every build; never edit `dist/` or reuse an old hash. HTML remains `no-cache`.
+Other static product pages use `?v=YYYYMMDD` stamps: update affected CSS/JS stamps
+when those files change. `scripts/build.test.mjs` verifies meaningful initial HTML,
+local entry points, omitted development files and a 200 KiB cold-homepage resource
+budget (including the two fonts, logo and workshop).
 
 ## CI
 
 `.github/workflows/ci.yml` runs on every push / PR: lints the Dockerfile
 (hadolint), builds the image, and smoke-tests that every page serves, clean
 URLs redirect, unknown paths 404, `docs/` is hidden and each page gets the
-right CSP.
+first-party CSP, prerendered headings and hidden development files.

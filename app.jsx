@@ -6,7 +6,7 @@ const { useState, useEffect, useRef } = React;
 // so reduced-motion visitors (and anything that fails before this line) get
 // every final state immediately.
 const MOTION = !window.matchMedia || !matchMedia("(prefers-reduced-motion: reduce)").matches;
-if (MOTION) document.documentElement.classList.add("motion");
+
 
 // ---------- Tweakable defaults ----------
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -606,58 +606,9 @@ function Footer() {
   );
 }
 
-// ---------- Tweaks panel ----------
-function AERTweaks({ tweaks, setTweak }) {
-  return (
-    <TweaksPanel title="Tweaks">
-      <TweakSection title="Hero">
-        <TweakSelect
-          label="Hero background"
-          value={tweaks.heroBg}
-          onChange={(v) => setTweak("heroBg", v)}
-          options={[
-            { value: "cream", label: "Cream (default)" },
-            { value: "pink", label: "Soft pink" },
-            { value: "yellow", label: "Soft gold" },
-            { value: "white", label: "White" }
-          ]}
-        />
-        <TweakRadio
-          label="Sticker density"
-          value={tweaks.stickerDensity}
-          onChange={(v) => setTweak("stickerDensity", v)}
-          options={[
-            { value: "none", label: "None" },
-            { value: "medium", label: "Medium" },
-            { value: "high", label: "Lots" }
-          ]}
-        />
-      </TweakSection>
-      <TweakSection title="Motion">
-        <TweakSlider
-          label="Marquee speed (s)"
-          min={10} max={60} step={1}
-          value={tweaks.marqueeSpeed}
-          onChange={(v) => setTweak("marqueeSpeed", v)}
-        />
-        <TweakToggle
-          label="Cursor sticker"
-          value={tweaks.showCursorSticker}
-          onChange={(v) => setTweak("showCursorSticker", v)}
-        />
-        <TweakToggle
-          label="Show marquee"
-          value={tweaks.showMarquee}
-          onChange={(v) => setTweak("showMarquee", v)}
-        />
-      </TweakSection>
-    </TweaksPanel>
-  );
-}
-
 // ---------- App ----------
 function App() {
-  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const tweaks = TWEAK_DEFAULTS;
   const [motionPaused, setMotionPaused] = useState(false);
   const [motionReduced, setMotionReduced] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => {
@@ -748,7 +699,6 @@ function App() {
       <Footer />
 
       <CursorSticker enabled={tweaks.showCursorSticker && !motionPaused && !motionReduced} />
-      <AERTweaks tweaks={tweaks} setTweak={setTweak} />
     </>
   );
 }
