@@ -17,3 +17,6 @@ screenshots/
 output/
 .playwright-cli/
 **/.DS_Store
+
+node_modules/
+dist/

@@ -160,6 +160,7 @@
   transform:translate(12px,-9px) rotate(4deg);
   z-index:-1}
 .ws-window {
+  position:relative;
   border:2px solid #111;
   border-radius:9px;
   background:white;
@@ -740,3 +741,37 @@ to {
 .ws-stack {grid-area:stack;}
 .ws-tool-tabs {grid-area:tabs;}
 .ws-demo-caption {grid-area:caption;}
+
+/* A real document first; the miniature loads independently inside reserved space. */
+.ws-loading {position:absolute;inset:38px 0 0;z-index:2;padding:28px 24px;background:#eee9dc;color:#25261f;}
+.ws-loading h3 {font:700 27px/1.15 Georgia,serif;}
+.ws-loading p {font:14px/1.5 Georgia,serif;margin-top:10px;}
+.ws-loading-lines {display:grid;gap:12px;margin:28px 0;}
+.ws-loading-lines i {display:block;height:10px;background:#d5d0c2;}
+.ws-loading-lines i:nth-child(2) {width:76%;}
+.ws-loading-lines i:nth-child(3) {width:88%;}
+.ws-loading-stamp {display:inline-block;padding:7px 10px;border:2px solid #25261f;transform:rotate(-5deg);font:700 10px/1.5 var(--font-mono);}
+.ws-root:not([data-load-state="ready"]) .ws-scene {visibility:hidden;}
+.ws-root[data-load-state="ready"] .ws-loading {display:none;}
+.ws-root[data-load-state="ready"] .ws-window {animation:ws-tools-ready .24s ease-out;}
+.ws-tool-tab:disabled {cursor:default;}
+.ws-load-status {display:grid;align-content:start;gap:6px;min-height:96px;padding-top:18px;font:11px/1.5 var(--font-mono);}
+.ws-load-status [role="status"]:before {content:'✦';color:#8a6c00;margin-right:8px;}
+.ws-retry {justify-self:start;border:2px solid #111;box-shadow:3px 3px #111;background:#ffc900;color:#111;padding:7px 10px;min-height:36px;font:inherit;}
+.ws-retry[hidden] {display:none;}
+.ws-root[data-load-state="slow"] .ws-loading-stamp {background:#ffc900;}
+.ws-root[data-load-state="error"] .ws-loading-stamp {background:#ff90e8;}
+.ws-root:not([data-load-state="ready"]) .ws-demo-caption strong {visibility:hidden;}
+@keyframes ws-tools-ready {from{transform:translateY(5px) rotate(0deg);}to{transform:rotate(-1deg);}}
+@media(prefers-reduced-motion:reduce) {.ws-root[data-load-state="ready"] .ws-window{animation:none;}}
+.ws-root[data-motion="off"] .ws-window {animation:none;}
+@media(max-width:700px) {.ws-loading{padding:22px 18px;}.ws-loading h3{font-size:23px;}.ws-load-status{min-height:118px;}.ws-retry{min-height:44px;}}
+/* The hero remains fully visible: entrance opacity must never gate its paint. */
+.ws-root.ws-intro .ws-hero-copy>* {animation:none!important;}
+.ws-workshop {grid-template-areas:"stack" "tabs" "status" "caption";}
+.ws-load-status {grid-area:status;}
+/* Caption rows reflow independently; never clip a long status on narrow phones. */
+.ws-demo-caption {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px;min-width:0;}
+.ws-demo-caption>span {grid-column:1/-1;white-space:normal;overflow-wrap:anywhere;}
+.ws-demo-caption .ws-tool-link {white-space:normal;}
+@media(max-width:1000px) {.ws-demo-caption{grid-template-columns:minmax(0,1fr);}.ws-demo-caption span{font-size:10px;line-height:1.5;}}

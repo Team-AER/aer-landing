@@ -7,7 +7,8 @@
  * as fallbacks and load Space Grotesk from Google Fonts as the closest OSS match
  * for the wide, geometric feel. Irregardless (display) substituted with Redaction.
  */
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap");
+@font-face { font-family:"Space Grotesk"; font-style:normal; font-weight:300 700; font-display:swap; src:url("/assets/fonts/space-grotesk-latin.woff2") format("woff2"); }
+@font-face { font-family:"JetBrains Mono"; font-style:normal; font-weight:100 800; font-display:swap; src:url("/assets/fonts/jetbrains-mono-latin.woff2") format("woff2"); }
 
 :root {
   /* ========== PRIMITIVE COLORS ========== */

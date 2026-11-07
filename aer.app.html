@@ -21,6 +21,7 @@
   <meta name="twitter:image" content="https://aer.app/assets/brand/social-preview-20261010.png" />
   <meta name="twitter:image:alt" content="Team AER’s pink a logo with a yellow discovery spark" />
   <meta name="theme-color" content="#F4F4F0" />
+  <link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles/site.css?v=20261010" />
   <link rel="stylesheet" href="styles/apps.css?v=20261105" />
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32-20261010.png" />
@@ -28,15 +29,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/brand/apple-touch-icon-20261010.png" />
   <link rel="canonical" href="https://aer.app/" />
 
-  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="styles/workshop.css?v=20261024e2" />
 </head>
 <body>
   <div id="root"></div>
-  <script type="text/babel" src="tweaks-panel.jsx?v=20261004"></script>
-  <script type="text/babel" src="workshop.jsx?v=20261024e2"></script>
-  <script type="text/babel" src="app.jsx?v=20261106"></script>
+  <!-- Build output contains the prerendered page and a small progressive entry. -->
+  <noscript><style>.ws-loading,.ws-load-status,.motion-control{display:none!important}.ws-scene{visibility:visible!important}</style></noscript>
 </body>
 </html>

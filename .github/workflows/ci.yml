@@ -33,18 +33,22 @@ jobs:
           done
           set -e
           # The team page and every app page serve 200.
-          for p in / $(find . -mindepth 2 -name index.html -not -path './.git/*' -not -path './docs/*' | sed 's#^\./##; s#index\.html$##'); do
-            curl -fsS -o /dev/null "http://127.0.0.1:8080/$p" && echo "ok  /$p"
+          for p in / $(git ls-files '*/index.html' | sed 's#index\.html$##'); do
+            curl -fsS -o /dev/null "http://127.0.0.1:8080/${p#/}" && echo "ok  /${p#/}"
           done
           # Clean URLs redirect, unknown paths get the 404 page, docs stay private.
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/pensieve)" = 301
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/no-such-app/)" = 404
           curl -s http://127.0.0.1:8080/no-such-app/ | grep -q "Nothing lives at this address"
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/docs/APP-PAGES-DESIGN.md)" = 404
-          # App pages get the strict CSP; only the team page may eval.
-          curl -sI http://127.0.0.1:8080/pensieve/ | grep -i '^content-security-policy' | grep -vq "unsafe-eval"
-          for p in / /cantis/ /polyjuicevoice/; do
-            curl -sI "http://127.0.0.1:8080$p" | grep -i '^content-security-policy' | grep -q "unsafe-eval"
+          # All pages use first-party compiled scripts and meaningful initial HTML.
+          for p in / /pensieve/ /cantis/ /polyjuicevoice/; do
+            curl -sI "http://127.0.0.1:8080$p" | grep -i '^content-security-policy' | grep -vq "unsafe-eval"
+            curl -fsS "http://127.0.0.1:8080$p" -o /tmp/aer-page.html
+            grep -q '<h1' /tmp/aer-page.html
+          done
+          for p in /app.jsx /tweaks-panel.jsx /package.json /scripts/build.mjs; do
+            test "$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:8080$p")" = 404
           done
 
       - name: Tear down
