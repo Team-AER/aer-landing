@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 
 const dist = new URL('../dist/', import.meta.url);
 const read = file => readFile(new URL(file, dist), 'utf8');
@@ -39,4 +40,28 @@ test('cold homepage stays within its transfer budget', async () => {
 test('production output excludes JSX, build dependencies and local artifacts', async () => {
   const files = await readdir(dist, { recursive: true });
   for (const file of files) assert.doesNotMatch(file, /(^|\/)(node_modules|docs|output|scripts|\.git|\.playwright-cli)(\/|$)|\.(jsx|map)$/);
+});
+
+test('recorded Muffliato samples ship unchanged WAV pairs and matching evaluation data', async () => {
+  const html = await read('muffliato/index.html');
+  const folders = await readdir(new URL('muffliato/assets/samples/', dist));
+  assert.equal(folders.length, 5);
+  assert.equal([...html.matchAll(/<audio controls preload="none"/g)].length, 10);
+  for (const folder of folders) {
+    const base = `muffliato/assets/samples/${folder}`;
+    const metrics = JSON.parse(await read(`${base}/metrics.json`));
+    assert.equal(metrics.model, 'nvidia/parakeet-tdt-0.6b-v3');
+    assert.equal(metrics.transcript_after, '');
+    assert.ok(html.replaceAll('&#x27;', "'").includes(metrics.transcript_before));
+    assert.ok(html.includes(`href="/${base}/metrics.json"`));
+    assert.ok(!Object.keys(metrics).some(key => key.startsWith('source_')));
+    for (const mode of ['before', 'after']) {
+      const audio = await readFile(new URL(`${base}/${mode}.wav`, dist));
+      assert.equal(createHash('sha256').update(audio).digest('hex'), metrics[`sha256_${mode}`]);
+      assert.equal(audio.toString('ascii', 0, 4), 'RIFF');
+      assert.equal(audio.toString('ascii', 8, 12), 'WAVE');
+      assert.ok(html.includes(`src="/${base}/${mode}.wav"`));
+      assert.ok(html.includes(`aria-labelledby="sample-${folder} ${folder}-${mode}"`));
+    }
+  }
 });

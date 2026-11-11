@@ -119,6 +119,21 @@
     });
   });
 
+  // ---- Recorded audio: one clip at a time, with a downloadable fallback.
+  var samples = document.querySelectorAll('.sample audio');
+  samples.forEach(function (audio) {
+    audio.addEventListener('play', function () {
+      samples.forEach(function (other) { if (other !== audio) other.pause(); });
+    });
+    var source = audio.querySelector('source');
+    function showAudioError() {
+      var status = audio.parentElement.querySelector('.sample__error');
+      if (status) status.hidden = false;
+    }
+    audio.addEventListener('error', showAudioError);
+    if (source) source.addEventListener('error', showAudioError);
+  });
+
   // ---- Hero demo.
   var demo = document.querySelector('[data-demo]');
   if (!demo) return;
