@@ -219,6 +219,10 @@ a:hover { color: var(--ink); }
 .sample__label span { font: 400 12px/1.5 var(--mono); color: var(--muted); }
 .sample__side--protected .sample__label span { color: var(--on-mid-muted); }
 .sample audio { width: 100%; min-width: 0; height: 54px; color-scheme: light; }
+.sample__transcript-label { margin: 24px 0 8px; font: 400 12px/1.5 var(--mono); color: var(--muted); }
+.sample__transcript { font: 400 14px/1.7 var(--mono); }
+.sample__side--protected .sample__transcript-label { color: var(--on-mid-muted); }
+.sample__transcript--empty { color: var(--signal); }
 .sample__error { font-size: 13px; }
 @media (max-width: 640px) {
   .sample__pair { grid-template-columns: minmax(0, 1fr); gap: 0; }

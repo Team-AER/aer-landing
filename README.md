@@ -41,8 +41,8 @@ Other app pages use HTML, CSS and vanilla JavaScript.
 
 The Muffliato page includes five before/after audio examples at
 `/muffliato/#samples`. Native players load audio on demand, omit the download
-control and allow only one clip to play at a time. The section presents playback
-only; evaluation metadata is excluded from the public site. The original float32
+control and allow only one clip to play at a time. The section pairs playback with recorded Parakeet-TDT transcripts;
+evaluation metadata is excluded from the public site. The original float32
 WAV bytes are preserved, and `npm test` checks their SHA-256 hashes.
 
 ## How it works

@@ -311,6 +311,7 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
 - **Recorded samples:** a cream listening section after the proof strip pairs original audio on white
   with protected audio on midnight. Native players remain usable without JavaScript and omit the
   download control; playback is exclusive when JavaScript is available. Keep the section limited to
-  playback, without transcripts, downloads, evaluation metrics or internal model parameters.
+  playback and recorded Parakeet-TDT transcripts, without downloads, evaluation metrics or internal
+  model parameters. The earlier 97–99% result refers only to the separate Whisper muting evaluation.
   Preserve supplied WAV bytes; evaluation metadata must not be shipped as public assets.
 - **Avoid:** spy or jamming imagery; gradient washes; claims beyond the canvas.

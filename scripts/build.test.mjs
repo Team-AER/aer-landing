@@ -42,7 +42,7 @@ test('production output excludes JSX, build dependencies and local artifacts', a
   for (const file of files) assert.doesNotMatch(file, /(^|\/)(node_modules|docs|output|scripts|\.git|\.playwright-cli)(\/|$)|\.(jsx|map)$/);
 });
 
-test('Muffliato samples expose playback only and preserve the original WAV bytes', async () => {
+test('Muffliato samples retain Parakeet transcripts and original audio without public evaluation metadata', async () => {
   const html = await read('muffliato/index.html');
   const hashes = {
   "2300-131720-0035": {
@@ -69,7 +69,11 @@ test('Muffliato samples expose playback only and preserve the original WAV bytes
   const folders = await readdir(new URL('muffliato/assets/samples/', dist));
   assert.deepEqual(folders.sort(), Object.keys(hashes).sort());
   assert.equal([...html.matchAll(/<audio controls controlslist="nodownload" preload="none"/g)].length, 10);
-  assert.doesNotMatch(html, /\bdownload(?:=|\s|<)|metrics\.json|sample__(?:metrics|details|download|transcript)|\btau\b|τ/i);
+  assert.doesNotMatch(html, /\bdownload(?:=|\s|<)|metrics\.json|sample__(?:metrics|details|download)|\btau\b|τ/i);
+  assert.equal([...html.matchAll(/class="sample__transcript-label">Recorded Parakeet-TDT transcript/g)].length, 10);
+  assert.equal([...html.matchAll(/class="sample__transcript sample__transcript--empty">No text returned\./g)].length, 5);
+  assert.match(html, /earlier muting evaluation achieved 97 to 99 percent attack success against OpenAI Whisper/);
+  assert.match(html, /We also target NVIDIA Parakeet-TDT/);
   for (const folder of folders) {
     const base = `muffliato/assets/samples/${folder}`;
     assert.deepEqual((await readdir(new URL(`${base}/`, dist))).sort(), ['after.wav', 'before.wav']);
