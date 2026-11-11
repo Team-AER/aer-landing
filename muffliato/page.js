@@ -119,7 +119,7 @@
     });
   });
 
-  // ---- Recorded audio: one clip at a time, with a downloadable fallback.
+  // ---- Recorded audio: one clip at a time, with a playback error status.
   var samples = document.querySelectorAll('.sample audio');
   samples.forEach(function (audio) {
     audio.addEventListener('play', function () {

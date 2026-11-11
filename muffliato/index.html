@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/shared/base.css?v=20261017">
-<link rel="stylesheet" href="/muffliato/style.css?v=20261111">
+<link rel="stylesheet" href="/muffliato/style.css?v=20261111b">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -120,245 +120,125 @@
         <div class="rule"></div>
         <p class="samples__kicker">Listen for yourself</p>
         <h2 id="samples-title" class="h2">Same speech. A different result for the model.</h2>
-        <p class="lede">Play the original, then the protected version. Compare what you hear with the recorded transcription: in each of these five examples, Parakeet returned no text after protection.</p>
-      </div>
-      <div class="samples__context">
-        <p><strong>Recorded evaluation</strong><br>Model: <code>nvidia/parakeet-tdt-0.6b-v3</code>. These are selected examples, not an overall success rate or a live transcription demo. They are separate from the Whisper evaluation above.</p>
-        <p>Original, unconverted WAV files. Audio loads when you press play. The protected recording still contains speech; “no text” describes the model’s output.</p>
+        <p class="lede">Listen to the original, then the version protected by Muffliato.</p>
       </div>
       <div class="samples__list">
       <article class="sample" aria-labelledby="sample-1995-1837-0024">
         <header class="sample__head">
           <div><p class="sample__kind">Unseen test speakers</p><h3 class="h3" id="sample-1995-1837-0024">A moment in the sun</h3><p class="sample__source">LibriSpeech test-clean · 5.38 seconds</p></div>
-          <span class="sample__result">No text returned after protection</span>
         </header>
         <div class="sample__pair">
           <div class="sample__side">
             <h4 class="sample__label" id="1995-1837-0024-before">Original<span>Unmodified audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-1995-1837-0024 1995-1837-0024-before">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-1995-1837-0024 1995-1837-0024-before">
               <source src="/muffliato/assets/samples/1995-1837-0024/before.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript">For a while she lay in her chair in happy, dreamy pleasure at sun and bird and tree.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/1995-1837-0024/before.wav" download="muffliato-1995-1837-0024-before.wav">Download original WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
           <div class="sample__side sample__side--protected">
             <h4 class="sample__label" id="1995-1837-0024-after">With Muffliato<span>Protected audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-1995-1837-0024 1995-1837-0024-after">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-1995-1837-0024 1995-1837-0024-after">
               <source src="/muffliato/assets/samples/1995-1837-0024/after.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript sample__transcript--empty">No text returned.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/1995-1837-0024/after.wav" download="muffliato-1995-1837-0024-after.wav">Download with muffliato WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
         </div>
-        <details class="sample__details">
-          <summary>Sample details and recorded metrics</summary>
-          <div class="sample__metrics">
-            <p>test-reserved600: reserved test set, 40 speakers never used for training or any decision.</p>
-            <dl>
-              <div><dt>Word error rate</dt><dd>0% → 100%</dd></div>
-              <div><dt>PESQ</dt><dd>4.616</dd></div>
-              <div><dt>STOI</dt><dd>1.0</dd></div>
-              <div><dt>Signal-to-noise ratio</dt><dd>49.9 dB</dd></div>
-              <div><dt>Perturbation bound (τ)</dt><dd>0.00025</dd></div>
-              <div><dt>Audio format</dt><dd>16 kHz · mono · float32 WAV</dd></div>
-            </dl>
-            <p>Word error rate compares the model output with the dataset reference; 100% here means every reference word is missing. PESQ and STOI are objective audio-quality and intelligibility scores, not listener-study results.</p>
-            <a href="/muffliato/assets/samples/1995-1837-0024/metrics.json" download="muffliato-1995-1837-0024-metrics.json">Download recorded metrics (JSON)</a>
-          </div>
-        </details>
       </article>
       <article class="sample" aria-labelledby="sample-ami-TS3004d-000202-010-nested">
         <header class="sample__head">
           <div><p class="sample__kind">Meeting audio</p><h3 class="h3" id="sample-ami-TS3004d-000202-010-nested">Around the meeting table</h3><p class="sample__source">AMI meeting corpus (headset mix), development partition · 10 seconds</p></div>
-          <span class="sample__result">No text returned after protection</span>
         </header>
         <div class="sample__pair">
           <div class="sample__side">
             <h4 class="sample__label" id="ami-TS3004d-000202-010-nested-before">Original<span>Unmodified audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-ami-TS3004d-000202-010-nested ami-TS3004d-000202-010-nested-before">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-ami-TS3004d-000202-010-nested ami-TS3004d-000202-010-nested-before">
               <source src="/muffliato/assets/samples/ami-TS3004d-000202-010-nested/before.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript">Also transparent and color and transparent or just transparent, I don&#x27;t know. Um then the elements</p>
-            <a class="sample__download" href="/muffliato/assets/samples/ami-TS3004d-000202-010-nested/before.wav" download="muffliato-ami-TS3004d-000202-010-nested-before.wav">Download original WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
           <div class="sample__side sample__side--protected">
             <h4 class="sample__label" id="ami-TS3004d-000202-010-nested-after">With Muffliato<span>Protected audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-ami-TS3004d-000202-010-nested ami-TS3004d-000202-010-nested-after">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-ami-TS3004d-000202-010-nested ami-TS3004d-000202-010-nested-after">
               <source src="/muffliato/assets/samples/ami-TS3004d-000202-010-nested/after.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript sample__transcript--empty">No text returned.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/ami-TS3004d-000202-010-nested/after.wav" download="muffliato-ami-TS3004d-000202-010-nested-after.wav">Download with muffliato WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
         </div>
-        <details class="sample__details">
-          <summary>Sample details and recorded metrics</summary>
-          <div class="sample__metrics">
-            <p>AMI development meetings, never trained on; references are provisional (not human-reviewed).</p>
-            <dl>
-              <div><dt>Word error rate</dt><dd>5.88% → 100%</dd></div>
-              <div><dt>PESQ</dt><dd>4.403</dd></div>
-              <div><dt>STOI</dt><dd>0.9978</dd></div>
-              <div><dt>Signal-to-noise ratio</dt><dd>40.8 dB</dd></div>
-              <div><dt>Perturbation bound (τ)</dt><dd>0.000125</dd></div>
-              <div><dt>Audio format</dt><dd>16 kHz · mono · float32 WAV</dd></div>
-            </dl>
-            <p>Word error rate compares the model output with the dataset reference; 100% here means every reference word is missing. PESQ and STOI are objective audio-quality and intelligibility scores, not listener-study results.</p>
-            <a href="/muffliato/assets/samples/ami-TS3004d-000202-010-nested/metrics.json" download="muffliato-ami-TS3004d-000202-010-nested-metrics.json">Download recorded metrics (JSON)</a>
-          </div>
-        </details>
       </article>
       <article class="sample" aria-labelledby="sample-2830-3980-0039">
         <header class="sample__head">
           <div><p class="sample__kind">Unseen test speakers</p><h3 class="h3" id="sample-2830-3980-0039">Grace and peace</h3><p class="sample__source">LibriSpeech test-clean · 5.2 seconds</p></div>
-          <span class="sample__result">No text returned after protection</span>
         </header>
         <div class="sample__pair">
           <div class="sample__side">
             <h4 class="sample__label" id="2830-3980-0039-before">Original<span>Unmodified audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-2830-3980-0039 2830-3980-0039-before">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-2830-3980-0039 2830-3980-0039-before">
               <source src="/muffliato/assets/samples/2830-3980-0039/before.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript">The terms of grace and peace are common terms with Paul, and are now pretty well understood.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/2830-3980-0039/before.wav" download="muffliato-2830-3980-0039-before.wav">Download original WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
           <div class="sample__side sample__side--protected">
             <h4 class="sample__label" id="2830-3980-0039-after">With Muffliato<span>Protected audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-2830-3980-0039 2830-3980-0039-after">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-2830-3980-0039 2830-3980-0039-after">
               <source src="/muffliato/assets/samples/2830-3980-0039/after.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript sample__transcript--empty">No text returned.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/2830-3980-0039/after.wav" download="muffliato-2830-3980-0039-after.wav">Download with muffliato WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
         </div>
-        <details class="sample__details">
-          <summary>Sample details and recorded metrics</summary>
-          <div class="sample__metrics">
-            <p>test-reserved600: reserved test set, 40 speakers never used for training or any decision.</p>
-            <dl>
-              <div><dt>Word error rate</dt><dd>0% → 100%</dd></div>
-              <div><dt>PESQ</dt><dd>4.508</dd></div>
-              <div><dt>STOI</dt><dd>0.9955</dd></div>
-              <div><dt>Signal-to-noise ratio</dt><dd>46.0 dB</dd></div>
-              <div><dt>Perturbation bound (τ)</dt><dd>0.0005</dd></div>
-              <div><dt>Audio format</dt><dd>16 kHz · mono · float32 WAV</dd></div>
-            </dl>
-            <p>Word error rate compares the model output with the dataset reference; 100% here means every reference word is missing. PESQ and STOI are objective audio-quality and intelligibility scores, not listener-study results.</p>
-            <a href="/muffliato/assets/samples/2830-3980-0039/metrics.json" download="muffliato-2830-3980-0039-metrics.json">Download recorded metrics (JSON)</a>
-          </div>
-        </details>
       </article>
       <article class="sample" aria-labelledby="sample-2229-152864-0026">
         <header class="sample__head">
           <div><p class="sample__kind">Development sample</p><h3 class="h3" id="sample-2229-152864-0026">An exchange in dialogue</h3><p class="sample__source">LibriSpeech train-clean-360 · 14.14 seconds</p></div>
-          <span class="sample__result">No text returned after protection</span>
         </header>
         <div class="sample__pair">
           <div class="sample__side">
             <h4 class="sample__label" id="2229-152864-0026-before">Original<span>Unmodified audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-2229-152864-0026 2229-152864-0026-before">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-2229-152864-0026 2229-152864-0026-before">
               <source src="/muffliato/assets/samples/2229-152864-0026/before.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript">Yes, he answered, and you will be dead so long as you refuse to die. Back to the old riddling, I returned scornfully. Be persuaded and go home with me, he continued gently. The most</p>
-            <a class="sample__download" href="/muffliato/assets/samples/2229-152864-0026/before.wav" download="muffliato-2229-152864-0026-before.wav">Download original WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
           <div class="sample__side sample__side--protected">
             <h4 class="sample__label" id="2229-152864-0026-after">With Muffliato<span>Protected audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-2229-152864-0026 2229-152864-0026-after">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-2229-152864-0026 2229-152864-0026-after">
               <source src="/muffliato/assets/samples/2229-152864-0026/after.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript sample__transcript--empty">No text returned.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/2229-152864-0026/after.wav" download="muffliato-2229-152864-0026-after.wav">Download with muffliato WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
         </div>
-        <details class="sample__details">
-          <summary>Sample details and recorded metrics</summary>
-          <div class="sample__metrics">
-            <p>fresh-dev200: 50 speakers excluded from training; used for development comparisons.</p>
-            <dl>
-              <div><dt>Word error rate</dt><dd>0% → 100%</dd></div>
-              <div><dt>PESQ</dt><dd>4.482</dd></div>
-              <div><dt>STOI</dt><dd>1.0</dd></div>
-              <div><dt>Signal-to-noise ratio</dt><dd>43.6 dB</dd></div>
-              <div><dt>Perturbation bound (τ)</dt><dd>0.0005</dd></div>
-              <div><dt>Audio format</dt><dd>16 kHz · mono · float32 WAV</dd></div>
-            </dl>
-            <p>Word error rate compares the model output with the dataset reference; 100% here means every reference word is missing. PESQ and STOI are objective audio-quality and intelligibility scores, not listener-study results.</p>
-            <a href="/muffliato/assets/samples/2229-152864-0026/metrics.json" download="muffliato-2229-152864-0026-metrics.json">Download recorded metrics (JSON)</a>
-          </div>
-        </details>
       </article>
       <article class="sample" aria-labelledby="sample-2300-131720-0035">
         <header class="sample__head">
           <div><p class="sample__kind">Longer passage</p><h3 class="h3" id="sample-2300-131720-0035">The Edison meter</h3><p class="sample__source">LibriSpeech test-clean · 25.49 seconds</p></div>
-          <span class="sample__result">No text returned after protection</span>
         </header>
         <div class="sample__pair">
           <div class="sample__side">
             <h4 class="sample__label" id="2300-131720-0035-before">Original<span>Unmodified audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-2300-131720-0035 2300-131720-0035-before">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-2300-131720-0035 2300-131720-0035-before">
               <source src="/muffliato/assets/samples/2300-131720-0035/before.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript">In this connection, it should be mentioned that the Association of Edison Illuminating Companies in the same year adopted resolutions unanimously to the effect that the Edison meter was accurate, and that its use was not expensive for stations above one thousand lights, and that the best financial results were invariably secured in a station selling current by meter.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/2300-131720-0035/before.wav" download="muffliato-2300-131720-0035-before.wav">Download original WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
           <div class="sample__side sample__side--protected">
             <h4 class="sample__label" id="2300-131720-0035-after">With Muffliato<span>Protected audio</span></h4>
-            <audio controls preload="none" aria-labelledby="sample-2300-131720-0035 2300-131720-0035-after">
+            <audio controls controlslist="nodownload" preload="none" aria-labelledby="sample-2300-131720-0035 2300-131720-0035-after">
               <source src="/muffliato/assets/samples/2300-131720-0035/after.wav" type="audio/wav">
-              Your browser does not support audio playback. Use the WAV download below.
+              Your browser does not support audio playback.
             </audio>
-            <p class="sample__transcript-label">Recorded model transcript</p>
-            <p class="sample__transcript sample__transcript--empty">No text returned.</p>
-            <a class="sample__download" href="/muffliato/assets/samples/2300-131720-0035/after.wav" download="muffliato-2300-131720-0035-after.wav">Download with muffliato WAV <span aria-hidden="true">↗</span></a>
-            <p class="sample__error" role="status" hidden>Playback is unavailable. Download the WAV to listen.</p>
+            <p class="sample__error" role="status" hidden>Playback is unavailable. Please try again or use another browser.</p>
           </div>
         </div>
-        <details class="sample__details">
-          <summary>Sample details and recorded metrics</summary>
-          <div class="sample__metrics">
-            <p>test-reserved600: reserved test set, 40 speakers never used for training or any decision.</p>
-            <dl>
-              <div><dt>Word error rate</dt><dd>0% → 100%</dd></div>
-              <div><dt>PESQ</dt><dd>4.54</dd></div>
-              <div><dt>STOI</dt><dd>0.9999</dd></div>
-              <div><dt>Signal-to-noise ratio</dt><dd>51.5 dB</dd></div>
-              <div><dt>Perturbation bound (τ)</dt><dd>0.00025</dd></div>
-              <div><dt>Audio format</dt><dd>16 kHz · mono · float32 WAV</dd></div>
-            </dl>
-            <p>Word error rate compares the model output with the dataset reference; 100% here means every reference word is missing. PESQ and STOI are objective audio-quality and intelligibility scores, not listener-study results.</p>
-            <a href="/muffliato/assets/samples/2300-131720-0035/metrics.json" download="muffliato-2300-131720-0035-metrics.json">Download recorded metrics (JSON)</a>
-          </div>
-        </details>
       </article>
       </div>
-      <p class="samples__note">The meeting sample comes from the AMI development partition; its reference transcript is provisional and has not been human-reviewed. Sample details distinguish reserved test data from development data. Results apply to the supplied files and model.</p>
     </div>
   </section>
 
@@ -626,6 +506,6 @@
 </footer>
 
 <script src="/shared/shell.js?v=20261017" defer></script>
-<script src="/muffliato/page.js?v=20261111" defer></script>
+<script src="/muffliato/page.js?v=20261111b" defer></script>
 </body>
 </html>

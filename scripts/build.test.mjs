@@ -42,22 +42,40 @@ test('production output excludes JSX, build dependencies and local artifacts', a
   for (const file of files) assert.doesNotMatch(file, /(^|\/)(node_modules|docs|output|scripts|\.git|\.playwright-cli)(\/|$)|\.(jsx|map)$/);
 });
 
-test('recorded Muffliato samples ship unchanged WAV pairs and matching evaluation data', async () => {
+test('Muffliato samples expose playback only and preserve the original WAV bytes', async () => {
   const html = await read('muffliato/index.html');
+  const hashes = {
+  "2300-131720-0035": {
+    "before": "c1fbdba2d138e5343614e53c7dd61bccab0077377c932d7a1c96ebab3ead85b3",
+    "after": "9d811cdf029539d06ac14c27bbaa405e619b684e732885fedf526081b63a1407"
+  },
+  "1995-1837-0024": {
+    "before": "10c809017f8913c35b974d4b391559b5b6cd31aa1147189de72801b1cb1d91ae",
+    "after": "17388012930fa82f6d8e78ef3cdd8e714def59d05b1eed181475969a02db8a5a"
+  },
+  "ami-TS3004d-000202-010-nested": {
+    "before": "ec158560fa19113ce29364e886825ee5e556e18c9604f81f5fd9d27a2477a05b",
+    "after": "7ba7918ac8ed613db82938bd7cbb04612709442d7ec82a6800bd504673d30745"
+  },
+  "2229-152864-0026": {
+    "before": "d4c5f32432319416a16af3d86b398dd56cbb316bafcf500ef43a20f38a8c641c",
+    "after": "4bafbdfdafd4b3c08993e2c0ab07e104040eb853bea4c1dced86bcd28895047d"
+  },
+  "2830-3980-0039": {
+    "before": "fef83c59a80ee663c41d83adfee4beed8c2d8f141a2b6d400bb0881e4f9934e4",
+    "after": "2b43a2f833d7861fb4205bf43dea56aa22a7f2064f9efbccacc3da0ec4abec69"
+  }
+};
   const folders = await readdir(new URL('muffliato/assets/samples/', dist));
-  assert.equal(folders.length, 5);
-  assert.equal([...html.matchAll(/<audio controls preload="none"/g)].length, 10);
+  assert.deepEqual(folders.sort(), Object.keys(hashes).sort());
+  assert.equal([...html.matchAll(/<audio controls controlslist="nodownload" preload="none"/g)].length, 10);
+  assert.doesNotMatch(html, /\bdownload(?:=|\s|<)|metrics\.json|sample__(?:metrics|details|download|transcript)|\btau\b|τ/i);
   for (const folder of folders) {
     const base = `muffliato/assets/samples/${folder}`;
-    const metrics = JSON.parse(await read(`${base}/metrics.json`));
-    assert.equal(metrics.model, 'nvidia/parakeet-tdt-0.6b-v3');
-    assert.equal(metrics.transcript_after, '');
-    assert.ok(html.replaceAll('&#x27;', "'").includes(metrics.transcript_before));
-    assert.ok(html.includes(`href="/${base}/metrics.json"`));
-    assert.ok(!Object.keys(metrics).some(key => key.startsWith('source_')));
+    assert.deepEqual((await readdir(new URL(`${base}/`, dist))).sort(), ['after.wav', 'before.wav']);
     for (const mode of ['before', 'after']) {
       const audio = await readFile(new URL(`${base}/${mode}.wav`, dist));
-      assert.equal(createHash('sha256').update(audio).digest('hex'), metrics[`sha256_${mode}`]);
+      assert.equal(createHash('sha256').update(audio).digest('hex'), hashes[folder][mode]);
       assert.equal(audio.toString('ascii', 0, 4), 'RIFF');
       assert.equal(audio.toString('ascii', 8, 12), 'WAVE');
       assert.ok(html.includes(`src="/${base}/${mode}.wav"`));

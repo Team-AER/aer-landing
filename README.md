@@ -39,13 +39,11 @@ Other app pages use HTML, CSS and vanilla JavaScript.
 | `/promptmask/` | On-device prompt masking in a browser extension |
 | `/muffliato/` | Keeps sensitive conversations out of AI transcription; investor page at `/muffliato/investors/` |
 
-The Muffliato page includes five recorded Parakeet before/after examples at
-`/muffliato/#samples`. Native players load audio on demand and support downloads;
-only one clip plays at a time. The original float32 WAV bytes and their SHA-256
-hashes are preserved. Public metric files omit internal source paths and checkpoint
-names. These selected examples are separate from the page's Whisper evaluation;
-each identifies its dataset and evaluation partition, including AMI's provisional
-reference. `npm test` verifies that the built audio matches the supplied hashes.
+The Muffliato page includes five before/after audio examples at
+`/muffliato/#samples`. Native players load audio on demand, omit the download
+control and allow only one clip to play at a time. The section presents playback
+only; evaluation metadata is excluded from the public site. The original float32
+WAV bytes are preserved, and `npm test` checks their SHA-256 hashes.
 
 ## How it works
 

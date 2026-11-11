@@ -309,8 +309,8 @@ concept, the one memorable thing, section plan, and the real UI the hero must mi
 - **Forms:** the site has no backend and its CSP sets `form-action 'none'`; `page.js` composes an email to
   nidhi@aer.app in the visitor's own mail app. A plain `mailto:` link sits under each form.
 - **Recorded samples:** a cream listening section after the proof strip pairs original audio on white
-  with protected audio on midnight. Native players, recorded transcripts and WAV downloads remain
-  usable without JavaScript; playback is exclusive when JavaScript is available. Collapsed details
-  hold per-clip metrics and dataset context. Preserve supplied WAV bytes and distinguish these
-  selected Parakeet examples from the existing Whisper claims and illustrative hero animation.
+  with protected audio on midnight. Native players remain usable without JavaScript and omit the
+  download control; playback is exclusive when JavaScript is available. Keep the section limited to
+  playback, without transcripts, downloads, evaluation metrics or internal model parameters.
+  Preserve supplied WAV bytes; evaluation metadata must not be shipped as public assets.
 - **Avoid:** spy or jamming imagery; gradient washes; claims beyond the canvas.
