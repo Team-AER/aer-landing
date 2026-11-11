@@ -50,6 +50,10 @@ jobs:
           for p in /app.jsx /tweaks-panel.jsx /package.json /scripts/build.mjs; do
             test "$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:8080$p")" = 404
           done
+          # Recorded samples retain a playable MIME type and byte-range seeking.
+          sample_url=http://127.0.0.1:8080/muffliato/assets/samples/1995-1837-0024/before.wav
+          curl -fsSI "$sample_url" | grep -qi '^content-type: audio/wav'
+          test "$(curl -fsS -H 'Range: bytes=0-1023' -o /dev/null -w '%{http_code}' "$sample_url")" = 206
 
       - name: Tear down
         if: always()
