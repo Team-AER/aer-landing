@@ -1,5 +1,5 @@
 import { build, transform } from 'esbuild';
-import { readFile, writeFile, mkdir, rm, cp } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm, cp, readdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import vm from 'node:vm';
 import React from 'react';
@@ -75,3 +75,17 @@ for (const folder of ['cantis', 'polyjuicevoice']) {
 await writeFile(new URL('build-manifest.json', dist), JSON.stringify(manifest, null, 2) + '\n');
 if (manifest.home.gzipBytes + manifest.workshop.gzipBytes > 80 * 1024) throw new Error('Homepage JavaScript budget exceeded');
 console.log(JSON.stringify(manifest, null, 2));
+
+async function addMonitoring(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const file = new URL(entry.name + (entry.isDirectory() ? '/' : ''), directory);
+    if (entry.isDirectory()) await addMonitoring(file);
+    else if (entry.name.endsWith('.html')) {
+      const html = await readFile(file, 'utf8');
+      await writeFile(file, html.replace('</head>', "<script src=\"/assets/monitoring-config.js\"></script>\n<script src=\"/assets/sentry-10.78.0.min.js\"></script>\n<script src=\"/assets/monitoring.js\"></script>\n" + '</head>'));
+    }
+  }
+}
+await addMonitoring(dist);
+
+await writeFile(new URL("assets/monitoring-config.js", dist), "window.AER_MONITORING = " + JSON.stringify({ dsn: process.env.GLITCHTIP_DSN || "", tunnel: process.env.GLITCHTIP_TUNNEL || undefined, environment: process.env.SENTRY_ENVIRONMENT || "production", release: process.env.SENTRY_RELEASE || "aer-landing@1.0.0" }) + ";\n");
