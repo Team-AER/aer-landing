@@ -1,0 +1,1 @@
+window.AER_MONITORING = {};

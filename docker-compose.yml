@@ -5,7 +5,13 @@
 # proxy in front of this if you need TLS / public access.
 services:
   aer-landing:
-    build: .
+    build:
+      context: .
+      args:
+        GLITCHTIP_TUNNEL: ${GLITCHTIP_TUNNEL:-}
+        GLITCHTIP_DSN: ${GLITCHTIP_DSN:-}
+        SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-production}
+        SENTRY_RELEASE: ${SENTRY_RELEASE:-aer-landing@1.0.0}
     image: aer-landing:latest
     container_name: aer-landing
     restart: unless-stopped

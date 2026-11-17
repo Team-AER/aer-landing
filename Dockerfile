@@ -5,7 +5,11 @@ WORKDIR /site
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY . .
-RUN npm run build && npm test
+ARG GLITCHTIP_TUNNEL=""
+ARG GLITCHTIP_DSN=""
+ARG SENTRY_ENVIRONMENT="production"
+ARG SENTRY_RELEASE=""
+RUN GLITCHTIP_TUNNEL="$GLITCHTIP_TUNNEL" GLITCHTIP_DSN="$GLITCHTIP_DSN" SENTRY_ENVIRONMENT="$SENTRY_ENVIRONMENT" SENTRY_RELEASE="$SENTRY_RELEASE" npm run build && npm test
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 
